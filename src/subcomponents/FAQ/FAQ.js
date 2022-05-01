@@ -7,9 +7,9 @@ const FAQ = () => {
   const [toggleFaq4, setToggleFaq4] = useState(false);
   const [toggleFaq5, setToggleFaq5] = useState(false);
   return (
-    <div className="faq">
+    <div className="faq" data-aos="fade-up">
       <h3 className="title" data-aos="fade-up">Câu hỏi thường gặp</h3>
-      <div className="accordion-list" data-aos="fade-up"
+      <div className="accordion-list" 
       >
         <div
           className="accordion"
