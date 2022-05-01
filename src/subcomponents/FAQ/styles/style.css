@@ -58,7 +58,7 @@
   transition: 0.5s;
   opacity: 1;
   margin-bottom: 20px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .faq p {
@@ -99,6 +99,10 @@
 @media only screen and (max-width: 768px) {
   .faq{
       padding: 30px 30px;
+  }
+  .faq .panel {
+    margin-bottom: 10px;
+    margin-top: 0px;
   }
 }
 @media only screen and (max-width: 480px) {
