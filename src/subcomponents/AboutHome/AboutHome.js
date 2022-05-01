@@ -19,7 +19,7 @@ function AboutHome() {
     flakty.previous();
   };
   return (
-    <div className="about">
+    <div className="about" data-aos="flip-left">
     <h3 className="title">Cảm nhận về AFL</h3>
       <div className="about-control">
         <div className="btnctr --prev" onClick={myCustomPrev}>

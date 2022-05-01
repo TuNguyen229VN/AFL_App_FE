@@ -3,11 +3,11 @@ import "./styles/style.css";
 const TeamHome = () => {
   return (
     <div className="teamhome">
-      <h2 className="title">Đội bóng nổi bật</h2>
-      <a href="#" className="view__more">
+      <h2 className="title"  data-aos={"fade-up"}>Đội bóng nổi bật</h2>
+      <a href="#" className="view__more"  data-aos={"fade-up"}>
         Xem thêm
       </a>
-      <div className="tournament__list">
+      <div className="tournament__list"  data-aos={"fade-up"}>
         <a href="#" className="tournaments__list-item">
           <div className="tournament__img">
             <img src="./assets/img/homepage/team3.png" alt="team" />

@@ -1,11 +1,13 @@
 .teamhome {
   padding: 60px 150px;
   background-color: var(--blue-black);
+  --teamhome-title: 50px;
+  --teamhome--viewmore: 20px;
 }
 
 .teamhome .title {
   font-family: "Mulish-Bold";
-  font-size: 50px;
+  font-size: var(--teamhome-title);
   text-transform: uppercase;
   text-align: center;
   color: var(--white-text);
@@ -27,7 +29,7 @@
   width: max-content;
   display: inline-block;
   text-align: right;
-  font-size: 20px;
+  font-size: var(--teamhome--viewmore);
   color: var(--white-text);
   transition: 0.5s;
 }
@@ -129,4 +131,42 @@
 .teamhome .torunament__another .join__text {
   margin-left: 5px;
   margin-top: 5px;
+}
+@media only screen and (max-width: 1279px) {
+}
+@media only screen and (max-width: 1118px) {
+  .teamhome{
+    --teamhome-title: 40px;
+    --teamhome--viewmore: 18px;
+    padding: 50px 50px;
+  }
+  .teamhome .tournament__list {
+    margin-top: 55px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .teamhome {
+    padding: 30px 30px;
+  }
+  .teamhome .tournament__list {
+    margin-top: 55px;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0px;
+    row-gap: 30px;
+  }
+  .teamhome .tournament__text p{
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .teamhome .view__more{
+    right: 30px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .teamhome{
+    --teamhome-title: 18px;
+    --teamhome--viewmore: 12px;
+  }
 }

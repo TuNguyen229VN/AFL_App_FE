@@ -7,6 +7,8 @@
   width: 100%;
   filter: brightness(80%);
   transition: 0.5s;
+  --another-title: 50px;
+  --another-text: 18px;
 }
 
 .another:hover {
@@ -19,12 +21,12 @@
 
 .another .title {
   font-family: "Mulish-Bold";
-  font-size: 50px;
+  font-size: var(--another-title);
   margin-bottom: 20px;
 }
 
 .another .desc {
-  font-size: 18px;
+  font-size: var(--another-text);
   width: 450px;
   margin-bottom: 40px;
 }
@@ -40,7 +42,7 @@
   border: 1px solid var(--green-bold);
   position: relative;
   isolation: isolate;
-  font-size: 18px;
+  font-size: var(--another-text);
   z-index: 2;
 }
 
@@ -61,4 +63,32 @@
 }
 .another .btnDis:hover {
   color: var(--blue-black);
+}
+@media only screen and (max-width: 1279px) {
+  .another{
+    --another-title: 40px;
+    --another-text: 18px;
+  }
+}
+@media only screen and (max-width: 1118px) {
+}
+@media only screen and (max-width: 768px) {
+  .another{
+    padding: 60px 0;
+  }
+  .another .container {
+    padding: 0px 30px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .another {
+    padding: 50px 0px;
+    --another-title: 18px;
+    --another-text: 12px;
+  }
+
+  .another .desc{
+    width: max-content;
+  }
+
 }

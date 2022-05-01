@@ -29,3 +29,11 @@
 .ButtonTop .button_scroll:hover img{
   transform: scale(1.1);
 }
+@media only screen and (max-width: 1279px) {
+}
+@media only screen and (max-width: 1118px) {
+}
+@media only screen and (max-width: 768px) {
+}
+@media only screen and (max-width: 480px) {
+}

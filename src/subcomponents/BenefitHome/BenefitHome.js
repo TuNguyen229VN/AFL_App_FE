@@ -3,9 +3,9 @@ import "./styles/style.css";
 function BenefitHome() {
   return (
     <div className="benefithome">
-      <h2 className="title">Lợi ích</h2>
-      <p className="title__desc">Website mang đến rất nhiều lợi ích không thể bàn cãi cho những ai đam mê</p>
-      <div className="tournament__list">
+      <h2 className="title" data-aos="fade-up">Lợi ích</h2>
+      <p className="title__desc" data-aos="fade-up">Website mang đến rất nhiều lợi ích không thể bàn cãi cho những ai đam mê</p>
+      <div className="tournament__list" data-aos="fade-up">
         <a href="#" className="tournaments__list-item">
           <div className="tournament__img">
             <img src="./assets/icons/bene1.png" alt="team" className="azzz"/>

@@ -3,12 +3,21 @@ import "./styles/style.css";
 const TournamentHome = () => {
   return (
     <div className="tournamenthome">
-      <h2 className="title">Giải đấu nổi bật</h2>
-      <a href="#" className="view__more">
+      <h2
+        className="title"
+        data-aos={"fade-up"}
+        data-aos-anchor-placement="top-bottom"
+      >
+        Giải đấu nổi bật
+      </h2>
+      <a href="#" className="view__more" data-aos={"fade-up"}>
         Xem thêm
       </a>
-      <div className="tournament__list">
-        <a href="#" className="tournaments__list-item">
+      <div
+        className="tournament__list"
+        data-aos={"fade-up"}
+      >
+        <a href="#" className="tournaments__list-item" >
           <div className="tournament__img">
             <img src="./assets/img/homepage/tourn1.png" alt="tour" />
           </div>

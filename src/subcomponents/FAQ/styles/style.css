@@ -1,10 +1,13 @@
 .faq {
   padding: 60px 150px;
+  --faq-title: 50px;
+  --faq-text: 22px;
+  --faq-p:16px;
 }
 
 .faq .title {
   margin-top: 20px;
-  font-size: 50px;
+  font-size: var(--faq-title);
   font-family: "Mulish-Bold";
   text-transform: uppercase;
   text-align: center;
@@ -20,7 +23,7 @@
   transition: 0.4s;
   background-color: #fff;
   position: relative;
-  font-size: 22px;
+  font-size: var(--faq-text);
   font-family: "Mulish-Regular";
   transition: 0.5s;
 }
@@ -59,7 +62,7 @@
 }
 
 .faq p {
-  font-size: 16px;
+  font-size: var(--faq-p);
   line-height: 1.4;
 }
 
@@ -83,4 +86,25 @@
 .faq .accordion-list .arrow.right {
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
+}
+@media only screen and (max-width: 1279px) {
+}
+@media only screen and (max-width: 1118px) {
+  .faq{
+    --faq-title: 40px;
+    --faq-text: 18px;
+    padding: 50px 50px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .faq{
+      padding: 30px 30px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .faq{
+    --faq-title: 18px;
+    --faq-text: 12px;
+    --faq-p:10px;
+  }
 }

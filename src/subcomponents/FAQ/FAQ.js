@@ -8,8 +8,9 @@ const FAQ = () => {
   const [toggleFaq5, setToggleFaq5] = useState(false);
   return (
     <div className="faq">
-      <h3 className="title">Câu hỏi thường gặp</h3>
-      <div className="accordion-list">
+      <h3 className="title" data-aos="fade-up">Câu hỏi thường gặp</h3>
+      <div className="accordion-list" data-aos="fade-up"
+      >
         <div
           className="accordion"
           onClick={() => setToggleFaq1((toggleFaq1) => !toggleFaq1)}

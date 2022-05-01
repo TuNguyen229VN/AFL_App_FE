@@ -1,8 +1,9 @@
-import React from "react";
+import React ,{useState} from "react";
 import "./styles/style.css";
 function Header() {
+  const [clickMenu, setClickMenu] = useState(false);
   return (
-    <header>
+    <header className="header">
       <div className="container-fluid">
         <div className="logo">
           <a href="#">
@@ -20,24 +21,32 @@ function Header() {
             </a>
           </li>
           <li>
-            <a href="#" className="title">Giải đấu</a>
+            <a href="#" className="title">
+              Giải đấu
+            </a>
             <div className="sub_menu">
               <a href="#">Tìm giải đấu</a>
               <a href="#">Tạo giải đấu</a>
             </div>
           </li>
           <li>
-            <a href="#" className="title">Đội bóng</a>
+            <a href="#" className="title">
+              Đội bóng
+            </a>
             <div className="sub_menu">
               <a href="#">Tìm đội bóng</a>
               <a href="#">Tạo đội bóng</a>
             </div>
           </li>
           <li>
-            <a href="#" className="title">Giới thiệu</a>
+            <a href="#" className="title">
+              Giới thiệu
+            </a>
           </li>
           <li>
-            <a href="#" className="title">Tin tức</a>
+            <a href="#" className="title">
+              Tin tức
+            </a>
           </li>
         </ul>
         <div className="account">
@@ -55,7 +64,19 @@ function Header() {
             <a href="#">Bình luận</a>
             <a href="#">Đăng xuất</a>
           </div>
+          <div className={`btn__menu ${clickMenu}`} onClick={()=>setClickMenu((clickMenu)=>!clickMenu)}>
+            <span ></span>
+          </div>
         </div>
+        <nav className={`nav ${clickMenu}`} id="nav">
+                <ul class="menu --mobile">
+                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="#">Giải đấu</a></li>
+                    <li><a href="#">Đội bóng</a></li>
+                    <li><a href="#">Giới thiệu</a></li>
+                    <li><a href="#">Tin tức</a></li>
+                </ul>
+            </nav>
       </div>
     </header>
   );
