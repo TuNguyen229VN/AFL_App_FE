@@ -1,0 +1,135 @@
+.about {
+  padding: 60px 150px;
+  position: relative;
+  height: 370px;
+}
+
+.about .title{
+  font-size: 50px;
+  font-family: "Mulish-Bold";
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.about .flickity-page-dots {
+  display: flex;
+  position: absolute;
+  top: 180px;
+  right: 190px;
+  z-index: 3;
+}
+
+.about .flickity-page-dots .dot {
+  width: 50px;
+  height: 10px;
+  background: var(--blue-black);
+  margin: 0 7px;
+  cursor: pointer;
+  opacity: 0.2;
+  transition: 0.5s;
+}
+
+.about .flickity-page-dots .dot:hover,
+.about .flickity-page-dots .dot.is-selected {
+  opacity: 1;
+}
+.about-control {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  bottom: 0px;
+  left: 410px;
+  width: 180px;
+  height: 40px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+}
+.about-control .btnctr {
+  background-color: var(--blue-black);
+  cursor: pointer;
+  transition: 0.5s;
+  transition: 0.5s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-control .btnctr:hover {
+  background-color: var(--green-bold);
+}
+.about-control .btnctr:hover img {
+  filter: invert(1);
+}
+.about-control .--next {
+  border-right: 1px solid var(--white-text);
+  transform: rotate(180deg);
+}
+.about .flickity-enabled {
+  overflow: hidden;
+}
+.about__list {
+  border-radius: 0% 0% 0% 0% / 0% 0% 0% 0%;
+  box-shadow: 20px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s ease;
+  outline: none;
+}
+
+.about__list:hover {
+  border-radius: 0% 0% 50% 50% / 0% 0% 5% 5%;
+  box-shadow: 10px 10px rgba(0, 0, 0, 0.25);
+}
+.about .about__list-item {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+}
+.about .about__img img {
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.about .about__text {
+  width: 60%;
+  padding: 0px 20px;
+}
+
+.about .about__text .common {
+  margin-top: 30px;
+  width: 60px;
+}
+
+.about .about__text .about__text-desc {
+  margin-top: 40px;
+  line-height: 1.4;
+  font-size: 18px;
+  height: 115px;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  position: relative;
+  overflow: hidden;
+}
+
+.about .about__text .about__text-desc::after {
+  position: absolute;
+  display: block;
+  background-color: var(--green-bold);
+  height: 4px;
+  width: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0px;
+  content: "";
+  z-index: 2;
+}
+
+.about .about__text-name {
+  font-family: "Mulish-Bold";
+  font-size: 22px;
+  margin-bottom: 15px;
+}

@@ -1,0 +1,64 @@
+.another {
+  background-image: url("../../../../public/assets/img/homepage/another.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  height: auto;
+  padding: 150px 0px;
+  width: 100%;
+  filter: brightness(80%);
+  transition: 0.5s;
+}
+
+.another:hover {
+  filter: initial;
+}
+.another .container {
+  padding: 0px 150px;
+  color: var(--white-text);
+}
+
+.another .title {
+  font-family: "Mulish-Bold";
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.another .desc {
+  font-size: 18px;
+  width: 450px;
+  margin-bottom: 40px;
+}
+
+.another .btnDis {
+  font-family: "Mulish-Bold";
+  color: white;
+  padding: 15px 30px;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid var(--green-bold);
+  position: relative;
+  isolation: isolate;
+  font-size: 18px;
+  z-index: 2;
+}
+
+.another .btnDis:before {
+  content: "";
+  height: 100%;
+  width: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--green-bold);
+  z-index: -1;
+  transition: width 0.25s ease-in;
+}
+
+.another .btnDis:hover::before {
+  width: 100%;
+}
+.another .btnDis:hover {
+  color: var(--blue-black);
+}

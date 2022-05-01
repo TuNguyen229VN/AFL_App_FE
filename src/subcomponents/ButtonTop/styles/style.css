@@ -1,0 +1,31 @@
+.ButtonTop .button_scroll {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  /* width: 50px; */
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  transition: opacity 0.5s;
+  background-color: var(--green-bold);
+  cursor: pointer;
+  padding: 15px 15px;
+  z-index: 10;
+  overflow: hidden;
+}
+.ButtonTop .button_scroll.true {
+  opacity: 1;
+}
+
+.ButtonTop .button_scroll.false {
+  opacity: 0;
+}
+.ButtonTop .button_scroll img {
+  width: 20px;
+  height: 20px;
+  transform: scale(1);
+}
+
+.ButtonTop .button_scroll:hover img{
+  transform: scale(1.1);
+}

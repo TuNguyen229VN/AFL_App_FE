@@ -1,0 +1,132 @@
+.teamhome {
+  padding: 60px 150px;
+  background-color: var(--blue-black);
+}
+
+.teamhome .title {
+  font-family: "Mulish-Bold";
+  font-size: 50px;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--white-text);
+}
+
+.teamhome .tournament__list {
+  margin-top: 60px;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.teamhome .view__more {
+  font-family: "Mulish-Bold";
+  margin-top: 20px;
+  position: absolute;
+  right: 150px;
+  width: max-content;
+  display: inline-block;
+  text-align: right;
+  font-size: 20px;
+  color: var(--white-text);
+  transition: 0.5s;
+}
+
+.teamhome .view__more:hover {
+  color: var(--green-bold);
+}
+.teamhome .tournaments__list-item {
+  border: 1px solid var(--white-text);
+}
+
+.teamhome .tournament__img {
+  overflow: hidden;
+  cursor: pointer;
+  height: 180px;
+  background-color: var(--white-text);
+}
+
+.teamhome .tournament__img img {
+  margin: 20px auto;
+  display: block;
+  object-fit: cover;
+  opacity: 0.8;
+  transition: 0.5s;
+}
+
+.teamhome .tournaments__list-item:hover .tournament__img img {
+  opacity: 1;
+  transform: scale(1.2);
+}
+.teamhome .tournaments__list-item:hover .tournament__text h3 {
+  color: var(--green-bold);
+}
+.teamhome .tournament__text {
+  padding: 15px 25px;
+  color: var(--white-text);
+}
+
+.teamhome .tournament__text h3 {
+  font-family: "Mulish-Bold";
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 8px;
+  height: 26px;
+  line-height: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.teamhome .tournament__text p {
+  text-align: center;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  height: 45px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+}
+
+.torunament__another {
+  display: flex;
+  justify-content: space-between;
+}
+.teamhome .torunament__another .join {
+  display: flex;
+  align-items: center;
+  left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+}
+.teamhome .tournaments__list-item:hover .torunament__another .join::before {
+    transform: scaleX(1);
+    opacity: 1;
+    visibility: visible;
+}
+.teamhome .torunament__another .join::before {
+  position: absolute;
+  display: block;
+  content: "";
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  opacity: 0;
+  visibility: hidden;
+  background-color: var(--green-bold);
+  top: -20px;
+  transition: 0.5s;
+  z-index: 2;
+}
+.teamhome .torunament__another .join img {
+  filter: invert(1);
+}
+.teamhome .torunament__another .join__text {
+  margin-left: 5px;
+  margin-top: 5px;
+}

@@ -1,0 +1,143 @@
+header {
+  background-color: var(--blue-black);
+  /* background-color: transparent; */
+  position: fixed;
+  width: 100%;
+  height: 90px;
+  z-index: 10;
+}
+.container-fluid {
+  padding: 20px 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  width: 120px;
+  height: 60px;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+}
+
+.menu a {
+  font-family: "Mulish-Bold";
+  color: var(--white-text);
+  font-size: 18px;
+  margin: 0 40px;
+  transition: 0.5s cubic-bezier(0.17, 0.67, 0.6, 0.8);
+  position: relative;
+}
+
+.menu .title::after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  position: absolute;
+  left: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  bottom: -8px;
+  transition: 0.5s cubic-bezier(0.17, 0.67, 0.6, 0.8);
+}
+.menu .title:hover::after {
+  background-color: var(--green-bold);
+  transform: scaleX(1);
+  transform-origin: right center;
+}
+.menu .title.active,
+.menu .title:hover {
+  color: var(--green-bold);
+}
+
+.menu .title.active::after {
+  background-color: var(--green-bold);
+  transform: scaleX(1);
+  transform-origin: right center;
+}
+.menu .title{
+    position: relative;
+}
+
+.menu .sub_menu{
+    margin-top: 12px;
+    position: absolute;
+    color: black;
+    left: 0;
+    background-color: var(--blue-black);
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    display: none;
+}
+
+.menu .sub_menu.active{
+    display: block;
+}
+
+.menu .sub_menu a{
+    font-size: 16px;
+    color: var(--white-text);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 0;
+    transition: 0.5s;
+}
+.menu .sub_menu a:hover{
+    color: var(--green-bold);
+}
+.account {
+  color: var(--white-text);
+  position: relative;
+  font-family: "Mulish-Bold";
+  font-size: 18px;
+}
+.account .current {
+    cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.account .avatar {
+  width: 37px;
+  height: 37px;
+  margin-right: 12px;
+}
+
+.account .avatar img {
+  border-radius: 50%;
+}
+
+.account i {
+  width: 13px;
+  height: 8px;
+  margin-top: -10px;
+  margin-left: 6px;
+}
+
+.account .popup_down {
+  position: absolute;
+  color: black;
+  text-align: right;
+  width: 100%;
+  right: 0;
+  background-color: var(--green-bold);
+  display: flex;
+  flex-direction: column;
+  display: none;
+}
+.account .popup_down.active {
+    display: block;
+}
+.account .popup_down a {
+  font-size: 16px;
+  color: var(--blue-black);
+  padding: 10px 15px 10px 30px;
+}
+
+.account .popup_down a:not(:last-child) {
+  border-bottom: 2px solid var(--blue-black);
+}

@@ -1,0 +1,117 @@
+.benefithome{
+    padding: 30px 150px;
+    padding-bottom: 60px;
+}
+
+ .benefithome .title {
+    font-family: "Mulish-Bold";
+    font-size: 50px;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--blue-black);
+  }
+  
+  .benefithome .title__desc{
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+  }
+  .benefithome .tournament__list {
+    margin-top: 50px;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  
+  .benefithome .tournaments__list-item {
+    border: 1px solid var(--blue-black);
+    transition: 0.5s;
+    height: 380px;
+  }
+  
+  .benefithome .tournament__img {
+    overflow: hidden;
+    cursor: pointer;
+    height: 120px;
+  }
+  .benefithome .tournament__img img {
+    margin: 20px auto 0px auto;
+    width: 80px;
+    display: block;
+    object-fit: cover;
+    opacity: 0.8;
+    transition: 0.5s;
+  }
+  
+  .benefithome .tournaments__list-item:hover  {
+    background-color: var(--green-bold);
+  }
+  .benefithome .tournament__text {
+    padding: 15px 25px;
+    color: var(--blue-black);
+  }
+  
+  .benefithome .tournament__text h3 {
+    font-family: "Mulish-Bold";
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 10px;
+    height: 26px;
+    line-height: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    transition: 0.5s;
+
+  }
+
+ .benefithome .tournament__text p::before{
+    display: block;
+    content: "";
+    background-color: var(--blue-black);
+    height: 5px;
+    width: 50px;
+    position: absolute;
+    left: 50%;
+    top: -2px;
+    transform: translateX(-42%);
+    z-index: 3;
+    line-height: 5;
+ }
+  .benefithome .tournament__text p {
+      padding-top: 10px;
+    position: relative;
+    text-align: center;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    height: 80px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 320px;
+  }
+  
+  .benefithome .torunament__another{
+      font-family: "Mulish-Bold";
+      font-size: 18px;
+      padding: 20px 90px;
+      width: max-content;
+      background-color: var(--blue-black);
+      color: var(--white-text);
+      transition: 0.5s;
+      margin: auto;
+  }
+  
+  .benefithome .torunament__another:hover{
+    background-color: var(--green-bold);
+    color: var(--blue-black);
+    border: 1px solid var(--blue-black);
+  }
+
+  .azzz{
+      margin-left: 165px !important;
+  }
