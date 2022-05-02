@@ -13,25 +13,25 @@
 
 
 
-.myTourImg {
+/* .myTourImg {
   background-color: var(--blue-black);
-}
+} */
 
 .img_mytour {
   width: 100%;
   height: 650px;
   position: relative;
   image-rendering: pixelated;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 /* FindTournaments */
 .findTournaments {
-  width: 660px;
+  width: 900px;
   height: 270px;
   text-align: left;
   position: absolute;
-  bottom: 20%;
+  bottom: 30%;
   left: 20%;
 }
 
@@ -323,7 +323,7 @@
   .findTournaments{
     left: 10%;
     top: 25%;
-    width: 350px;
+    width: 400px;
 
   }
   .titleFindTour{
@@ -346,6 +346,9 @@
   }
   .listTour{
     width: 39%;
+  }
+  .btnResetFind{
+    margin-right: 105px;
   }
 }
 
