@@ -289,6 +289,7 @@
   .findTournaments{
     left: 10%;
     top: 30%;
+    width: 430px;
   }
   .titleFindTour{
     font-size: 20px;
@@ -306,7 +307,6 @@
   }
   .selectOp{
     display: flex;
-    width: 50%;
     flex-wrap: wrap;
     margin-top: 25px;
     justify-content: space-between;
