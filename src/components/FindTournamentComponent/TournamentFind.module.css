@@ -1,0 +1,331 @@
+:root {
+  --blue-black: #16192b;
+  --green-bold: #d7fc6a;
+  --white-text: #ffffff;
+  --black-text: #16192b;
+}
+
+/* MyTournaments */
+.myTournaments {
+  width: 100vh;
+  height: 100vh;
+}
+
+
+
+.myTourImg {
+  background-color: var(--blue-black);
+}
+
+.img_mytour {
+  width: 100%;
+  height: 650px;
+  position: relative;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+
+/* FindTournaments */
+.findTournaments {
+  width: 660px;
+  height: 270px;
+  text-align: left;
+  position: absolute;
+  bottom: 20%;
+  left: 20%;
+}
+
+.findInfo {
+  width: 250px;
+  border: white;
+}
+.titleFindTour {
+  font-family: Mulish;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: white;
+}
+
+.desFindTour {
+  font-family: Mulish;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 30px;
+  letter-spacing: 0.03em;
+  text-align: left;
+  color: white;
+  margin: 24px 0px;
+}
+
+.inputNameTour {
+  width: 210px;
+  padding: 10px 20px;
+  border: 1px solid transparent;
+}
+
+.btnFindTour {
+  padding: 12px 20px;
+  background-color: var(--green-bold);
+  border: 1px solid var(--green-bold);
+  border: 1px solid transparent;
+  color: black;
+}
+
+.selectOp {
+  margin-top: 51px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.selectArea,
+.typeFootball,
+.sortTour,
+.btnResetFind {
+  border: 1px solid white;
+  background-color: transparent;
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.selectArea {
+  width: 100px;
+  height: 35px;
+}
+
+.typeFootball {
+  width: 210px;
+  height: 36px;
+}
+
+.sortTour {
+  width: 137px;
+  height: 37px;
+}
+
+.btnResetFind {
+  height: 37px;
+  padding: 0px 21px;
+}
+
+/* ListTournament */
+
+/* .listTournament {
+  height: 720px;
+} */
+
+.titleListTour {
+  text-align: center;
+  color: var(--blue-black);
+  padding: 40px;
+  font-weight: 600;
+  font-size: 36px;
+}
+
+.listTour {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Tounament */
+
+.tournament {
+  width: 250px;
+  height: 260px;
+  margin-bottom: 24px;
+  border: 1px solid var(--blue-black);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.tournamentImgAd{
+    overflow: hidden;
+}
+
+
+
+.tournamentImg {
+  width: 100%;
+  height: 150px;
+  transition: transform 1s, filter 1.5s ease-in-out;
+  transform-origin: center center;
+  filter: brightness(50%);
+}
+
+.tournament:hover .tournamentImg {
+    filter: brightness(100%);
+    transform: scale(1.3);
+}
+
+.tournamentName {
+  margin: 16px 0;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.type {
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.tournamentName,
+.type {
+  text-align: center;
+  color: black;
+  -webkit-line-clamp: 1; /* số dòng hiển thị */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+}
+
+.tournamentFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.tournamentLenght {
+  text-align: center;
+}
+
+.tournamentFooter {
+  margin: 20px;
+}
+
+.teamPart {
+  display: flex;
+  align-items: baseline;
+}
+
+.teamPartImg {
+  width: 15px;
+  height: 15px;
+  margin-right: 3px;
+}
+
+/* Heart */
+
+.heart__shape {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  background-color: var(--blue-black);
+}
+.heart__shape:before,
+.heart__shape:after {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  content: "";
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  background-color: var(--blue-black);
+}
+.heart__shape:before {
+  bottom: 0px;
+  left: -8px;
+}
+.heart__shape:after {
+  top: -8px;
+  right: 0px;
+}
+
+.heart__shape:hover,
+.heart__shape.active {
+  background-color: #dd2e44;
+}
+
+.heart__shape:hover::after,
+.heart__shape.active:after {
+  background-color: #dd2e44;
+}
+
+.heart__shape:hover::before,
+.heart__shape.active:before {
+  background-color: #dd2e44;
+}
+
+/* End Heart */
+
+
+/* PagingTournament */
+
+.pagingTournament{
+  width: 60%;
+  
+  margin: 0 auto;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* End PagingTournament */
+
+
+/* @media only screen and (max-width: 900px) {
+  
+} */
+
+
+@media only screen and (max-width: 600px) and (min-width: 400px)  {
+  .findTournaments{
+    left: 10%;
+    top: 30%;
+    width: 430px;
+  }
+  .titleFindTour{
+    font-size: 20px;
+  }
+  .desFindTour{
+    font-size: 14px;
+    margin: 8px 0px;
+  }
+  .inputNameTour{
+    width: 210px;
+    padding: 5px 10px;
+  }
+  .btnFindTour{
+    padding: 7px 10px;
+  }
+  .selectOp{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    justify-content: space-between;
+  }
+  .selectArea{
+    margin-bottom: 20px;
+  }
+}
+
+
+/* @media only screen and (max-width: 900px) {
+  .findTournaments{
+    left: 10%;
+    top: 30%;
+  }
+  .titleFindTour{
+    font-size: 28px;
+  }
+  .desFindTour{
+    font-size: 16px;
+  }
+} */
