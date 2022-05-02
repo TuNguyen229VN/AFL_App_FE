@@ -3,12 +3,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
 import HomePage from "./components/HomePageComponent/HomePage";
 import Footer from "./components/Footer/Footer";
+import MyTournamemts from "./components/FindTournamentComponent/MyTournament"
 function App() {
   return (
     <BrowserRouter>
       <Header />
         <Routes>
           <Route exact path="/" element={<HomePage />} />
+          <Route exact path="/findTournaments" element={<MyTournamemts />} />
         </Routes>
         <Footer/>
     </BrowserRouter>
