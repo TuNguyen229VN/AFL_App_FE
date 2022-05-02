@@ -175,7 +175,7 @@
     grid-template-columns: 400px 1fr;
   }
 }
-@media only screen and (max-width: 1118px) {
+@media only screen and (max-width: 1190px) {
   .products{
     padding: 50px 50px;
     --product-title: 40px;

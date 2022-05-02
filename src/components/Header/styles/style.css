@@ -236,7 +236,7 @@ header .container-fluid .menu li {
 @media only screen and (max-width: 1279px) {
 }
 
-@media only screen and (max-width: 1118px) {
+@media only screen and (max-width: 1190px) {
   .header .account .current {
     display: none;
   }
@@ -284,6 +284,9 @@ header .container-fluid .menu li {
   .logo {
     width: 100px;
     height: 50px;
+  }
+  .account{
+    margin-right: 80px;
   }
   
 }
