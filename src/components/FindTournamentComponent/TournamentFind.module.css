@@ -112,9 +112,9 @@
 
 /* ListTournament */
 
-.listTournament {
+/* .listTournament {
   height: 720px;
-}
+} */
 
 .titleListTour {
   text-align: center;
@@ -278,3 +278,54 @@
 
 
 /* End PagingTournament */
+
+
+/* @media only screen and (max-width: 900px) {
+  
+} */
+
+
+@media only screen and (max-width: 600px) and (min-width: 400px)  {
+  .findTournaments{
+    left: 10%;
+    top: 30%;
+  }
+  .titleFindTour{
+    font-size: 20px;
+  }
+  .desFindTour{
+    font-size: 14px;
+    margin: 8px 0px;
+  }
+  .inputNameTour{
+    width: 210px;
+    padding: 5px 10px;
+  }
+  .btnFindTour{
+    padding: 7px 10px;
+  }
+  .selectOp{
+    display: flex;
+    width: 50%;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    justify-content: space-between;
+  }
+  .selectArea{
+    margin-bottom: 20px;
+  }
+}
+
+
+/* @media only screen and (max-width: 900px) {
+  .findTournaments{
+    left: 10%;
+    top: 30%;
+  }
+  .titleFindTour{
+    font-size: 28px;
+  }
+  .desFindTour{
+    font-size: 16px;
+  }
+} */
