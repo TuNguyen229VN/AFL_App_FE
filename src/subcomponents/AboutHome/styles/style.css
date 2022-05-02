@@ -1,7 +1,7 @@
 .about {
   padding: 60px 150px;
   position: relative;
-  height: 370px;
+  height: 490px;
   --about-title: 50px;
 }
 
@@ -163,6 +163,9 @@
   }
 }
 @media only screen and (max-width: 768px) {
+  .about{
+    height: 450px;
+  }
   .about .about__text .about__text-desc::after {
     display: none;
   }
