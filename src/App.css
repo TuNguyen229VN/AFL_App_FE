@@ -81,6 +81,7 @@ body{
   width: 100%;
   max-width: 1920px;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 footer, header, hgroup, menu, nav, section {

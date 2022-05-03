@@ -3,7 +3,7 @@ import styles from "./TournamentFind.module.css";
 
 const FindTournaments = () => {
   return (
-    <div className={styles.findTournaments}>
+    <div className={styles.findTournaments} data-aos="fade-up"  data-aos-duration="2000">
       <div className={styles.findInfo}>
       <h1 className={styles.titleFindTour}>tìm giải đấu</h1>
       <p className={styles.desFindTour}>

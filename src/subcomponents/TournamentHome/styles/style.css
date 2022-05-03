@@ -38,6 +38,7 @@
 }
 .tournamenthome .tournaments__list-item {
   border: 1px solid var(--blue-black);
+  color: var(--blue-black);
 }
 
 .tournamenthome .tournament__img {

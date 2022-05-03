@@ -78,7 +78,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30px;
+  padding: 20px;
   background-color: var(--green-bold);
   color: var(--blue-black);
   font-family: "Mulish-Bold";

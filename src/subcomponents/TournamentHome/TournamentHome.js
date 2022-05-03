@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./styles/style.css";
 const TournamentHome = () => {
   return (
@@ -10,9 +11,9 @@ const TournamentHome = () => {
       >
         Giải đấu nổi bật
       </h2>
-      <a href="#" className="view__more" data-aos={"fade-up"}>
+      <Link to={"/findTournaments"} className="view__more" data-aos={"fade-up"}>
         Xem thêm
-      </a>
+      </Link>
       <div
         className="tournament__list"
         data-aos={"fade-up"}

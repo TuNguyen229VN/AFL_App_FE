@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "aos": "^2.3.4",
     "flickity": "^2.3.0",
+    "gsap": "^3.10.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-flickity": "^1.0.8",

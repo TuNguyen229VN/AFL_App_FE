@@ -1,52 +1,54 @@
 import React ,{useState} from "react";
+import { Link } from "react-router-dom";
 import "./styles/style.css";
 function Header() {
   const [clickMenu, setClickMenu] = useState(false);
+  const [activeMenu, setactiveMenu] = useState("home")
   return (
     <header className="header">
       <div className="container-fluid">
         <div className="logo">
-          <a href="#">
+          <Link to={"/"}>
             <img
               src="assets/img/homepage/logo.png"
               alt="logo"
               className="logo"
             />
-          </a>
+          </Link>
         </div>
         <ul className="menu">
           <li>
-            <a href="#" className="title active">
+            <Link to={"/"} className={activeMenu==="home"?"title active":"title"} onClick={()=>setactiveMenu("home")}>
               Trang chủ
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="title">
+            <Link to={"/findTournaments"} className={activeMenu==="tour"?"title active":"title"} onClick={()=>setactiveMenu("tour")}>
               Giải đấu
-            </a>
+            </Link>
             <div className="sub_menu">
               <a href="#">Tìm giải đấu</a>
               <a href="#">Tạo giải đấu</a>
             </div>
           </li>
           <li>
-            <a href="#" className="title">
+            <Link to={"/"}  className={activeMenu==="team"?"title active":"title"} onClick={()=>setactiveMenu("team")}>
               Đội bóng
-            </a>
+            </Link>
             <div className="sub_menu">
               <a href="#">Tìm đội bóng</a>
               <a href="#">Tạo đội bóng</a>
             </div>
           </li>
           <li>
-            <a href="#" className="title">
+            <Link to={"/"} className={activeMenu==="intro"?"title active":"title"} onClick={()=>setactiveMenu("intro")}>
               Giới thiệu
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="title">
+            <Link to={"/"} href="#" className={activeMenu==="news"?"title active":"title"} onClick={()=>setactiveMenu("news")}>
               Tin tức
-            </a>
+            </Link>
           </li>
         </ul>
         <div className="account">
