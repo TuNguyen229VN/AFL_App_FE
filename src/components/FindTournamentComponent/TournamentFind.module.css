@@ -284,11 +284,11 @@
   
 } */
 
-@media only screen and (min-width: 380px)  {
+@media only screen and  (max-width: 399px) and (min-width: 380px)  {
   .findTournaments{
     left: 5%;
     top: 30%;
-    width: 345px;
+    width: 365px;
   }
   .selectOp{
     display: flex;
@@ -305,6 +305,9 @@
   }
   .selectArea{
     margin-bottom: 20px;
+  }
+  .btnResetFind{
+    margin-right: 105px;
   }
 }
 
@@ -339,6 +342,9 @@
   }
   .listTour{
     width: 51%;
+  }
+  .btnResetFind{
+    margin-right: 105px;
   }
 }
 
