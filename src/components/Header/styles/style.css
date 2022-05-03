@@ -121,7 +121,6 @@ header .container-fluid .menu li {
   height: 100%;
   font-family: "Mulish-Bold";
   font-size: 18px;
-  margin-right: 100px;
 }
 .account .current {
   cursor: pointer;
@@ -284,11 +283,7 @@ header .container-fluid .menu li {
   .logo {
     width: 100px;
     height: 50px;
-  }
-  .account{
-    margin-right: 80px;
-  }
-  
+  } 
 }
 @media only screen and (max-width: 480px) {
   header {

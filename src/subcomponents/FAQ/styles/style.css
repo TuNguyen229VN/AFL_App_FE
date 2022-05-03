@@ -99,7 +99,7 @@
 @media only screen and (max-width: 768px) {
   .faq{
       padding: 30px 30px;
-      padding-top: 0px;
+      padding-top:  0px;
   }
   .faq .panel {
     margin-bottom: 10px;

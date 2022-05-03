@@ -161,6 +161,9 @@
     font-size: 18px;
     height: 99px;
   }
+  .about-control {
+    display: none;
+  }
 }
 @media only screen and (max-width: 768px) {
   .about{
