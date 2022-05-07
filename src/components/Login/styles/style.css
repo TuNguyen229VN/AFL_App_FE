@@ -1,0 +1,193 @@
+.login .container__wrap {
+  display: grid;
+  grid-template-columns: 680px 1fr;
+}
+
+.login__sub {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.login .imgBack {
+  height: 100vh;
+  filter: brightness(60%);
+}
+.login .logo {
+  position: absolute;
+  top: 45px;
+  left: 45px;
+  z-index: 2;
+}
+
+.login__sub-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--white-text);
+  left: 45px;
+}
+
+.login__sub-text h3 {
+  font-size: 24px;
+}
+
+.login__sub-text h2 {
+  font-family: "Mulish-Bold";
+  font-size: 40px;
+  margin-top: 10px;
+  width: 400px;
+}
+
+.login__main{
+    padding: 45px;
+}
+
+.login__signup{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.login__signup p{
+    margin-right: 5px;
+    color: rgb(132, 130, 130);
+}
+
+.login__signup a{
+    color: var(--blue-black);
+}
+
+.login__signup a:hover{
+    text-decoration: underline;
+}
+
+.login__form{
+    margin-top: 150px;
+}
+
+.login__form h4{
+    font-family: "Mulish-Bold";
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.login__form input{
+    display: block;
+    padding: 8px 10px;
+    padding-left: 45px;
+    margin-bottom: 20px;
+    border: 1px solid var(--blue-black);
+    height: 56px;
+    width: 500px;
+    font-size: 18px;
+}
+
+.login__form input:focus{
+    border: 1px solid var(--blue-black);
+}
+
+.btn_login{
+    font-family: "Mulish-Bold";
+    background-color: var(--blue-black);
+    outline: none;
+    border: none;
+    color: var(--white-text);
+    text-align: center;
+    width: max-content;
+    font-size: 18px;
+    padding: 20px 35px;
+    transition: 0.5s;
+}
+
+.btn_login:hover{
+    background-color: var(--green-bold);
+    color: var(--blue-black);
+}
+
+.login__form div{
+    position: relative;
+}
+
+.login__form div img{
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+}
+
+.login__form .eyesPass{
+    width: 25px;
+   left: 460px;
+   cursor: pointer;
+}
+
+.social-share {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+  }
+  .social-share-icon {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .social-share-icon img{
+    width: 20px;
+    height: 20px;
+  }
+  .social-share-text {
+    color: white;
+    margin-left: 20px;
+    font-size: 16px;
+  }
+
+  .social-share-item {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .social-share-item.facebook {
+    background-color: #3b5999;
+  }
+  .social-share-item.facebook .social-share-icon {
+    color: #3b5999;
+  }
+  .social-share-item.twitter {
+    background-color: #4d82e5;
+  }
+  .social-share-item.twitter .social-share-icon {
+    color: #4d82e5;
+  }
+  .social-share-item + .social-share-item {
+    margin-top: 20px;
+  }
+
+  .login .other_login{
+      margin-top: 30px;
+      margin-bottom: 30px;
+      height: 4px;
+      width: 200px;
+      background-color: var(--blue-black);
+      margin-left: 160px;
+      position: relative;
+  }
+
+  .remember__pass{
+      margin-top: 10px;
+      margin-left: 380px;
+  }
+
+  .remember__pass a{
+    color: rgb(132, 130, 130);
+  }
+
+  .remember__pass a:hover{
+    text-decoration: underline; 
+  }

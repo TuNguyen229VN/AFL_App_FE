@@ -10,7 +10,7 @@ const PagingTournament = () => {
             Trang trước
           </a>
         </li>
-        <li className={styles.pageItem}>
+        <li className={`${styles.pageItem} ${styles.active}`}>
         <a className={styles.pagelink} href="#">
             1
           </a>
@@ -25,7 +25,7 @@ const PagingTournament = () => {
             3
           </a>
         </li>
-        <li className={styles.pageItem}>
+        <li className={`${styles.pageItem}`}>
         <a className={styles.pagelink} href="#">
             ...
           </a>

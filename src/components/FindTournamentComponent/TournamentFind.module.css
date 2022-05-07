@@ -344,7 +344,7 @@ transition: 0.5s;
 cursor: pointer;
 }
 
-.pageItem:hover{
+.pageItem.active,.pageItem:hover{
   background-color: var(--green-bold);
   color: var(--black-text);
   border: 1px solid transparent;
