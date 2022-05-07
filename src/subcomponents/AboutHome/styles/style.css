@@ -71,7 +71,7 @@
 }
 .about__list {
   border-radius: 0% 0% 0% 0% / 0% 0% 0% 0%;
-  box-shadow: 20px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 10px 10px rgba(0, 0, 0, 0.15);
   transition: all 0.4s ease;
   outline: none;
 }
@@ -100,7 +100,7 @@
 
 .about .about__text .common {
   margin-top: 30px;
-  width: 60px;
+  width: 50px;
 }
 
 .about .about__text .about__text-desc {
@@ -145,7 +145,6 @@
     top: 150px;
     right: 120px;
   }
-  
   .about .flickity-page-dots .dot {
     width: 40px;
     height: 8px;
@@ -200,8 +199,16 @@
   }
 }
 @media only screen and (max-width: 480px) {
+  .about .about__list-item{
+    display: block;
+  }
+
+  .about .about__text{
+    width: 100%;
+  }
   .about{
     --about-title: 18px;
+    height: auto;
   }
   .about .flickity-page-dots {
     display: none;

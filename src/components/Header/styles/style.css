@@ -21,10 +21,12 @@ header {
 }
 
 .logo {
-  width: 120px;
+  width: 100px;
   height: 60px;
 }
-
+.logo img{
+  object-fit: cover;
+}
 .header .menu {
   height: 100%;
   display: flex;

@@ -4,30 +4,35 @@ import styles from "./TournamentFind.module.css";
 const PagingTournament = () => {
   return (
     <nav aria-label="Page navigation example" className={styles.pagingTournament}>
-      <ul class="pagination">
-        <li class="page-item">
-          <a class="page-link" href="#">
-            Previous
+      <ul className="pagination">
+        <li className={styles.pageItem}>
+          <a className={styles.pagelink} href="#">
+            Trang trước
           </a>
         </li>
-        <li class="page-item active">
-          <a class="page-link" href="#">
+        <li className={styles.pageItem}>
+        <a className={styles.pagelink} href="#">
             1
           </a>
         </li>
-        <li class="page-item">
-          <a class="page-link" href="#">
+        <li className={styles.pageItem}>
+        <a className={styles.pagelink} href="#">
             2
           </a>
         </li>
-        <li class="page-item">
-          <a class="page-link" href="#">
+        <li className={styles.pageItem}>
+        <a className={styles.pagelink} href="#">
             3
           </a>
         </li>
-        <li class="page-item">
-          <a class="page-link" href="#">
-            Next
+        <li className={styles.pageItem}>
+        <a className={styles.pagelink} href="#">
+            ...
+          </a>
+        </li>
+        <li className={styles.pageItem}>
+        <a className={styles.pagelink} href="#">
+            Trang tiếp
           </a>
         </li>
       </ul>

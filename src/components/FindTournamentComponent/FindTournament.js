@@ -11,10 +11,10 @@ const FindTournaments = () => {
       </p>
       </div>
       <form className={styles.formFindTour}>
-        <div>
+      <div  className={styles.findWrap}>
           <input className={styles.inputNameTour} placeholder="Tên giải đấu" />
           <input className={styles.btnFindTour} type="button" value="Tìm kiếm" />
-        </div>
+      </div>
         <div className={styles.selectOp}>
           <select className={styles.selectArea}>
               <option>Khu vực</option>

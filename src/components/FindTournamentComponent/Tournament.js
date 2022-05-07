@@ -10,8 +10,6 @@ const Tournament = (props) => {
           className={styles.tournamentImg}
           src={img}
           alt="myItem"
-          width={180}
-          height={150}
         />
       </div>
 
@@ -23,22 +21,6 @@ const Tournament = (props) => {
           <div className={styles.teamPart}>
             <img className={styles.teamPartImg} src="./assets/icons/join.png" />
             <p>24</p>
-          </div>
-          <div>
-            <p className={styles.tournamentLenght}>44/52</p>
-            <div style={{
-                marginTop: 10,
-                width: 100
-            }} class="progress">
-              <div
-                class="progress-bar w-25"
-                role="progressbar"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-          
           </div>
           <div className="heart__shape"></div>
         </div>

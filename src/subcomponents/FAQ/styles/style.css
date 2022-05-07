@@ -26,6 +26,7 @@
   font-size: var(--faq-text);
   font-family: "Mulish-Regular";
   transition: 0.5s;
+  font-size: 18px;
 }
 
 .faq .accordion::before {
