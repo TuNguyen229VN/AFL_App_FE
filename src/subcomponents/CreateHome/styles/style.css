@@ -130,12 +130,12 @@
 }
 
 .btnmore:hover{
-    color: #019875;
+    color:var(--green-bold) ;
 
 }
 
 .btnmore:hover::before{
-    background-color: #019875;
+    background-color: var(--green-bold);
 }
 .btnmore:hover img{
     transform: translateX(10px) rotate(180deg);

@@ -100,6 +100,7 @@
   width: 100%;
   padding: 10px 5px;
   border: 2px solid #ccc;
+  height: 50px;
 }
 
 .create__team .text-field input:focus,
@@ -107,6 +108,7 @@
   width: 100%;
   padding: 5px;
   border: 2px solid var(--blue-black);
+  height: 50px;
 }
 
 .clothes__team {
