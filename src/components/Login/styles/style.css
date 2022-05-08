@@ -1,6 +1,10 @@
+
 .login .container__wrap {
   display: grid;
-  grid-template-columns: 680px 1fr;
+  grid-template-columns: 660px 1fr;
+  overflow: hidden;
+  column-gap: 150px;
+  height: 100vh;
 }
 
 .login__sub {
@@ -9,7 +13,6 @@
   left: 0;
 }
 .login .imgBack {
-  height: 100vh;
   filter: brightness(60%);
 }
 .login .logo {
@@ -21,7 +24,7 @@
 
 .login__sub-text {
   position: absolute;
-  top: 50%;
+  top: 44%;
   transform: translateY(-50%);
   color: var(--white-text);
   left: 45px;
@@ -61,7 +64,7 @@
 }
 
 .login__form{
-    margin-top: 150px;
+    margin-top: 120px;
 }
 
 .login__form h4{
@@ -75,8 +78,8 @@
     padding: 8px 10px;
     padding-left: 45px;
     margin-bottom: 20px;
-    border: 1px solid var(--blue-black);
-    height: 56px;
+    border: 1px solid #ccc;
+    height: 60px;
     width: 500px;
     font-size: 18px;
 }
@@ -96,6 +99,7 @@
     font-size: 18px;
     padding: 20px 35px;
     transition: 0.5s;
+    margin-top: 20px;
 }
 
 .btn_login:hover{

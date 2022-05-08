@@ -15,9 +15,9 @@ function Login() {
             alt="cornor"
             className="imgBack"
           />
-          <div className="logo">
+          <Link to="/" className="logo">
             <img src="assets/img/homepage/logo.png" alt="logo" />
-          </div>
+          </Link>
           <div className="login__sub-text">
             <h3>Chúng tôi rất vui khi thấy bạn trở lại!</h3>
             <h2>Amateurs Football League</h2>
@@ -25,7 +25,7 @@ function Login() {
         </div>
         <div className="login__main">
           <div className="login__signup">
-            <p>Không phải là thành viên?</p>
+            <p>Bạn chưa có tài khoản ?</p>
             <Link to="/signup">Đăng ký</Link>
           </div>
           <form action="" method="POST" className="login__form">
@@ -36,7 +36,7 @@ function Login() {
                 type="text"
                 required
                 autoComplete="none"
-                className="name"
+                className="email"
               />
             </div>
             <div>
@@ -53,28 +53,32 @@ function Login() {
                 onClick={togglePass}
               />
             </div>
+            <div className="remember__pass">
+              <a href="#">Quên mật khẩu?</a>
+            </div>
             <button type="submit" className="btn_login">
               Đăng nhập
             </button>
           </form>
-          <div className="remember__pass">
-            <a href="#">Quên mật khẩu?</a>
-          </div>
           <div className="other_login"></div>
           <div className="social-share">
-          <div className="social-share-item facebook">
-            <i className="fab fa-facebook social-share-icon">
-              <img src="/assets/img/login/facebook.png" alt="fb"/>
-            </i>
-            <span className="social-share-text">Đăng nhập bằng tài khoản Facebook</span>
+            <div className="social-share-item facebook">
+              <i className="fab fa-facebook social-share-icon">
+                <img src="/assets/img/login/facebook.png" alt="fb" />
+              </i>
+              <span className="social-share-text">
+                Đăng nhập bằng tài khoản Facebook
+              </span>
+            </div>
+            <div className="social-share-item twitter">
+              <i className="fab fa-twitter social-share-icon">
+                <img src="/assets/img/login/google.png" alt="fb" />
+              </i>
+              <span className="social-share-text">
+                Đăng nhập bằng tài khoản Google
+              </span>
+            </div>
           </div>
-          <div className="social-share-item twitter">
-            <i className="fab fa-twitter social-share-icon">
-            <img src="/assets/img/login/google.png" alt="fb"/>
-            </i>
-            <span className="social-share-text">Đăng nhập bằng tài khoản Google</span>
-          </div>
-        </div>
         </div>
       </div>
     </div>
