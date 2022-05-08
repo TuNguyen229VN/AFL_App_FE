@@ -1,0 +1,210 @@
+:root {
+  --blue-black: #16192b;
+  --green-bold: #d7fc6a;
+  --white-text: #ffffff;
+  --black-text: #16192b;
+}
+
+a {
+  font-family: "Mulish-Regular";
+  color: var(--blue-black);
+  text-decoration: none;
+}
+
+.createTournament {
+  width: 100%;
+  height: 100%;
+}
+
+.createTournament_info {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.createTournament_title {
+  margin-top: 130px;
+  text-transform: uppercase;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: "Mulish-Bold";
+}
+
+/* createTournament_row1 */
+
+.createTournament_row1 {
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  margin-bottom: 30px;
+  justify-content: space-between;
+}
+
+.createTournament_img,
+.createTournament_row1_col2,
+.createTournament_row1_col3 {
+  width: 30%;
+}
+
+.createTournament_img:hover {
+  cursor: pointer;
+}
+
+.createTournament_img_title {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.createTournament_img_detail {
+  width: 300px;
+  height: 300px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.createTournament_row1_col2,
+.createTournament_row1_col3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.createTournament_row1_col2 {
+  margin-right: 67px;
+}
+
+.createTournament_img_detail button {
+  width: 80%;
+  height: 50px;
+  border: 1px solid black;
+  background-color: black;
+  color: white;
+  margin: 0 auto;
+}
+
+.createTournament_row1_col2 label,
+.createTournament_row1_col3 label {
+  display: block;
+}
+.createTournament_row1_col2 input,
+.createTournament_row1_col3 input {
+  width: 100%;
+  padding: 10px 5px;
+}
+
+input:focus {
+  border: 2px solid var(--green-bold);
+}
+
+.select_lengthTeam,
+.select_typeFootballField {
+  width: 100%;
+  padding: 10px 5px;
+  margin-bottom: 20px;
+}
+
+/* createTournament_row2 */
+
+.createTournament_row2 {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.createTournament_row2 input{
+    margin: 20px 0;
+    margin-left: 140px;
+}
+
+.createTournament_row2 label{
+    width: 100%;
+}
+
+.img_type_footballField {
+  display: flex;
+  justify-content: space-between;
+}
+
+.type_knockout,
+.type_circle,
+.type_table {
+  width: 100%;
+  border: 1px solid black;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* createTournament_row3 */
+
+.createTournament_row3{
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.note_lengthMatch{
+    width: 100%;
+    padding: 10px;
+    color: #207607;
+    background-color: #70F994;
+}
+
+.lengthMatch_title{
+    font-weight: 600;
+}
+
+/* createTournament_row4 */
+
+.createTournament_row4{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.createTournament_row4_col1 label{
+    display: block;
+}
+
+.createTournament_row4_col1{
+    width: 40%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.createTournament_row4_col2{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.mininum_member_input, .timeCloseRegister_input, .fieldSoccer_input{
+    width: 100%;
+    padding: 10px 5px;
+}
+
+.description_text{
+    width: 100%;
+    height: 270px;
+    padding: 10px;
+}
+
+/* Button next */
+.btn_nextPage{
+    width: 100%;
+    height: 50px;
+    margin-bottom: 30px;
+}
+.btn_Next{
+    padding: 15px 30px;
+    display: flex;
+    float: right;
+    background-color: #70F994;
+    color: #207607;
+    border: 1px solid var(--green-bold);
+    font-weight: 600;
+}

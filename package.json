@@ -10,6 +10,7 @@
     "aos": "^2.3.4",
     "flickity": "^2.3.0",
     "gsap": "^3.10.4",
+    "node-sass": "^7.0.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-flickity": "^1.0.8",

@@ -7,6 +7,7 @@ import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import MyTournamemts from "./components/FindTournamentComponent/MyTournament";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+import CreateTournament from "./components/CreateTournament/CreateTournament";
 function App() {
   const exclusionArray = ["/login", "/signup"];
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/findTournaments" element={<MyTournamemts/>} />
+          <Route exact path="/createTournament" element={<CreateTournament/>} />
         </Routes>
         {exclusionArray.indexOf(window.location.pathname) < 0 && <Footer />}
       </BrowserRouter>
