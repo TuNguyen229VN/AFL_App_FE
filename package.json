@@ -12,6 +12,7 @@
     "draftjs-to-html": "^0.9.1",
     "flickity": "^2.3.0",
     "gsap": "^3.10.4",
+    "node-sass": "^7.0.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-draft-wysiwyg": "^1.14.7",
