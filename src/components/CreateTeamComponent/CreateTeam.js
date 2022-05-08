@@ -22,7 +22,7 @@ function CreateTeam() {
           />
           <label for="file" class="input-label">
             Tải ảnh lên
-            <i class="fas fa-cloud-upload-alt icon-upload">
+            <i className=" icon-upload">
               <img
                 src="assets/img/createteam/download.svg"
                 alt="dw"
@@ -101,7 +101,7 @@ function CreateTeam() {
           />
           <label for="file" class="input-label">
             Tải ảnh lên
-            <i class="fas fa-cloud-upload-alt icon-upload">
+            <i className=" icon-upload">
               <img
                 src="assets/img/createteam/download.svg"
                 alt="dw"
@@ -119,7 +119,7 @@ function CreateTeam() {
           />
           <label for="file" class="input-label">
             Tải ảnh lên
-            <i class="fas fa-cloud-upload-alt icon-upload">
+            <i className=" icon-upload">
               <img
                 src="assets/img/createteam/download.svg"
                 alt="dw"
@@ -137,7 +137,7 @@ function CreateTeam() {
           />
           <label for="file" class="input-label">
             Tải ảnh lên
-            <i class="fas fa-cloud-upload-alt icon-upload">
+            <i className=" icon-upload">
               <img
                 src="assets/img/createteam/download.svg"
                 alt="dw"
