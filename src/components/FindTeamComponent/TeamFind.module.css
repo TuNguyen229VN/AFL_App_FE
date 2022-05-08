@@ -24,7 +24,7 @@ input:focus{
   position: relative;
   overflow: hidden;
   height: 0;
-  padding-bottom: 50%;
+  padding-bottom: 55%;
 }
 
 .img_mytour {
@@ -167,7 +167,7 @@ transition: 0.5s;
 
 /* Tounament */
 
-.tournament {
+.team {
   /* width: 250px;
   height: 260px; */
   /* margin-bottom: 24px; */
@@ -178,17 +178,20 @@ transition: 0.5s;
   cursor: pointer;
 }
 
+.team .tournamentImgAd{
+  border-bottom: 1px solid var(--blue-black);
+}
 .tournamentImgAd {
   overflow: hidden;
   position: relative;
   height: 0;
-  padding-bottom: 65%;
+  padding-bottom: 50%;
 }
 
-.tournamentImg {
+.teamImg {
   position: absolute;
-  min-width: 100%;
-  min-height: 100%;
+  min-width: 40%;
+  min-height: 50%;
   object-fit: cover;
   transform: translate(-50%, -50%) scale(1);
   top: 50%;
@@ -196,31 +199,42 @@ transition: 0.5s;
   /* height: 150px; */
   transition: transform 0.5s, filter 0.5s ease-in-out;
   transform-origin: center center;
-  filter: brightness(50%);
 }
 
-.tournament:hover .tournamentImg {
-  filter: brightness(100%);
+.team:hover .teamImg {
   transform: translate(-50%, -50%) scale(1.1);
 }
 
-.tournamentInfor{
-  padding: 15px 25px;
+.team:hover .line{
+  width: 80px;
+}
+.team:hover .tournamentName{
+  color: var(--green-bold);
+}
+.team .tournamentInfor{
+  padding: 20px 25px;
+  background-color: var(--blue-black);
+  color: var(--white-text);
 }
 
-.tournamentName {
+.team .tournamentName {
   margin-bottom: 8px;
   font-family: "Mulish-Bold";
   font-size: 24px;
+  color: var(--white-text);
+  transition: 0.5s;
 }
 
-.type {
+.team .type {
   font-size: 16px;
   margin-bottom: 5px;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.tournamentName,
-.type {
+.team .tournamentName,
+.team .type {
   text-align: center;
   color: black;
   -webkit-line-clamp: 1; /* số dòng hiển thị */
@@ -229,6 +243,7 @@ transition: 0.5s;
   height: 26px;
   text-overflow: ellipsis;
   display: -webkit-box;
+  color: var(--white-text);
 }
 
 .type{
@@ -242,8 +257,14 @@ transition: 0.5s;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 320px;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+.team .line{
+  width: 0px;
+  height: 3px;
+  background-color: var(--green-bold);
+  margin: 10px auto;
+  transition: 0.5s;
 }
 .tournamentFooter {
   display: flex;
@@ -267,7 +288,7 @@ transition: 0.5s;
 
 /* Heart */
 
-.heart__shape {
+.team .heart__shape {
   position: relative;
   width: 16px;
   height: 16px;
@@ -276,10 +297,13 @@ transition: 0.5s;
   -ms-transform: rotate(45deg);
   -o-transform: rotate(45deg);
   transform: rotate(45deg);
-  background-color: var(--blue-black);
+  background-color: var(--white-text);
 }
-.heart__shape:before,
-.heart__shape:after {
+.team .teamPartImg{
+  filter: invert(1);
+}
+.team .heart__shape:before,
+.team .heart__shape:after {
   position: absolute;
   width: 16px;
   height: 16px;
@@ -288,7 +312,7 @@ transition: 0.5s;
   -moz-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
-  background-color: var(--blue-black);
+  background-color: var(--white-text);
 }
 .heart__shape:before {
   bottom: 0px;

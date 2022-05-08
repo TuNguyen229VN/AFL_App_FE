@@ -32,7 +32,7 @@ function Header() {
             </div>
           </li>
           <li>
-            <Link to={"/"}  className={activeMenu==="team"?"title active":"title"} onClick={()=>setactiveMenu("team")}>
+            <Link to={"/findTeam"}  className={activeMenu==="team"?"title active":"title"} onClick={()=>setactiveMenu("team")}>
               Đội bóng
             </Link>
             <div className="sub_menu">
