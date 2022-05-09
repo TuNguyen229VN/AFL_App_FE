@@ -63,21 +63,24 @@ const CreateTournament = () => {
           <div className="createTournament_row1">
             <div className="createTournament_img">
               <h1 className="createTournament_img_title">Hình giải đấu</h1>
-              <div className="createTournament_img_detail">
-                {/* <i
-                  style={{
-                    fontSize: 110,
-                    marginLeft: 90,
-                  }}
-                  class="fa-solid fa-camera"
-                ></i> */}
-                <img style={{
-                  width: 120,
-                  margin: "auto"
-                }} src="assets/img/createteam/camera.png" />
-                <button>
-                  Tải ảnh lên <i class="fa-solid fa-upload"></i>
-                </button>
+              <div>
+                <input type="file" name="file" id="file_imgCreateTournament" />
+                <label htmlFor="file_imgCreateTournament" className="createTournament_img_detail">
+                  <img
+                    style={{
+                      width: 120,
+                      margin: "auto",
+                    }}
+                    src="assets/img/createteam/camera.png"
+                  />
+                  
+                  <p className="btnUploadImg_createTournament">
+                    Tải ảnh lên <i style={{
+                      marginLeft: 10
+                    }} class="fa-solid fa-upload"></i>
+                  </p>
+                </label>
+
                 {/* <input type="file" /> */}
               </div>
             </div>
@@ -103,34 +106,8 @@ const CreateTournament = () => {
                   <option>5</option>
                 </select>
               </div>
-              {status === 0 ? (
-                <div className="timeStart">
-                  <label
-                    className="createTournament_img_title"
-                    htmlFor="startTime"
-                  >
-                    Ngày bắt đầu
-                  </label>
-                  <input
-                    className="timeStart_input"
-                    id="startTime"
-                    type="datetime-local"
-                  />
-                </div>
-              ) : (
-                <div></div>
-              )}
-            </div>
-            <div className="createTournament_row1_col3">
-              <div className="contactPhone">
-                <label
-                  htmlFor="phoneContact"
-                  className="createTournament_img_title"
-                >
-                  Số điện thoại liên lạc
-                </label>
-                <input id="phoneContact" placeholder="Số điện thoại liên lạc" />
-              </div>
+
+              
               <div className="typeFootballField">
                 <label className="createTournament_img_title">
                   Loại sân thi đấu
@@ -141,23 +118,52 @@ const CreateTournament = () => {
                   <option>11 vs 11</option>
                 </select>
               </div>
-              {status === 0 ? (
-                <div className="timeEnd">
+            </div>
+            <div className="createTournament_row1_col3">
+            {status === 0 ? (
+                <div className="timeCloseRegister">
+                
                   <label
-                    htmlFor="endTime"
+                    htmlFor="timeCloseRegister"
                     className="createTournament_img_title"
                   >
-                    Ngày kết thúc
+                    Ngày đóng đăng ký tham gia
                   </label>
                   <input
-                    className="timeEnd_input"
-                    id="endTime"
+                    className="timeCloseRegister_input"
+                    id="timeCloseRegister"
                     type="datetime-local"
                   />
                 </div>
               ) : (
-                <div></div>
+                <div style={{
+                  height: 70
+                }}></div>
               )}
+              <div className="timeStart">
+                <label
+                  className="createTournament_img_title"
+                  htmlFor="startTime"
+                >
+                  Ngày bắt đầu
+                </label>
+                <input
+                  className="timeStart_input"
+                  id="startTime"
+                  type="datetime-local"
+                />
+              </div>
+
+              <div className="timeEnd">
+                <label htmlFor="endTime" className="createTournament_img_title">
+                  Ngày kết thúc
+                </label>
+                <input
+                  className="timeEnd_input"
+                  id="endTime"
+                  type="datetime-local"
+                />
+              </div>
             </div>
           </div>
           <div className="createTournament_row2">
@@ -252,19 +258,17 @@ const CreateTournament = () => {
                   value="5"
                 />
               </div>
-              <div className="timeCloseRegister">
+              <div className="contactPhone">
                 <label
-                  htmlFor="timeCloseRegister"
+                  htmlFor="phoneContact"
                   className="createTournament_img_title"
                 >
-                  Ngày đóng đăng ký tham gia
+                  Số điện thoại liên lạc
                 </label>
-                <input
-                  className="timeCloseRegister_input"
-                  id="timeCloseRegister"
-                  type="datetime-local"
-                />
+                <input id="phoneContact" placeholder="Số điện thoại" />
               </div>
+              
+
               <div className="description_tournament">
                 <label
                   htmlFor="description"
@@ -277,33 +281,40 @@ const CreateTournament = () => {
                   
                 /> */}
                 <div className="descTeam ">
-                <Editor
-                className="description_text"
-                  editorState={editorState}
-                  editorClassName="editor-class"
-                  onEditorStateChange={setEditorState}
-                  placeholder="Mô tả về giải đấu"
-                  mention={{
-                    separator: " ",
-                    trigger: "@",
-                    suggestions: [
-                      { text: "APPLE", value: "apple", url: "apple" },
-                      { text: "BANANA", value: "banana", url: "banana" },
-                      { text: "CHERRY", value: "cherry", url: "cherry" },
-                      { text: "DURIAN", value: "durian", url: "durian" },
-                      { text: "EGGFRUIT", value: "eggfruit", url: "eggfruit" },
-                      { text: "FIG", value: "fig", url: "fig" },
-                      {
-                        text: "GRAPEFRUIT",
-                        value: "grapefruit",
-                        url: "grapefruit",
-                      },
-                      { text: "HONEYDEW", value: "honeydew", url: "honeydew" },
-                    ],
-                  }}
-                />
+                  <Editor
+                    className="description_text"
+                    editorState={editorState}
+                    editorClassName="editor-class"
+                    onEditorStateChange={setEditorState}
+                    placeholder="Mô tả về giải đấu"
+                    mention={{
+                      separator: " ",
+                      trigger: "@",
+                      suggestions: [
+                        { text: "APPLE", value: "apple", url: "apple" },
+                        { text: "BANANA", value: "banana", url: "banana" },
+                        { text: "CHERRY", value: "cherry", url: "cherry" },
+                        { text: "DURIAN", value: "durian", url: "durian" },
+                        {
+                          text: "EGGFRUIT",
+                          value: "eggfruit",
+                          url: "eggfruit",
+                        },
+                        { text: "FIG", value: "fig", url: "fig" },
+                        {
+                          text: "GRAPEFRUIT",
+                          value: "grapefruit",
+                          url: "grapefruit",
+                        },
+                        {
+                          text: "HONEYDEW",
+                          value: "honeydew",
+                          url: "honeydew",
+                        },
+                      ],
+                    }}
+                  />
                 </div>
-                
               </div>
             </div>
             <div className="createTournament_row4_col2">

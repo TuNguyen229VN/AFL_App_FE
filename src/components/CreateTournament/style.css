@@ -61,6 +61,7 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
 }
 
 .createTournament_row1_col2,
@@ -89,7 +90,7 @@ a {
   display: block;
 }
 .createTournament_row1_col2 input,
-.createTournament_row1_col3 input {
+.createTournament_row1_col3 input, #phoneContact {
   width: 100%;
   padding: 10px 5px;
 }
@@ -255,7 +256,6 @@ input:focus {
 /* Editor */
 
 .descTeam {
-  margin-top: 30px;
   border: 1px solid var(--blue-black);
   height: 500px;
   overflow: hidden;
@@ -285,4 +285,19 @@ input:focus {
 
 .public-DraftEditorPlaceholder-inner, .DraftEditor-editorContainer{
   padding: 0px 10px;
+}
+
+#file_imgCreateTournament{
+  display: none;
+}
+
+.btnUploadImg_createTournament{
+  width: 60%;
+    border: 1px solid black;
+    margin-bottom: 30px;
+    margin: auto;
+    padding: 20px;
+    padding-left: 30px;
+    background-color: black;
+    color: white;
 }
