@@ -7,7 +7,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-import Map from "../MapComponent/Map";
+// import Map from "../MapComponent/Map";
 const CreateTournament = () => {
   const [status, setStatus] = useState(-1);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -333,7 +333,7 @@ const CreateTournament = () => {
               </div>
               
               
-                <Map />
+                {/* <Map /> */}
                 
               
             </div>
