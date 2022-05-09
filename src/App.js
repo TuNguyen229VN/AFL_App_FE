@@ -27,6 +27,7 @@ function App() {
   const exclusionArray = ["/login", "/signup"];
   return (
     <div>
+
       <BrowserRouter>
         {/* {HideHeader} */}
         {exclusionArray.indexOf(window.location.pathname) < 0 && <Header />}
