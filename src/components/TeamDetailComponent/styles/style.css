@@ -1,0 +1,366 @@
+.teamdetail {
+  padding: 150px 150px;
+}
+
+.HeaderTeamDetail .info__manager {
+  display: flex;
+  column-gap: 120px;
+}
+
+.avt__Team {
+  border: 2px solid var(--blue-black);
+  padding: 10px 15px;
+  height: 280px;
+  position: relative;
+  width: 450px;
+  border-radius: 5px;
+}
+
+.avt__Team img {
+  object-fit: cover;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 200px;
+  transform: translate(-50%, -50%);
+}
+
+.headertext__team h2 {
+  font-family: "Mulish-Bold";
+  color: var(--blue-black);
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.HeaderTeamDetail .name__manager,
+.phone__manager,
+.email__manager,
+.member__manager,
+.gender__manager {
+  margin-bottom: 25px;
+  font-size: 18px;
+  color: var(--blue-black);
+}
+.HeaderTeamDetail .name__manager img,
+.phone__manager img,
+.email__manager img,
+.member__manager img,
+.gender__manager img {
+  width: 25px;
+}
+
+.HeaderTeamDetail .name__manager i,
+.gender__manager i {
+  font-size: 25px;
+}
+.HeaderTeamDetail .man span {
+  margin-left: 10px;
+  color: var(--blue-black);
+}
+
+.HeaderTeamDetail .man .title {
+  width: 130px;
+  display: inline-block;
+}
+
+.HeaderTeamDetail .headerteamdetail__tag {
+  display: flex;
+  column-gap: 80px;
+  margin-top: 30px;
+  text-transform: uppercase;
+  background-color: var(--blue-black);
+  padding: 30px;
+
+}
+.HeaderTeamDetail .headerteamdetail__tag a {
+  font-size: 18px;
+  font-family: "Mulish-Bold";
+  color: var(--white-text);
+  transition: 0.5s;
+}
+.HeaderTeamDetail .headerteamdetail__tag a.active,
+.HeaderTeamDetail .headerteamdetail__tag a:hover {
+  color: var(--green-bold);
+  text-decoration: underline;
+}
+
+.teamdetail .teamdetail__content {
+  margin-top: 40px;
+}
+.teamdetail .infor .infor__title {
+  font-family: "Mulish-Bold";
+  font-size: 24px;
+  text-transform: uppercase;
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.teamdetail .infor .infor__title::after {
+  content: "";
+  height: 3px;
+  background-color: var(--blue-black);
+  display: block;
+  width: 150px;
+  position: absolute;
+  bottom: -10px;
+}
+
+.teamdetail .infor .infor__content {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.teamdetail .listPlayer .listPlayer__title {
+  font-family: "Mulish-Bold";
+  font-size: 24px;
+  text-transform: uppercase;
+  position: relative;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.teamdetail .listPlayer .listPlayer__list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.teamdetail .listPlayer .listPlayer__item {
+  border: 1px solid #ccc;
+  overflow: hidden;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 8px 1px #ccc;
+  box-shadow: 0px 0px 8px 1px #ccc;
+}
+
+.teamdetail .listPlayer .listPlayer__item .des {
+  padding: 10px;
+}
+
+.teamdetail .listPlayer .listPlayer__item span {
+  font-family: "Mulish-Bold";
+  display: inline-block;
+  width: 80px;
+}
+
+.teamdetail .listPlayer .listPlayer__item .des p {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.teamdetail .listPlayer .listPlayer__total {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  position: relative;
+  font-size: 18px;
+}
+
+.teamdetail .listPlayer .listPlayer__total::before {
+  display: block;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+  position: absolute;
+  top: -20px;
+}
+.teamdetail .listPlayer .listPlayer__total::after {
+  display: block;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+  position: absolute;
+  bottom: -20px;
+}
+
+.teamdetail .listPlayer .listPlayer__item .avt {
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 100%;
+  position: relative;
+}
+.teamdetail .listPlayer .listPlayer__item .avt img {
+  top: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.teamdetail .reportTeam .archivement__title ,.teamdetail .reportTeam .match__title{
+  font-size: 24px;
+  font-family: "Mulish-Bold";
+  margin-bottom: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative;
+}
+.teamdetail .reportTeam .archivement__list{
+    margin-bottom: 50px;
+}
+.teamdetail .reportTeam .match__list,.teamdetail .reportTeam .archivement__list{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    border: 1px solid var(--green-bold);
+    background-color: var(--green-bold);
+    padding: 30px;
+    border-radius: 5px;
+    font-family: "Mulish-Bold";
+}
+
+.teamdetail .reportTeam img{
+    width: 100px;
+}
+
+.teamdetail .reportTeam .match__name,.teamdetail .reportTeam .archivement__name{
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.teamdetail .reportTeam .match__title::after,.teamdetail .reportTeam .archivement__title::after{
+    display: block;
+    content: "";
+    width: 100px;
+    height: 3px;
+    position: absolute;
+    background-color: var(--blue-black);
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+}
+.teamdetail .reportTeam .match__number,.teamdetail .reportTeam .archivement__number{
+    margin-top: 10px;
+    font-size: 24px;
+}
+
+.teamdetail .cmtTeam .cmtTeam__title{
+    font-size: 24px;
+    font-family: "Mulish-Bold";
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.teamdetail .cmtTeam .cmtTeam__title::after{
+    display: block;
+    content: "";
+    height: 3px;
+    background-color: var(--blue-black);
+    width: 120px;
+    bottom: -10px;
+    position: absolute;
+}
+
+.teamdetail .cmtTeam .totalcmt{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.teamdetail .cmtTeam .totalcmt::after{
+    display: block;
+    content: "";
+    height: 1px;
+    background-color: #ccc;
+    width: 100%;
+    bottom: -15px;
+    position: absolute;
+}
+.teamdetail .cmtTeam .totalcmt .number{
+    font-family: "Mulish-Bold";
+}
+
+.teamdetail .cmtTeam .totalcmt select{
+    margin-left: 10px;
+}
+
+.teamdetail .cmtTeam .cmtInput{
+    width: 100%;
+    position: relative;
+    margin-bottom: 50px;
+}
+.teamdetail .cmtTeam .cmtInput::after{
+    display: block;
+    content: "";
+    height: 1px;
+    background-color: #ccc;
+    width: 100%;
+    bottom: -20px;
+    position: absolute;
+}
+.teamdetail .cmtTeam .content{
+    width: 100%;
+    min-height: 150px;
+    padding: 10px;
+    resize: none;
+}
+
+.teamdetail .cmtTeam .cmtInput button{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+   width: max-content;
+   margin-left: 90%;
+    padding: 15px 40px;
+    font-size: 18px;
+    outline: none;
+    border: none;
+    background-color: var(--blue-black);
+    color:var(--white-text);
+    transition: 0.5s;
+    font-family: "Mulish-Bold";
+}
+
+.teamdetail .cmtTeam .cmtInput button:hover{
+    background-color: var(--green-bold);
+    color: var(--blue-black);
+}
+
+.teamdetail .cmtTeam .another__content{
+    margin-top: 30px;
+}
+.teamdetail .cmtTeam .another__content{
+    display: flex;
+    column-gap: 20px;
+    position: relative;
+}
+
+.teamdetail .cmtTeam .another__content img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.teamdetail .cmtTeam .another__content div{
+     background-color: #f0f2f5;
+     border-radius: 10px;
+     padding: 10px 15px;
+     width: 100%;
+     height: auto;
+}
+
+.teamdetail .cmtTeam .another__content .name{
+    font-family: "Mulish-Bold";
+}
+
+.teamdetail .cmtTeam .another__content .content{
+    height: max-content;
+    min-height: initial;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.teamdetail .cmtTeam .another__content .time{
+    position: absolute;
+    color: #65676b;
+    bottom: -20px;
+    right: 20px;
+}

@@ -11,6 +11,11 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import CreateTeam from "./components/CreateTeamComponent/CreateTeam";
 import CreateTournament from "./components/CreateTournament/CreateTournament";
 import { useEffect, useState } from "react";
+import InforTeamDetail from "./components/TeamDetailComponent/InforTeamDetail";
+import ListPlayer from "./components/TeamDetailComponent/ListPlayer";
+import ReportTeamDetail from "./components/TeamDetailComponent/ReportTeamDetail";
+import CommentTeamDetail from "./components/TeamDetailComponent/CommentTeamDetail";
+
 function App() {
   // const [first, setfirst] = useState(window.location.pathname)
   // let HideHeader =
@@ -34,6 +39,19 @@ function App() {
           <Route exact path="/findTournaments" element={<MyTournamemts />} />
           <Route exact path="/findTeam" element={<MyTeam />} />
           <Route exact path="/createTeam" element={<CreateTeam />} />
+          <Route exact path="/teamDetail" element={<InforTeamDetail />} />
+          <Route exact path="/inforTeamDetail" element={<InforTeamDetail />} />
+          <Route exact path="/listPlayer" element={<ListPlayer />} />
+          <Route
+            exact
+            path="/reportTeamDeatail"
+            element={<ReportTeamDetail />}
+          />
+          <Route
+            exact
+            path="/commentTeamDetail"
+            element={<CommentTeamDetail />}
+          />
           <Route
             exact
             path="/createTournament"
