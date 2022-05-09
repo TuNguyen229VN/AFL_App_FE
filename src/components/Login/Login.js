@@ -63,7 +63,7 @@ function Login() {
           <div className="other_login"></div>
           <div className="social-share">
             <div className="social-share-item facebook">
-              <i className="fab fa-facebook social-share-icon">
+              <i className="social-share-icon">
                 <img src="/assets/img/login/facebook.png" alt="fb" />
               </i>
               <span className="social-share-text">
@@ -71,7 +71,7 @@ function Login() {
               </span>
             </div>
             <div className="social-share-item twitter">
-              <i className="fab fa-twitter social-share-icon">
+              <i className="social-share-icon">
                 <img src="/assets/img/login/google.png" alt="fb" />
               </i>
               <span className="social-share-text">
