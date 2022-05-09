@@ -181,6 +181,7 @@ input:focus {
 
 .createTournament_row4_col2{
     width: 50%;
+    height: 800px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -300,4 +301,10 @@ input:focus {
     padding-left: 30px;
     background-color: black;
     color: white;
+}
+
+/* Map */
+
+.mapboxgl-canvas{
+  height: 600px;
 }

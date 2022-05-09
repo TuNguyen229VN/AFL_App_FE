@@ -7,7 +7,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-
+import Map from "../MapComponent/Map";
 const CreateTournament = () => {
   const [status, setStatus] = useState(-1);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -265,7 +265,7 @@ const CreateTournament = () => {
                 >
                   Số điện thoại liên lạc
                 </label>
-                <input id="phoneContact" placeholder="Số điện thoại" />
+                <input type="" id="phoneContact" placeholder="Số điện thoại" />
               </div>
               
 
@@ -331,7 +331,11 @@ const CreateTournament = () => {
                   placeholder="Nhập địa chỉ"
                 />
               </div>
-              <div></div>
+              
+              
+                <Map />
+                
+              
             </div>
           </div>
           <div className="btn_nextPage">

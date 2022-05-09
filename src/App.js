@@ -11,6 +11,7 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import CreateTeam from "./components/CreateTeamComponent/CreateTeam";
 import CreateTournament from "./components/CreateTournament/CreateTournament";
 import { useEffect, useState } from "react";
+
 function App() {
   // const [first, setfirst] = useState(window.location.pathname)
   // let HideHeader =
@@ -22,6 +23,7 @@ function App() {
   const exclusionArray = ["/login", "/signup"];
   return (
     <div>
+
       <BrowserRouter>
         {/* {HideHeader} */}
         {exclusionArray.indexOf(window.location.pathname) < 0 && <Header />}
