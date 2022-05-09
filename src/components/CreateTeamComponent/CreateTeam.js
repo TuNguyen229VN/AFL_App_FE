@@ -153,7 +153,7 @@ function CreateTeam() {
         editorState={editorState}
         editorClassName="editor-class"
         onEditorStateChange={setEditorState}
-        placeholder="enter text reminders ..."
+        placeholder="Mô tả về đội bóng"
         mention={{
           separator: " ",
           trigger: "@",

@@ -17,8 +17,8 @@
   margin-top: 60px;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
 }
 
 .teamhome .view__more {
@@ -121,7 +121,7 @@
   opacity: 0;
   visibility: hidden;
   background-color: var(--green-bold);
-  top: -20px;
+  top: -10px;
   transition: 0.5s;
   z-index: 2;
 }

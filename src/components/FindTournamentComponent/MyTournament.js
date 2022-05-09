@@ -12,7 +12,7 @@ const MyTournamemts = () => {
   return (
     <>
       <Transitions timeline={tour}/>
-      <div className="myTournaments">
+      <div className="myTournaments" data-aos="fade-up"  data-aos-duration="2000">
         <div className={styles.myTourImg}>
           <img
             className={styles.img_mytour}

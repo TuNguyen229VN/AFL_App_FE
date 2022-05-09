@@ -24,12 +24,12 @@ input:focus{
   position: relative;
   overflow: hidden;
   height: 0;
-  padding-bottom: 50%;
+  padding-bottom: 26%;
 }
 
 .img_mytour {
   min-width: 100%;
-  min-height: 100vh;
+  min-height: 100%;
   position: absolute;
   image-rendering: pixelated;
   object-fit: cover;
@@ -41,12 +41,13 @@ input:focus{
 
 /* FindTournaments */
 .findTournaments {
-  width: 900px;
-  height: 270px;
+  /* width: 900px;
+  height: 270px; */
   text-align: left;
   position: absolute;
-  bottom: 30%;
-  left: 20%;
+  top: 120px;
+  /* /* bottom: 30%; */
+  left: 20%; 
 }
 
 .findInfo {
@@ -56,18 +57,18 @@ input:focus{
 .titleFindTour {
   font-family: "Mulish-Bold";
   text-transform: uppercase;
-  font-size: 64px;
+  font-size: 40px;
   font-weight: bold;
   color: var(--white-text);
   letter-spacing: 5px;
 }
 
 .desFindTour {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 26px;
   text-align: left;
   color: var(--white-text);
-  margin: 24px 0px;
+  margin: 20px 0px;
 }
 
 .findWrap  {
@@ -97,7 +98,7 @@ input:focus{
 }
 
 .selectOp {
-  margin-top: 50px;
+  margin-top: 30px;
   display: flex;
   justify-content: space-between;
 }
@@ -113,7 +114,7 @@ input:focus{
   font-weight: 400;
   padding: 10px 15px;
   height: auto;
-  border-radius: 5px;
+  border-radius: 3px;
   cursor: pointer;
 }
 
@@ -147,10 +148,10 @@ transition: 0.5s;
 .titleListTour {
   text-align: center;
   color: var(--blue-black);
-  padding: 40px;
+  padding: 30px;
   text-transform: uppercase;
   font-family: "Mulish-Bold";
-  font-size: 50px;
+  font-size: 40px;
 }
 
 .listTour {
@@ -160,7 +161,7 @@ transition: 0.5s;
   flex-wrap: wrap;
   justify-content: space-between; */
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto;
   gap: 30px;
 }
@@ -321,8 +322,8 @@ transition: 0.5s;
 .pagingTournament {
   width: max-content;
   margin: 0 auto;
-  margin-top: 30px;
-  margin-bottom: 50px;
+  margin-top: 20px;
+  margin-bottom: 30px;
   display: flex;
   align-items: center;
   justify-content: center;

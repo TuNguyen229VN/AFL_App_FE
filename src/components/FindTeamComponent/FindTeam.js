@@ -5,8 +5,6 @@ const FindTeam = () => {
   return (
     <div
       className={styles.findTournaments}
-      data-aos="fade-up"
-      data-aos-duration="2000"
     >
       <div className={styles.findInfo}>
         <h1 className={styles.titleFindTour}>tìm đội bóng</h1>
@@ -33,7 +31,6 @@ const FindTeam = () => {
           <select className={styles.sortTour}>
             <option>Giới tính</option>
           </select>
-          <button className={styles.btnResetFind}>Cập nhật</button>
         </div>
       </form>
     </div>

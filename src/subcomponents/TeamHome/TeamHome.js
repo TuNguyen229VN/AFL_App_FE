@@ -64,6 +64,23 @@ const TeamHome = () => {
             </div>
           </div>
         </a>
+        <a href="#" className="tournaments__list-item">
+          <div className="tournament__img">
+            <img src="./assets/img/homepage/team2.png" alt="team" />
+          </div>
+          <div className="tournament__text">
+            <h3>Văn phòng FC</h3>
+            <p>
+              Đội Bóng Nam <b>||</b> TP. Hồ Chí Minh
+            </p>
+            <div className="torunament__another">
+              <div className="join">
+                <img src="./assets/icons/join.png" alt="join" />
+                <div className="join__text">10</div>
+              </div>
+            </div>
+          </div>
+        </a>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import styles from "./TournamentFind.module.css";
 const ListTournament = () => {
     
     return(
-        <div className={styles.listTournament} data-aos="fade-up">
+        <div className={styles.listTournament}>
         <h1 className={styles.titleListTour}>Các Giải đấu</h1>
         <div className={styles.listTour}>
         <Tournament img="./assets/img/findTournaments/poster1.jpg" />

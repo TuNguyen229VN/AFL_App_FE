@@ -5,7 +5,7 @@ import styles from "./TeamFind.module.css";
 const ListTeam = () => {
     
     return(
-        <div className={styles.listTournament} data-aos="fade-up">
+        <div className={styles.listTournament}>
         <h1 className={styles.titleListTour}>Các đội bóng</h1>
         <div className={styles.listTour}>
         <Team img="./assets/img/homepage/team1.png" />
