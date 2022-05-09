@@ -1,9 +1,14 @@
-import React ,{useState} from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "./styles/style.css";
 function Header() {
+  const location = useLocation();
   const [clickMenu, setClickMenu] = useState(false);
-  const [activeMenu, setactiveMenu] = useState("home")
+  const [activeMenu, setactiveMenu] = useState(location.pathname);
+  useEffect(() => {
+    setactiveMenu(location.pathname);
+  }, [location]);
+
   return (
     <header className="header">
       <div className="container-fluid">
@@ -18,12 +23,26 @@ function Header() {
         </div>
         <ul className="menu">
           <li>
-            <Link to={"/"} className={activeMenu==="home"?"title active":"title"} onClick={()=>setactiveMenu("home")}>
+            <Link
+              to={"/"}
+              className={
+                activeMenu === "/home" || activeMenu === "/"
+                  ? "title active"
+                  : "title"
+              }
+              onClick={() => setactiveMenu("/home")}
+            >
               Trang chủ
             </Link>
           </li>
           <li>
-            <Link to={"/findTournaments"} className={activeMenu==="tour"?"title active":"title"} onClick={()=>setactiveMenu("tour")}>
+            <Link
+              to={"/findTournaments"}
+              className={
+                activeMenu === "/findTournaments" ? "title active" : "title"
+              }
+              onClick={() => setactiveMenu("/findTournaments")}
+            >
               Giải đấu
             </Link>
             <div className="sub_menu">
@@ -32,7 +51,11 @@ function Header() {
             </div>
           </li>
           <li>
-            <Link to={"/findTeam"}  className={activeMenu==="team"?"title active":"title"} onClick={()=>setactiveMenu("team")}>
+            <Link
+              to={"/findTeam"}
+              className={activeMenu === "/findTeam" ? "title active" : "title"}
+              onClick={() => setactiveMenu("/findTeam")}
+            >
               Đội bóng
             </Link>
             <div className="sub_menu">
@@ -41,12 +64,21 @@ function Header() {
             </div>
           </li>
           <li>
-            <Link to={"/"} className={activeMenu==="intro"?"title active":"title"} onClick={()=>setactiveMenu("intro")}>
+            <Link
+              to={"/login"}
+              className={activeMenu === "intro" ? "title active" : "title"}
+              onClick={() => setactiveMenu("intro")}
+            >
               Giới thiệu
             </Link>
           </li>
           <li>
-            <Link to={"/"} href="#" className={activeMenu==="news"?"title active":"title"} onClick={()=>setactiveMenu("news")}>
+            <Link
+              to={"/"}
+              href="#"
+              className={activeMenu === "news" ? "title active" : "title"}
+              onClick={() => setactiveMenu("news")}
+            >
               Tin tức
             </Link>
           </li>
@@ -66,19 +98,58 @@ function Header() {
             <a href="#">Bình luận</a>
             <a href="#">Đăng xuất</a>
           </div>
-          <div className={`btn__menu ${clickMenu}`} onClick={()=>setClickMenu((clickMenu)=>!clickMenu)}>
-            <span ></span>
+          <div
+            className={`btn__menu ${clickMenu}`}
+            onClick={() => setClickMenu((clickMenu) => !clickMenu)}
+          >
+            <span></span>
           </div>
         </div>
         <nav className={`nav ${clickMenu}`} id="nav">
-                <ul class="menu --mobile">
-                    <li><a href="#">Trang chủ</a></li>
-                    <li><a href="#">Giải đấu</a></li>
-                    <li><a href="#">Đội bóng</a></li>
-                    <li><a href="#">Giới thiệu</a></li>
-                    <li><a href="#">Tin tức</a></li>
-                </ul>
-            </nav>
+          <ul class="menu --mobile">
+            <li>
+              <Link
+                to={"/"}
+                className={
+                  activeMenu === "/home" || activeMenu === "/"
+                    ? "title active"
+                    : "title"
+                }
+                onClick={() => setactiveMenu("/home")}
+              >
+                Trang chủ
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={"/findTournaments"}
+                className={
+                  activeMenu === "/findTournaments" ? "title active" : "title"
+                }
+                onClick={() => setactiveMenu("/findTournaments")}
+              >
+                Giải đấu
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={"/findTeam"}
+                className={
+                  activeMenu === "/findTeam" ? "title active" : "title"
+                }
+                onClick={() => setactiveMenu("/findTeam")}
+              >
+                Đội bóng
+              </Link>
+            </li>
+            <li>
+              <a href="#">Giới thiệu</a>
+            </li>
+            <li>
+              <a href="#">Tin tức</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
   );
