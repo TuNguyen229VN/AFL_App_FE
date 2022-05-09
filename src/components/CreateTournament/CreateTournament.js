@@ -1,9 +1,17 @@
+import React, { useState } from "react";
 import ".//style.css";
 import gsap from "gsap";
 import AOS from "aos";
 import Transitions from "../Transitions/Transitions";
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState, convertToRaw } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import draftToHtml from "draftjs-to-html";
 
 const CreateTournament = () => {
+  const [status, setStatus] = useState(-1);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const text = draftToHtml(convertToRaw(editorState.getCurrentContent()));
   AOS.init();
   const tour = gsap.timeline();
   return (
@@ -11,7 +19,11 @@ const CreateTournament = () => {
       <Transitions timeline={tour} />
       <div className="createTournament">
         <div className="createTournament_info">
-          <div>
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
             <div>
               <h1 className="createTournament_title">Tạo giải đấu</h1>
               <hr
@@ -22,6 +34,34 @@ const CreateTournament = () => {
                   opacity: 1,
                 }}
               />
+            </div>
+            <div
+              style={{
+                marginTop: 130,
+                marginLeft: 20,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <input type="checkbox" id="switch" class="switch-input" />
+              <label
+                for="switch"
+                class="switch"
+                onClick={() => {
+                  if (status === 0) {
+                    setStatus(-1);
+                  } else {
+                    setStatus(0);
+                  }
+                }}
+              />
+              <p
+                style={{
+                  marginLeft: 10,
+                }}
+              >
+                Chế độ {status === 0 ? "công khai" : "riêng tư"}
+              </p>
             </div>
           </div>
 
@@ -64,20 +104,23 @@ const CreateTournament = () => {
                   <option>5</option>
                 </select>
               </div>
-
-              <div className="timeStart">
-                <label
-                  className="createTournament_img_title"
-                  htmlFor="startTime"
-                >
-                  Ngày bắt đầu
-                </label>
-                <input
-                  className="timeStart_input"
-                  id="startTime"
-                  type="datetime-local"
-                />
-              </div>
+              {status === 0 ? (
+                <div className="timeStart">
+                  <label
+                    className="createTournament_img_title"
+                    htmlFor="startTime"
+                  >
+                    Ngày bắt đầu
+                  </label>
+                  <input
+                    className="timeStart_input"
+                    id="startTime"
+                    type="datetime-local"
+                  />
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="createTournament_row1_col3">
               <div className="contactPhone">
@@ -99,16 +142,23 @@ const CreateTournament = () => {
                   <option>11 vs 11</option>
                 </select>
               </div>
-              <div className="timeEnd">
-                <label htmlFor="endTime" className="createTournament_img_title">
-                  Ngày kết thúc
-                </label>
-                <input
-                  className="timeEnd_input"
-                  id="endTime"
-                  type="datetime-local"
-                />
-              </div>
+              {status === 0 ? (
+                <div className="timeEnd">
+                  <label
+                    htmlFor="endTime"
+                    className="createTournament_img_title"
+                  >
+                    Ngày kết thúc
+                  </label>
+                  <input
+                    className="timeEnd_input"
+                    id="endTime"
+                    type="datetime-local"
+                  />
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <div className="createTournament_row2">
@@ -223,25 +273,60 @@ const CreateTournament = () => {
                 >
                   Mô tả
                 </label>
-                <textarea placeholder="Mô tả về giải đấu" className="description_text" />
+                {/* <textarea
+                  placeholder="Mô tả về giải đấu"
+                  
+                /> */}
+                <div className="descTeam ">
+                <Editor
+                className="description_text"
+                  editorState={editorState}
+                  editorClassName="editor-class"
+                  onEditorStateChange={setEditorState}
+                  placeholder="Mô tả về giải đấu"
+                  mention={{
+                    separator: " ",
+                    trigger: "@",
+                    suggestions: [
+                      { text: "APPLE", value: "apple", url: "apple" },
+                      { text: "BANANA", value: "banana", url: "banana" },
+                      { text: "CHERRY", value: "cherry", url: "cherry" },
+                      { text: "DURIAN", value: "durian", url: "durian" },
+                      { text: "EGGFRUIT", value: "eggfruit", url: "eggfruit" },
+                      { text: "FIG", value: "fig", url: "fig" },
+                      {
+                        text: "GRAPEFRUIT",
+                        value: "grapefruit",
+                        url: "grapefruit",
+                      },
+                      { text: "HONEYDEW", value: "honeydew", url: "honeydew" },
+                    ],
+                  }}
+                />
+                </div>
+                
               </div>
             </div>
             <div className="createTournament_row4_col2">
-                <div className="fieldSoccer">
-                    <label className="createTournament_img_title"  htmlFor="fieldSoccer">
-                        Địa điểm
-                    </label>
-                    <input id="fieldSoccer" className="fieldSoccer_input" placeholder="Nhập địa chỉ" />
-                </div>
-                <div>
-                    
-                </div>
+              <div className="fieldSoccer">
+                <label
+                  className="createTournament_img_title"
+                  htmlFor="fieldSoccer"
+                >
+                  Địa điểm
+                </label>
+                <input
+                  id="fieldSoccer"
+                  className="fieldSoccer_input"
+                  placeholder="Nhập địa chỉ"
+                />
+              </div>
+              <div></div>
             </div>
           </div>
           <div className="btn_nextPage">
-          <button className="btn_Next">Tiếp theo</button>
+            <button className="btn_Next">Tiếp theo</button>
           </div>
-          
         </div>
       </div>
     </>

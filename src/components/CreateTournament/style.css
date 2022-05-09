@@ -101,8 +101,10 @@ input:focus {
 .select_typeFootballField {
   width: 100%;
   padding: 10px 5px;
-  margin-bottom: 20px;
+  
 }
+
+/* margin-bottom: 20px; */
 
 /* createTournament_row2 */
 
@@ -169,7 +171,7 @@ input:focus {
 
 .createTournament_row4_col1{
     width: 40%;
-    height: 500px;
+    height: 800px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -207,4 +209,79 @@ input:focus {
     color: #207607;
     border: 1px solid var(--green-bold);
     font-weight: 600;
+}
+
+/* Animation */
+
+.switch {
+  position: relative;
+  cursor: pointer;
+  width: 5rem;
+  height: 2rem;
+  display: inline-block;
+  overflow: hidden;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  background: #000;
+  border-radius: 100rem;
+  transition: background-color 0.25s linear;
+}
+
+.switch:after {
+  content: "";
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 4rem;
+  background-color: #fff;
+  top: 0px;
+  left: -1px;
+  transition: background-color 0.25s linear, transform 0.25s linear;
+}
+
+.switch-input {
+  display: none;
+}
+
+.switch-input:checked + .switch {
+  background-color: #6a5af9;
+}
+
+.switch-input:checked + .switch:after {
+  transform: translateX(3.1rem);
+  background-color: white;
+}
+
+/* Editor */
+
+.descTeam {
+  margin-top: 30px;
+  border: 1px solid var(--blue-black);
+  height: 500px;
+  overflow: hidden;
+}
+
+.createteam #rdw-wrapper-2391 {
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.createteam .rdw-editor-toolbar {
+  height: 100px;
+}
+
+.createteam .rdw-option-wrapper {
+  height: auto;
+  width: auto;
+  padding: 2px;
+}
+
+.createteam .rdw-editor-toolbar {
+  border-bottom: 1px solid var(--blue-black);
+}
+.createteam .editor-class {
+  padding: 0 10px;
+}
+
+.public-DraftEditorPlaceholder-inner, .DraftEditor-editorContainer{
+  padding: 0px 10px;
 }
