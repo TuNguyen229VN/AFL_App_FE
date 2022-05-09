@@ -19,11 +19,7 @@ const CreateTournament = () => {
       <Transitions timeline={tour} />
       <div className="createTournament">
         <div className="createTournament_info">
-          <div
-            style={{
-              display: "flex",
-            }}
-          >
+          <div>
             <div>
               <h1 className="createTournament_title">Tạo giải đấu</h1>
               <hr
@@ -37,8 +33,7 @@ const CreateTournament = () => {
             </div>
             <div
               style={{
-                marginTop: 130,
-                marginLeft: 20,
+                marginTop: 30,
                 display: "flex",
                 alignItems: "center",
               }}
@@ -69,13 +64,17 @@ const CreateTournament = () => {
             <div className="createTournament_img">
               <h1 className="createTournament_img_title">Hình giải đấu</h1>
               <div className="createTournament_img_detail">
-                <i
+                {/* <i
                   style={{
                     fontSize: 110,
                     marginLeft: 90,
                   }}
                   class="fa-solid fa-camera"
-                ></i>
+                ></i> */}
+                <img style={{
+                  width: 120,
+                  margin: "auto"
+                }} src="assets/img/createteam/camera.png" />
                 <button>
                   Tải ảnh lên <i class="fa-solid fa-upload"></i>
                 </button>
@@ -119,7 +118,7 @@ const CreateTournament = () => {
                   />
                 </div>
               ) : (
-                ""
+                <div></div>
               )}
             </div>
             <div className="createTournament_row1_col3">
@@ -157,7 +156,7 @@ const CreateTournament = () => {
                   />
                 </div>
               ) : (
-                ""
+                <div></div>
               )}
             </div>
           </div>

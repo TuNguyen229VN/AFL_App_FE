@@ -75,12 +75,13 @@ a {
 }
 
 .createTournament_img_detail button {
-  width: 80%;
+  width: 60%;
   height: 50px;
   border: 1px solid black;
   background-color: black;
   color: white;
-  margin: 0 auto;
+  margin: 20px auto;
+
 }
 
 .createTournament_row1_col2 label,
