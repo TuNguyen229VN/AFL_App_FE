@@ -7,11 +7,13 @@ import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-// import Map from "../MapComponent/Map";
+import CompetitionFormat from "./CompetitionFormat";
+import Description from "./Description"
 const CreateTournament = () => {
   const [status, setStatus] = useState(-1);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const text = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+  const descriptionText = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+  console.log(descriptionText)
   AOS.init();
   const tour = gsap.timeline();
   return (
@@ -166,81 +168,8 @@ const CreateTournament = () => {
               </div>
             </div>
           </div>
-          <div className="createTournament_row2">
-            <h1 className="createTournament_img_title">Hình thức thi đấu</h1>
-            <div className="img_type_footballField">
-              <div
-                style={{
-                  width: "25%",
-                }}
-              >
-                <label htmlFor="knockout">
-                  <div className="type_knockout">
-                    <img
-                      src="/assets/img/createtournament/type_footballfield/knockout.jpg"
-                      alt="knockout"
-                    />
-                  </div>
-                </label>
-
-                <input
-                  type="radio"
-                  id="knockout"
-                  name="footballField"
-                  value="JavaScript"
-                ></input>
-              </div>
-              <div
-                style={{
-                  width: "25%",
-                }}
-              >
-                <label htmlFor="circle">
-                  <div className="type_circle">
-                    <img
-                      src="/assets/img/createtournament/type_footballfield/circle.jpg"
-                      alt="circle"
-                    />
-                  </div>
-                </label>
-
-                <input
-                  type="radio"
-                  id="circle"
-                  name="footballField"
-                  value="JavaScript"
-                ></input>
-              </div>
-              <div
-                style={{
-                  width: "25%",
-                }}
-              >
-                <label htmlFor="table">
-                  <div className="type_table">
-                    <img
-                      src="/assets/img/createtournament/type_footballfield/table.jpg"
-                      alt="knockout"
-                    />
-                  </div>
-                </label>
-
-                <input
-                  type="radio"
-                  id="table"
-                  name="footballField"
-                  value="JavaScript"
-                ></input>
-              </div>
-            </div>
-          </div>
-          <div className="createTournament_row3">
-            <div className="note_lengthMatch">
-              <h1 className="lengthMatch_title">
-                Đối với hình thức thi đấu này thì số lượng trận đấu sẽ là: 10
-              </h1>
-            </div>
-          </div>
+          <CompetitionFormat />
+          
           <div className="createTournament_row4">
             <div className="createTournament_row4_col1">
               <div className="mininum_member">
@@ -281,38 +210,9 @@ const CreateTournament = () => {
                   
                 /> */}
                 <div className="descTeam ">
-                  <Editor
-                    className="description_text"
+                <Description
                     editorState={editorState}
-                    editorClassName="editor-class"
-                    onEditorStateChange={setEditorState}
-                    placeholder="Mô tả về giải đấu"
-                    mention={{
-                      separator: " ",
-                      trigger: "@",
-                      suggestions: [
-                        { text: "APPLE", value: "apple", url: "apple" },
-                        { text: "BANANA", value: "banana", url: "banana" },
-                        { text: "CHERRY", value: "cherry", url: "cherry" },
-                        { text: "DURIAN", value: "durian", url: "durian" },
-                        {
-                          text: "EGGFRUIT",
-                          value: "eggfruit",
-                          url: "eggfruit",
-                        },
-                        { text: "FIG", value: "fig", url: "fig" },
-                        {
-                          text: "GRAPEFRUIT",
-                          value: "grapefruit",
-                          url: "grapefruit",
-                        },
-                        {
-                          text: "HONEYDEW",
-                          value: "honeydew",
-                          url: "honeydew",
-                        },
-                      ],
-                    }}
+                    setEditorState={setEditorState}
                   />
                 </div>
               </div>
