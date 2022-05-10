@@ -20,7 +20,7 @@ function Login() {
           </Link>
           <div className="login__sub-text">
             <h3>Chúng tôi rất vui khi thấy bạn trở lại!</h3>
-            <h2>Amateurs Football League</h2>
+            <h2>Amateur Football League</h2>
           </div>
         </div>
         <div className="login__main">

@@ -9,7 +9,7 @@ function Footer() {
             <img src="assets/img/homepage/logo.png " alt="logo " />
           </a>
         </div>
-        <div className="footer_title ">Amateurs Football League</div>
+        <div className="footer_title ">Amateur Football League</div>
         <div className="footer_slogan ">Dám ước mơ, dám thực hiện</div>
         <div className="socialfoot">
           <a href="#">

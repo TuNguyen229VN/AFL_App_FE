@@ -12,12 +12,18 @@ import InforTeamDetail from "./components/TeamDetailComponent/InforTeamDetail";
 import ListPlayer from "./components/TeamDetailComponent/ListPlayer";
 import ReportTeamDetail from "./components/TeamDetailComponent/ReportTeamDetail";
 import CommentTeamDetail from "./components/TeamDetailComponent/CommentTeamDetail";
+import InforTournamentDetail from "./components/TournamentDetailComponent/InforTournamentDetail";
+import CommentTournamentDetail from "./components/TournamentDetailComponent/CommentTournamentDetail";
+import GalleryTournamentDetail from "./components/TournamentDetailComponent/GalleryTournamentDetail";
+import PredictionTournamentDetail from "./components/TournamentDetailComponent/PredictionTournamentDetail";
+import RankTableTournamentDetail from "./components/TournamentDetailComponent/RankTableTournamentDetail";
+import ScheduleTournamentDetail from "./components/TournamentDetailComponent/ScheduleTournamentDetail";
+import TeamInTournament from "./components/TournamentDetailComponent/TeamInTournament";
 
 function App() {
   // const exclusionArray = ["/login", "/signup"];
   return (
     <div>
-
       <BrowserRouter>
         {/* {HideHeader} */}
         {/* {exclusionArray.indexOf(window.location.pathname) < 0 && <Header />} */}
@@ -46,6 +52,41 @@ function App() {
             exact
             path="/createTournament"
             element={<CreateTournament />}
+          />
+          <Route
+            exact
+            path="/inforTournamentDetail"
+            element={<InforTournamentDetail />}
+          />
+           <Route
+            exact
+            path="/commentTournamentDetail"
+            element={<CommentTournamentDetail />}
+          />
+           <Route
+            exact
+            path="/galleryTournamentDetail"
+            element={<GalleryTournamentDetail />}
+          />
+           <Route
+            exact
+            path="/predictionTournamentDetail"
+            element={<PredictionTournamentDetail />}
+          />
+           <Route
+            exact
+            path="/rankTableTournamentDetail"
+            element={<RankTableTournamentDetail />}
+          />
+           <Route
+            exact
+            path="/scheduleTournamentDetail"
+            element={<ScheduleTournamentDetail />}
+          />
+           <Route
+            exact
+            path="/teamInTournament"
+            element={<TeamInTournament />}
           />
         </Routes>
         {/* {exclusionArray.indexOf(window.location.pathname) < 0 && <Footer />} */}

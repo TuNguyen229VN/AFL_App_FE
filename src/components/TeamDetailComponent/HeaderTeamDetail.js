@@ -17,7 +17,7 @@ function HeaderTeamDetail() {
           <h2>KhoaTuAnhTam F.C</h2>
           <div className="man name__manager">
             <i class="fas fa-light fa-user"></i>
-            <span className="title">Người quản lý:</span>
+            <span className="title">Người quản lý: </span>
             <span>Nguyễn Thanh Phủi</span>
           </div>
           <div className="man phone__manager">
@@ -43,8 +43,13 @@ function HeaderTeamDetail() {
           </div>
           <div className="man gender__manager">
             <i className="fas fa-transgender"></i>
-            <span className="title">Giới tính : </span>
+            <span className="title">Giới tính đội : </span>
             <span>Nam</span>
+          </div>
+          <div className="man gender__manager">
+            <i className="fa-solid fa-calendar-days"></i>
+            <span className="title">Ngày tạo đội: </span>
+            <span>10/05/2022</span>
           </div>
         </div>
       </div>

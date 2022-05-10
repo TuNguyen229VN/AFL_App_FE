@@ -39,7 +39,7 @@ const Slider = () => {
       >
         <div className="slider__item">
           <div className="slider__item-text">
-            <h2 className="title">Amateurs football league</h2>
+            <h2 className="title">Amateur football league</h2>
             <p className="desc">
               AFL giúp người dùng tạo ra các giải đấu có thể thức tương tự với
               các giải đấu nổi tiếng thế giới như Premier League, Champions
@@ -71,7 +71,7 @@ const Slider = () => {
         </div>
         <div className="slider__item ">
           <div className="slider__item-text">
-            <h2 className="title">Amateurs football league</h2>
+            <h2 className="title">Amateur football league</h2>
             <p className="desc">
               AFL giúp người dùng tạo ra các giải đấu có thể thức tương tự với
               các giải đấu nổi tiếng thế giới như Premier League, Champions
@@ -103,7 +103,7 @@ const Slider = () => {
         </div>
         <div className="slider__item ">
           <div className="slider__item-text">
-            <h2 className="title">Amateurs football league</h2>
+            <h2 className="title">Amateur football league</h2>
             <p className="desc">
               AFL giúp người dùng tạo ra các giải đấu có thể thức tương tự với
               các giải đấu nổi tiếng thế giới như Premier League, Champions

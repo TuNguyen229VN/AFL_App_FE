@@ -1,0 +1,137 @@
+.HeaderTeamDetail .infor_tourdetail::after {
+  background-image: url("../../../../public/assets/img/teamdetail/thomas-serer-r-xKieMqL34-unsplash.jpg");
+  background-size: cover;
+  filter: brightness(70%);
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  background-attachment: fixed;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  position: absolute;
+  content: "";
+  z-index: -1;
+}
+
+.HeaderTeamDetail .infor_tourdetail {
+  height: 450px;
+}
+
+.HeaderTeamDetail .infor_tourdetail .avt__Team {
+  border-radius: 5px;
+  width: 400px;
+}
+
+.HeaderTeamDetail .infor_tourdetail .avt__Team img {
+  object-fit: cover;
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  width: 100%;
+  height: 100%;
+  transform: translate(0%, 0%);
+}
+
+.HeaderTeamDetail .headertour__tag {
+  column-gap: 0;
+  justify-content: space-between;
+}
+
+.HeaderTeamDetail .infor_tourdetail .man .title {
+  width: 150px;
+}
+
+.teamdetail .gallery__tour .title,
+.teamdetail .rank__tour .title {
+  font-family: "Mulish-Bold";
+  font-size: 24px;
+  text-transform: uppercase;
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.teamdetail .gallery__tour .title::after,
+.teamdetail .rank__tour .title::after {
+  content: "";
+  height: 3px;
+  background-color: var(--blue-black);
+  display: block;
+  width: 150px;
+  position: absolute;
+  bottom: -10px;
+}
+
+.teamdetail .gallery__tour .gallery__list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.teamdetail .gallery__tour .gallery__item {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tournamentdetail .listPlayer .listPlayer__item span {
+  width: 110px;
+}
+.tournamentdetail .listPlayer .listPlayer__item .avt {
+  padding-bottom: 70%;
+  border-bottom: 1px solid var(--blue-black);
+}
+.tournamentdetail .listPlayer .listPlayer__item .avt img {
+  min-width: 55%;
+  min-height: 55%;
+}
+
+.tournamentdetail .listPlayer .listPlayer__item .des {
+  background-color: var(--blue-black);
+  color: var(--white-text);
+}
+
+.teamdetail .rank__tour .note {
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.teamdetail .rank__tour .name__table {
+  background-color: var(--green-bold);
+  padding: 15px;
+  width: 120px;
+  text-align: center;
+  font-family: "Mulish-Bold";
+  font-size: 18px;
+}
+
+.teamdetail .rank__tour .name__table-cross {
+  width: 0;
+  height: 0;
+  border-left: 0 solid transparent;
+  border-right: 70px solid transparent;
+  border-bottom: 50px solid var(--green-bold);
+  position: relative;
+  left: 120px;
+  top: -49px;
+}
+
+.teamdetail .rank__tour .table__team {
+  margin-top: -49px;
+  margin-bottom: 50px;
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+.teamdetail .rank__tour .table__team tr:nth-child(odd) {
+  background-color: #f3f3f3;
+}
+
+.teamdetail .rank__tour .table__team tr:first-child {
+  background-color: var(--blue-black);
+  color: var(--white-text);
+}
+
+.teamdetail .rank__tour .table__team th,
+.teamdetail .rank__tour .table__team td {
+  text-align: center;
+  padding: 15px;
+}

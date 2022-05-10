@@ -25,7 +25,7 @@ function Signup() {
         </Link>
         <div className="sign__sub-text">
           <h3>Đăng ký</h3>
-          <h2>Để trở thành một thành viên của Amateurs Football League</h2>
+          <h2>Để trở thành một thành viên của Amateur Football League</h2>
         </div>
       </div>
       <div className="sign__main">
@@ -112,25 +112,6 @@ function Signup() {
             Đăng ký
           </button>
         </form>
-        <div className="other_login"></div>
-        <div className="social-share">
-          <div className="social-share-item facebook">
-            <i className=" social-share-icon">
-              <img src="/assets/img/login/facebook.png" alt="fb" />
-            </i>
-            <span className="social-share-text">
-              Đăng nhập bằng tài khoản Facebook
-            </span>
-          </div>
-          <div className="social-share-item twitter">
-            <i className="social-share-icon">
-              <img src="/assets/img/login/google.png" alt="fb" />
-            </i>
-            <span className="social-share-text">
-              Đăng nhập bằng tài khoản Google
-            </span>
-          </div>
-        </div>
       </div>
     </div>
   </div>

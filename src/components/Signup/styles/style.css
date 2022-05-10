@@ -3,7 +3,8 @@
     display: grid;
     grid-template-columns: 660px 1fr;
     column-gap: 150px;
-    height: auto;
+    height: 100vh;
+    overflow: hidden;
   }
   
   .sign__sub {
@@ -24,7 +25,7 @@
   
   .sign__sub-text {
     position: absolute;
-    top: 30%;
+    top: 50%;
     transform: translateY(-50%);
     color: var(--white-text);
     left: 45px;
