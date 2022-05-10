@@ -60,14 +60,14 @@ function CreateTeam() {
           </div>
         </div>
         <div className="createteamwrap">
-          <div class="text-field">
+          {/* <div class="text-field">
             <label for="ageteam">Độ tuổi</label>
             <select id="ageteam">
               <option>10-18</option>
               <option>19-30</option>
               <option>31-50</option>
             </select>
-          </div>
+          </div> */}
           <div class="text-field">
             <label for="namemanager">Tên người tạo đội</label>
             <input
@@ -90,7 +90,7 @@ function CreateTeam() {
           </div>
         </div>
       </div>
-      <p className="avt">Hình áo đấu</p>
+      {/* <p className="avt">Hình áo đấu</p>
       <div className="clothes__team">
         <div class="input-field">
           <input type="file" name="file" id="file" />
@@ -146,7 +146,7 @@ function CreateTeam() {
             </i>
           </label>
         </div>
-      </div>
+      </div> */}
       <p className="avt line3">Thông tin đội bóng</p>
       <div className="descTeam ">
       <Editor
