@@ -1,8 +1,12 @@
 import React from "react";
 import "./styles/style.css";
 import HeaderTeamDetail from "./HeaderTeamDetail";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 function ReportTeamDetail() {
   return (
+    <>
+    <Header/>
     <div className="teamdetail">
       <HeaderTeamDetail />
       <div className="teamdetail__content reportTeam">
@@ -53,6 +57,8 @@ function ReportTeamDetail() {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 }
 

@@ -4,6 +4,8 @@ import FindTeam from "./FindTeam";
 import PagingTeam from "./PagingTeam";
 import styles from "./TeamFind.module.css";
 import gsap from "gsap";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 import AOS from "aos";
 import Transitions from "../Transitions/Transitions";
 const MyTournamemts = () => {
@@ -12,6 +14,7 @@ const MyTournamemts = () => {
   return (
     <>
       <Transitions timeline={tour} />
+      <Header/>
       <div
         className="myTournaments"
         data-aos="fade-up"
@@ -29,6 +32,7 @@ const MyTournamemts = () => {
         <ListTeam />
         <PagingTeam />
       </div>
+      <Footer/>
     </>
   );
 };

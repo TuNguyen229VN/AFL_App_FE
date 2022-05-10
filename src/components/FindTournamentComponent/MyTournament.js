@@ -5,6 +5,8 @@ import PagingTournament from "./PagingTournament";
 import styles from "./TournamentFind.module.css";
 import gsap from "gsap";
 import AOS  from "aos";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 import Transitions from "../Transitions/Transitions";
 const MyTournamemts = () => {
   AOS.init();
@@ -12,6 +14,7 @@ const MyTournamemts = () => {
   return (
     <>
       <Transitions timeline={tour}/>
+      <Header/>
       <div className="myTournaments" data-aos="fade-up"  data-aos-duration="2000">
         <div className={styles.myTourImg}>
           <img
@@ -25,6 +28,7 @@ const MyTournamemts = () => {
         <ListTournament />
         <PagingTournament />
       </div>
+      <Footer/>
     </>
   );
 };

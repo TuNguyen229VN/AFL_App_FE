@@ -1,8 +1,12 @@
 import React from "react";
 import HeaderTeamDetail from "./HeaderTeamDetail";
 import "./styles/style.css";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 function InforTeamDetail() {
   return (
+    <>
+    <Header/>
     <div className="teamdetail">
       <HeaderTeamDetail />
       <div className="teamdetail__content infor">
@@ -27,6 +31,8 @@ function InforTeamDetail() {
         </p>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 }
 

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import ".//style.css";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 import gsap from "gsap";
 import AOS from "aos";
 import Transitions from "../Transitions/Transitions";
@@ -17,6 +19,7 @@ const CreateTournament = () => {
   return (
     <>
       <Transitions timeline={tour} />
+      <Header/>
       <div className="createTournament">
         <div className="createTournament_info">
           <div>
@@ -343,6 +346,7 @@ const CreateTournament = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 };

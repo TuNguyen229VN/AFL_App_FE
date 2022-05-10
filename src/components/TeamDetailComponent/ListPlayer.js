@@ -1,8 +1,12 @@
 import React from "react";
 import "./styles/style.css";
 import HeaderTeamDetail from "./HeaderTeamDetail";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 function ListPlayer() {
   return (
+    <>
+    <Header/>
     <div className="teamdetail">
       <HeaderTeamDetail />
       <div className="teamdetail__content listPlayer">
@@ -60,6 +64,8 @@ function ListPlayer() {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 }
 export default ListPlayer;

@@ -4,11 +4,14 @@ import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 function CreateTeam() {
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const text = draftToHtml(convertToRaw(editorState.getCurrentContent()))
   return (
+    <>
+    <Header/>
     <div className="create__team">
       <h2 className="title">Tạo đội bóng</h2>
       <p className="avt">Hình đội bóng</p>
@@ -172,6 +175,8 @@ function CreateTeam() {
       </div>
       <div className="createTeam_btn">Tạo đội</div>
     </div>
+    <Footer/>
+    </>
   );
 }
 
