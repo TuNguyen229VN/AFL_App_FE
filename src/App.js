@@ -22,6 +22,9 @@ import TeamInTournament from "./components/TournamentDetailComponent/TeamInTourn
 
 function App() {
   // const exclusionArray = ["/login", "/signup"];
+  //request.auth != null
+  
+
   return (
     <div>
       <BrowserRouter>
