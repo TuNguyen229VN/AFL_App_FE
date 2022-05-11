@@ -1,20 +1,19 @@
 import React from "react";
 import styles from "./TeamFind.module.css";
 
-const Team = (props) => {
-  const { img } = props;
+const Team = (team) => {
   return (
     <div className={styles.team}>
       <div className={styles.tournamentImgAd}>
         <img
           className={styles.teamImg}
-          src={img}
+          src={team.tour.teamAvatar}
           alt="myItem"
         />
       </div>
 
       <div className={styles.tournamentInfor}>
-        <h1 className={styles.tournamentName}>KhoaTuAnhTam F.C</h1>
+        <h1 className={styles.tournamentName}>{team.tour.teamName}</h1>
         <p className={styles.type}>Bóng Đá Nam | Tp. Hồ Chí Minh</p>
         <div className={styles.line}/>
         <div className={styles.tournamentFooter}>

@@ -106,7 +106,7 @@ function Header() {
           </div>
         </div>
         <nav className={`nav ${clickMenu}`} id="nav">
-          <ul class="menu --mobile">
+          <ul className="menu --mobile">
             <li>
               <Link
                 to={"/"}

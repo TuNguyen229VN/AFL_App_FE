@@ -178,7 +178,16 @@ transition: 0.5s;
   justify-content: space-between;
   cursor: pointer;
 }
-
+.tournament {
+  /* width: 250px;
+  height: 260px; */
+  /* margin-bottom: 24px; */
+  /* border: 1px solid var(--blue-black); */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
 .tournamentImgAd {
   overflow: hidden;
   position: relative;
@@ -333,6 +342,7 @@ transition: 0.5s;
   color: var(--black-text);
   display: inline-block;
   padding: 10px 15px;
+  user-select: none;
 }
 
 .pageItem:hover .pagelink{

@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "./components/HomePageComponent/HomePage";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
-import MyTournamemts from "./components/FindTournamentComponent/MyTournament";
+import MyTournaments from "./components/FindTournamentComponent/MyTournament";
 import MyTeam from "./components/FindTeamComponent/MyTeam";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import CreateTeam from "./components/CreateTeamComponent/CreateTeam";
@@ -33,7 +33,7 @@ function App() {
           <Route exact path="/home" element={<HomePage />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/findTournaments" element={<MyTournamemts />} />
+          <Route exact path="/findTournaments" element={<MyTournaments />} />
           <Route exact path="/findTeam" element={<MyTeam />} />
           <Route exact path="/createTeam" element={<CreateTeam />} />
           <Route exact path="/inforTeamDetail" element={<InforTeamDetail />} />
