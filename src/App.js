@@ -20,8 +20,12 @@ import RankTableTournamentDetail from "./components/TournamentDetailComponent/Ra
 import ScheduleTournamentDetail from "./components/TournamentDetailComponent/ScheduleTournamentDetail";
 import TeamInTournament from "./components/TournamentDetailComponent/TeamInTournament";
 
+
 function App() {
   // const exclusionArray = ["/login", "/signup"];
+  //request.auth != null
+  
+
   return (
     <div>
       <BrowserRouter>
@@ -38,6 +42,7 @@ function App() {
           <Route exact path="/createTeam" element={<CreateTeam />} />
           <Route exact path="/inforTeamDetail" element={<InforTeamDetail />} />
           <Route exact path="/listPlayer" element={<ListPlayer />} />
+          
           <Route
             exact
             path="/reportTeamDeatail"
