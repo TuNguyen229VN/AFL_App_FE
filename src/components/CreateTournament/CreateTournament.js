@@ -5,12 +5,12 @@ import Footer from "../Footer/Footer";
 import gsap from "gsap";
 import AOS from "aos";
 import Transitions from "../Transitions/Transitions";
-import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import CompetitionFormat from "./CompetitionFormat";
 import Description from "./Description"
+
 const CreateTournament = () => {
   const [status, setStatus] = useState(-1);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -20,6 +20,7 @@ const CreateTournament = () => {
   const tour = gsap.timeline();
   return (
     <>
+    
       <Transitions timeline={tour} />
       <Header/>
       <div className="createTournament">
@@ -77,6 +78,7 @@ const CreateTournament = () => {
                       margin: "auto",
                     }}
                     src="assets/img/createteam/camera.png"
+                    alt="camera"
                   />
                   
                   <p className="btnUploadImg_createTournament">

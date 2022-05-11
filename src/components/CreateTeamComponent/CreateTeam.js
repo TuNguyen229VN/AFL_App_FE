@@ -6,15 +6,21 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import { v4 } from "uuid";
-import { storage } from "../Firebase/Firebase";
 import axios from "axios";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+
 const CreateTeam = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  //const [buttonFlag , setButtonFlag] = useState(true);
-  const text = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+  const textDescription = draftToHtml(
+    convertToRaw(editorState.getCurrentContent())
+  );
+
   const [imgClub, setImgClub] = useState({
     value: null,
+    img: null,
     error: "",
   });
   const [nameClub, setNameClub] = useState({
@@ -41,48 +47,11 @@ const CreateTeam = () => {
     value: "",
     error: "",
   });
-  
-   const uploadImg = (img) => {
-  //   if(imgClub == null) return;
-  //   const imageRef = ref(storage, `images/createTeam/${imgClub.value.name + v4()}`);
-  //   uploadBytes(imageRef, imgClub.value);
-  //   listAll(ref(storage, "images/createTeam/")).then((response) => {
-  //     response.items.forEach((item) => {
-  //       getDownloadURL(item).then(url => {
-  //         console.log(url)
-  //       })
-  //     })
-  //   })
-    const randomString = v4();
-    const uploadTask = storage.ref(`images/creatTeam/${img.name + randomString}`).put(img);
-    uploadTask.on(
-      "state_changed",
-      snapshot => {},
-      error => {
-        console.log(error);
-      },
-      () => {
-        storage.ref("images/creatTeam/").child(img.name + randomString).getDownloadURL().then( url => {
-          console.log(url)
-          setImgClub({
-            ...imgClub, value: url
-          })
-        })
-      }
-    )
-  //   // imageRef.on(
-  //   //   () => {
-  //   //     storage.ref("images/createTeam/").child(imgClub.value.name).getDownloadURL().then(url => {
-  //   //       console.log(url)
-  //   //     })
-  //   //   }
-  //   // )
-    
-   };
+
+
   const validateForm = (name, value) => {
     switch (name) {
       case "imgClub":
-        
         break;
       case "nameClub":
         if (value.length === 0) {
@@ -152,61 +121,113 @@ const CreateTeam = () => {
     return { flag: true, content: null };
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-    axios.get(`https://afootballleague.ddns.net/api/v1/teams?order-by=Id&page-offset=1&limit=5`)
-    .then(res => {
-      console.log(res.data)
-    }).catch(error => console.log(error))
+    // axios.get(`https://afootballleague.ddns.net/api/v1/teams?order-by=Id&page-offset=1&limit=5`)
+    // .then(res => {
+    //   console.log(res.data)
+    // }).catch(error => console.log(error))
+    // const data = {
+    //   id: 5,
+    //   teamName: nameClub.value,
+    //   teamAvatar: imgClub.value,
+    //   description: textDescription,
+    //   status: true,
+    // };
+    // console.log(data);
+    try {
+      const data = {
+        "id": 10,
+        "teamName": nameClub.value,
+        "teamAvatar": imgClub.value,
+        "description": textDescription,
+    };
+      console.log(data)
+      const response = await axios.post("https://afootballleague.ddns.net/api/v1/teams",data, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (response.status === 201) {
+       NotificationManager.success("Tạo đội bóng thành công", "Chúc mừng");
+       console.log(response)
+      }
+    } catch (error) {
+            NotificationManager.error(
+          "Tạo đội bóng thất bại",
+          "Không thể tạo đội bóng"
+        );
+      console.error(error);
+    }
+    // axios({
+    //   method: "post",
+    //   url: "https://afootballleague.ddns.net/api/v1/teams",
+    //   data: {
+    //     id: 6,
+    //     teamName: nameClub.value,
+    //     teamAvatar: imgClub.value,
+    //     description: textDescription,
+    //     status: true,
+    //   },
+    // })
+    //   .then((res) => {
+    //     NotificationManager.success("Tạo đội bóng thành công", "Chúc mừng");
+    //     console.log(res);
+    //   })
+    //   .catch((error) => {
+    //     NotificationManager.error(
+    //       "Tạo đội bóng thất bại",
+    //       "Không thể tạo đội bóng"
+    //     );
+    //     console.log(error);
+    //   });
   };
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const flagValid = validateForm(name, value);
-    
+
     switch (name) {
       case "imgClub":
-        //const valueImg = URL.createObjectURL();
-        uploadImg(e.target.files[0])
-        
+        const valueImg = URL.createObjectURL(e.target.files[0]);
+        // uploadImg(e.target.files[0]);
+        setImgClub({
+          ...imgClub,
+          img: valueImg,
+          value: e.target.files[0]
+        })
         break;
       case "nameClub":
         let nameClub = null;
         if (flagValid.flag === false) {
           nameClub = {
-              value,
-              error: flagValid.content,
+            value,
+            error: flagValid.content,
           };
         } else {
           nameClub = {
-              value,
+            value,
             error: null,
           };
         }
         setNameClub({
-          ...nameClub
-        })
+          ...nameClub,
+        });
         break;
       case "phoneContact":
         let phoneContact = null;
         if (flagValid.flag === false) {
           phoneContact = {
-           
-              value,
-              error: flagValid.content,
-            
+            value,
+            error: flagValid.content,
           };
         } else {
           phoneContact = {
-           
-              value,
-              error: null,
-           
+            value,
+            error: null,
           };
         }
         setPhoneContact({
-          ...phoneContact
-        })
+          ...phoneContact,
+        });
         break;
       case "gender":
         if (flagValid.flag === false) {
@@ -218,41 +239,35 @@ const CreateTeam = () => {
         let nameManager = null;
         if (flagValid.flag === false) {
           nameManager = {
-            
-              value,
-              error: flagValid.content,
-            
+            value,
+            error: flagValid.content,
           };
         } else {
           nameManager = {
-            
-              value,
-              error: null,
-            
+            value,
+            error: null,
           };
         }
         setNameManager({
-          ...nameManager
-        })
+          ...nameManager,
+        });
         break;
       case "email":
-        
         let email = null;
         if (flagValid.flag === false) {
-          
           email = {
-              value,
-              error: flagValid.content,
+            value,
+            error: flagValid.content,
           };
         } else {
           email = {
-              value,
-              error: null,
+            value,
+            error: null,
           };
         }
         setEmail({
-          ...email
-        })
+          ...email,
+        });
         break;
     }
   };
@@ -261,6 +276,7 @@ const CreateTeam = () => {
   return (
     <>
       <Header />
+
       <form onSubmit={onSubmitHandler}>
         <div
           className="create__team"
@@ -282,7 +298,11 @@ const CreateTeam = () => {
                 minLength="5"
               />
               <img
-                src={imgClub.value == null ? "assets/img/createteam/camera.png" : imgClub.value}
+                src={
+                  imgClub.value == null
+                    ? "assets/img/createteam/camera.png"
+                    : imgClub.img
+                }
                 alt="camera"
                 className="cmr"
               />
@@ -331,7 +351,7 @@ const CreateTeam = () => {
                   placeholder="Tên đội bóng *"
                   value={nameClub.value}
                   onChange={onChangeHandler}
-                  required
+                  
                 />
               </div>
               <div class="text-field">
@@ -458,8 +478,9 @@ const CreateTeam = () => {
                   name="email"
                   id="emailmanager"
                   placeholder="Địa chỉ email *"
-                  value="truownganhkhoa@gmail.com"
+                  value="truonganhkhoa1405@gmail.com"
                   required
+                  disabled
                 />
               </div>
             </div>
@@ -562,7 +583,7 @@ const CreateTeam = () => {
           />
         </div>
       </form>
-
+      <NotificationContainer />
       <Footer />
     </>
   );
