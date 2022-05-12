@@ -71,9 +71,10 @@ const CreateTournament = () => {
     error: "",
   });
   const [timeDuration, setTimeDuration] = useState({
-    value: "15p",
+    value: "15",
     error: "",
   });
+  const [resetProvice , setResetProvice] = useState(-1)
   const [provice, setProvice] = useState(null);
   const [districts, setDistricts] = useState(null);
   const [wards, setWards] = useState(null);
@@ -81,8 +82,9 @@ const CreateTournament = () => {
   AOS.init();
   const tour = gsap.timeline();
   useEffect(() => {
+    setResetProvice(-1);
     getAllCity();
-  }, []);
+  }, [resetProvice]);
   const getAllCity = async () => {
     const response = await axios.get(
       "https://provinces.open-api.vn/api/?depth=3"
@@ -169,7 +171,8 @@ const CreateTournament = () => {
         setEditorState(EditorState.createEmpty());
         setProvice(null);
         setDistricts(null);
-        setWards(null)
+        setWards(null);
+        setResetProvice(0);
       }
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -293,6 +296,7 @@ const CreateTournament = () => {
         });
         break;
       case "timeDuration":
+        console.log(value)
         setTimeDuration({
           ...timeDuration,
           value,
@@ -305,6 +309,7 @@ const CreateTournament = () => {
         setDistricts(proviceFind.districts);
         setWards(null);
         setAddressField(", " + value);
+        break;
       case "districts":
         let dataDis = districts;
 
@@ -313,7 +318,7 @@ const CreateTournament = () => {
         setWards(disFind.wards);
         const oldAddress = addressField;
         setAddressField(", " + value + oldAddress);
-
+        break;
       case "wards":
         {
           const oldAddress = addressField;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles/style.css";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
@@ -7,8 +7,8 @@ import draftToHtml from "draftjs-to-html";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateTeam = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -41,8 +41,23 @@ const CreateTeam = () => {
     value: "",
     error: "",
   });
-
-  
+  const [resetProvice , setResetProvice] = useState(-1)
+  const [provice, setProvice] = useState(null);
+  const [districts, setDistricts] = useState(null);
+  const [wards, setWards] = useState(null);
+  const [addressField, setAddressField] = useState(null);
+  useEffect(() => {
+    setResetProvice(-1);
+    getAllCity();
+  }, [resetProvice]);
+  const getAllCity = async () => {
+    const response = await axios.get(
+      "https://provinces.open-api.vn/api/?depth=3"
+    );
+    if (response.status === 200) {
+      setProvice(response.data);
+    }
+  };
   const validateForm = (name, value) => {
     switch (name) {
       case "imgClub":
@@ -117,34 +132,27 @@ const CreateTeam = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    // axios.get(`https://afootballleague.ddns.net/api/v1/teams?order-by=Id&page-offset=1&limit=5`)
-    // .then(res => {
-    //   console.log(res.data)
-    // }).catch(error => console.log(error))
-    // const data = {
-    //   id: 5,
-    //   teamName: nameClub.value,
-    //   teamAvatar: imgClub.value,
-    //   description: textDescription,
-    //   status: true,
-    // };
-    // console.log(data);
     try {
-      console.log(gender.value)
+      console.log(gender.value);
       const data = {
-        "id": 11,
-        "teamName": nameClub.value,
-        "teamPhone": phoneContact.value,
-        "teamAvatar": imgClub.value,
-        "description": textDescription,
-        "teamGender": gender.value,
-    };
-      console.log(data)
-      const response = await axios.post("https://afootballleague.ddns.net/api/v1/teams",data, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
+        id: 15,
+        teamName: nameClub.value,
+        teamPhone: phoneContact.value,
+        teamAvatar: imgClub.value,
+        description: textDescription,
+        teamGender: gender.value,
+        teamArea: addressField
+      };
+      
+      const response = await axios.post(
+        "https://afootballleague.ddns.net/api/v1/teams",
+        data,
+        {
+          headers: { "content-type": "multipart/form-data" },
+        }
+      );
       if (response.status === 201) {
-        toast.success('Tạo đội bóng thành công', {
+        toast.success("Tạo đội bóng thành công", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -152,20 +160,23 @@ const CreateTeam = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          });
-       const intitalState = {
-        value: "",
-        error: "",
-       };
-       setImgClub(intitalState);
-       setNameClub(intitalState);
-       setPhoneContact(intitalState);
-       setGender({
-        value: "Male",
-        error: "",
-       });
-       setEditorState(EditorState.createEmpty());
-       
+        });
+        const intitalState = {
+          value: "",
+          error: "",
+        };
+        setImgClub(intitalState);
+        setNameClub(intitalState);
+        setPhoneContact(intitalState);
+        setGender({
+          value: "Male",
+          error: "",
+        });
+        setEditorState(EditorState.createEmpty());
+        setProvice(null);
+        setDistricts(null);
+        setWards(null);
+        setResetProvice(0);
       }
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -176,8 +187,8 @@ const CreateTeam = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        });
-          
+      });
+
       console.error(error.response);
     }
     // axios({
@@ -211,12 +222,11 @@ const CreateTeam = () => {
     switch (name) {
       case "imgClub":
         const valueImg = URL.createObjectURL(e.target.files[0]);
-        // uploadImg(e.target.files[0]);
         setImgClub({
           ...imgClub,
           img: valueImg,
-          value: e.target.files[0]
-        })
+          value: e.target.files[0],
+        });
         break;
       case "nameClub":
         let nameClub = null;
@@ -253,23 +263,23 @@ const CreateTeam = () => {
         });
         break;
       case "gender":
-        console.log(value)
+        console.log(value);
         let gender = null;
         if (flagValid.flag === false) {
           gender = {
             value,
             error: flagValid.content,
-          }
+          };
         } else {
           gender = {
             value,
             error: null,
-          }
+          };
         }
-        
+
         setGender({
-          ...gender
-        })
+          ...gender,
+        });
         break;
       case "nameManager":
         let nameManager = null;
@@ -304,6 +314,28 @@ const CreateTeam = () => {
         setEmail({
           ...email,
         });
+        break;
+      case "provice":
+        let dataProvice = provice;
+        const proviceFind = dataProvice.find((item) => item.name === value);
+        setDistricts(proviceFind.districts);
+        setWards(null);
+        setAddressField(", " + value);
+        break;
+      case "districts":
+        let dataDis = districts;
+
+        const disFind = dataDis.find((item) => item.name === value);
+
+        setWards(disFind.wards);
+        const oldAddress = addressField;
+        setAddressField(", " + value + oldAddress);
+        break;
+      case "wards":
+        {
+          const oldAddress = addressField;
+          setAddressField(", " + value + oldAddress);
+        }
         break;
     }
   };
@@ -387,7 +419,6 @@ const CreateTeam = () => {
                   placeholder="Tên đội bóng *"
                   value={nameClub.value}
                   onChange={onChangeHandler}
-                  
                 />
               </div>
               <div class="text-field">
@@ -435,7 +466,7 @@ const CreateTeam = () => {
                   required
                 >
                   <option value="Male">Nam</option>
-                  <option value="Female">Nữ</option>                
+                  <option value="Female">Nữ</option>
                 </select>
               </div>
             </div>
@@ -577,6 +608,113 @@ const CreateTeam = () => {
           </label>
         </div>
       </div> */}
+          <p className="avt line3">Khu vực đội bóng</p>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between"
+          }}>
+            {provice != null ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginBottom: 65,
+                  width: "30%"
+                }}
+              >
+                <label className="createTournament_img_title" htmlFor="provice">
+                  Thành phố/Tỉnh{" "}
+                </label>
+                <select
+                  style={{
+                    padding: "10px 5px",
+                  }}
+                  name="provice"
+                  onChange={onChangeHandler}
+                >
+                  <option selected disabled>
+                    Chọn thành phố
+                  </option>
+                  {provice.map((item, index) => {
+                    return (
+                      <option value={item.name} key={index}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            ) : <div></div>}
+
+            {districts != null ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginBottom: 65,
+                  width: "30%"
+                }}
+              >
+                <label
+                  className="createTournament_img_title"
+                  htmlFor="districts"
+                >
+                  Quận/Huyện
+                </label>
+                <select
+                  style={{
+                    padding: "10px 5px",
+                  }}
+                  name="districts"
+                  onChange={onChangeHandler}
+                >
+                  <option selected disabled>
+                    Chọn quận
+                  </option>
+                  {districts.map((item, index) => {
+                    return (
+                      <option value={item.name} key={index}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            ) : <div></div>}
+
+            {wards != null ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginBottom: 65,
+                  width: "30%"
+                }}
+              >
+                <label className="createTournament_img_title" htmlFor="wards">
+                  Phường/Xã
+                </label>
+                <select
+                  style={{
+                    padding: "10px 5px",
+                  }}
+                  name="wards"
+                  onChange={onChangeHandler}
+                >
+                  <option selected disabled>
+                    Chọn phường
+                  </option>
+                  {wards.map((item, index) => {
+                    return (
+                      <option value={item.name} key={index}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            ) : <div></div>}
+          </div>
           <p className="avt line3">Thông tin đội bóng</p>
           <div className="descTeam ">
             <Editor
