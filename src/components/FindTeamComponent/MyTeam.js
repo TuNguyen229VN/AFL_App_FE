@@ -10,22 +10,36 @@ import AOS from "aos";
 import Transitions from "../Transitions/Transitions";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { Link } from "react-router-dom";
 const MyTournamemts = () => {
   AOS.init();
-  // const tour = gsap.timeline();
+  const tour = gsap.timeline();
   const [teams, setTeams] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [count, setCount] = useState(0);
   const [contentSearch, setContentSearch] = useState("");
   const [check, setCheck] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const Loading = () => {
+    return (
+      <>
+        <div className={styles.tournamentload}>
+          <Skeleton height={300} />
+        </div>
+      </>
+    );
+  };
   const getTournament = async (nameFind, currentPage) => {
     try {
+      setLoading(true);
       const res = await axios.get(
         `https://afootballleague.ddns.net/api/v1/teams?team-name=${nameFind}&page-offset=${currentPage}&limit=8`
       );
       if (res.status === 200) {
         setTeams(await res.data.teams);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -39,7 +53,6 @@ const MyTournamemts = () => {
       );
       if (res.status === 200) {
         setCount(await res.data);
-        setCheck(!check);
       }
     } catch (error) {
       console.log(error);
@@ -48,25 +61,36 @@ const MyTournamemts = () => {
   useEffect(() => {
     getTournament(contentSearch, currentPage);
     getCount();
-  }, [check]);
+  }, [check, currentPage]);
 
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
     getTournament(contentSearch, currentPage);
+    setCheck(!check);
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
     getTournament(contentSearch, currentPage);
+    setCheck(!check);
   };
   const onChangeHandler = (e) => {
     setContentSearch(e.target.value);
   };
 
+  const splitTeamArea=(teamArea)=>{
+    let myArray=teamArea.split(",");
+    return myArray[myArray.length-1];
+  }
   return (
     <div>
-      {/* <Transitions timeline={tour} /> */}
+      <Transitions timeline={tour} />
       <Header />
-      <div className="myTournaments" data-aos="fade-up">
+      <div
+        className="myTournaments"
+        data-aos="fade-up"
+        data-aos-duration="2000"
+      >
         <div className={styles.myTourImg}>
           <img
             className={styles.img_mytour}
@@ -91,7 +115,7 @@ const MyTournamemts = () => {
               />
               <input
                 className={styles.btnFindTour}
-                type="button"
+                type="submit"
                 value="Tìm kiếm"
               />
             </div>
@@ -108,7 +132,54 @@ const MyTournamemts = () => {
             </div>
           </form>
         </div>
-        <ListTeam teams={teams} />
+        {/* listteam */}
+        {/* <ListTeam teams={teams} /> */}
+        <div className={styles.listTournament}>
+          <h1 className={styles.titleListTour}>Các đội bóng</h1>
+          <div className={styles.listTour}>
+            {teams.map((team) => {
+              return (
+                <div key={team.id}>
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <Link to={`/inforTeamDetail/${team.id}`} className={styles.team} key={team.id}>
+                      <div className={styles.tournamentImgAd}>
+                        <img
+                          className={styles.teamImg}
+                          src={team.teamAvatar}
+                          alt="myItem"
+                        />
+                      </div>
+
+                      <div className={styles.tournamentInfor}>
+                        <h1 className={styles.tournamentName}>
+                          {team.teamName}
+                        </h1>
+                        <p className={styles.type}>
+                          Bóng Đá {team.teamGender==="Male"?"Nam":"Nữ"}  {team.teamArea!==""?"| "+splitTeamArea(team.teamArea):""}
+                        </p>
+                        <div className={styles.line} />
+                        <div className={styles.tournamentFooter}>
+                          <div className={styles.teamPart}>
+                            <img
+                              className={styles.teamPartImg}
+                              src="./assets/icons/join.png"
+                              alt="join"
+                            />
+                            <p>24</p>
+                          </div>
+                          <div className={styles.heart__shape}></div>
+                        </div>
+                      </div>
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {/* paging */}
         <nav
           aria-label="Page navigation example"
           className={styles.pagingTournament}
@@ -122,7 +193,7 @@ const MyTournamemts = () => {
             nextClassName={styles.pageItem}
             previousClassName={styles.pageItem}
             breakLabel={"..."}
-            pageCount={count / 8}
+            pageCount={Math.ceil(count / 8)}
             marginPagesDisplayed={3}
             onPageChange={handlePageClick}
             pageLinkClassName={styles.pagelink}

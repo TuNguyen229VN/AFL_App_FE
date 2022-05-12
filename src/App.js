@@ -40,17 +40,17 @@ function App() {
           <Route exact path="/findTournaments" element={<MyTournaments />} />
           <Route exact path="/findTeam" element={<MyTeam />} />
           <Route exact path="/createTeam" element={<CreateTeam />} />
-          <Route exact path="/inforTeamDetail" element={<InforTeamDetail />} />
-          <Route exact path="/listPlayer" element={<ListPlayer />} />
+          <Route exact path="/inforTeamDetail/:idTeam" element={<InforTeamDetail />} />
+          <Route exact path="/listPlayer/:idTeam" element={<ListPlayer />} />
           
           <Route
             exact
-            path="/reportTeamDeatail"
+            path="/reportTeamDeatail/:idTeam"
             element={<ReportTeamDetail />}
           />
           <Route
             exact
-            path="/commentTeamDetail"
+            path="/commentTeamDetail/:idTeam"
             element={<CommentTeamDetail />}
           />
           <Route
@@ -60,37 +60,37 @@ function App() {
           />
           <Route
             exact
-            path="/inforTournamentDetail"
+            path="/inforTournamentDetail/:idTour"
             element={<InforTournamentDetail />}
           />
            <Route
             exact
-            path="/commentTournamentDetail"
+            path="/commentTournamentDetail/:idTour"
             element={<CommentTournamentDetail />}
           />
            <Route
             exact
-            path="/galleryTournamentDetail"
+            path="/galleryTournamentDetail/:idTour"
             element={<GalleryTournamentDetail />}
           />
            <Route
             exact
-            path="/predictionTournamentDetail"
+            path="/predictionTournamentDetail/:idTour"
             element={<PredictionTournamentDetail />}
           />
            <Route
             exact
-            path="/rankTableTournamentDetail"
+            path="/rankTableTournamentDetail/:idTour"
             element={<RankTableTournamentDetail />}
           />
            <Route
             exact
-            path="/scheduleTournamentDetail"
+            path="/scheduleTournamentDetail/:idTour"
             element={<ScheduleTournamentDetail />}
           />
            <Route
             exact
-            path="/teamInTournament"
+            path="/teamInTournament/:idTour"
             element={<TeamInTournament />}
           />
         </Routes>

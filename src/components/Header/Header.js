@@ -15,7 +15,7 @@ function Header() {
         <div className="logo">
           <Link to={"/"}>
             <img
-              src="assets/img/homepage/logo.png"
+              src="/assets/img/homepage/logo.png"
               alt="logo"
               className="logo"
             />
@@ -86,11 +86,11 @@ function Header() {
         <div className="account">
           <div className="current">
             <div className="avatar">
-              <img src="assets/img/homepage/pic-1.png" alt="avatar" />
+              <img src="/assets/img/homepage/pic-1.png" alt="avatar" />
             </div>
             <p className="name_account">Tú Nguyễn</p>
             <i>
-              <img src="assets/icons/arrowDown.svg" alt="arrowDown" />
+              <img src="/assets/icons/arrowDown.svg" alt="arrowDown" />
             </i>
           </div>
           <div className="popup_down">

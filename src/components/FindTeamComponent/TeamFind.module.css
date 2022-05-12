@@ -84,7 +84,7 @@ input:focus{
 
 .btnFindTour {
   padding: 10px 20px;
-  width: max-content;
+  width: 150px;
   background-color: var(--green-bold);
   color: black;
   font-size: 18px;
@@ -93,7 +93,18 @@ input:focus{
   border-left: 1px solid var(--black-text);
   height: 100%;
 }
-
+.btnFindTour:focus{
+  padding: 10px 20px;
+  width: 150px;
+  background-color: var(--green-bold);
+  color: black;
+  font-size: 18px;
+  outline: none;
+  border: none;
+  border-left: 1px solid var(--black-text);
+  height: 100%;
+  text-align: center;
+}
 .selectOp {
   margin-top: 30px;
   display: flex;
@@ -242,6 +253,10 @@ transition: 0.5s;
   text-overflow: ellipsis;
   display: -webkit-box;
   color: var(--white-text);
+  max-width: 230px;
+  margin-left: auto;
+  margin-right: auto;
+  
 }
 
 .type{

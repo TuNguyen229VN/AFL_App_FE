@@ -48,19 +48,19 @@ const Slider = () => {
             <a href="#" className="btn --button-main">
               <p>Xem chi tiết về hệ thống</p>
               <i>
-                <img src="assets/icons/longArrow.svg" alt="arrow2" />
+                <img src="/assets/icons/longArrow.svg" alt="arrow2" />
               </i>
             </a>
           </div>
           <div className="slider__item-gallery">
             <div className="slider_item-img">
-              <img src="assets/img/homepage/a1.png" alt="img" />
+              <img src="/assets/img/homepage/a1.png" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="assets/img/homepage/a2.png" alt="img" />
+              <img src="/assets/img/homepage/a2.png" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="assets/img/homepage/a3.png" alt="img" />
+              <img src="/assets/img/homepage/a3.png" alt="img" />
             </div>
           </div>
           <img
@@ -80,19 +80,19 @@ const Slider = () => {
             <a href="#" className="btn --button-main">
               <p>Tạo giải đấu cho riêng mình</p>
               <i>
-                <img src="assets/icons/longArrow.svg" alt="arrow2" />
+                <img src="/assets/icons/longArrow.svg" alt="arrow2" />
               </i>
             </a>
           </div>
           <div className="slider__item-gallery">
             <div className="slider_item-img">
-              <img src="assets/img/homepage/a1.png" alt="img" />
+              <img src="/assets/img/homepage/a1.png" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="assets/img/homepage/a2.png" alt="img" />
+              <img src="/assets/img/homepage/a2.png" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="assets/img/homepage/a3.png" alt="img" />
+              <img src="/assets/img/homepage/a3.png" alt="img" />
             </div>
           </div>
           <img
@@ -112,19 +112,19 @@ const Slider = () => {
             <a href="#" className="btn --button-main">
               <p>Tạo đội bóng cho riêng mình</p>
               <i>
-                <img src="assets/icons/longArrow.svg" alt="arrow2" />
+                <img src="/assets/icons/longArrow.svg" alt="arrow2" />
               </i>
             </a>
           </div>
           <div className="slider__item-gallery">
             <div className="slider_item-img">
-              <img src="assets/img/homepage/a1.png" alt="img" />
+              <img src="/assets/img/homepage/a1.png" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="assets/img/homepage/a2.png" alt="img" />
+              <img src="/assets/img/homepage/a2.png" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="assets/img/homepage/a3.png" alt="img" />
+              <img src="/assets/img/homepage/a3.png" alt="img" />
             </div>
           </div>
           <img
@@ -146,18 +146,18 @@ const Slider = () => {
               <img src="/assets/icons/mouse61.png" alt="mouse" />
             </div>
             <div className="arrow">
-              <img src="assets/icons/arrowDown.png" alt="arrowDown" />
+              <img src="/assets/icons/arrowDown.png" alt="arrowDown" />
             </div>
           </div>
           <div className="slider__bottom-control">
             <div className="btnctr --prev" onClick={myCustomPrev}>
               <i>
-                <img src="assets/icons/arrow.png" alt="arrow" />
+                <img src="/assets/icons/arrow.png" alt="arrow" />
               </i>
             </div>
             <div className="btnctr --next" onClick={myCustomNext}>
               <i>
-                <img src="assets/icons/arrow.png" alt="arrow" />
+                <img src="/assets/icons/arrow.png" alt="arrow" />
               </i>
             </div>
           </div>

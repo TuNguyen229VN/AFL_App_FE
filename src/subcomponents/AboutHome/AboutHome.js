@@ -24,12 +24,12 @@ function AboutHome() {
       <div className="about-control">
         <div className="btnctr --prev" onClick={myCustomPrev}>
           <i>
-            <img src="assets/icons/arrow.png" alt="arrow" />
+            <img src="/assets/icons/arrow.png" alt="arrow" />
           </i>
         </div>
         <div className="btnctr --next" onClick={myCustomNext}>
           <i>
-            <img src="assets/icons/arrow.png" alt="arrow" />
+            <img src="/assets/icons/arrow.png" alt="arrow" />
           </i>
         </div>
       </div>

@@ -137,7 +137,7 @@ const CreateTeam = () => {
     // console.log(data);
     try {
       const data = {
-        "id": 10,
+        "id": 10````,
         "teamName": nameClub.value,
         "teamAvatar": imgClub.value,
         "description": textDescription,

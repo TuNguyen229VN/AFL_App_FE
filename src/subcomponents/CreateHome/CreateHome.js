@@ -12,7 +12,7 @@ const CreateHome = () => {
             thức thi đấu đa dạng khác nhau còn gì tuyệt hơn
           </p>
           <a href="#" className="btnmore">
-            xem thêm <img src="assets/icons/arrow.png" alt="arrowRight" />
+            xem thêm <img src="/assets/icons/arrow.png" alt="arrowRight" />
           </a>
         </div>
         <div className="product__img" data-aos="fade-left">
@@ -30,7 +30,7 @@ const CreateHome = () => {
             đấu đa dạng khác nhau còn gì tuyệt hơn
           </p>
           <Link to={"/createTeam"} className="btnmore ">
-            xem thêm <img src="assets/icons/arrow.png" alt="arrowRight " />
+            xem thêm <img src="/assets/icons/arrow.png" alt="arrowRight " />
           </Link>
         </div>
         <div className="product__img " data-aos="fade-right">

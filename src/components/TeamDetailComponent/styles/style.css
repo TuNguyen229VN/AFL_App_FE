@@ -42,7 +42,9 @@
   width: 150px;
   transform: translate(-50%, -50%);
 }
-
+.headertext__team{
+  padding-right: 45px;
+}
 .headertext__team h2 {
   font-family: "Mulish-Bold";
   color: var(--white-text);
@@ -76,11 +78,23 @@
   font-size: 25px;
   width: 25px;
 }
+
+.HeaderTeamDetail .man.location .text_field{
+  line-height: 1.1;
+  width: 400px;
+}
+.HeaderTeamDetail .man i{
+  font-size: 25px;
+  width: 25px;
+}
 .HeaderTeamDetail .man span {
   margin-left: 10px;
   color: var(--white-text);
 }
-
+.man{
+  display: flex;
+  align-items: center;
+}
 .HeaderTeamDetail .man .title {
   width: 130px;
   display: inline-block;

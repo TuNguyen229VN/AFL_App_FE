@@ -12,15 +12,18 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Link } from "react-router-dom";
 const MyTournamemts = () => {
   AOS.init();
-  // const tour = gsap.timeline();
+  const tour = gsap.timeline();
   const [tournaments, setTournaments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [count, setCount] = useState(0);
   const [contentSearch, setContentSearch] = useState("");
   const [check, setCheck] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [tourType, setTourType] = useState([]);
+  const [footballField, setFootballField] = useState([]);
   const Loading = () => {
     return (
       <>
@@ -30,20 +33,24 @@ const MyTournamemts = () => {
       </>
     );
   };
+
+  // Get Tournament
   const getTournament = async (nameFind, currentPage) => {
     try {
+      setLoading(true);
       const res = await axios.get(
         `https://afootballleague.ddns.net/api/v1/tournaments?tournament-name=${nameFind}&page-offset=${currentPage}&limit=8`
       );
       if (res.status === 200) {
         setTournaments(await res.data.tournaments);
-        // setLoading(false);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+  // Get Total Count Tournament
   const getCount = async () => {
     try {
       const res = await axios.get(
@@ -51,34 +58,111 @@ const MyTournamemts = () => {
       );
       if (res.status === 200) {
         setCount(await res.data);
-        setCheck(!check);
       }
     } catch (error) {
       console.log(error);
     }
   };
-  useEffect(() => {
-    getTournament(contentSearch, currentPage);
-    getCount();
-  }, [check]);
 
+  // Get Type Tournament
+  const getFootballField = async () => {
+    try {
+      const res = await axios.get(
+        `https://afootballleague.ddns.net/api/v1/football-field-types?page-offset=1&limit=5`
+      );
+      if (res.status === 200) {
+        setFootballField(await res.data.footballFieldTypes);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Get FootballFiled Tournament
+  const getTourType = async () => {
+    try {
+      const res = await axios.get(
+        `https://afootballleague.ddns.net/api/v1/tournament-types?page-offset=1&limit=5`
+      );
+      if (res.status === 200) {
+        setTourType(await res.data.tournamentTypes);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Click paging number
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
+    setCheck(!check);
     getTournament(contentSearch, currentPage);
   };
 
-  const onSubmitHandler = () => {
+  // Search action
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
     getTournament(contentSearch, currentPage);
+    setCheck(!check);
   };
+
   const onChangeHandler = (e) => {
     setContentSearch(e.target.value);
   };
+
+  const getType = (id) => {
+    if (1 === id) {
+      return "Loại trực tiếp";
+    }
+    if (2 === id) {
+      return "Đá vòng tròn";
+    }
+    if (3 === id) {
+      return "Đá chia bảng";
+    } else {
+      return "";
+    }
+  };
+  const getFeild = (id) => {
+    if (1 === id) {
+      return " | Sân 5";
+    }
+    if (2 === id) {
+      return " | Sân 7";
+    }
+    if (3 === id) {
+      return " | Sân 11";
+    }
+    else{
+      return "";
+    }
+  };
+  const splitTeamArea=(teamArea)=>{
+    let a=teamArea;
+    if(a!==null){
+      let myArray=a.split(",");
+      return myArray[myArray.length-1];
+    }
+    return teamArea
+  }
+  // Use Effect
+  useEffect(() => {
+    getTournament(contentSearch, currentPage);
+    getCount();
+    // getFootballField();
+    // getTourType();
+  }, [check, currentPage]);
+
   return (
     <>
-      {/* <Transitions timeline={tour} /> */}
+      <Transitions timeline={tour} />
       <Header />
 
-      <div className="myTournaments" data-aos="fade-up">
+      <div
+        className="myTournaments"
+        data-aos="fade-up"
+        data-aos-duration="2000"
+      >
         {/* Search */}
         <div className={styles.myTourImg}>
           <img
@@ -104,7 +188,7 @@ const MyTournamemts = () => {
               />
               <input
                 className={styles.btnFindTour}
-                type="button"
+                type="submit"
                 value="Tìm kiếm"
               />
             </div>
@@ -131,10 +215,13 @@ const MyTournamemts = () => {
             {tournaments.map((tour) => {
               return (
                 <div key={tour.id}>
-                  {/* {loading ? (
+                  {loading ? (
                     <Loading />
-                  ) : ( */}
-                    <div className={styles.tournament}>
+                  ) : (
+                    <Link
+                      to={`/inforTournamentDetail/${tour.id}`}
+                      className={styles.tournament}
+                    >
                       <div className={styles.tournamentImgAd}>
                         <img
                           className={styles.tournamentImg}
@@ -148,7 +235,8 @@ const MyTournamemts = () => {
                           {tour.tournamentName}
                         </h1>
                         <p className={styles.type}>
-                          Loại trực tiếp | Tp. Hồ Chí Minh
+                          {getType(tour.tournamentTypeId)}{tour.footballFieldAddress!==""?"| "+splitTeamArea(tour.footballFieldAddress):""}
+                          {getFeild(tour.footballFieldTypeId)}
                         </p>
 
                         <div className={styles.tournamentFooter}>
@@ -162,8 +250,8 @@ const MyTournamemts = () => {
                           <div className="heart__shape"></div>
                         </div>
                       </div>
-                    </div>
-                  {/* )} */}
+                    </Link>
+                  )}
                 </div>
               );
             })}
@@ -184,7 +272,7 @@ const MyTournamemts = () => {
             nextClassName={styles.pageItem}
             previousClassName={styles.pageItem}
             breakLabel={"..."}
-            pageCount={count / 8}
+            pageCount={Math.ceil(count / 8)}
             marginPagesDisplayed={3}
             onPageChange={handlePageClick}
             pageLinkClassName={styles.pagelink}

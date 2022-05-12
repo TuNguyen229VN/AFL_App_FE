@@ -6,7 +6,7 @@ function Footer() {
       <div className="container ">
         <div className="logoft ">
           <a href="# ">
-            <img src="assets/img/homepage/logo.png " alt="logo " />
+            <img src="/assets/img/homepage/logo.png " alt="logo " />
           </a>
         </div>
         <div className="footer_title ">Amateur Football League</div>

@@ -84,10 +84,13 @@ input:focus{
   border: none;
   height: 100%;
 }
-
+.inputNameTour:focus {
+  outline: none;
+  border: none;
+}
 .btnFindTour {
   padding: 10px 20px;
-  width: max-content;
+  width: 150px;
   background-color: var(--green-bold);
   color: black;
   font-size: 18px;
@@ -95,6 +98,19 @@ input:focus{
   border: none;
   border-left: 1px solid var(--black-text);
   height: 100%;
+  text-align: center;
+}
+.btnFindTour:focus{
+  padding: 10px 20px;
+  width: 150px;
+  background-color: var(--green-bold);
+  color: black;
+  font-size: 18px;
+  outline: none;
+  border: none;
+  border-left: 1px solid var(--black-text);
+  height: 100%;
+  text-align: center;
 }
 
 .selectOp {
@@ -177,6 +193,10 @@ transition: 0.5s;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
+  color: var(--blue-black);
+}
+.tournament:hover{
+  color: var(--blue-black);
 }
 .tournament {
   /* width: 250px;
