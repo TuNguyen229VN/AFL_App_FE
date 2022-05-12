@@ -120,7 +120,7 @@ function HeaderTournamentDetail() {
               <img src="/assets/icons/join.png" alt="join" />
             </i>
             <span className="title">Đội tham gia: </span>
-            <span>33 / {tourDetail.footballTeamNumber} đội</span>
+            <span>{tourDetail.numberTeamInTournament}/ {tourDetail.footballTeamNumber} đội</span>
           </div>
           <div className="man gender__manager">
             <i className="fas fa-solid fa-font-awesome"></i>

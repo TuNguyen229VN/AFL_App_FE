@@ -42,6 +42,7 @@ const MyTournamemts = () => {
         setLoading(false);
       }
     } catch (error) {
+      console.log(loading)
       console.log(error);
     }
   };
@@ -167,7 +168,7 @@ const MyTournamemts = () => {
                               src="./assets/icons/join.png"
                               alt="join"
                             />
-                            <p>24</p>
+                            <p>{team.numberPlayerInTeam}</p>
                           </div>
                           <div className={styles.heart__shape}></div>
                         </div>

@@ -245,7 +245,7 @@ const MyTournamemts = () => {
                               className={styles.teamPartImg}
                               src="./assets/icons/join.png"
                             />
-                            <p>24</p>
+                            <p>{tour.numberTeamInTournament}</p>
                           </div>
                           <div className="heart__shape"></div>
                         </div>
