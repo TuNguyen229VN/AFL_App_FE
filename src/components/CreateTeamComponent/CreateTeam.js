@@ -7,11 +7,6 @@ import draftToHtml from "draftjs-to-html";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import axios from "axios";
-// import {
-//   NotificationContainer,
-//   NotificationManager,
-// } from "react-notifications";
-// import 'react-notifications/lib/notifications.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

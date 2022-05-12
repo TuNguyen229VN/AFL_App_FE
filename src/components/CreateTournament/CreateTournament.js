@@ -11,11 +11,8 @@ import draftToHtml from "draftjs-to-html";
 import CompetitionFormat from "./CompetitionFormat";
 import Description from "./Description";
 import axios from "axios";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
-import 'react-notifications/lib/notifications.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateTournament = () => {
   const [status, setStatus] = useState(-1);
@@ -81,7 +78,7 @@ const CreateTournament = () => {
         "tournamentName": nameTournament.value,
         "mode": status === - 1 ? "PRIVATE" : "PUBLIC",
         "tournamentPhone": phoneContact.value,
-        "tournamentGender": "Other", // note
+        "tournamentGender": "", // note
         "registerEndDate": closeRegister.value,
         "tournamentStartDate": startTime.value,
         "tournamentEndDate": endTime.value,
@@ -101,16 +98,29 @@ const CreateTournament = () => {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (response.status === 201) {
-       NotificationManager.success("Tạo đội bóng thành công", "Chúc mừng");
+        toast.success('Tạo giải đấu thành công', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
        const intitalState = {
         value: "",
         error: "",
        }; }
       } catch (error) {
-              NotificationManager.error(
-                error.response.data.message,
-            "Không thể tạo đội bóng"
-          );
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
         console.error(error.response);
       }
   };
@@ -506,7 +516,7 @@ const CreateTournament = () => {
           </form>
         </div>
       </div>
-      <NotificationContainer />
+      <ToastContainer />
       <Footer />
     </>
   );
