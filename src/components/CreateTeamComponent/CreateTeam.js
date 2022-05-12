@@ -30,7 +30,7 @@ const CreateTeam = () => {
     error: "",
   });
   const [gender, setGender] = useState({
-    value: "",
+    value: "Male",
     error: "",
   });
   const [nameManager, setNameManager] = useState({
@@ -42,7 +42,7 @@ const CreateTeam = () => {
     error: "",
   });
 
-
+  
   const validateForm = (name, value) => {
     switch (name) {
       case "imgClub":
@@ -160,11 +160,12 @@ const CreateTeam = () => {
        setImgClub(intitalState);
        setNameClub(intitalState);
        setPhoneContact(intitalState);
-       setGender(intitalState);
-       setNameManager(intitalState);
-       setEmail(intitalState);
+       setGender({
+        value: "Male",
+        error: "",
+       });
        setEditorState(EditorState.createEmpty());
-       console.log(response)
+       
       }
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -434,8 +435,7 @@ const CreateTeam = () => {
                   required
                 >
                   <option value="Male">Nam</option>
-                  <option value="Female">Nữ</option>
-                  <option value="Other">Khác</option>
+                  <option value="Female">Nữ</option>                
                 </select>
               </div>
             </div>

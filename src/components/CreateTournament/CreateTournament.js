@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ".//style.css";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -11,8 +11,8 @@ import draftToHtml from "draftjs-to-html";
 import CompetitionFormat from "./CompetitionFormat";
 import Description from "./Description";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateTournament = () => {
   const [status, setStatus] = useState(-1);
@@ -35,12 +35,11 @@ const CreateTournament = () => {
     error: "",
   });
   const [typeFootballField, setTypeFootballField] = useState({
-    value: "",
-    name: "",
+    value: 1,
     error: "",
   });
   const [closeRegister, setCloseRegister] = useState({
-    value: "",
+    value: "2022-05-07T13:57:00",
     error: "",
   });
   const [startTime, setStartTime] = useState({
@@ -52,7 +51,7 @@ const CreateTournament = () => {
     error: "",
   });
   const [competitionFormat, setCompetitionFormat] = useState({
-    value: "",
+    value: 1,
     error: "",
   });
   const [minimunPlayerInTournament, setMinimunPlayerInTournament] = useState({
@@ -67,38 +66,64 @@ const CreateTournament = () => {
     value: "",
     error: "",
   });
+  const [gender, setGender] = useState({
+    value: "Male",
+    error: "",
+  });
+  const [timeDuration, setTimeDuration] = useState({
+    value: "15p",
+    error: "",
+  });
+  const [provice, setProvice] = useState(null);
+  const [districts, setDistricts] = useState(null);
+  const [wards, setWards] = useState(null);
+  const [addressField, setAddressField] = useState(null);
   AOS.init();
   const tour = gsap.timeline();
-
-  const onSubmitHandler =  async (e) => {
+  useEffect(() => {
+    getAllCity();
+  }, []);
+  const getAllCity = async () => {
+    const response = await axios.get(
+      "https://provinces.open-api.vn/api/?depth=3"
+    );
+    if (response.status === 200) {
+      setProvice(response.data);
+    }
+  };
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
       const data = {
-        "id": 1,
-        "tournamentName": nameTournament.value,
-        "mode": status === - 1 ? "PRIVATE" : "PUBLIC",
-        "tournamentPhone": phoneContact.value,
-        "tournamentGender": "", // note
-        "registerEndDate": closeRegister.value,
-        "tournamentStartDate": startTime.value,
-        "tournamentEndDate": endTime.value,
-        "footballFieldAddress": footballField.value,
-        "tournamentAvatar": imgTournament.value,
-        "description": descriptionText,
-        "matchMinutes": 10, // note
-        "footballTeamNumber": teamPaticipate.value,
-        "footballPlayerMaxNumber": minimunPlayerInTournament.value,
-        "status": true, // note
-        "userId": 6,
-        "tournamentTypeId": competitionFormat.value,
-        "footballFieldTypeId": +typeFootballField.value
+        id: 1,
+        tournamentName: nameTournament.value,
+        mode: status === -1 ? "PRIVATE" : "PUBLIC",
+        tournamentPhone: phoneContact.value,
+        tournamentGender: gender.value,
+        registerEndDate: closeRegister.value,
+        tournamentStartDate: startTime.value,
+        tournamentEndDate: endTime.value,
+        footballFieldAddress: footballField.value  + ", " + addressField,
+        tournamentAvatar: imgTournament.value,
+        description: descriptionText,
+        matchMinutes: +timeDuration.value,
+        footballTeamNumber: teamPaticipate.value,
+        footballPlayerMaxNumber: minimunPlayerInTournament.value,
+        status: true,
+        userId: 6,
+        tournamentTypeId: competitionFormat.value,
+        footballFieldTypeId: +typeFootballField.value,
       };
-      console.log(data)
-      const response = await axios.post("https://afootballleague.ddns.net/api/v1/tournaments",data, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
+
+      const response = await axios.post(
+        "https://afootballleague.ddns.net/api/v1/tournaments",
+        data,
+        {
+          headers: { "content-type": "multipart/form-data" },
+        }
+      );
       if (response.status === 201) {
-        toast.success('Tạo giải đấu thành công', {
+        toast.success("Tạo giải đấu thành công", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -106,23 +131,58 @@ const CreateTournament = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          });
-       const intitalState = {
-        value: "",
-        error: "",
-       }; }
-      } catch (error) {
-        toast.error(error.response.data.message, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          });
-        console.error(error.response);
+        });
+
+        const intitalState = {
+          value: "",
+          error: "",
+        };
+        setImgTournament(intitalState);
+        setNameTournament(intitalState);
+        setTeamPaticipate(intitalState);
+        setTypeFootballField({
+          value: 1,
+          error: "",
+        });
+
+        setCloseRegister({
+          value: "2022-05-07T13:57:00",
+          error: "",
+        });
+        setStartTime(intitalState);
+        setEndTime(intitalState);
+        setCompetitionFormat({
+          value: 1,
+          error: "",
+        });
+        setMinimunPlayerInTournament(intitalState);
+        setPhoneContact(intitalState);
+        setFootballField(intitalState);
+        setGender({
+          value: "Male",
+          error: "",
+        });
+        setTimeDuration({
+          value: 15,
+          error: "",
+        });
+        setEditorState(EditorState.createEmpty());
+        setProvice(null);
+        setDistricts(null);
+        setWards(null)
       }
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.error(error.response);
+    }
   };
   const validateForm = (name, value) => {
     switch (name) {
@@ -156,76 +216,109 @@ const CreateTournament = () => {
       case "imgTournament":
         setImgTournament({
           ...imgTournament,
-          value:e.target.files[0],
-          img: URL.createObjectURL(e.target.files[0])
-        })
+          value: e.target.files[0],
+          img: URL.createObjectURL(e.target.files[0]),
+        });
         break;
       case "nameTournament":
         setNameTournament({
           ...nameTournament,
           value,
-        })
+        });
         break;
       case "teamPaticipate":
         setTeamPaticipate({
           ...teamPaticipate,
-          value
-        })
+          value,
+        });
         break;
       case "typeFootballField":
         setTypeFootballField({
           ...typeFootballField,
-          value
-        })
+          value,
+        });
         break;
       case "closeRegister":
         setCloseRegister({
           ...closeRegister,
-          value
-        })
+          value,
+        });
         break;
       case "startTime":
-        
         setStartTime({
           ...startTime,
-          value
-        })
+          value,
+        });
         break;
       case "endTime":
         setEndTime({
           ...endTime,
-          value
-        })
+          value,
+        });
         break;
       case "competitionFormat":
         let numFormat = -1;
-        if(value === "knockout"){
+        if (value === "knockout") {
           numFormat = 1;
-        }else if ( value === "circle"){
+        } else if (value === "circle") {
           numFormat = 2;
-        } else numFormat = 3
+        } else numFormat = 3;
         setCompetitionFormat({
           ...competitionFormat,
-          value: numFormat
-        })
+          value: numFormat,
+        });
         break;
       case "minimunPlayerInTournament":
         setMinimunPlayerInTournament({
           ...minimunPlayerInTournament,
-          value
-        })
+          value,
+        });
         break;
       case "phoneContact":
         setPhoneContact({
           ...phoneContact,
-          value
-        })
+          value,
+        });
         break;
       case "footballField":
         setFootballField({
           ...footballField,
-          value
-        })
+          value,
+        });
+        break;
+      case "gender":
+        setGender({
+          ...gender,
+          value,
+        });
+        break;
+      case "timeDuration":
+        setTimeDuration({
+          ...timeDuration,
+          value,
+        });
+        break;
+      case "provice":
+        let dataProvice = provice;
+        const proviceFind = dataProvice.find((item) => item.name === value);
+
+        setDistricts(proviceFind.districts);
+        setWards(null);
+        setAddressField(", " + value);
+      case "districts":
+        let dataDis = districts;
+
+        const disFind = dataDis.find((item) => item.name === value);
+
+        setWards(disFind.wards);
+        const oldAddress = addressField;
+        setAddressField(", " + value + oldAddress);
+
+      case "wards":
+        {
+          const oldAddress = addressField;
+          setAddressField(", " + value + oldAddress);
+        }
         break;
     }
   };
@@ -254,7 +347,7 @@ const CreateTournament = () => {
                 alignItems: "center",
               }}
             >
-              <input type="checkbox" id="switch" class="switch-input"   />
+              <input type="checkbox" id="switch" class="switch-input" />
               <label
                 for="switch"
                 class="switch"
@@ -296,7 +389,11 @@ const CreateTournament = () => {
                         width: 120,
                         margin: "auto",
                       }}
-                      src="assets/img/createteam/camera.png"
+                      src={
+                        imgTournament.value == ""
+                          ? "assets/img/createteam/camera.png"
+                          : imgTournament.img
+                      }
                       alt="camera"
                     />
 
@@ -366,35 +463,28 @@ const CreateTournament = () => {
                     <option value="4">Sân thi đấu bóng đá 11</option>
                   </select>
                 </div>
+                <div>
+                  <label
+                    className="createTournament_img_title"
+                    htmlFor="genderteam"
+                  >
+                    Giới tính đội
+                  </label>
+                  <select
+                    name="gender"
+                    value={gender.value}
+                    onChange={onChangeHandler}
+                    id="genderteam"
+                    className="timeCloseRegister_input"
+                    required
+                  >
+                    <option value="Male">Nam</option>
+                    <option value="Female">Nữ</option>
+                  </select>
+                </div>
               </div>
 
               <div className="createTournament_row1_col3">
-                {status === 0 ? (
-                  <div className="timeCloseRegister">
-                    <label
-                      htmlFor="timeCloseRegister"
-                      className="createTournament_img_title"
-                    >
-                      Ngày đóng đăng ký tham gia
-                    </label>
-                    <input
-                      className="timeCloseRegister_input"
-                      id="timeCloseRegister"
-                      type="datetime-local"
-                      name="closeRegister"
-                      value={closeRegister.value}
-                      onChange={onChangeHandler}
-                      required
-                    />
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      height: 70,
-                    }}
-                  ></div>
-                )}
-
                 <div className="timeStart">
                   <label
                     className="createTournament_img_title"
@@ -428,6 +518,50 @@ const CreateTournament = () => {
                     onChange={onChangeHandler}
                   />
                 </div>
+                <div className="timeDuration">
+                  <label
+                    className="createTournament_img_title"
+                    htmlFor="timeDuration"
+                  >
+                    Thời gian thi đấu mỗi trận
+                  </label>
+                  <select
+                    className="select_typeFootballField"
+                    id="timeDuration"
+                    onChange={onChangeHandler}
+                    value={timeDuration.value}
+                    name="timeDuration"
+                  >
+                    <option value="15">15p</option>
+                    <option value="30">30p</option>
+                    <option value="45">45p</option>
+                  </select>
+                </div>
+                {status === 0 ? (
+                  <div className="timeCloseRegister">
+                    <label
+                      htmlFor="timeCloseRegister"
+                      className="createTournament_img_title"
+                    >
+                      Ngày đóng đăng ký tham gia
+                    </label>
+                    <input
+                      className="timeCloseRegister_input"
+                      id="timeCloseRegister"
+                      type="datetime-local"
+                      name="closeRegister"
+                      value={closeRegister.value}
+                      onChange={onChangeHandler}
+                      required
+                    />
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      height: 70,
+                    }}
+                  ></div>
+                )}
               </div>
             </div>
             <CompetitionFormat
@@ -493,20 +627,127 @@ const CreateTournament = () => {
               </div>
               <div className="createTournament_row4_col2">
                 <div className="fieldSoccer">
-                  <label
-                    className="createTournament_img_title"
-                    htmlFor="fieldSoccer"
-                  >
-                    Địa điểm
-                  </label>
-                  <input
-                    id="fieldSoccer"
-                    className="fieldSoccer_input"
-                    placeholder="Nhập địa chỉ"
-                    name="footballField"
-                    value={footballField.value}
-                    onChange={onChangeHandler}
-                  />
+                  {provice != null ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        marginBottom: 65,
+                      }}
+                    >
+                      <label
+                        className="createTournament_img_title"
+                        htmlFor="provice"
+                      >
+                        Thành phố/Tỉnh{" "}
+                      </label>
+                      <select
+                        style={{
+                          padding: "10px 5px",
+                        }}
+                        name="provice"
+                        onChange={onChangeHandler}
+                      >
+                        <option selected disabled>
+                          Chọn thành phố
+                        </option>
+                        {provice.map((item, index) => {
+                          return (
+                            <option value={item.name} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  ) : null}
+
+                  {districts != null ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        marginBottom: 65,
+                      }}
+                    >
+                      <label
+                        className="createTournament_img_title"
+                        htmlFor="districts"
+                      >
+                        Quận/Huyện
+                      </label>
+                      <select
+                        style={{
+                          padding: "10px 5px",
+                        }}
+                        name="districts"
+                        onChange={onChangeHandler}
+                      >
+                        <option selected disabled>
+                          Chọn quận
+                        </option>
+                        {districts.map((item, index) => {
+                          return (
+                            <option value={item.name} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  ) : null}
+
+                  {wards != null ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        marginBottom: 65,
+                      }}
+                    >
+                      <label
+                        className="createTournament_img_title"
+                        htmlFor="wards"
+                      >
+                        Phường/Xã
+                      </label>
+                      <select
+                        style={{
+                          padding: "10px 5px",
+                        }}
+                        name="wards"
+                        onChange={onChangeHandler}
+                      >
+                        <option selected disabled>
+                          Chọn phường
+                        </option>
+                        {wards.map((item, index) => {
+                          return (
+                            <option value={item.name} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  ) : null}
+                  <div>
+                    <label
+                      className="createTournament_img_title"
+                      htmlFor="fieldSoccer"
+                    >
+                      Địa điểm
+                    </label>
+                    <input
+                      id="fieldSoccer"
+                      className="fieldSoccer_input"
+                      placeholder="Nhập địa chỉ"
+                      name="footballField"
+                      value={footballField.value}
+                      onChange={onChangeHandler}
+
+                    />
+                  </div>
                 </div>
               </div>
             </div>

@@ -3,6 +3,7 @@ import React from "react";
 
 const CompetitionFormat = (props) => {
     const {onChangeHandler , competitionFormat} = props;
+    console.log(competitionFormat.value)
     return(<div className="createTournament_row2">
         <h1 className="createTournament_img_title">Hình thức thi đấu</h1>
             <div className="img_type_footballField">
@@ -26,6 +27,7 @@ const CompetitionFormat = (props) => {
                   name="competitionFormat"
                   value="knockout"
                   onChange={onChangeHandler}
+                  checked={competitionFormat.value === 1 ? true : false}
                 ></input>
               </div>
               <div
