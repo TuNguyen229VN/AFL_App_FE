@@ -135,17 +135,6 @@ const CreateTeam = () => {
     try {
       console.log(gender.value);
       const data = {
-<<<<<<< HEAD
-        "id": 10````,
-        "teamName": nameClub.value,
-        "teamAvatar": imgClub.value,
-        "description": textDescription,
-    };
-      console.log(data)
-      const response = await axios.post("https://afootballleague.ddns.net/api/v1/teams",data, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
-=======
         id: 15,
         teamName: nameClub.value,
         teamPhone: phoneContact.value,
@@ -162,7 +151,6 @@ const CreateTeam = () => {
           headers: { "content-type": "multipart/form-data" },
         }
       );
->>>>>>> 492299ce6d2b960f8ea19f7f9d98fce607b2439b
       if (response.status === 201) {
         toast.success("Tạo đội bóng thành công", {
           position: "top-right",
