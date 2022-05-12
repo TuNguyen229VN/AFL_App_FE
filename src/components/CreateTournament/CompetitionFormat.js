@@ -1,7 +1,9 @@
 import React from "react";
 
 
-const CompetitionFormat = () => {
+const CompetitionFormat = (props) => {
+    const {onChangeHandler , competitionFormat} = props;
+    console.log(competitionFormat.value)
     return(<div className="createTournament_row2">
         <h1 className="createTournament_img_title">Hình thức thi đấu</h1>
             <div className="img_type_footballField">
@@ -18,12 +20,14 @@ const CompetitionFormat = () => {
                     />
                   </div>
                 </label>
-
+ 
                 <input
                   type="radio"
                   id="knockout"
-                  name="footballField"
-                  value="JavaScript"
+                  name="competitionFormat"
+                  value="knockout"
+                  onChange={onChangeHandler}
+                  checked={competitionFormat.value === 1 ? true : false}
                 ></input>
               </div>
               <div
@@ -43,8 +47,9 @@ const CompetitionFormat = () => {
                 <input
                   type="radio"
                   id="circle"
-                  name="footballField"
-                  value="JavaScript"
+                  name="competitionFormat"
+                  value="circle"
+                  onChange={onChangeHandler}
                 ></input>
               </div>
               <div
@@ -64,8 +69,9 @@ const CompetitionFormat = () => {
                 <input
                   type="radio"
                   id="table"
-                  name="footballField"
-                  value="JavaScript"
+                  name="competitionFormat"
+                  value="table"
+                  onChange={onChangeHandler}
                 ></input>
               </div>
             </div>

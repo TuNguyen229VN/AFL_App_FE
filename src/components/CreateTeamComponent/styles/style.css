@@ -175,3 +175,9 @@
   background-color: var(--green-bold);
   color: var(--blue-black);
 }
+
+
+.createTournament_img_title {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
