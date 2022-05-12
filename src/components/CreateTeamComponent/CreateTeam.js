@@ -7,10 +7,13 @@ import draftToHtml from "draftjs-to-html";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import axios from "axios";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+// import {
+//   NotificationContainer,
+//   NotificationManager,
+// } from "react-notifications";
+// import 'react-notifications/lib/notifications.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateTeam = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -19,7 +22,7 @@ const CreateTeam = () => {
   );
 
   const [imgClub, setImgClub] = useState({
-    value: null,
+    value: "",
     img: null,
     error: "",
   });
@@ -40,10 +43,6 @@ const CreateTeam = () => {
     error: "",
   });
   const [email, setEmail] = useState({
-    value: "",
-    error: "",
-  });
-  const [description, setDescription] = useState({
     value: "",
     error: "",
   });
@@ -136,26 +135,54 @@ const CreateTeam = () => {
     // };
     // console.log(data);
     try {
+      console.log(gender.value)
       const data = {
-        "id": 10,
+        "id": 11,
         "teamName": nameClub.value,
+        "teamPhone": phoneContact.value,
         "teamAvatar": imgClub.value,
         "description": textDescription,
+        "teamGender": gender.value,
     };
       console.log(data)
       const response = await axios.post("https://afootballleague.ddns.net/api/v1/teams",data, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (response.status === 201) {
-       NotificationManager.success("Tạo đội bóng thành công", "Chúc mừng");
+        toast.success('Tạo đội bóng thành công', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+       const intitalState = {
+        value: "",
+        error: "",
+       };
+       setImgClub(intitalState);
+       setNameClub(intitalState);
+       setPhoneContact(intitalState);
+       setGender(intitalState);
+       setNameManager(intitalState);
+       setEmail(intitalState);
+       setEditorState(EditorState.createEmpty());
        console.log(response)
       }
     } catch (error) {
-            NotificationManager.error(
-          "Tạo đội bóng thất bại",
-          "Không thể tạo đội bóng"
-        );
-      console.error(error);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+          
+      console.error(error.response);
     }
     // axios({
     //   method: "post",
@@ -230,10 +257,23 @@ const CreateTeam = () => {
         });
         break;
       case "gender":
+        console.log(value)
+        let gender = null;
         if (flagValid.flag === false) {
+          gender = {
+            value,
+            error: flagValid.content,
+          }
         } else {
+          gender = {
+            value,
+            error: null,
+          }
         }
-        console.log("gender");
+        
+        setGender({
+          ...gender
+        })
         break;
       case "nameManager":
         let nameManager = null;
@@ -299,7 +339,7 @@ const CreateTeam = () => {
               />
               <img
                 src={
-                  imgClub.value == null
+                  imgClub.value === ""
                     ? "assets/img/createteam/camera.png"
                     : imgClub.img
                 }
@@ -398,9 +438,9 @@ const CreateTeam = () => {
                   id="genderteam"
                   required
                 >
-                  <option value="Nam">Nam</option>
-                  <option value="Nữ">Nữ</option>
-                  <option value="Khác">Khác</option>
+                  <option value="Male">Nam</option>
+                  <option value="Female">Nữ</option>
+                  <option value="Other">Khác</option>
                 </select>
               </div>
             </div>
@@ -583,7 +623,7 @@ const CreateTeam = () => {
           />
         </div>
       </form>
-      <NotificationContainer />
+      <ToastContainer />
       <Footer />
     </>
   );
