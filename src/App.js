@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "./components/HomePageComponent/HomePage";
 import Login from "./components/Login/Login";
-import Signup from "./components/Signup/Signup";
+import Signup from "./components/Signup/Signup"
 import MyTournaments from "./components/FindTournamentComponent/MyTournament";
 import MyTeam from "./components/FindTeamComponent/MyTeam";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";

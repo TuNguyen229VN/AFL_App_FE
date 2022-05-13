@@ -1,0 +1,248 @@
+
+.signupgg .container__wrap {
+	display: grid;
+	grid-template-columns: 660px 1fr;
+	column-gap: 150px;
+	height: 100vh;
+	overflow: hidden;
+      }
+      
+      .sign__sub {
+	position: relative;
+	top: 0;
+	left: 0;
+      }
+      .signupgg .imgBack {
+	filter: brightness(60%);
+	min-height: 100%;
+      }
+      .signupgg .logo {
+	position: absolute;
+	top: 45px;
+	left: 45px;
+	z-index: 2;
+      }
+      
+      .sign__sub-text {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	color: var(--white-text);
+	left: 45px;
+      }
+      
+      .sign__sub-text h3 {
+	font-size: 24px;
+      }
+      
+      .sign__sub-text h2 {
+	font-family: "Mulish-Bold";
+	font-size: 40px;
+	margin-top: 10px;
+      }
+      
+      .sign__main{
+	  padding: 45px;
+      }
+      
+      .sign__signup{
+	  display: flex;
+	  justify-content: flex-end;
+      }
+      
+      .sign__signup p{
+	  margin-right: 5px;
+	  color: rgb(132, 130, 130);
+      }
+      
+      .sign__signup a{
+	  color: var(--blue-black);
+      }
+      
+      .sign__signup a:hover{
+	  text-decoration: underline;
+      }
+      
+      .signupgg__form{
+	  margin-top: 20px;
+      }
+      
+      .signupgg__form h4{
+	  font-family: "Mulish-Bold";
+	  font-size: 30px;
+	  margin-bottom: 30px;
+      }
+      .signupgg__form img{
+	 width: 24px;
+      }
+      .signupgg__form input{
+	  display: block;
+	  padding: 8px 10px;
+	  padding-left: 45px;
+	  margin-bottom: 20px;
+	  border: 1px solid #ccc;
+	  height: 60px;
+	  width: 500px;
+	  font-size: 18px;
+      }
+      
+      .signupgg__form input:focus{
+	  border: 1px solid var(--blue-black);
+      }
+      
+      .btn_login{
+	  font-family: "Mulish-Bold";
+	  background-color: var(--blue-black);
+	  outline: none;
+	  border: none;
+	  color: var(--white-text);
+	  text-align: center;
+	  width: max-content;
+	  font-size: 18px;
+	  padding: 20px 35px;
+	  transition: 0.5s;
+	  margin-top: 20px;
+      }
+      
+      .btn_login:hover{
+	  background-color: var(--green-bold);
+	  color: var(--blue-black);
+      }
+      
+      .signupgg__form div{
+	  position: relative;
+      }
+      
+      .signupgg__form div img{
+	  position: absolute;
+	  top: 50%;
+	  left: 10px;
+	  transform: translateY(-50%);
+      }
+      
+      .signupgg__form .eyesPass{
+	  width: 25px;
+	 left: 460px;
+	 cursor: pointer;
+      }
+      
+      .social-share {
+	  margin-top: 20px;
+	  width: 100%;
+	  max-width: 400px;
+	}
+	.social-share-icon {
+	  width: 40px;
+	  height: 40px;
+	  background-color: white;
+	  border-radius: inherit;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  font-size: 18px;
+	}
+	.social-share-icon img{
+	  width: 20px;
+	  height: 20px;
+	}
+	.social-share-text {
+	  color: white;
+	  margin-left: 20px;
+	  font-size: 16px;
+	}
+      
+	.social-share-item {
+	  width: 100%;
+	  padding: 10px;
+	  border-radius: 8px;
+	  display: flex;
+	  align-items: center;
+	  cursor: pointer;
+	}
+	.social-share-item.facebook {
+	  background-color: #3b5999;
+	}
+	.social-share-item.facebook .social-share-icon {
+	  color: #3b5999;
+	}
+	.social-share-item.twitter {
+	  background-color: #4d82e5;
+	}
+	.social-share-item.twitter .social-share-icon {
+	  color: #4d82e5;
+	}
+	.social-share-item + .social-share-item {
+	  margin-top: 20px;
+	}
+      
+	.signupgg .other_login{
+	    margin-top: 30px;
+	    margin-bottom: 30px;
+	    height: 4px;
+	    width: 200px;
+	    background-color: var(--blue-black);
+	    margin-left: 160px;
+	    position: relative;
+	}
+    
+.signupgg{
+	
+	position: absolute;
+	height: 100vh;
+	width: 100vw;
+	display: none;
+	opacity: 0
+}
+
+.signupgg.active{
+	display: block
+	;
+	opacity: 1;
+	transition: opacity 5s ease-in-out;
+	transition-delay: 4s;
+}
+
+.signupgg:after{
+	content: "";
+	position: absolute;
+	height: 100vh;
+	width: 100vw;
+	z-index: 5;
+	background-color:black;
+	opacity: 0.2;
+}
+
+.signUpggInfo {
+	position: absolute;
+	width: 60vw;height: 70vh;
+	background:white;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 10;
+	border-radius:10px;
+
+}
+.signupgg .container__wrap{
+	display: block;
+	z-index: 10;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: max-content;
+}
+
+h2{
+	font-family: "Mulish-Bold";
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.gender{
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	padding: 8px 10px;
+
+}
