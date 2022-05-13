@@ -195,3 +195,7 @@
   .remember__pass a:hover{
     text-decoration: underline; 
   }
+  .error{
+    color:red;
+    margin-bottom:10px
+  }
