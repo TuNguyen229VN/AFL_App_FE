@@ -41,6 +41,7 @@
   width: 150px;
 }
 
+.teamdetail .schedule__tour .title,
 .teamdetail .gallery__tour .title,
 .teamdetail .rank__tour .title {
   font-family: "Mulish-Bold";
@@ -50,6 +51,7 @@
   margin-bottom: 25px;
 }
 
+.teamdetail .schedule__tour .title::after,
 .teamdetail .gallery__tour .title::after,
 .teamdetail .rank__tour .title::after {
   content: "";
@@ -134,4 +136,147 @@
 .teamdetail .rank__tour .table__team td {
   text-align: center;
   padding: 15px;
+}
+
+.teamdetail .schedule__tour .schedule__table tr:nth-child(odd) {
+  background-color: #f3f3f3;
+}
+.teamdetail .schedule__tour .schedule__table tr:first-child {
+  color: var(--white-text);
+  background-color: var(--blue-black);
+  text-transform: uppercase;
+  text-align: c;
+}
+
+.teamdetail .schedule__tour .schedule__table:first-child{
+  margin-bottom: 50px;
+  margin-top: 20px;
+}
+.teamdetail .schedule__tour .schedule__table {
+  width: 100%;
+  border: 1px solid #ccc;
+}
+.teamdetail .schedule__tour .schedule__table th,
+.teamdetail .schedule__tour .schedule__table td {
+  text-align: center;
+  padding: 15px;
+}
+.teamdetail .schedule__tour .schedule__table img{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.teamdetail .schedule__tour .schedule__table td:first-child{
+  width: 180px;
+}
+
+.teamdetail .schedule__tour .schedule__table td:nth-child(2){
+  margin-left: 0px;
+}
+.teamdetail .schedule__tour .schedule__table td:nth-child(2),
+.teamdetail .schedule__tour .schedule__table td:nth-child(4){
+  text-transform: uppercase;
+  position: relative;
+  width: max-content;
+  width: 100px;
+}
+.teamdetail .schedule__tour .schedule__table td:nth-child(4){
+  width: 280px;
+}
+.teamdetail .schedule__tour .schedule__table td:nth-child(3){
+  font-family: "Mulish-Bold";
+  font-size: 18px;
+  /* transform: translateX(-80px); */
+}
+.teamdetail .schedule__tour .schedule__table td:nth-child(2) img{
+  top: 50%;
+  transform: translateY(-50%);
+  position: absolute;
+  left: 240px;
+}
+.teamdetail .schedule__tour .schedule__table td:nth-child(4) img{
+  position: absolute;
+  font-family: "Mulish-Bold";
+  top: 50%;
+  transform: translateY(-50%);
+  right: 390px;
+}
+
+.teamdetail .schedule__tour .wrap__title{
+  display: flex;
+  justify-content: space-between;
+}
+
+.teamdetail .schedule__tour .option__view{
+  display: flex;
+}
+
+.teamdetail .schedule__tour .option__view p{
+  border: 1px solid var(--blue-black);
+  padding: 15px;
+  width: 130px;
+  text-align: center;
+  font-family: "Mulish-Bold";
+  cursor: pointer;
+  transition: 0.5s;
+  user-select: none;
+}
+
+.teamdetail .schedule__tour .option__view p:hover{
+  background-color: var(--green-bold);
+}
+.teamdetail .schedule__tour .option__view p:nth-child(2){
+  border-left: 0;
+}
+
+.teamdetail .schedule__tour .option__view p.active{
+  background-color: var(--green-bold);
+}
+
+.teamdetail .schedule__tour .round{
+  margin-top: 20px;
+}
+
+.teamdetail .schedule__tour .match__item img{
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--white-text);
+  border-radius: 50%;
+  margin-left: 15px;
+ transform: translateY(10px);
+}
+
+.teamdetail .schedule__tour .match__item th,
+.teamdetail .schedule__tour .match__item td {
+  text-align: center;
+  padding: 15px;
+}
+
+.teamdetail .schedule__tour .match__item table{
+  margin-bottom: 30px;
+  user-select: none;
+  width: 200px;
+  font-family: "Mulish-Bold";
+}
+
+.teamdetail .schedule__tour .match__item .row1{
+  background-color: var(--blue-black);
+  color: var(--white-text);
+}
+.teamdetail .schedule__tour .match__item .num{
+transform: translateY(30px);
+}
+
+.teamdetail .schedule__tour .match__item .row2{
+  background-color: var(--green-bold);
+}
+
+.teamdetail .schedule__tour .match__container{
+  display: flex;
+  column-gap: 40px;
+}
+
+.teamdetail .schedule__tour .match__item tr:nth-child(2){
+  border-top: 2px solid var(--white-text);
 }

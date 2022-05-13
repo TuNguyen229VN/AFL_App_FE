@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import "./styles/style.css";
+import styles from "./styles/style.module.css";
 import { Link,useNavigate } from "react-router-dom";
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
@@ -141,29 +141,29 @@ const auth = getAuth();
 
 
   return (
-    <div className="login">
+    <div className={styles.login}>
        {newAcc?<SignUpGoogle newAcc={newAcc} userInfo = {userInfo} token = {token}/>:""}
-      <div className="container__wrap">
-        <div className="login__sub">
+      <div className={styles.container__wrap}>
+        <div className={styles.login__sub}>
           <img
             src="assets/img/login/cornor.jpg"
             alt="cornor"
-            className="imgBack"
+            className={styles.imgBack}
           />
-          <Link to="/" className="logo">
+          <Link to="/" className={styles.logo}>
             <img src="assets/img/homepage/logo.png" alt="logo" />
           </Link>
-          <div className="login__sub-text">
+          <div className={styles.login__sub__text}>
             <h3>Chúng tôi rất vui khi thấy bạn trở lại!</h3>
             <h2>Amateur Football League</h2>
           </div>
         </div>
-        <div className="login__main">
-          <div className="login__signup">
+        <div className={styles.login__main}>
+          <div className={styles.login__signup}>
             <p>Bạn chưa có tài khoản ?</p>
             <Link to="/signup">Đăng ký</Link>
           </div>
-          <form action="" method="POST" className="login__form">
+          <form action="" method="POST" className={styles.login__form}>
             <h4>Đăng nhập</h4>
             <div>
               <img src="/assets/icons/mail-icon.svg" alt="lock" />
@@ -171,50 +171,50 @@ const auth = getAuth();
                 type="text"
                 required
                 autoComplete="none"
-                className="email"
+                className={styles.email}
                 name="username"
                 onChange={handleOnChange}
               />
             </div>
-            <p className="error">{userNameErr}</p>
+            <p className={styles.error}>{userNameErr}</p>
             <div>
               <img src="/assets/icons/lock-icon.svg" alt="lock" />
               <input
                 type={passwordShown ? "text" : "password"}
                 required
-                className="pass"
+                className={styles.pass}
                 name="password"
                 onChange={handleOnChange}
               />
               <img
                 src="/assets/icons/eye-close-up.png"
                 alt="eye"
-                className="eyesPass"
+                className={styles.eyesPass}
                 onClick={togglePass}
               />
             </div>
-            <p className="error">{passwordErr}</p>
-            <div className="remember__pass">
+            <p className={styles.error}>{passwordErr}</p>
+            <div className={styles.remember__pass}>
               <a href="#">Quên mật khẩu?</a>
             </div>
-            <button type="submit" className="btn_login" onClick={(e)=>{
+            <button type="submit" className={styles.btn_login} onClick={(e)=>{
               loginWithPass();
               e.preventDefault();
             }}>
               Đăng nhập
             </button>
           </form>
-          <div className="other_login"></div>
-          <div className="social-share">
-            <div className="social-share-item facebook">
-              <i className="social-share-icon">
+          <div className={styles.other_login}></div>
+          <div className={styles.social__share}>
+            <div className={`${styles.social__share__item} ${styles.facebook}`}>
+              <i className={styles.social__share__icon}>
                 <img src="/assets/img/login/facebook.png" alt="fb" />
               </i>
-              <span className="social-share-text">
+              <span className={styles.social__share__text}>
                 Đăng nhập bằng tài khoản Facebook
               </span>
             </div>
-            <div className="social-share-item twitter" onClick={() => {
+            <div className={`${styles.social__share__item} ${styles.twitter}`} onClick={() => {
                 signInWithPopup(auth, provider)
                 .then( async (result) => {
                   // This gives you a Google Access Token. You can use it to access the Google API.
@@ -241,10 +241,10 @@ const auth = getAuth();
                   // ...
                 });
               }}>
-              <i className="social-share-icon">
+              <i className={styles.social__share__icon}>
                 <img src="/assets/img/login/google.png" alt="fb" />
               </i>
-              <span className="social-share-text">
+              <span className={styles.social__share__text}>
                 Đăng nhập bằng tài khoản Google
               </span>
             </div>

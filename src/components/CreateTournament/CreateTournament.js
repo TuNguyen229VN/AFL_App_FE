@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ".//style.css";
+import styles from "./styles/style.module.css"
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import gsap from "gsap";
@@ -331,11 +331,11 @@ const CreateTournament = () => {
     <>
       <Transitions timeline={tour} />
       <Header />
-      <div className="createTournament">
-        <div className="createTournament_info">
+      <div className={styles.createTournament}>
+        <div className={styles.createTournament_info}>
           <div>
             <div>
-              <h1 className="createTournament_title">Tạo giải đấu</h1>
+              <h1 className={styles.createTournament_title}>Tạo giải đấu</h1>
               <hr
                 width={100}
                 size={10}
@@ -352,10 +352,10 @@ const CreateTournament = () => {
                 alignItems: "center",
               }}
             >
-              <input type="checkbox" id="switch" class="switch-input" />
+              <input type="checkbox" id="switch" className={styles.switch__input} />
               <label
                 for="switch"
-                class="switch"
+                className={styles.switch}
                 onClick={() => {
                   if (status === 0) {
                     setStatus(-1);
@@ -374,9 +374,9 @@ const CreateTournament = () => {
             </div>
           </div>
           <form onSubmit={onSubmitHandler}>
-            <div className="createTournament_row1">
-              <div className="createTournament_img">
-                <h1 className="createTournament_img_title">Hình giải đấu</h1>
+            <div className={styles.createTournament_row1}>
+              <div className={styles.createTournament_img}>
+                <h1 className={styles.createTournament_img_title}>Hình giải đấu</h1>
                 <div>
                   <input
                     type="file"
@@ -384,10 +384,11 @@ const CreateTournament = () => {
                     accept="image/*"
                     name="imgTournament"
                     onChange={onChangeHandler}
+                    className={styles.file_imgCreateTournament}
                   />
                   <label
                     htmlFor="file_imgCreateTournament"
-                    className="createTournament_img_detail"
+                    className={styles.createTournament_img_detail}
                   >
                     <img
                       style={{
@@ -402,13 +403,13 @@ const CreateTournament = () => {
                       alt="camera"
                     />
 
-                    <p className="btnUploadImg_createTournament">
+                    <p className={styles.btnUploadImg_createTournament}>
                       Tải ảnh lên{" "}
                       <i
                         style={{
                           marginLeft: 10,
                         }}
-                        class="fa-solid fa-upload"
+                        className="fa-solid fa-upload"
                       ></i>
                     </p>
                   </label>
@@ -416,11 +417,11 @@ const CreateTournament = () => {
                   {/* <input type="file" /> */}
                 </div>
               </div>
-              <div className="createTournament_row1_col2">
-                <div className="nameTournament">
+              <div className={styles.createTournament_row1_col2}>
+                <div className={styles.nameTournament}>
                   <label
                     htmlFor="createTour"
-                    className="createTournament_img_title"
+                    className={styles.createTournament_img_title}
                   >
                     Tên giải đấu
                   </label>
@@ -434,16 +435,16 @@ const CreateTournament = () => {
                     required
                   />
                 </div>
-                <div className="lengthTeam">
+                <div className={styles.lengthTeam}>
                   <label
                     htmlFor="select_lengthTeam"
-                    className="createTournament_img_title"
+                    className={styles.createTournament_img_title}
                   >
                     Số đội tham gia
                   </label>
 
                   <input
-                    className="select_lengthTeam"
+                    className={styles.select_lengthTeam}
                     id="select_lengthTeam"
                     name="teamPaticipate"
                     value={teamPaticipate.value}
@@ -453,12 +454,12 @@ const CreateTournament = () => {
                   />
                 </div>
 
-                <div className="typeFootballField">
-                  <label className="createTournament_img_title">
+                <div className={styles.typeFootballField}>
+                  <label className={styles.createTournament_img_title}>
                     Loại sân thi đấu
                   </label>
                   <select
-                    className="select_typeFootballField"
+                    className={styles.select_typeFootballField}
                     onChange={onChangeHandler}
                     value={typeFootballField.value}
                     name="typeFootballField"
@@ -470,7 +471,7 @@ const CreateTournament = () => {
                 </div>
                 <div>
                   <label
-                    className="createTournament_img_title"
+                    className={styles.createTournament_img_title}
                     htmlFor="genderteam"
                   >
                     Giới tính đội
@@ -480,7 +481,7 @@ const CreateTournament = () => {
                     value={gender.value}
                     onChange={onChangeHandler}
                     id="genderteam"
-                    className="timeCloseRegister_input"
+                    className={styles.timeCloseRegister_input}
                     required
                   >
                     <option value="Male">Nam</option>
@@ -489,16 +490,16 @@ const CreateTournament = () => {
                 </div>
               </div>
 
-              <div className="createTournament_row1_col3">
-                <div className="timeStart">
+              <div className={styles.createTournament_row1_col3}>
+                <div className={styles.timeStart}>
                   <label
-                    className="createTournament_img_title"
+                    className={styles.createTournament_img_title}
                     htmlFor="startTime"
                   >
                     Ngày bắt đầu
                   </label>
                   <input
-                    className="timeStart_input"
+                    className={styles.timeStart_input}
                     id="startTime"
                     type="datetime-local"
                     name="startTime"
@@ -507,15 +508,15 @@ const CreateTournament = () => {
                   />
                 </div>
 
-                <div className="timeEnd">
+                <div className={styles.timeEnd}>
                   <label
                     htmlFor="endTime"
-                    className="createTournament_img_title"
+                    className={styles.createTournament_img_title}
                   >
                     Ngày kết thúc
                   </label>
                   <input
-                    className="timeEnd_input"
+                    className={styles.timeEnd_input}
                     id="endTime"
                     type="datetime-local"
                     name="endTime"
@@ -523,15 +524,15 @@ const CreateTournament = () => {
                     onChange={onChangeHandler}
                   />
                 </div>
-                <div className="timeDuration">
+                <div className={styles.timeDuration}>
                   <label
-                    className="createTournament_img_title"
+                    className={styles.createTournament_img_title}
                     htmlFor="timeDuration"
                   >
                     Thời gian thi đấu mỗi trận
                   </label>
                   <select
-                    className="select_typeFootballField"
+                    className={styles.select_typeFootballField}
                     id="timeDuration"
                     onChange={onChangeHandler}
                     value={timeDuration.value}
@@ -543,15 +544,15 @@ const CreateTournament = () => {
                   </select>
                 </div>
                 {status === 0 ? (
-                  <div className="timeCloseRegister">
+                  <div className={styles.timeCloseRegister}>
                     <label
                       htmlFor="timeCloseRegister"
-                      className="createTournament_img_title"
+                      className={styles.createTournament_img_title}
                     >
                       Ngày đóng đăng ký tham gia
                     </label>
                     <input
-                      className="timeCloseRegister_input"
+                      className={styles.timeCloseRegister_input}
                       id="timeCloseRegister"
                       type="datetime-local"
                       name="closeRegister"
@@ -574,18 +575,18 @@ const CreateTournament = () => {
               onChangeHandler={onChangeHandler}
             />
 
-            <div className="createTournament_row4">
-              <div className="createTournament_row4_col1">
-                <div className="mininum_member">
+            <div className={styles.createTournament_row4}>
+              <div className={styles.createTournament_row4_col1}>
+                <div className={styles.mininum_member}>
                   <label
                     htmlFor="mininum_member"
-                    className="createTournament_img_title"
+                    className={styles.createTournament_img_title}
                   >
                     Số cầu thủ tối thiểu mỗi đội
                   </label>
                   <input
                     id="mininum_member"
-                    className="mininum_member_input"
+                    className={styles.mininum_member_input}
                     type="number"
                     min={5}
                     name="minimunPlayerInTournament"
@@ -594,16 +595,17 @@ const CreateTournament = () => {
                   />
                 </div>
 
-                <div className="contactPhone">
+                <div className={styles.contactPhone}>
                   <label
                     htmlFor="phoneContact"
-                    className="createTournament_img_title"
+                    className={styles.createTournament_img_title}
                   >
                     Số điện thoại liên lạc
                   </label>
                   <input
                     type="text"
                     id="phoneContact"
+                    className={styles.phoneContact}
                     placeholder="Số điện thoại"
                     name="phoneContact"
                     value={phoneContact.value}
@@ -611,10 +613,10 @@ const CreateTournament = () => {
                   />
                 </div>
 
-                <div className="description_tournament">
+                <div className={styles.description_tournament}>
                   <label
                     htmlFor="description"
-                    className="createTournament_img_title"
+                    className={styles.createTournament_img_title}
                   >
                     Mô tả
                   </label>
@@ -622,7 +624,7 @@ const CreateTournament = () => {
                   placeholder="Mô tả về giải đấu"
                   
                 /> */}
-                  <div className="descTeam ">
+                  <div className={styles.descTeam}>
                     <Description
                       editorState={editorState}
                       setEditorState={setEditorState}
@@ -630,8 +632,8 @@ const CreateTournament = () => {
                   </div>
                 </div>
               </div>
-              <div className="createTournament_row4_col2">
-                <div className="fieldSoccer">
+              <div className={styles.createTournament_row4_col2}>
+                <div className={styles.fieldSoccer}>
                   {provice != null ? (
                     <div
                       style={{
@@ -641,7 +643,7 @@ const CreateTournament = () => {
                       }}
                     >
                       <label
-                        className="createTournament_img_title"
+                        className={styles.createTournament_img_title}
                         htmlFor="provice"
                       >
                         Thành phố/Tỉnh{" "}
@@ -676,7 +678,7 @@ const CreateTournament = () => {
                       }}
                     >
                       <label
-                        className="createTournament_img_title"
+                        className={styles.createTournament_img_title}
                         htmlFor="districts"
                       >
                         Quận/Huyện
@@ -711,7 +713,7 @@ const CreateTournament = () => {
                       }}
                     >
                       <label
-                        className="createTournament_img_title"
+                        className={styles.createTournament_img_title}
                         htmlFor="wards"
                       >
                         Phường/Xã
@@ -721,6 +723,7 @@ const CreateTournament = () => {
                           padding: "10px 5px",
                         }}
                         name="wards"
+                        className={styles.wards}
                         onChange={onChangeHandler}
                       >
                         <option selected disabled>
@@ -738,14 +741,14 @@ const CreateTournament = () => {
                   ) : null}
                   <div>
                     <label
-                      className="createTournament_img_title"
+                      className={styles.createTournament_img_title}
                       htmlFor="fieldSoccer"
                     >
                       Địa điểm
                     </label>
                     <input
                       id="fieldSoccer"
-                      className="fieldSoccer_input"
+                      className={styles.fieldSoccer_input}
                       placeholder="Nhập địa chỉ"
                       name="footballField"
                       value={footballField.value}
@@ -756,8 +759,8 @@ const CreateTournament = () => {
                 </div>
               </div>
             </div>
-            <div className="btn_nextPage">
-              <input type="submit" className="btn_Next" value="Tiếp theo" />
+            <div className={styles.btn_nextPage}>
+              <input type="submit" className={styles.btn_Next} value="Tiếp theo" />
             </div>
           </form>
         </div>

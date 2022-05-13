@@ -22,7 +22,7 @@
   z-index: 2;
 }
 
-.login__sub-text {
+.login__sub__text {
   position: absolute;
   top: 44%;
   transform: translateY(-50%);
@@ -30,11 +30,11 @@
   left: 45px;
 }
 
-.login__sub-text h3 {
+.login__sub__text h3 {
   font-size: 24px;
 }
 
-.login__sub-text h2 {
+.login__sub__text h2 {
   font-family: "Mulish-Bold";
   font-size: 40px;
   margin-top: 10px;
@@ -124,12 +124,12 @@
    cursor: pointer;
 }
 
-.social-share {
+.social__share {
     margin-top: 20px;
     width: 100%;
     max-width: 400px;
   }
-  .social-share-icon {
+  .social__share__icon {
     width: 40px;
     height: 40px;
     background-color: white;
@@ -139,17 +139,17 @@
     justify-content: center;
     font-size: 18px;
   }
-  .social-share-icon img{
+  .social__share__icon img{
     width: 20px;
     height: 20px;
   }
-  .social-share-text {
+  .social__share__text {
     color: white;
     margin-left: 20px;
     font-size: 16px;
   }
 
-  .social-share-item {
+  .social__share__item {
     width: 100%;
     padding: 10px;
     border-radius: 8px;
@@ -157,19 +157,19 @@
     align-items: center;
     cursor: pointer;
   }
-  .social-share-item.facebook {
+  .social__share__item.facebook {
     background-color: #3b5999;
   }
-  .social-share-item.facebook .social-share-icon {
+  .social__share__item.facebook .social-share-icon {
     color: #3b5999;
   }
-  .social-share-item.twitter {
+  .social__share__item.twitter {
     background-color: #4d82e5;
   }
-  .social-share-item.twitter .social-share-icon {
+  .social__share__item.twitter .social__share__icon {
     color: #4d82e5;
   }
-  .social-share-item + .social-share-item {
+  .social__share__item + .social__share__item {
     margin-top: 20px;
   }
 
@@ -198,4 +198,12 @@
   .error{
     color:red;
     margin-bottom:10px
+  }
+
+  .logo {
+    width: 100px;
+    height: 60px;
+  }
+  .logo img{
+    object-fit: cover;
   }

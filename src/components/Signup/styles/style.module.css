@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: 660px 1fr;
     column-gap: 150px;
-    height: 100vh;
+    height: auto;
     overflow: hidden;
   }
   
@@ -23,7 +23,7 @@
     z-index: 2;
   }
   
-  .sign__sub-text {
+  .sign__sub__text {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -31,11 +31,11 @@
     left: 45px;
   }
   
-  .sign__sub-text h3 {
+  .sign__sub__text h3 {
     font-size: 24px;
   }
   
-  .sign__sub-text h2 {
+  .sign__sub__text h2 {
     font-family: "Mulish-Bold";
     font-size: 40px;
     margin-top: 10px;
@@ -184,3 +184,47 @@
         margin-left: 160px;
         position: relative;
     }
+
+    .gender{
+      display: block;
+      padding: 8px 10px;
+      padding-left: 45px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      height: 60px;
+      width: 500px;
+  
+   font-size: 18px;
+    }
+
+    .error{
+      margin-top: -10px;
+      color:red;
+      margin-bottom:10px;
+      font-style: italic;
+    }
+
+    .aaa{
+      z-index: 0;
+    }
+
+    .remember__pass{
+      margin-top: 10px;
+      margin-left: 380px;
+  }
+
+  .remember__pass a{
+    color: rgb(132, 130, 130);
+  }
+
+  .remember__pass a:hover{
+    text-decoration: underline; 
+  }
+
+  .logo {
+    width: 100px;
+    height: 60px;
+  }
+  .logo img{
+    object-fit: cover;
+  }

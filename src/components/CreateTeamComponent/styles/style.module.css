@@ -29,7 +29,7 @@
   margin-bottom: 30px;
 }
 
-.create__team .input-field {
+.create__team .input__field {
   border: 1px solid var(--blue-black);
   /* width: 220px; */
   /* height: 240px; */
@@ -37,11 +37,11 @@
   position: relative;
   overflow: hidden;
 }
-.create__team .input-field input[type="file"] {
+.create__team .input__field input[type="file"] {
   display: none;
 }
 
-.create__team .input-field .cmr {
+.create__team .input__field .cmr {
   width: 80px;
   position: absolute;
   left: 50%;
@@ -49,10 +49,10 @@
   transform: translateX(-50%);
 }
 
-.create__team .input-field label {
+.create__team .input__field label {
   color: var(--white-text);
 }
-.input-label {
+.input__label {
   background: var(--blue-black);
   color: var(--white-text);
   display: flex;
@@ -68,16 +68,16 @@
   transform: translateX(-50%);
 }
 
-.input-field .icon-upload {
+.input__field .icon__upload {
   margin-left: 5px;
   pointer-events: none;
 }
 
-.input-field .icon-upload .dw {
+.input__field .icon__upload .dw {
   width: 20px;
 }
 
-.create__team .text-field label {
+.create__team .text__field label {
   font-family: "Mulish-Bold";
   color: var(--blue-black);
   font-size: 18px;
@@ -95,16 +95,16 @@
   font-size: 24px;
 }
 
-.create__team .text-field input,
-.create__team .text-field select {
+.create__team .text__field input,
+.create__team .text__field select {
   width: 100%;
   padding: 10px 5px;
   border: 2px solid #ccc;
   height: 50px;
 }
 
-.create__team .text-field input:focus,
-.create__team .text-field select:focus {
+.create__team .text__field input:focus,
+.create__team .text__field select:focus {
   width: 100%;
   padding: 5px;
   border: 2px solid var(--blue-black);
@@ -118,7 +118,7 @@
   gap: 100px;
 }
 
-.clothes__team .input-field {
+.clothes__team .input__field {
   height: 300px;
 }
 
@@ -127,21 +127,6 @@
   border: 1px solid var(--blue-black);
   height: 500px;
   overflow: hidden;
-}
-
-.create__team #rdw-wrapper-2391 {
-  height: 500px;
-  overflow-y: scroll;
-}
-
-.create__team .rdw-editor-toolbar {
-  height: 100px;
-}
-
-.create__team .rdw-option-wrapper {
-  height: auto;
-  width: auto;
-  padding: 2px;
 }
 
 .create__team .rdw-editor-toolbar {
@@ -175,7 +160,6 @@
   background-color: var(--green-bold);
   color: var(--blue-black);
 }
-
 
 .createTournament_img_title {
   margin-bottom: 10px;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./styles/style.css";
+import styles from "./styles/style.module.css" 
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -347,15 +347,15 @@ const CreateTeam = () => {
 
       <form onSubmit={onSubmitHandler}>
         <div
-          className="create__team"
+          className={styles.create__team}
           style={{
             marginBottom: 40,
           }}
         >
-          <h2 className="title">Tạo đội bóng</h2>
-          <p className="avt">Hình đội bóng</p>
-          <div className="main__team">
-            <div class="input-field">
+          <h2 className={styles.title}>Tạo đội bóng</h2>
+          <p className={styles.avt}>Hình đội bóng</p>
+          <div className={styles.main__team}>
+            <div className={styles.input__field}>
               <input
                 accept="image/*"
                 type="file"
@@ -372,21 +372,21 @@ const CreateTeam = () => {
                     : imgClub.img
                 }
                 alt="camera"
-                className="cmr"
+                className={styles.cmr}
               />
-              <label for="file" class="input-label">
+              <label for="file" className={styles.input__label}>
                 Tải ảnh lên
-                <i className=" icon-upload">
+                <i className={styles.icon__upload}>
                   <img
                     src="assets/img/createteam/download.svg"
                     alt="dw"
-                    className="dw"
+                    className={styles.dw}
                   />
                 </i>
               </label>
             </div>
-            <div className="createteamwrap">
-              <div class="text-field">
+            <div className={styles.createteamwrap}>
+              <div className={styles.text__field}>
                 <div
                   style={{
                     display: "flex",
@@ -421,7 +421,7 @@ const CreateTeam = () => {
                   onChange={onChangeHandler}
                 />
               </div>
-              <div class="text-field">
+              <div className={styles.text__field}>
                 <div
                   style={{
                     display: "flex",
@@ -456,7 +456,7 @@ const CreateTeam = () => {
                   required
                 />
               </div>
-              <div class="text-field">
+              <div className={styles.text__field}>
                 <label for="genderteam">Giới tính đội</label>
                 <select
                   name="gender"
@@ -470,7 +470,7 @@ const CreateTeam = () => {
                 </select>
               </div>
             </div>
-            <div className="createteamwrap">
+            <div className={styles.createteamwrap}>
               {/* <div class="text-field">
             <label for="ageteam">Độ tuổi</label>
             <select id="ageteam">
@@ -479,7 +479,7 @@ const CreateTeam = () => {
               <option>31-50</option>
             </select>
           </div> */}
-              <div class="text-field">
+              <div className={styles.text__field}>
                 <div
                   style={{
                     display: "flex",
@@ -513,7 +513,7 @@ const CreateTeam = () => {
                   disabled
                 />
               </div>
-              <div class="text-field">
+              <div className={styles.text__field}>
                 <div
                   style={{
                     display: "flex",
@@ -608,7 +608,7 @@ const CreateTeam = () => {
           </label>
         </div>
       </div> */}
-          <p className="avt line3">Khu vực đội bóng</p>
+          <p className={`${styles.avt} ${styles.line3}`}>Khu vực đội bóng</p>
           <div style={{
             display: "flex",
             justifyContent: "space-between"
@@ -622,7 +622,7 @@ const CreateTeam = () => {
                   width: "30%"
                 }}
               >
-                <label className="createTournament_img_title" htmlFor="provice">
+                <label className={styles.createTournament_img_title} htmlFor="provice">
                   Thành phố/Tỉnh{" "}
                 </label>
                 <select
@@ -656,7 +656,7 @@ const CreateTeam = () => {
                 }}
               >
                 <label
-                  className="createTournament_img_title"
+                  className={styles.createTournament_img_title}
                   htmlFor="districts"
                 >
                   Quận/Huyện
@@ -691,7 +691,7 @@ const CreateTeam = () => {
                   width: "30%"
                 }}
               >
-                <label className="createTournament_img_title" htmlFor="wards">
+                <label className={styles.createTournament_img_title} htmlFor="wards">
                   Phường/Xã
                 </label>
                 <select
@@ -715,8 +715,8 @@ const CreateTeam = () => {
               </div>
             ) : <div></div>}
           </div>
-          <p className="avt line3">Thông tin đội bóng</p>
-          <div className="descTeam ">
+          <p className={`${styles.avt} ${styles.line3}`}>Thông tin đội bóng</p>
+          <div className={styles.descTeam}>
             <Editor
               editorState={editorState}
               editorClassName="editor-class"
@@ -750,7 +750,7 @@ const CreateTeam = () => {
               // cursor: buttonFlag === true ? "pointer" : "default",
             }}
             type="submit"
-            className="createTeam_btn"
+            className={styles.createTeam_btn}
             value="Tạo đội"
             // disabled = {buttonFlag === true ? false : false}
           />

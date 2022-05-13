@@ -61,7 +61,6 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-
 }
 
 .createTournament_row1_col2,
@@ -82,7 +81,6 @@ a {
   background-color: black;
   color: white;
   margin: 20px auto;
-
 }
 
 .createTournament_row1_col2 label,
@@ -90,7 +88,8 @@ a {
   display: block;
 }
 .createTournament_row1_col2 input,
-.createTournament_row1_col3 input, #phoneContact {
+.createTournament_row1_col3 input,
+.phoneContact {
   width: 100%;
   padding: 10px 5px;
 }
@@ -103,7 +102,6 @@ input:focus {
 .select_typeFootballField {
   width: 100%;
   padding: 10px 5px;
-  
 }
 
 /* margin-bottom: 20px; */
@@ -115,13 +113,13 @@ input:focus {
   margin-bottom: 30px;
 }
 
-.createTournament_row2 input{
-    margin: 20px 0;
-    margin-left: 140px;
+.createTournament_row2 input {
+  margin: 20px 0;
+  margin-left: 140px;
 }
 
-.createTournament_row2 label{
-    width: 100%;
+.createTournament_row2 label {
+  width: 100%;
 }
 
 .img_type_footballField {
@@ -142,76 +140,78 @@ input:focus {
 
 /* createTournament_row3 */
 
-.createTournament_row3{
-    width: 100%;
-    margin-bottom: 30px;
+.createTournament_row3 {
+  width: 100%;
+  margin-bottom: 30px;
 }
 
-.note_lengthMatch{
-    width: 100%;
-    padding: 10px;
-    color: #207607;
-    background-color: #70F994;
+.note_lengthMatch {
+  width: 100%;
+  padding: 10px;
+  color: #207607;
+  background-color: #70f994;
 }
 
-.lengthMatch_title{
-    font-weight: 600;
+.lengthMatch_title {
+  font-weight: 600;
 }
 
 /* createTournament_row4 */
 
-.createTournament_row4{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
+.createTournament_row4 {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
 }
 
-.createTournament_row4_col1 label{
-    display: block;
+.createTournament_row4_col1 label {
+  display: block;
 }
 
-.createTournament_row4_col1{
-    width: 40%;
-    height: 800px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.createTournament_row4_col1 {
+  width: 40%;
+  height: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.createTournament_row4_col2{
-    width: 50%;
-    height: 800px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.createTournament_row4_col2 {
+  width: 50%;
+  height: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.mininum_member_input, .timeCloseRegister_input, .fieldSoccer_input{
-    width: 100%;
-    padding: 10px 5px;
+.mininum_member_input,
+.timeCloseRegister_input,
+.fieldSoccer_input {
+  width: 100%;
+  padding: 10px 5px;
 }
 
-.description_text{
-    width: 100%;
-    height: 270px;
-    padding: 10px;
+.description_text {
+  width: 100%;
+  height: 270px;
+  padding: 10px;
 }
 
 /* Button next */
-.btn_nextPage{
-    width: 100%;
-    height: 50px;
-    margin-bottom: 30px;
+.btn_nextPage {
+  width: 100%;
+  height: 50px;
+  margin-bottom: 30px;
 }
-.btn_Next{
-    padding: 15px 30px;
-    display: flex;
-    float: right;
-    background-color: #70F994;
-    color: #207607;
-    border: 1px solid var(--green-bold);
-    font-weight: 600;
+.btn_Next {
+  padding: 15px 30px;
+  display: flex;
+  float: right;
+  background-color: #70f994;
+  color: #207607;
+  border: 1px solid var(--green-bold);
+  font-weight: 600;
 }
 
 /* Animation */
@@ -241,11 +241,11 @@ input:focus {
   transition: background-color 0.25s linear, transform 0.25s linear;
 }
 
-.switch-input {
+.switch__input {
   display: none;
 }
 
-.switch-input:checked + .switch {
+.switch__input:checked + .switch {
   background-color: #6a5af9;
 }
 
@@ -284,27 +284,29 @@ input:focus {
   padding: 0 10px;
 }
 
-.public-DraftEditorPlaceholder-inner, .DraftEditor-editorContainer{
+.public-DraftEditorPlaceholder-inner,
+.DraftEditor-editorContainer {
   padding: 0px 10px;
 }
 
-#file_imgCreateTournament{
+.file_imgCreateTournament {
   display: none;
 }
 
-.btnUploadImg_createTournament{
+.btnUploadImg_createTournament {
   width: 60%;
-    border: 1px solid black;
-    margin-bottom: 30px;
-    margin: auto;
-    padding: 20px;
-    padding-left: 30px;
-    background-color: black;
-    color: white;
+  border: 1px solid black;
+  margin-bottom: 30px;
+  margin: auto;
+  padding: 20px;
+  padding-left: 30px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
 }
 
 /* Map */
 
-.mapboxgl-canvas{
+.mapboxgl-canvas {
   height: 600px;
 }
