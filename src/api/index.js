@@ -15,3 +15,15 @@ export const getAPI = (afterURL) => {
         console.error(err)
     }
 }
+
+export const postAPI = (afterURL,data,status) => {
+    const fullURL = URL + afterURL;
+    console.log(fullURL)
+    try{
+        if(status)
+        return axios.post(URL + afterURL,data,headers);
+        return axios.post(URL + afterURL,data);
+    }catch(err) {
+        console.error(err)
+    }
+}

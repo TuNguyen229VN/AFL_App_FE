@@ -65,7 +65,7 @@ function HeaderTeamDetail() {
       return <InforTeamDetail description={team.description} />;
     }
     if (activeTeamDetail === `/teamDetail/${idTeam}/listPlayer`) {
-      return <ListPlayer id={team.id} gender={team.teamGender} />;
+      return <ListPlayer id={team.id} gender={team.teamGender}  />;
     }
     if (activeTeamDetail === `/teamDetail/${idTeam}/reportTeamDeatail`) {
       return <ReportTeamDetail />;

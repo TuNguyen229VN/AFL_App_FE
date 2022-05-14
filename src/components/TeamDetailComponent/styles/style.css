@@ -457,7 +457,7 @@
 }
 
 
-.detail_info label{
+.detail_info label , .add_img label{
   margin-right: 30px;
   font-weight: 600;
   margin-bottom: 10px;
