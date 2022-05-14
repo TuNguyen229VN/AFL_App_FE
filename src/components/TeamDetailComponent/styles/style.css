@@ -431,3 +431,39 @@
   fontWeight: 600,
   marginRight: -1
 }} */
+
+
+/* Add player */
+
+.modal-body{
+  display: flex;
+  justify-content: space-around;
+  
+}
+
+
+
+.add_img {
+  width: 40%;
+}
+
+.add_infor{
+  width: 50%;
+}
+
+.detail_info{
+  width: 90%;
+  margin-bottom: 30px;
+}
+
+
+.detail_info label{
+  margin-right: 30px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.detail_info input{
+  width: 100%;
+  padding: 6px;
+}

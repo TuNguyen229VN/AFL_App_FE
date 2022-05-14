@@ -106,7 +106,7 @@ const CreateTournament = () => {
         registerEndDate: closeRegister.value,
         tournamentStartDate: startTime.value,
         tournamentEndDate: endTime.value,
-        footballFieldAddress: footballField.value  + ", " + addressField,
+        footballFieldAddress: footballField.value  + addressField,
         tournamentAvatar: imgTournament.value,
         description: descriptionText,
         matchMinutes: +timeDuration.value,

@@ -62,10 +62,10 @@ function HeaderTeamDetail() {
 
   const renderByLink = () => {
     if (activeTeamDetail === `/teamDetail/${idTeam}/inforTeamDetail`) {
-      return <InforTeamDetail teamDetail={team} />;
+      return <InforTeamDetail description={team.description} />;
     }
     if (activeTeamDetail === `/teamDetail/${idTeam}/listPlayer`) {
-      return <ListPlayer />;
+      return <ListPlayer id={team.id} gender={team.teamGender} />;
     }
     if (activeTeamDetail === `/teamDetail/${idTeam}/reportTeamDeatail`) {
       return <ReportTeamDetail />;
@@ -81,7 +81,7 @@ function HeaderTeamDetail() {
   }, [location.pathname]);
   return (
     <>
-      <Header />
+      <Header id={idTeam}/>
       <div className="teamdetail">
         {loading ? (
           <Loading />

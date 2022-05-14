@@ -1,17 +1,36 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./styles/style.css";
+import {getAPI} from "../../api/index"
+import AddPlayer from "./AddPlayer";
+function ListPlayer(props) {
+  const {id,gender} = props;
+  const [loading,setLoading] = useState(true);
 
+  useEffect(() => {
+    getListPlayerInTeamByIdTeam();
+  },[])
 
-function ListPlayer() {
+  const getListPlayerInTeamByIdTeam = () => {
+    const afterURL = `PlayerInTeam?teamId=${id}&pageIndex=1&limit=5`
+    const response = getAPI(afterURL);
+    response.then(res => {
+      console.log(res)
+      setLoading(false);
+    }).catch(err => {
+      console.error(err)
+    })
+  }
   return (
     <> 
       <div className="teamdetail__content listPlayer">
         <h3 className="listPlayer__title">Danh sách thành viên</h3>
         <div style={{
           display: "flex",
-          justifyContent: "right"
+          justifyContent: "right",
+          marginTop: 30
         }}>
-        <button className="createTeam_btn">Thêm thành viên</button>
+       
+        <AddPlayer gender={gender} />
         </div>
         
         <h2 className="listPlayer__total">Có 30 thành viên</h2>

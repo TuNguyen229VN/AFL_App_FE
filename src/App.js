@@ -5,16 +5,17 @@ import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import MyTournaments from "./components/FindTournamentComponent/MyTournament";
 import MyTeam from "./components/FindTeamComponent/MyTeam";
-import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+// import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import CreateTeam from "./components/CreateTeamComponent/CreateTeam";
 import CreateTournament from "./components/CreateTournament/CreateTournament";
-import InforTeamDetail from "./components/TeamDetailComponent/InforTeamDetail";
-import ListPlayer from "./components/TeamDetailComponent/ListPlayer";
-import ReportTeamDetail from "./components/TeamDetailComponent/ReportTeamDetail";
-import CommentTeamDetail from "./components/TeamDetailComponent/CommentTeamDetail";
+// import InforTeamDetail from "./components/TeamDetailComponent/InforTeamDetail";
+// import ListPlayer from "./components/TeamDetailComponent/ListPlayer";
+// import ReportTeamDetail from "./components/TeamDetailComponent/ReportTeamDetail";
+// import CommentTeamDetail from "./components/TeamDetailComponent/CommentTeamDetail";
 import HeaderTournamentDetail from "./components/TournamentDetailComponent/HeaderTournamentDetail";
 import HeaderTeamDetail from "./components/TeamDetailComponent/HeaderTeamDetail";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   // const exclusionArray = ["/login", "/signup"];
   //request.auth != null
@@ -25,6 +26,7 @@ function App() {
         {/* {HideHeader} */}
         {/* {exclusionArray.indexOf(window.location.pathname) < 0 && <Header />} */}
         {/* <ScrollToTop /> */}
+        <ToastContainer/>
         <Routes>
           <Route exact path="/" element={<HomePage />} />
           <Route exact path="/home" element={<HomePage />} />

@@ -10,13 +10,14 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
+import { useNavigate } from 'react-router-dom';
 
 const CreateTeam = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const textDescription = draftToHtml(
     convertToRaw(editorState.getCurrentContent())
   );
-
+  let navigate = useNavigate();
   const [imgClub, setImgClub] = useState({
     value: "",
     img: null,
@@ -134,9 +135,8 @@ const CreateTeam = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      console.log(gender.value);
       const data = {
-        id: 15,
+        id: 44,
         teamName: nameClub.value,
         teamPhone: phoneContact.value,
         teamAvatar: imgClub.value,
@@ -178,6 +178,7 @@ const CreateTeam = () => {
         setDistricts(null);
         setWards(null);
         setResetProvice(0);
+        navigate(`/teamDetail/${response.data.id}/inforTeamDetail`);
       }
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -335,7 +336,7 @@ const CreateTeam = () => {
       case "wards":
         {
           const oldAddress = addressField;
-          setAddressField(", " + value + oldAddress);
+          setAddressField(value + oldAddress);
         }
         break;
     }
@@ -365,7 +366,7 @@ const CreateTeam = () => {
                 id="file"
                 onChange={onChangeHandler}
                 required
-                minLength="5"
+                
               />
               <img
                 src={
