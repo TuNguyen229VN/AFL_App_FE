@@ -1,16 +1,22 @@
 import React from "react";
 import "./styles/style.css";
-import HeaderTeamDetail from "./HeaderTeamDetail";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
+
+
 function ListPlayer() {
   return (
     <>
-    <Header/>
+    
     <div className="teamdetail">
-      <HeaderTeamDetail />
+
       <div className="teamdetail__content listPlayer">
         <h3 className="listPlayer__title">Danh sách thành viên</h3>
+        <div style={{
+          display: "flex",
+          justifyContent: "right"
+        }}>
+        <button className="createTeam_btn">Thêm thành viên</button>
+        </div>
+        
         <h2 className="listPlayer__total">Có 30 thành viên</h2>
         <div className="listPlayer__list">
           <div className="listPlayer__item">
@@ -64,7 +70,7 @@ function ListPlayer() {
         </div>
       </div>
     </div>
-    <Footer/>
+   
     </>
   );
 }

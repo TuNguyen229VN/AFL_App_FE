@@ -1,14 +1,12 @@
 import React from "react";
 import "./styles/style.css";
-import HeaderTeamDetail from "./HeaderTeamDetail";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
+
 function ReportTeamDetail() {
   return (
     <>
-    <Header/>
+    
     <div className="teamdetail">
-      <HeaderTeamDetail />
+      
       <div className="teamdetail__content reportTeam">
         <div className="archivement">
           <h2 className="archivement__title">Giải thưởng</h2>
@@ -57,7 +55,7 @@ function ReportTeamDetail() {
         </div>
       </div>
     </div>
-    <Footer/>
+  
     </>
   );
 }

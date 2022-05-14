@@ -396,7 +396,7 @@ const CreateTournament = () => {
                         margin: "auto",
                       }}
                       src={
-                        imgTournament.value == ""
+                        imgTournament.value === ""
                           ? "assets/img/createteam/camera.png"
                           : imgTournament.img
                       }
@@ -634,111 +634,110 @@ const CreateTournament = () => {
               </div>
               <div className={styles.createTournament_row4_col2}>
                 <div className={styles.fieldSoccer}>
-                  {provice != null ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        marginBottom: 65,
-                      }}
-                    >
-                      <label
-                        className={styles.createTournament_img_title}
-                        htmlFor="provice"
-                      >
-                        Thành phố/Tỉnh{" "}
-                      </label>
-                      <select
-                        style={{
-                          padding: "10px 5px",
-                        }}
-                        name="provice"
-                        onChange={onChangeHandler}
-                      >
-                        <option selected disabled>
-                          Chọn thành phố
-                        </option>
-                        {provice.map((item, index) => {
-                          return (
-                            <option value={item.name} key={index}>
-                              {item.name}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
-                  ) : null}
+                
+          
+            
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginBottom: 65,
+                  width: "100%"
+                }}
+              >
+                <label className={styles.createTournament_img_title} htmlFor="provice">
+                  Thành phố/Tỉnh{" "}
+                </label>
+                <select 
+                  style={{
+                    padding: "10px 5px",
+                  }}
+                  name="provice"
+                  onChange={onChangeHandler}
+                >
+                  <option selected disabled>
+                    Chọn thành phố
+                  </option>
+                  {provice != null ? provice.map((item, index) => {
+                    return (
+                      <option value={item.name} key={index}>
+                        {item.name}
+                      </option>
+                    );
+                  }): null}
+                </select>
+              </div>
+            
 
-                  {districts != null ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        marginBottom: 65,
-                      }}
-                    >
-                      <label
-                        className={styles.createTournament_img_title}
-                        htmlFor="districts"
-                      >
-                        Quận/Huyện
-                      </label>
-                      <select
-                        style={{
-                          padding: "10px 5px",
-                        }}
-                        name="districts"
-                        onChange={onChangeHandler}
-                      >
-                        <option selected disabled>
-                          Chọn quận
-                        </option>
-                        {districts.map((item, index) => {
-                          return (
-                            <option value={item.name} key={index}>
-                              {item.name}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
-                  ) : null}
+            
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginBottom: 65,
+                  width: "100%"
+                }}
+              >
+                <label
+                  className={styles.createTournament_img_title}
+                  htmlFor="districts"
+                >
+                  Quận/Huyện
+                </label>
+                <select
+                  style={{
+                    padding: "10px 5px",
+                  }}
+                  name="districts"
+                  onChange={onChangeHandler}
+                >
+                  <option selected disabled>
+                    Chọn quận
+                  </option>
+                  { districts != null ?districts.map((item, index) => {
+                    return (
+                      <option value={item.name} key={index}>
+                        {item.name}
+                      </option>
+                    );
+                  }): null}
+                </select>
+              </div>
+            
 
-                  {wards != null ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        marginBottom: 65,
-                      }}
-                    >
-                      <label
-                        className={styles.createTournament_img_title}
-                        htmlFor="wards"
-                      >
-                        Phường/Xã
-                      </label>
-                      <select
-                        style={{
-                          padding: "10px 5px",
-                        }}
-                        name="wards"
-                        className={styles.wards}
-                        onChange={onChangeHandler}
-                      >
-                        <option selected disabled>
-                          Chọn phường
-                        </option>
-                        {wards.map((item, index) => {
-                          return (
-                            <option value={item.name} key={index}>
-                              {item.name}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
-                  ) : null}
+            
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginBottom: 65,
+                  width: "100%"
+                }}
+              >
+                <label className={styles.createTournament_img_title} htmlFor="wards">
+                  Phường/Xã
+                </label>
+                <select
+                  style={{
+                    padding: "10px 5px",
+                  }}
+                  name="wards"
+                  onChange={onChangeHandler}
+                >
+                  <option selected disabled>
+                    Chọn phường
+                  </option>
+                  {wards != null ? wards.map((item, index) => {
+                    return (
+                      <option value={item.name} key={index}>
+                        {item.name}
+                      </option>
+                    );
+                  }): null}
+                </select>
+              </div>
+           
+          
                   <div>
                     <label
                       className={styles.createTournament_img_title}

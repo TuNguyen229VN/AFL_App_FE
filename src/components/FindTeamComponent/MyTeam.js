@@ -10,9 +10,8 @@ import AOS from "aos";
 import Transitions from "../Transitions/Transitions";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 import { Link } from "react-router-dom";
+import Loading from "../LoadingComponent/Loading";
 const MyTournamemts = () => {
   AOS.init();
   const tour = gsap.timeline();
@@ -22,15 +21,7 @@ const MyTournamemts = () => {
   const [contentSearch, setContentSearch] = useState("");
   const [check, setCheck] = useState(false);
   const [loading, setLoading] = useState(false);
-  const Loading = () => {
-    return (
-      <>
-        <div className={styles.tournamentload}>
-          <Skeleton height={300} />
-        </div>
-      </>
-    );
-  };
+
   const getTournament = async (nameFind, currentPage) => {
     try {
       setLoading(true);
@@ -142,7 +133,7 @@ const MyTournamemts = () => {
               return (
                 <div key={team.id}>
                   {loading ? (
-                    <Loading />
+                  <Loading />
                   ) : (
                     <Link to={`/inforTeamDetail/${team.id}`} className={styles.team} key={team.id}>
                       <div className={styles.tournamentImgAd}>

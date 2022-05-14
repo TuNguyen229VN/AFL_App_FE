@@ -613,7 +613,7 @@ const CreateTeam = () => {
             display: "flex",
             justifyContent: "space-between"
           }}>
-            {provice != null ? (
+            
               <div
                 style={{
                   display: "flex",
@@ -625,7 +625,7 @@ const CreateTeam = () => {
                 <label className={styles.createTournament_img_title} htmlFor="provice">
                   Thành phố/Tỉnh{" "}
                 </label>
-                <select
+                <select 
                   style={{
                     padding: "10px 5px",
                   }}
@@ -635,18 +635,18 @@ const CreateTeam = () => {
                   <option selected disabled>
                     Chọn thành phố
                   </option>
-                  {provice.map((item, index) => {
+                  {provice != null ? provice.map((item, index) => {
                     return (
                       <option value={item.name} key={index}>
                         {item.name}
                       </option>
                     );
-                  })}
+                  }): null}
                 </select>
               </div>
-            ) : <div></div>}
+            
 
-            {districts != null ? (
+            
               <div
                 style={{
                   display: "flex",
@@ -671,18 +671,18 @@ const CreateTeam = () => {
                   <option selected disabled>
                     Chọn quận
                   </option>
-                  {districts.map((item, index) => {
+                  { districts != null ?districts.map((item, index) => {
                     return (
                       <option value={item.name} key={index}>
                         {item.name}
                       </option>
                     );
-                  })}
+                  }): null}
                 </select>
               </div>
-            ) : <div></div>}
+            
 
-            {wards != null ? (
+            
               <div
                 style={{
                   display: "flex",
@@ -704,16 +704,16 @@ const CreateTeam = () => {
                   <option selected disabled>
                     Chọn phường
                   </option>
-                  {wards.map((item, index) => {
+                  {wards != null ? wards.map((item, index) => {
                     return (
                       <option value={item.name} key={index}>
                         {item.name}
                       </option>
                     );
-                  })}
+                  }): null}
                 </select>
               </div>
-            ) : <div></div>}
+           
           </div>
           <p className={`${styles.avt} ${styles.line3}`}>Thông tin đội bóng</p>
           <div className={styles.descTeam}>
