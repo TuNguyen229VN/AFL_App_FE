@@ -337,15 +337,31 @@ outline: none;
   background-color: #fff;
   border:2px solid var(--blue-black);
   position: fixed;
-  padding: 10px 20px;
+  padding: 20px 30px;
   text-align: center;
   z-index: 8;
-  top: 50%;
+  top: -100%;
   left: 50%;
   transform: translate(-50%,-50%);
   border-radius: 5px;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s;
 }
-
+.popup__prediction.active{
+  top: 30%;
+  left: 50%;
+  opacity: 1;
+  visibility: visible;
+}
+.overlay.active{
+  opacity: 0.8;
+  visibility: visible;
+}
+.popup__prediction h2{
+  text-transform: uppercase;
+  margin-top: 30px;
+}
 .popup__prediction .popup__prediction__wrap{
   display: flex;
   justify-content: center;
@@ -356,9 +372,11 @@ outline: none;
   width: 60px;
   height: 40px;
   padding: 5px;
+  border: 1px solid #ccc;
+}
+.popup__prediction .popup__prediction__wrap input:focus{
   border: 1px solid var(--blue-black);
 }
-
 .popup__prediction .popup__prediction__wrap .line{
   width: 10px;
   background-color: var(--blue-black);
@@ -367,8 +385,8 @@ outline: none;
 }
 
 .popup__prediction button{
-  margin-top: 20px;
-  padding: 10px;
+  margin-top: 25px;
+  padding: 10px 20px;
   outline: none;
   border: none;
   background-color: var(--blue-black);
@@ -376,7 +394,37 @@ outline: none;
   color: var(--white-text);
 }
 
+.popup__prediction input::-webkit-outer-spin-button,
+.popup__prediction input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
 .popup__prediction input[type=number] {
-  appearance: none;
-  margin: 0;
+    -moz-appearance:textfield; /* Firefox */
+    text-align: center;
+}
+
+.overlay{
+  position: fixed;
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 8;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.popup__prediction .close{
+  position: absolute;
+  font-family: "Mulish-Bold";
+  right: 10px;
+  top: 5px;
+  user-select: none;
+  cursor: pointer;
+  font-size: 24px;
 }

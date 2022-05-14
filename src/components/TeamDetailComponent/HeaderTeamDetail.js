@@ -81,7 +81,7 @@ function HeaderTeamDetail() {
   }, [location.pathname]);
   return (
     <>
-      <Header />
+      <Header id={idTeam}/>
       <div className="teamdetail">
         {loading ? (
           <Loading />

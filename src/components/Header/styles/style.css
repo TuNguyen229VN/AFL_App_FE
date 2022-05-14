@@ -88,9 +88,15 @@ header .container-fluid .menu li {
 .menu .title {
   position: relative;
 }
-
+.menu .tourheader ,.menu .teamheader{
+  position: relative;
+}
+.menu .tourheader:hover .sub_menu ,.menu .teamheader:hover .sub_menu{
+  /* position: relative; */
+  display: block;
+}
 .menu .sub_menu {
-  margin-top: 12px;
+  bottom: -80px;
   position: absolute;
   color: black;
   left: 0;
@@ -123,6 +129,7 @@ header .container-fluid .menu li {
   height: 100%;
   font-family: "Mulish-Bold";
   font-size: 18px;
+  position: relative;
 }
 .account .current {
   cursor: pointer;
@@ -132,8 +139,12 @@ header .container-fluid .menu li {
   justify-content: center;
   align-items: center;
   position: relative;
+  transition: 0.5s;
+  user-select: none;
 }
-
+.account .current:hover {
+  color: var(--green-bold);
+}
 .account .avatar {
   width: 37px;
   height: 37px;
@@ -155,26 +166,54 @@ header .container-fluid .menu li {
   position: absolute;
   color: black;
   text-align: right;
-  width: 100%;
+  width: max-content;
   right: 0;
-  background-color: var(--green-bold);
+  height: 0;
+  background-color: var(--blue-black);
   display: flex;
   flex-direction: column;
-  display: none;
+  bottom: -190px;
+  visibility: hidden;
+  opacity: 0;
 }
 .account .popup_down.active {
-  display: block;
+  visibility: visible;
+  height: auto;
+  opacity: 1;
 }
 .account .popup_down a {
+  font-family: "Mulish-Bold";
   font-size: 16px;
+  color: var(--white-text);
+  padding: 15px 15px 15px 30px;
+  transition: 0.5s;
+}
+.account .popup_down a:hover {
+  background-color: var(--green-bold);
   color: var(--blue-black);
-  padding: 10px 15px 10px 30px;
 }
-
 .account .popup_down a:not(:last-child) {
-  border-bottom: 2px solid var(--blue-black);
+  border-bottom: 2px solid var(--white-text);
 }
 
+/* .account .popup_down a:first-child{
+  border-top: 2px solid var(--white-text);
+} */
+.account .current .login__text{
+  color: var(--white-text);
+  font-family: "Mulish-Bold";
+
+}
+
+.account .current .dash{
+  color: var(--white-text);
+  font-family: "Mulish-Bold";
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.account .current .login__text:hover{
+  color: var(--green-bold);
+}
 .header .btn__menu {
   display: none;
   width: 40px;
