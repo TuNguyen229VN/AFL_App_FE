@@ -19,7 +19,6 @@
   display: flex;
   column-gap: 200px;
   position: relative;
-  height: 400px;
 }
 
 .avt__Team {
@@ -405,3 +404,31 @@
   bottom: -20px;
   right: 20px;
 }
+.createTeam_btn:hover {
+  background-color: var(--green-bold);
+  color: var(--blue-black);
+}
+
+.createTeam_btn {
+  padding: 15px 10px;
+  width: max-content;
+  text-align: center;
+  font-family: "Mulish-Bold";
+  font-size: 18px;
+  background-color: var(--blue-black);
+  margin: 20px 0 0 auto;
+  transition: 0.5s;
+  color: var(--white-text);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* style={{
+  padding: "20px 10px",
+  backgroundColor: "#d7fc6a",
+  border: 1,
+  borderColor: "#d7fc6a",
+  color:"black",
+  fontWeight: 600,
+  marginRight: -1
+}} */

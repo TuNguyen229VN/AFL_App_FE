@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import ListTournament from "./ListTournament";
-import FindTournaments from "./FindTournament";
-import PagingTournament from "./PagingTournament";
+// import ListTournament from "./ListTournament";
+// import FindTournaments from "./FindTournament";
+// import PagingTournament from "./PagingTournament";
 import styles from "./TournamentFind.module.css";
 import gsap from "gsap";
 import AOS from "aos";
@@ -10,9 +10,8 @@ import Footer from "../Footer/Footer";
 import Transitions from "../Transitions/Transitions";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 import { Link } from "react-router-dom";
+import Loading from "../LoadingComponent/Loading";
 const MyTournamemts = () => {
   AOS.init();
   const tour = gsap.timeline();
@@ -24,15 +23,7 @@ const MyTournamemts = () => {
   const [loading, setLoading] = useState(false);
   const [tourType, setTourType] = useState([]);
   const [footballField, setFootballField] = useState([]);
-  const Loading = () => {
-    return (
-      <>
-        <div className={styles.tournamentload}>
-          <Skeleton height={300} />
-        </div>
-      </>
-    );
-  };
+
 
   // Get Tournament
   const getTournament = async (nameFind, currentPage) => {
