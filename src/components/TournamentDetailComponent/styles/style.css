@@ -41,6 +41,8 @@
   width: 150px;
 }
 
+/* Gallery Tournament Detail */
+
 .teamdetail .schedule__tour .title,
 .teamdetail .gallery__tour .title,
 .teamdetail .rank__tour .title {
@@ -63,16 +65,35 @@
   bottom: -10px;
 }
 
-.teamdetail .gallery__tour .gallery__list {
+.gallery__tour ul.images {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 15px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.gallery__tour div.fullscreen-group.fullscreen-group--expanded::before {
+  z-index: 8;
+}
+.gallery__tour ul.images > li {
+  position: relative;
+  padding-top: 66%;
 }
 
-.teamdetail .gallery__tour .gallery__item {
-  border-radius: 8px;
-  overflow: hidden;
+.gallery__tour ul.images > li img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 5px;
 }
+
+/* Team In Tournamnet */
 
 .tournamentdetail .listPlayer .listPlayer__item span {
   width: 110px;
@@ -90,6 +111,8 @@
   background-color: var(--blue-black);
   color: var(--white-text);
 }
+
+/* Rank Table Tournament */
 
 .teamdetail .rank__tour .note {
   margin-bottom: 20px;
@@ -123,10 +146,11 @@
   border: 1px solid #ccc;
   padding: 10px;
 }
+.teamdetail .prediction__tournament .predict__table tr:nth-child(odd),
 .teamdetail .rank__tour .table__team tr:nth-child(odd) {
   background-color: #f3f3f3;
 }
-
+.teamdetail .prediction__tournament .predict__table tr:first-child,
 .teamdetail .rank__tour .table__team tr:first-child {
   background-color: var(--blue-black);
   color: var(--white-text);
@@ -138,6 +162,8 @@
   padding: 15px;
 }
 
+/* Schedule Tournament Detail */
+
 .teamdetail .schedule__tour .schedule__table tr:nth-child(odd) {
   background-color: #f3f3f3;
 }
@@ -148,7 +174,7 @@
   text-align: c;
 }
 
-.teamdetail .schedule__tour .schedule__table:first-child{
+.teamdetail .schedule__tour .schedule__table:first-child {
   margin-bottom: 50px;
   margin-top: 20px;
 }
@@ -161,41 +187,41 @@
   text-align: center;
   padding: 15px;
 }
-.teamdetail .schedule__tour .schedule__table img{
+.teamdetail .schedule__tour .schedule__table img {
   width: 35px;
   height: 35px;
   border-radius: 50%;
 }
 
-.teamdetail .schedule__tour .schedule__table td:first-child{
+.teamdetail .schedule__tour .schedule__table td:first-child {
   width: 180px;
 }
 
-.teamdetail .schedule__tour .schedule__table td:nth-child(2){
+.teamdetail .schedule__tour .schedule__table td:nth-child(2) {
   margin-left: 0px;
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(2),
-.teamdetail .schedule__tour .schedule__table td:nth-child(4){
+.teamdetail .schedule__tour .schedule__table td:nth-child(4) {
   text-transform: uppercase;
   position: relative;
   width: max-content;
   width: 100px;
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(4){
+.teamdetail .schedule__tour .schedule__table td:nth-child(4) {
   width: 280px;
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(3){
+.teamdetail .schedule__tour .schedule__table td:nth-child(3) {
   font-family: "Mulish-Bold";
   font-size: 18px;
   /* transform: translateX(-80px); */
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(2) img{
+.teamdetail .schedule__tour .schedule__table td:nth-child(2) img {
   top: 50%;
   transform: translateY(-50%);
   position: absolute;
   left: 240px;
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(4) img{
+.teamdetail .schedule__tour .schedule__table td:nth-child(4) img {
   position: absolute;
   font-family: "Mulish-Bold";
   top: 50%;
@@ -203,16 +229,17 @@
   right: 390px;
 }
 
-.teamdetail .schedule__tour .wrap__title{
+.teamdetail .schedule__tour .wrap__title {
   display: flex;
   justify-content: space-between;
 }
 
-.teamdetail .schedule__tour .option__view{
+.teamdetail .schedule__tour .option__view {
   display: flex;
+  align-items: center;
 }
 
-.teamdetail .schedule__tour .option__view p{
+.teamdetail .schedule__tour .option__view p {
   border: 1px solid var(--blue-black);
   padding: 15px;
   width: 130px;
@@ -223,60 +250,85 @@
   user-select: none;
 }
 
-.teamdetail .schedule__tour .option__view p:hover{
+.teamdetail .schedule__tour .option__view p:hover {
   background-color: var(--green-bold);
 }
-.teamdetail .schedule__tour .option__view p:nth-child(2){
+.teamdetail .schedule__tour .option__view p:nth-child(2) {
   border-left: 0;
 }
 
-.teamdetail .schedule__tour .option__view p.active{
+.teamdetail .schedule__tour .option__view p.active {
   background-color: var(--green-bold);
 }
 
-.teamdetail .schedule__tour .round{
+.teamdetail .schedule__tour .round {
   margin-top: 20px;
 }
 
-.teamdetail .schedule__tour .match__item img{
+.teamdetail .schedule__tour .match__item img {
   width: 30px;
   height: 30px;
   border: 1px solid var(--white-text);
   border-radius: 50%;
   margin-left: 15px;
- transform: translateY(10px);
+  transform: translateY(10px);
 }
 
+.teamdetail .prediction__tournament .predict__table th,
+.teamdetail .prediction__tournament .predict__table td,
 .teamdetail .schedule__tour .match__item th,
 .teamdetail .schedule__tour .match__item td {
   text-align: center;
   padding: 15px;
 }
 
-.teamdetail .schedule__tour .match__item table{
+.teamdetail .schedule__tour .match__item table {
   margin-bottom: 30px;
   user-select: none;
   width: 200px;
   font-family: "Mulish-Bold";
 }
 
-.teamdetail .schedule__tour .match__item .row1{
+.teamdetail .schedule__tour .match__item .row1 {
   background-color: var(--blue-black);
   color: var(--white-text);
 }
-.teamdetail .schedule__tour .match__item .num{
-transform: translateY(30px);
+.teamdetail .schedule__tour .match__item .num {
+  transform: translateY(30px);
 }
 
-.teamdetail .schedule__tour .match__item .row2{
+.teamdetail .schedule__tour .match__item .row2 {
   background-color: var(--green-bold);
 }
 
-.teamdetail .schedule__tour .match__container{
+.teamdetail .schedule__tour .match__container {
   display: flex;
   column-gap: 40px;
 }
 
-.teamdetail .schedule__tour .match__item tr:nth-child(2){
+.teamdetail .schedule__tour .match__item tr:nth-child(2) {
   border-top: 2px solid var(--white-text);
+}
+
+/* Prediction Tournament Detail */
+.teamdetail .prediction .btnPrediction{
+background-color: #fff;
+border: 2px solid var(--green-bold);
+padding: 10px;
+outline: none;
+}
+.teamdetail .prediction .btnPrediction:hover{
+  background-color: var(--green-bold);
+}
+
+.teamdetail .prediction .schedule__table td:nth-child(5) {
+  width: 120px;
+}
+
+.teamdetail .prediction .schedule__table td:nth-child(2){
+  width: 190px;
+}
+
+.teamdetail .prediction .schedule__table td:nth-child(4) img {
+  right: 330px;
 }

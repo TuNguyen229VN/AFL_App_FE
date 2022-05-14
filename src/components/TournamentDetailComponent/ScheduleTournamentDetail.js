@@ -3,6 +3,61 @@ import "./styles/style.css";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import HeaderTournamentDetail from "./HeaderTournamentDetail";
+import { Bracket, RoundProps } from 'react-brackets';
+
+const rounds: RoundProps[] = [
+  {
+    title: 'Vòng tứ kết',
+    seeds: [
+      {
+        id: 1,
+        date: new Date().toDateString(),
+        teams: [{ name: 'Đội A' }, { name: 'Đội B' }],
+      },
+      {
+        id: 2,
+        date: new Date().toDateString(),
+        teams: [{ name: 'Đội C' }, { name: 'Đội D' }],
+      },
+      {
+        id: 3,
+        date: new Date().toDateString(),
+        teams: [{ name: 'Đội A' }, { name: 'Đội B' }],
+      },
+      {
+        id: 4,
+        date: new Date().toDateString(),
+        teams: [{ name: 'Đội C' }, { name: 'Đội D' }],
+      },
+    ],
+    
+  },
+  {
+    title: 'Vòng bán kết',
+    seeds: [
+      {
+        id: 3,
+        date: new Date().toDateString(),
+        teams: [{ name: 'Đội A' }, { name: 'Đội B' }],
+      },
+      {
+        id: 4,
+        date: new Date().toDateString(),
+        teams: [{ name: 'Đội C' }, { name: 'Đội D' }],
+      },
+    ],
+  },
+  {
+    title: 'Vòng chung kết',
+    seeds: [
+      {
+        id: 3,
+        date: new Date().toDateString(),
+        teams: [{ name: 'Đội A' }, { name: 'Đội B' }],
+      },
+    ],
+  },
+];
 function ScheduleTournamentDetail() {
   const [active, setactive] = useState(true);
   return (
@@ -135,7 +190,8 @@ function ScheduleTournamentDetail() {
             </div>
           ) : (
             <div className="round">
-              <div className="round__container">
+            <Bracket rounds={rounds} />;
+              {/* <div className="round__container">
                 <div className="match__container">
                   <div className="match__item">
                     <table>
@@ -240,7 +296,7 @@ function ScheduleTournamentDetail() {
                     </table>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           )}
         </div>
