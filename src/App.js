@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "./components/HomePageComponent/HomePage";
 import Login from "./components/Login/Login";
-import Signup from "./components/Signup/Signup"
+import Signup from "./components/Signup/Signup";
 import MyTournaments from "./components/FindTournamentComponent/MyTournament";
 import MyTeam from "./components/FindTeamComponent/MyTeam";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
@@ -12,26 +12,19 @@ import InforTeamDetail from "./components/TeamDetailComponent/InforTeamDetail";
 import ListPlayer from "./components/TeamDetailComponent/ListPlayer";
 import ReportTeamDetail from "./components/TeamDetailComponent/ReportTeamDetail";
 import CommentTeamDetail from "./components/TeamDetailComponent/CommentTeamDetail";
-import InforTournamentDetail from "./components/TournamentDetailComponent/InforTournamentDetail";
-import CommentTournamentDetail from "./components/TournamentDetailComponent/CommentTournamentDetail";
-import GalleryTournamentDetail from "./components/TournamentDetailComponent/GalleryTournamentDetail";
-import PredictionTournamentDetail from "./components/TournamentDetailComponent/PredictionTournamentDetail";
-import RankTableTournamentDetail from "./components/TournamentDetailComponent/RankTableTournamentDetail";
-import ScheduleTournamentDetail from "./components/TournamentDetailComponent/ScheduleTournamentDetail";
-import TeamInTournament from "./components/TournamentDetailComponent/TeamInTournament";
-
+import HeaderTournamentDetail from "./components/TournamentDetailComponent/HeaderTournamentDetail";
+import HeaderTeamDetail from "./components/TeamDetailComponent/HeaderTeamDetail";
 
 function App() {
   // const exclusionArray = ["/login", "/signup"];
   //request.auth != null
-  
 
   return (
     <div>
       <BrowserRouter>
         {/* {HideHeader} */}
         {/* {exclusionArray.indexOf(window.location.pathname) < 0 && <Header />} */}
-        <ScrollToTop />
+        {/* <ScrollToTop /> */}
         <Routes>
           <Route exact path="/" element={<HomePage />} />
           <Route exact path="/home" element={<HomePage />} />
@@ -40,19 +33,6 @@ function App() {
           <Route exact path="/findTournaments" element={<MyTournaments />} />
           <Route exact path="/findTeam" element={<MyTeam />} />
           <Route exact path="/createTeam" element={<CreateTeam />} />
-          <Route exact path="/inforTeamDetail/:idTeam" element={<InforTeamDetail />} />
-          <Route exact path="/listPlayer/:idTeam" element={<ListPlayer />} />
-          
-          <Route
-            exact
-            path="/reportTeamDeatail/:idTeam"
-            element={<ReportTeamDetail />}
-          />
-          <Route
-            exact
-            path="/commentTeamDetail/:idTeam"
-            element={<CommentTeamDetail />}
-          />
           <Route
             exact
             path="/createTournament"
@@ -60,38 +40,60 @@ function App() {
           />
           <Route
             exact
-            path="/inforTournamentDetail/:idTour"
-            element={<InforTournamentDetail />}
+            path="/teamDetail/:idTeam/inforTeamDetail"
+            element={<HeaderTeamDetail />}
           />
-           <Route
+          <Route
             exact
-            path="/commentTournamentDetail/:idTour"
-            element={<CommentTournamentDetail />}
+            path="/teamDetail/:idTeam/listPlayer"
+            element={<HeaderTeamDetail />}
           />
-           <Route
+
+          <Route
             exact
-            path="/galleryTournamentDetail/:idTour"
-            element={<GalleryTournamentDetail />}
+            path="/teamDetail/:idTeam/reportTeamDeatail"
+            element={<HeaderTeamDetail />}
           />
-           <Route
+          <Route
             exact
-            path="/predictionTournamentDetail/:idTour"
-            element={<PredictionTournamentDetail />}
+            path="/teamDetail/:idTeam/commentTeamDetail"
+            element={<HeaderTeamDetail />}
           />
-           <Route
+          <Route
             exact
-            path="/rankTableTournamentDetail/:idTour"
-            element={<RankTableTournamentDetail />}
+            path="/tournamentDetail/:idTour/inforTournamentDetail"
+            element={<HeaderTournamentDetail />}
           />
-           <Route
+          <Route
             exact
-            path="/scheduleTournamentDetail/:idTour"
-            element={<ScheduleTournamentDetail />}
+            path="/tournamentDetail/:idTour/commentTournamentDetail"
+            element={<HeaderTournamentDetail />}
           />
-           <Route
+          <Route
             exact
-            path="/teamInTournament/:idTour"
-            element={<TeamInTournament />}
+            path="/tournamentDetail/:idTour/galleryTournamentDetail"
+            element={<HeaderTournamentDetail />}
+          />
+          <Route
+            exact
+            path="/tournamentDetail/:idTour/predictionTournamentDetail"
+            element={<HeaderTournamentDetail />}
+          />
+          <Route
+            exact
+            path="/tournamentDetail/:idTour/rankTableTournamentDetail"
+            element={<HeaderTournamentDetail />}
+          />
+          <Route
+            exact
+            path="/tournamentDetail/:idTour/scheduleTournamentDetail"
+            element={<HeaderTournamentDetail />}
+          />
+          <Route
+            exact
+            path="/tournamentDetail/:idTour/teamInTournament"
+            element={<HeaderTournamentDetail />}
+            ignoreScrollBehavior={true}
           />
         </Routes>
         {/* {exclusionArray.indexOf(window.location.pathname) < 0 && <Footer />} */}

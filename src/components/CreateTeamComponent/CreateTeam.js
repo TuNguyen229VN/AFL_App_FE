@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./styles/style.module.css" 
+import styles from "./styles/style.module.css";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -9,6 +9,7 @@ import Footer from "../Footer/Footer";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 
 const CreateTeam = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -41,7 +42,7 @@ const CreateTeam = () => {
     value: "",
     error: "",
   });
-  const [resetProvice , setResetProvice] = useState(-1)
+  const [resetProvice, setResetProvice] = useState(-1);
   const [provice, setProvice] = useState(null);
   const [districts, setDistricts] = useState(null);
   const [wards, setWards] = useState(null);
@@ -141,9 +142,9 @@ const CreateTeam = () => {
         teamAvatar: imgClub.value,
         description: textDescription,
         teamGender: gender.value,
-        teamArea: addressField
+        teamArea: addressField,
       };
-      
+
       const response = await axios.post(
         "https://afootballleague.ddns.net/api/v1/teams",
         data,
@@ -343,6 +344,7 @@ const CreateTeam = () => {
 
   return (
     <>
+      <ScrollToTop />
       <Header />
 
       <form onSubmit={onSubmitHandler}>
@@ -609,111 +611,119 @@ const CreateTeam = () => {
         </div>
       </div> */}
           <p className={`${styles.avt} ${styles.line3}`}>Khu vực đội bóng</p>
-          <div style={{
-            display: "flex",
-            justifyContent: "space-between"
-          }}>
-            
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginBottom: 65,
-                  width: "30%"
-                }}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginBottom: 65,
+                width: "30%",
+              }}
+            >
+              <label
+                className={styles.createTournament_img_title}
+                htmlFor="provice"
               >
-                <label className={styles.createTournament_img_title} htmlFor="provice">
-                  Thành phố/Tỉnh{" "}
-                </label>
-                <select 
-                  style={{
-                    padding: "10px 5px",
-                  }}
-                  name="provice"
-                  onChange={onChangeHandler}
-                >
-                  <option selected disabled>
-                    Chọn thành phố
-                  </option>
-                  {provice != null ? provice.map((item, index) => {
-                    return (
-                      <option value={item.name} key={index}>
-                        {item.name}
-                      </option>
-                    );
-                  }): null}
-                </select>
-              </div>
-            
+                Thành phố/Tỉnh{" "}
+              </label>
+              <select
+                style={{
+                  padding: "10px 5px",
+                }}
+                name="provice"
+                onChange={onChangeHandler}
+              >
+                <option selected disabled>
+                  Chọn thành phố
+                </option>
+                {provice != null
+                  ? provice.map((item, index) => {
+                      return (
+                        <option value={item.name} key={index}>
+                          {item.name}
+                        </option>
+                      );
+                    })
+                  : null}
+              </select>
+            </div>
 
-            
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginBottom: 65,
-                  width: "30%"
-                }}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginBottom: 65,
+                width: "30%",
+              }}
+            >
+              <label
+                className={styles.createTournament_img_title}
+                htmlFor="districts"
               >
-                <label
-                  className={styles.createTournament_img_title}
-                  htmlFor="districts"
-                >
-                  Quận/Huyện
-                </label>
-                <select
-                  style={{
-                    padding: "10px 5px",
-                  }}
-                  name="districts"
-                  onChange={onChangeHandler}
-                >
-                  <option selected disabled>
-                    Chọn quận
-                  </option>
-                  { districts != null ?districts.map((item, index) => {
-                    return (
-                      <option value={item.name} key={index}>
-                        {item.name}
-                      </option>
-                    );
-                  }): null}
-                </select>
-              </div>
-            
+                Quận/Huyện
+              </label>
+              <select
+                style={{
+                  padding: "10px 5px",
+                }}
+                name="districts"
+                onChange={onChangeHandler}
+              >
+                <option selected disabled>
+                  Chọn quận
+                </option>
+                {districts != null
+                  ? districts.map((item, index) => {
+                      return (
+                        <option value={item.name} key={index}>
+                          {item.name}
+                        </option>
+                      );
+                    })
+                  : null}
+              </select>
+            </div>
 
-            
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginBottom: 65,
-                  width: "30%"
-                }}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginBottom: 65,
+                width: "30%",
+              }}
+            >
+              <label
+                className={styles.createTournament_img_title}
+                htmlFor="wards"
               >
-                <label className={styles.createTournament_img_title} htmlFor="wards">
-                  Phường/Xã
-                </label>
-                <select
-                  style={{
-                    padding: "10px 5px",
-                  }}
-                  name="wards"
-                  onChange={onChangeHandler}
-                >
-                  <option selected disabled>
-                    Chọn phường
-                  </option>
-                  {wards != null ? wards.map((item, index) => {
-                    return (
-                      <option value={item.name} key={index}>
-                        {item.name}
-                      </option>
-                    );
-                  }): null}
-                </select>
-              </div>
-           
+                Phường/Xã
+              </label>
+              <select
+                style={{
+                  padding: "10px 5px",
+                }}
+                name="wards"
+                onChange={onChangeHandler}
+              >
+                <option selected disabled>
+                  Chọn phường
+                </option>
+                {wards != null
+                  ? wards.map((item, index) => {
+                      return (
+                        <option value={item.name} key={index}>
+                          {item.name}
+                        </option>
+                      );
+                    })
+                  : null}
+              </select>
+            </div>
           </div>
           <p className={`${styles.avt} ${styles.line3}`}>Thông tin đội bóng</p>
           <div className={styles.descTeam}>

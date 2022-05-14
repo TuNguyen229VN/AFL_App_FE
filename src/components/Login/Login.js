@@ -6,6 +6,7 @@ import 'firebase/compat/auth';
 import { GoogleAuthProvider,getAuth, signInWithPopup } from "firebase/auth";
 import axios from "axios";
 import SignUpGoogle from '../SignUpGoogle/SignUpGoogle'
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 function Login() {
 
   const firebaseConfig = {
@@ -142,6 +143,7 @@ const auth = getAuth();
 
   return (
     <div className={styles.login}>
+    <ScrollToTop />
        {newAcc?<SignUpGoogle newAcc={newAcc} userInfo = {userInfo} token = {token}/>:""}
       <div className={styles.container__wrap}>
         <div className={styles.login__sub}>

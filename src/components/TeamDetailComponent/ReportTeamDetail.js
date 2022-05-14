@@ -3,10 +3,7 @@ import "./styles/style.css";
 
 function ReportTeamDetail() {
   return (
-    <>
-    
-    <div className="teamdetail">
-      
+    <>     
       <div className="teamdetail__content reportTeam">
         <div className="archivement">
           <h2 className="archivement__title">Giải thưởng</h2>
@@ -54,8 +51,6 @@ function ReportTeamDetail() {
           </div>
         </div>
       </div>
-    </div>
-  
     </>
   );
 }

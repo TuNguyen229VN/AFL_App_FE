@@ -74,7 +74,7 @@ const TournamentHome = () => {
           return (
             <Link
               key={tour.id}
-              to={`/inforTournamentDetail/${tour.id}`}
+              to={`/tournamentDetail/${tour.id}/inforTournamentDetail`}
               className="tournaments__list-item"
             >
               <div className="tournament__img">

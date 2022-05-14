@@ -37,7 +37,7 @@ const TeamHome = () => {
         {teams.map((team) => {
           return (
             <Link
-              to={`/inforTeamDetail/${team.id}`}
+              to={`/teamDetail/${team.id}/inforTeamDetail`}
               className="tournaments__list-item"
               key={team.id}
             >

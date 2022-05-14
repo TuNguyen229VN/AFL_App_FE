@@ -14,11 +14,13 @@ import gsap from "gsap";
 import Transitions from "../Transitions/Transitions";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 const HomePage = () => {
   const home = gsap.timeline();
   AOS.init();
   return (
     <div>
+      <ScrollToTop />
       <Transitions timeline={home} />
       <Header />
       <Slider />

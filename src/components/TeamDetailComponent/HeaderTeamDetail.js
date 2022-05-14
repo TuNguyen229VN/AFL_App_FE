@@ -1,144 +1,217 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { getAPI } from "../../api";
+import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
+import Loading from "../LoadingComponent/Loading";
+import CommentTeamDetail from "./CommentTeamDetail";
+import InforTeamDetail from "./InforTeamDetail";
+import ListPlayer from "./ListPlayer";
+import ReportTeamDetail from "./ReportTeamDetail";
 import "./styles/style.css";
 
-function HeaderTeamDetail(props) {
+function HeaderTeamDetail() {
+  const { idTeam } = useParams();
   const location = useLocation();
+  const [loading, setLoading] = useState(true);
+  const [team, setTeam] = useState("");
+  const [manager, setManager] = useState("");
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
-  
-  const { myTeam, getLinkClick } = props;
-  
-  const {
-    id,
-    teamName,
-    teamAvatar,
-    teamArea,
-    teamPhone,
-    teamGender,
-    status,
-    numberPlayerInTeam,
-  } = myTeam;
+
+  // format Date
+  const formatDate = (date) => {
+    const day = new Date(date);
+    return (
+      String(day.getDate()).padStart(2, "0") +
+      "/" +
+      String(day.getMonth() + 1).padStart(2, "0") +
+      "/" +
+      day.getFullYear()
+    );
+  };
+
+  // splitteam Area
+  const splitTeamArea = (teamArea) => {
+    let myArray = teamArea.split(",");
+    return myArray[myArray.length - 1];
+  };
+
+  const getInforTeam = () => {
+    let afterDefaultURL = `teams/${idTeam}`;
+    let response = getAPI(afterDefaultURL);
+    response
+      .then((res) => {
+        setTeam(res.data);
+        getUserById(idTeam);
+        setLoading(false);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  //Get User
+  const getUserById = async (id) => {
+    let afterDefaultURL = `users/${id}`;
+    let response = getAPI(afterDefaultURL);
+    response
+      .then((res) => {
+        setManager(res.data);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const renderByLink = () => {
+    if (activeTeamDetail === `/teamDetail/${idTeam}/inforTeamDetail`) {
+      return <InforTeamDetail teamDetail={team} />;
+    }
+    if (activeTeamDetail === `/teamDetail/${idTeam}/listPlayer`) {
+      return <ListPlayer />;
+    }
+    if (activeTeamDetail === `/teamDetail/${idTeam}/reportTeamDeatail`) {
+      return <ReportTeamDetail />;
+    }
+    if (activeTeamDetail === `/teamDetail/${idTeam}/commentTeamDetail`) {
+      return <CommentTeamDetail />;
+    }
+  };
+
   useEffect(() => {
     setActiveTeamDetail(location.pathname);
+    getInforTeam();
   }, [location.pathname]);
   return (
-    <div className="HeaderTeamDetail">
-      <div className="info__manager">
-        <div className="avt__Team">
-          <img src={teamAvatar} alt="team" />
-        </div>
-        <div className="headertext__team">
-          <h2>{teamName}</h2>
-          <div className="man name__manager">
-            <i class="fas fa-light fa-user"></i>
-            <span className="title">Người quản lý: </span>
-            <span>Nguyễn Thanh Phủi</span>
+    <>
+      <Header />
+      <div className="teamdetail">
+        {loading ? (
+          <Loading />
+        ) : (
+          <div>
+            <div className="HeaderTeamDetail">
+              <div className="info__manager">
+                <div className="avt__Team">
+                  <img src={team.teamAvatar} alt="team" />
+                </div>
+                <div className="headertext__team">
+                  <h2>{team.teamName}</h2>
+                  <div className="man name__manager">
+                    <i className="fas fa-light fa-user"></i>
+                    <span className="title">Người quản lý: </span>
+                    <span>{manager.username}</span>
+                  </div>
+                  <div className="man phone__manager">
+                    <i>
+                      <img src="/assets/icons/telephone.png" alt="tp" />
+                    </i>
+                    <span className="title">Số điện thoại: </span>
+                    <span>{team.teamPhone}</span>
+                  </div>
+                  <div className="man email__manager">
+                    <i>
+                      <img src="/assets/icons/mail-icon.svg" alt="mail" />
+                    </i>
+                    <span className="title">Email: </span>
+                    <span>{manager.email}</span>
+                  </div>
+                  <div className="man member__manager">
+                    <i>
+                      <img src="/assets/icons/join.png" alt="join" />
+                    </i>
+                    <span className="title">Thành viên: </span>
+                    <span>
+                      {team.numberPlayerInTeam > 0
+                        ? team.numberPlayerInTeam + " thành viên"
+                        : "Đội bóng chưa có thành viên"}
+                    </span>
+                  </div>
+                  <div className="man gender__manager">
+                    <i className="fas fa-transgender"></i>
+                    <span className="title">Giới tính đội : </span>
+                    <span>{team.teamGender === "Male" ? "Nam" : "Nữ"}</span>
+                  </div>
+                  <div className="man gender__manager">
+                    <i className="fa-solid fa-calendar-days"></i>
+                    <span className="title">Ngày tạo đội: </span>
+                    <span>{formatDate(team.dateCreate)}</span>
+                  </div>
+                  <div className="man gender__manager">
+                    <i className="fa-solid fa-calendar-days"></i>
+                    <span className="title">Khu vực: </span>
+                    <span>
+                      {team.teamArea !== ""
+                        ? "" + splitTeamArea(team.teamArea)
+                        : ""}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="headerteamdetail__tag">
+                <Link
+                  to={`/teamDetail/${idTeam}/inforTeamDetail`}
+                  className={
+                    activeTeamDetail === `/teamDetail/${idTeam}/inforTeamDetail`
+                      ? "active"
+                      : ""
+                  }
+                  onClick={() =>
+                    setActiveTeamDetail(`/teamDetail/${idTeam}/inforTeamDetail`)
+                  }
+                >
+                  Thông tin đội
+                </Link>
+                <Link
+                  to={`/teamDetail/${idTeam}/listPlayer`}
+                  className={
+                    activeTeamDetail === `/teamDetail/${idTeam}/listPlayer`
+                      ? "active"
+                      : ""
+                  }
+                  onClick={() =>
+                    setActiveTeamDetail(`/teamDetail/${idTeam}/listPlayer`)
+                  }
+                >
+                  Thành viên
+                </Link>
+                <Link
+                  to={`/teamDetail/${idTeam}/reportTeamDeatail`}
+                  className={
+                    activeTeamDetail ===
+                    `/teamDetail/${idTeam}/reportTeamDeatail`
+                      ? "active"
+                      : ""
+                  }
+                  onClick={() =>
+                    setActiveTeamDetail(
+                      `/teamDetail/${idTeam}/reportTeamDeatail`
+                    )
+                  }
+                >
+                  Thống kê
+                </Link>
+                <Link
+                  to={`/teamDetail/${idTeam}/commentTeamDetail`}
+                  className={
+                    activeTeamDetail ===
+                    `/teamDetail/${idTeam}/commentTeamDetail`
+                      ? "active"
+                      : ""
+                  }
+                  onClick={() =>
+                    setActiveTeamDetail(
+                      `/teamDetail/${idTeam}/commentTeamDetail`
+                    )
+                  }
+                >
+                  Bình luận
+                </Link>
+              </div>
+            </div>
+            {renderByLink()}
           </div>
-          <div className="man phone__manager">
-            <i>
-              <img src="/assets/icons/telephone.png" alt="tp" />
-            </i>
-            <span className="title">Số điện thoại: </span>
-            <span>{teamPhone}</span>
-          </div>
-          <div className="man email__manager">
-            <i>
-              <img src="/assets/icons/mail-icon.svg" alt="mail" />
-            </i>
-            <span className="title">Email: </span>
-            <span>phuideptrai123@gmail.com</span>
-          </div>
-          <div className="man member__manager">
-            <i>
-              <img src="/assets/icons/join.png" alt="join" />
-            </i>
-            <span className="title">Thành viên: </span>
-            <span>
-              {numberPlayerInTeam > 0
-                ? numberPlayerInTeam + " thành viên"
-                : "Đội bóng chưa có thành viên"}
-            </span>
-          </div>
-          <div className="man gender__manager">
-            <i className="fas fa-transgender"></i>
-            <span className="title">Giới tính đội : </span>
-            <span>{teamGender}</span>
-          </div>
-          <div className="man gender__manager">
-            <i className="fa-solid fa-calendar-days"></i>
-            <span className="title">Ngày tạo đội: </span>
-            <span>10/05/2022</span>
-          </div>
-          <div className="man gender__manager">
-            <i className="fa-solid fa-calendar-days"></i>
-            <span className="title">Khu vực: </span>
-            <span>{teamArea}</span>
-          </div>
-        </div>
+        )}
       </div>
-      <div className="headerteamdetail__tag">
-        {/* to={`/inforTeamDetail/${id}`}
-      to={`/listPlayer/${id}`}
-      to={`/reportTeamDeatail/${id}`}
-      to={`/commentTeamDetail/${id}`} */}
-        <p
-          style={{
-            color:
-              activeTeamDetail === "/inforTeamDetail/26" ? "#d7fc6a" : "white",
-            cursor: "pointer",
-          }}
-          className={activeTeamDetail === "/inforTeamDetail/26" ? "active" : ""}
-          onClick={() => {
-            setActiveTeamDetail("/inforTeamDetail/26");
-            getLinkClick("/inforTeamDetail/26");
-          }}
-        >
-          Thông tin đội
-        </p>
-        
-        <p
-          style={{
-            color: activeTeamDetail === "/listPlayer" ? "#d7fc6a" : "white",
-            cursor: "pointer",
-          }}
-          className={activeTeamDetail === "/listPlayer" ? "active" : ""}
-          onClick={() => {
-            setActiveTeamDetail("/listPlayer");
-            getLinkClick("/listPlayer");
-          }}
-        >
-          Thành viên
-        </p>
-        <p
-          style={{
-            color:
-              activeTeamDetail === "/reportTeamDeatail" ? "#d7fc6a" : "white",
-            cursor: "pointer",
-          }}
-          className={activeTeamDetail === "/reportTeamDeatail" ? "active" : ""}
-          onClick={() => {
-            setActiveTeamDetail("/reportTeamDeatail");
-            getLinkClick("/reportTeamDeatail");
-          }}
-        >
-          Thống kê
-        </p>
-        <p
-          style={{
-            color:
-              activeTeamDetail === "/commentTeamDetail" ? "#d7fc6a" : "white",
-            cursor: "pointer",
-          }}
-          className={activeTeamDetail === "/commentTeamDetail" ? "active" : ""}
-          onClick={() => {
-            setActiveTeamDetail("/commentTeamDetail");
-            getLinkClick("/commentTeamDetail");
-          }}
-        >
-          Bình luận
-        </p>
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 }
 

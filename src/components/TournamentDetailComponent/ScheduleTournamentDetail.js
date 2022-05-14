@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import "./styles/style.css";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import HeaderTournamentDetail from "./HeaderTournamentDetail";
 import { Bracket, RoundProps } from 'react-brackets';
 
 const rounds: RoundProps[] = [
@@ -62,9 +59,6 @@ function ScheduleTournamentDetail() {
   const [active, setactive] = useState(true);
   return (
     <>
-      <Header />
-      <div className="teamdetail ">
-        <HeaderTournamentDetail />
         <div className="teamdetail__content schedule__tour">
           <div className="wrap__title">
             <h2 className="title">Lịch thi đấu</h2>
@@ -190,118 +184,10 @@ function ScheduleTournamentDetail() {
             </div>
           ) : (
             <div className="round">
-            <Bracket rounds={rounds} />;
-              {/* <div className="round__container">
-                <div className="match__container">
-                  <div className="match__item">
-                    <table>
-                      <tr>
-                        <td rowSpan={2} className="num">1</td>
-                        <td className="row1">
-                          Đội Z
-                          <img
-                            src="/assets/img/homepage/banner1.jpg"
-                            alt="gallery_item"
-                          />
-                        </td>
-                        <td className="row2">1</td>
-                      </tr>
-                      <tr>
-                        <td className="row1">
-                          Đội A
-                          <img
-                            src="/assets/img/homepage/banner1.jpg"
-                            alt="gallery_item"
-                          />
-                        </td>
-                        <td className="row2">0</td>
-                      </tr>
-                    </table>
-                  </div>
-                  <div className="match__item">
-                    <table>
-                      <tr>
-                        <td rowSpan={2} className="num">2</td>
-                        <td className="row1">
-                          Đội Z
-                          <img
-                            src="/assets/img/homepage/banner1.jpg"
-                            alt="gallery_item"
-                          />
-                        </td>
-                        <td className="row2">-</td>
-                      </tr>
-                      <tr>
-                        <td className="row1">
-                          Đội A
-                          <img
-                            src="/assets/img/homepage/banner1.jpg"
-                            alt="gallery_item"
-                          />
-                        </td>
-                        <td className="row2">-</td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-                <div className="match__container">
-                  <div className="match__item">
-                    <table>
-                      <tr>
-                        <td rowSpan={2} className="num">1</td>
-                        <td className="row1">
-                          Đội Z
-                          <img
-                            src="/assets/img/homepage/banner1.jpg"
-                            alt="gallery_item"
-                          />
-                        </td>
-                        <td className="row2">1</td>
-                      </tr>
-                      <tr>
-                        <td className="row1">
-                          Đội A
-                          <img
-                            src="/assets/img/homepage/banner1.jpg"
-                            alt="gallery_item"
-                          />
-                        </td>
-                        <td className="row2">0</td>
-                      </tr>
-                    </table>
-                  </div>
-                  <div className="match__item">
-                    <table>
-                      <tr>
-                        <td rowSpan={2} className="num">2</td>
-                        <td className="row1">
-                          Đội Z
-                          <img
-                            src="/assets/img/homepage/banner1.jpg"
-                            alt="gallery_item"
-                          />
-                        </td>
-                        <td className="row2">-</td>
-                      </tr>
-                      <tr>
-                        <td className="row1">
-                          Đội A
-                          <img
-                            src="/assets/img/homepage/banner1.jpg"
-                            alt="gallery_item"
-                          />
-                        </td>
-                        <td className="row2">-</td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </div> */}
+            <Bracket rounds={rounds} />;            
             </div>
           )}
         </div>
-      </div>
-      <Footer />
     </>
   );
 }

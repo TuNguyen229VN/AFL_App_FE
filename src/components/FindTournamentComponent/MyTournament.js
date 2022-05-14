@@ -12,6 +12,7 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import Loading from "../LoadingComponent/Loading";
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 const MyTournamemts = () => {
   AOS.init();
   const tour = gsap.timeline();
@@ -146,6 +147,7 @@ const MyTournamemts = () => {
 
   return (
     <>
+     <ScrollToTop />
       <Transitions timeline={tour} />
       <Header />
 
@@ -210,7 +212,7 @@ const MyTournamemts = () => {
                     <Loading />
                   ) : (
                     <Link
-                      to={`/inforTournamentDetail/${tour.id}`}
+                      to={`/tournamentDetail/${tour.id}/inforTournamentDetail`}
                       className={styles.tournament}
                     >
                       <div className={styles.tournamentImgAd}>

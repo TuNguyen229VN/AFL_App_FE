@@ -13,6 +13,7 @@ import Description from "./Description";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 
 const CreateTournament = () => {
   const [status, setStatus] = useState(-1);
@@ -329,6 +330,7 @@ const CreateTournament = () => {
   };
   return (
     <>
+    <ScrollToTop />
       <Transitions timeline={tour} />
       <Header />
       <div className={styles.createTournament}>

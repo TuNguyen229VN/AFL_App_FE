@@ -332,3 +332,51 @@ outline: none;
 .teamdetail .prediction .schedule__table td:nth-child(4) img {
   right: 330px;
 }
+
+.popup__prediction{
+  background-color: #fff;
+  border:2px solid var(--blue-black);
+  position: fixed;
+  padding: 10px 20px;
+  text-align: center;
+  z-index: 8;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  border-radius: 5px;
+}
+
+.popup__prediction .popup__prediction__wrap{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 30px;
+}
+.popup__prediction .popup__prediction__wrap input{
+  width: 60px;
+  height: 40px;
+  padding: 5px;
+  border: 1px solid var(--blue-black);
+}
+
+.popup__prediction .popup__prediction__wrap .line{
+  width: 10px;
+  background-color: var(--blue-black);
+  position: absolute;
+  height: 2px;
+}
+
+.popup__prediction button{
+  margin-top: 20px;
+  padding: 10px;
+  outline: none;
+  border: none;
+  background-color: var(--blue-black);
+  font-family: "Mulish-Bold";
+  color: var(--white-text);
+}
+
+.popup__prediction input[type=number] {
+  appearance: none;
+  margin: 0;
+}

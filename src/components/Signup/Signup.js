@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./styles/style.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 function Signup() {
   const [passwordShown, setPasswordShown] = useState(false);
   const [rePasswordShown, setRePasswordShown] = useState(false);
@@ -136,6 +137,7 @@ function Signup() {
 
   return (
     <div className={styles.signup}>
+     <ScrollToTop />
       <div className={styles.container__wrap}>
         <div className={styles.sign__sub}>
           <img

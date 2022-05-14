@@ -1,17 +1,20 @@
 import React from "react";
 import "./styles/style.css";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import HeaderTournamentDetail from "./HeaderTournamentDetail";
 function PredictionTournamentDetail() {
   return (
     <>
     <div className="popup__prediction">
-      
+      <h2>Dự đoán</h2>
+      <div className="popup__prediction__wrap">
+      <h3 className="teamA__prediction">Đội A</h3>
+      <input type="number"/>
+      <div className="line"></div>
+      <input type="number"/>
+      <h3 className="teamA__prediction">Đội B</h3>
+      </div>
+      <button>Xác nhận</button>
     </div>
-      <Header />
-      <div className="teamdetail">
-        <HeaderTournamentDetail />
+
         <div className="teamdetail__content schedule__tour prediction">
         <div className="wrap__table">
               <table className="schedule__table">
@@ -90,8 +93,6 @@ function PredictionTournamentDetail() {
               </table>
             </div>
         </div>
-      </div>
-      <Footer />
     </>
   );
 }

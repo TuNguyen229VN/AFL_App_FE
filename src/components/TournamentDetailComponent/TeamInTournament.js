@@ -1,14 +1,9 @@
 import React from "react";
 import "./styles/style.css";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import HeaderTournamentDetail from "./HeaderTournamentDetail";
 function TeamInTournament() {
   return (
     <>
-      <Header />
-      <div className="teamdetail tournamentdetail">
-        <HeaderTournamentDetail />
+      <div className="tournamentdetail">
         <div className="teamdetail__content listPlayer">
           <h3 className="listPlayer__title">Danh sách đội bóng</h3>
           <h2 className="listPlayer__total">Có 30 đội bóng</h2>
@@ -92,7 +87,6 @@ function TeamInTournament() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

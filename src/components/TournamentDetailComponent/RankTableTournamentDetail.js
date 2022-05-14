@@ -1,14 +1,9 @@
 import React from "react";
 import "./styles/style.css";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import HeaderTournamentDetail from "./HeaderTournamentDetail";
 function RankTableTournamentDetail() {
   return (
     <>
-      <Header />
-      <div className="teamdetail tournamentdetail">
-        <HeaderTournamentDetail />
+      <div className="tournamentdetail">
         <div className="teamdetail__content rank__tour">
           <h2 className="title">Bảng xếp hạng</h2>
           <p className="note">
@@ -119,7 +114,6 @@ function RankTableTournamentDetail() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

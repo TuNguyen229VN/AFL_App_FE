@@ -4,10 +4,7 @@ import "./styles/style.css";
 
 function ListPlayer() {
   return (
-    <>
-    
-    <div className="teamdetail">
-
+    <> 
       <div className="teamdetail__content listPlayer">
         <h3 className="listPlayer__title">Danh sách thành viên</h3>
         <div style={{
@@ -69,8 +66,6 @@ function ListPlayer() {
           </div>
         </div>
       </div>
-    </div>
-   
     </>
   );
 }

@@ -1,14 +1,8 @@
 import React from 'react'
 import "./styles/style.css";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import HeaderTournamentDetail from "./HeaderTournamentDetail"; 
 function CommentTournamentDetail() {
   return (
     <>
-      <Header />
-      <div className="teamdetail">
-        <HeaderTournamentDetail />
         <div className="teamdetail__content cmtTeam">
           <h3 className="cmtTeam__title">Bình luận</h3>
           <div className="totalcmt">
@@ -44,8 +38,6 @@ function CommentTournamentDetail() {
             </div>
           </div>
         </div>
-      </div>
-      <Footer />
     </>
   )
 }

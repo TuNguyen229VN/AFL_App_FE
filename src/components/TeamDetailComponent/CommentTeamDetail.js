@@ -3,10 +3,7 @@ import "./styles/style.css";
 
 function CommentTeamDetail() {
   return (
-    <>
-     
-      <div className="teamdetail">
-       
+    <>     
         <div className="teamdetail__content cmtTeam">
           <h3 className="cmtTeam__title">Bình luận</h3>
           <div className="totalcmt">
@@ -42,8 +39,6 @@ function CommentTeamDetail() {
             </div>
           </div>
         </div>
-      </div>
-     
     </>
   );
 }
