@@ -134,7 +134,7 @@ function HeaderTournamentDetail() {
 
   return (
     <>
-      <Header />
+      <Header  id={idTour}/>
 
       <div className="teamdetail">
         {loading ? (
