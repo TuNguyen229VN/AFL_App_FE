@@ -32,11 +32,6 @@
   transform: translate(0%, 0%);
 }
 
-.HeaderTeamDetail .headertour__tag {
-  column-gap: 0;
-  justify-content: space-between;
-}
-
 .HeaderTeamDetail .infor_tourdetail .man .title {
   width: 150px;
 }
@@ -96,15 +91,11 @@
 /* Team In Tournamnet */
 
 .tournamentdetail .listPlayer .listPlayer__item span {
-  width: 110px;
+  width: 110px !important;
 }
 .tournamentdetail .listPlayer .listPlayer__item .avt {
   padding-bottom: 70%;
   border-bottom: 1px solid var(--blue-black);
-}
-.tournamentdetail .listPlayer .listPlayer__item .avt img {
-  min-width: 55%;
-  min-height: 55%;
 }
 
 .tournamentdetail .listPlayer .listPlayer__item .des {
@@ -145,6 +136,9 @@
   width: 100%;
   border: 1px solid #ccc;
   padding: 10px;
+}
+.teamdetail .rank__tour .table__team:last-child{
+  margin-bottom: 0;
 }
 .teamdetail .prediction__tournament .predict__table tr:nth-child(odd),
 .teamdetail .rank__tour .table__team tr:nth-child(odd) {
@@ -427,4 +421,14 @@ outline: none;
   user-select: none;
   cursor: pointer;
   font-size: 24px;
+}
+
+.teamdetail .HeaderTeamDetail .headertour__tag {
+  column-gap: 0;
+  justify-content: space-between;
+}
+
+.tournamentdetail .listPlayer .listPlayer__item .avt img {
+  min-width: 55% !important;
+  min-height: 55% !important;
 }

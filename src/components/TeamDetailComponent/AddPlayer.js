@@ -143,7 +143,7 @@ const AddPlayer = (props) => {
     <div>
       <button
         type="button"
-        class="btn btn-primary"
+        className="btn btn-primary btn__AddPlayer"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
         style={{

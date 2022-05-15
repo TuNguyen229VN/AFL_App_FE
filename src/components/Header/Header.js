@@ -1,7 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./styles/style.css";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 function Header(id) {
+  const firebaseConfig = {
+    apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
+    authDomain: "amateurfoooballleague.firebaseapp.com",
+    databaseURL: "gs://amateurfoooballleague.appspot.com",
+    projectId: "amateurfoooballleague",
+    storageBucket: "amateurfoooballleague.appspot.com",
+    messagingSenderId: "765175452190",
+    appId: "1:765175452190:web:3e01517d116d4777c9140f",
+    measurementId: "G-7Z7LB0W52J",
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  // get Locoal Storage
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
+  // signout
+  const signout = () => {
+    firebase.auth().signOut();
+    localStorage.removeItem("userInfo");
+    window.location.reload();
+  };
   const location = useLocation();
   const [clickMenu, setClickMenu] = useState(false);
   const [activeMenu, setactiveMenu] = useState(location.pathname);
@@ -72,13 +96,7 @@ function Header(id) {
             </Link>
           </li>
           <li className="tourheader">
-            <a
-              href="javascript:void(0)"
-              className={checkTour()}
-              onClick={() => setactiveMenu("/findTournaments")}
-            >
-              Giải đấu
-            </a>
+            <span className={checkTour()}>Giải đấu</span>
             <div className="sub_menu">
               <Link
                 to={"/findTournaments"}
@@ -95,13 +113,7 @@ function Header(id) {
             </div>
           </li>
           <li className="teamheader">
-            <a
-              href="javascript:void(0)"
-              className={checkTeam()}
-              onClick={() => setactiveMenu("/findTeam")}
-            >
-              Đội bóng
-            </a>
+            <span className={checkTeam()}>Đội bóng</span>
             <div className="sub_menu">
               <Link to={"/findTeam"} onClick={() => setactiveMenu("/findTeam")}>
                 Tìm đội bóng
@@ -135,29 +147,43 @@ function Header(id) {
           </li>
         </ul>
         <div className="account">
-        <div className="current">
-          <Link to={"/login"} className="login__text">Đăng nhập</Link>
-          <span className="dash">/</span>
-          <Link to={"/signup"} className="login__text">Đăng ký</Link>
-        </div>
-          {/* <div
-            className="current"
-            onClick={() => setClickUserMenu(!clickUserMenu)}
-          >
-            <div className="avatar">
-              <img src="/assets/img/homepage/pic-1.png" alt="avatar" />
+          {user ? (
+            <div
+              className="current"
+              onClick={() => setClickUserMenu(!clickUserMenu)}
+            >
+              <div className="avatar">
+                <img src={user.userVM.avatar} alt={user.userVM.username} />
+              </div>
+              <p className="name_account">{user.userVM.username}</p>
+              <i>
+                <img src="/assets/icons/arrowDown.svg" alt="arrowDown" />
+              </i>
             </div>
-            <p className="name_account">Tú Nguyễn</p>
-            <i>
-              <img src="/assets/icons/arrowDown.svg" alt="arrowDown" />
-            </i>
-          </div> */}
-          <div className={clickMenu ? "popup_down active" : "popup_down"}>
-            <a href="#">Hồ sơ</a>
-            <a href="#">Giải đấu của bạn</a>
-            <a href="#">Đội bóng của bạn</a>
-            <a href="#">Đăng xuất</a>
-          </div>
+          ) : (
+            <div className="current">
+              <Link to={"/login"} className="login__text">
+                Đăng nhập
+              </Link>
+              <span className="dash">/</span>
+              <Link to={"/signup"} className="login__text">
+                Đăng ký
+              </Link>
+            </div>
+          )}
+
+          {user ? (
+            <div className={clickUserMenu ? "popup_down active" : "popup_down"}>
+              <Link to={"/profile"}>Hồ sơ</Link>
+              <a href="#">Giải đấu của bạn</a>
+              <Link to={`/teamDetail/${user.userVM.id}/inforTeamDetail`}>
+                Đội bóng của bạn
+              </Link>
+              <a href="#" onClick={signout}>
+                Đăng xuất
+              </a>
+            </div>
+          ) : null}
           <div
             className={`btn__menu ${clickMenu}`}
             onClick={() => setClickMenu((clickMenu) => !clickMenu)}

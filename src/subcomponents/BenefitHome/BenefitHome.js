@@ -2,7 +2,7 @@ import React from "react";
 import "./styles/style.css";
 function BenefitHome() {
   return (
-    <div className="benefithome">
+    <div className="benefithome" data-aos="fade-up">
       <h2 className="title" data-aos="fade-up">Lợi ích</h2>
       <p className="title__desc" data-aos="fade-up">Website mang đến rất nhiều lợi ích không thể bàn cãi cho những ai đam mê</p>
       <div className="tournament__list" data-aos="fade-up">

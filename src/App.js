@@ -1,44 +1,51 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import HomePage from "./components/HomePageComponent/HomePage";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import MyTournaments from "./components/FindTournamentComponent/MyTournament";
 import MyTeam from "./components/FindTeamComponent/MyTeam";
-// import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import CreateTeam from "./components/CreateTeamComponent/CreateTeam";
 import CreateTournament from "./components/CreateTournament/CreateTournament";
-// import InforTeamDetail from "./components/TeamDetailComponent/InforTeamDetail";
-// import ListPlayer from "./components/TeamDetailComponent/ListPlayer";
-// import ReportTeamDetail from "./components/TeamDetailComponent/ReportTeamDetail";
-// import CommentTeamDetail from "./components/TeamDetailComponent/CommentTeamDetail";
 import HeaderTournamentDetail from "./components/TournamentDetailComponent/HeaderTournamentDetail";
 import HeaderTeamDetail from "./components/TeamDetailComponent/HeaderTeamDetail";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect, useState } from "react";
+import useAuthListener from "./hooks/user_auth";
+import Profile from "./components/ProfileComponent/Profile";
 function App() {
-  // const exclusionArray = ["/login", "/signup"];
-  //request.auth != null
-
+  // get Locoal Storage
+  const { user } = useAuthListener();
   return (
     <div>
       <BrowserRouter>
-        {/* {HideHeader} */}
-        {/* {exclusionArray.indexOf(window.location.pathname) < 0 && <Header />} */}
         {/* <ScrollToTop /> */}
-        <ToastContainer/>
+        <ToastContainer />
         <Routes>
           <Route exact path="/" element={<HomePage />} />
           <Route exact path="/home" element={<HomePage />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/signup" element={<Signup />} />
+          <Route
+            exact
+            path="/login"
+            element={user ? <Navigate to={"/home"} /> : <Login />}
+          />
+          <Route
+            exact
+            path="/signup"
+            element={user ? <Navigate to={"/home"} /> : <Signup />}
+          />
           <Route exact path="/findTournaments" element={<MyTournaments />} />
           <Route exact path="/findTeam" element={<MyTeam />} />
-          <Route exact path="/createTeam" element={<CreateTeam />} />
+          <Route
+            exact
+            path="/createTeam"
+            element={user ? <CreateTeam /> : <Navigate to={"/login"} />}
+          />
           <Route
             exact
             path="/createTournament"
-            element={<CreateTournament />}
+            element={user ? <CreateTournament /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
@@ -97,8 +104,12 @@ function App() {
             element={<HeaderTournamentDetail />}
             ignoreScrollBehavior={true}
           />
+          <Route
+            exact
+            path="/profile"
+            element={user ? <Profile /> : <Navigate to={"/login"} />}
+          />
         </Routes>
-        {/* {exclusionArray.indexOf(window.location.pathname) < 0 && <Footer />} */}
       </BrowserRouter>
     </div>
   );

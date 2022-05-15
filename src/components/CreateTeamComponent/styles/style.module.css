@@ -7,7 +7,7 @@
 }
 
 .create__team .title {
-  font-size: 40px;
+  font-size: 24px;
   font-family: "Mulish-Bold";
   text-transform: uppercase;
 }
@@ -17,7 +17,7 @@
   content: "";
   height: 4px;
   background-color: var(--blue-black);
-  width: 200px;
+  width: 100px;
   margin-top: 10px;
 }
 
@@ -92,7 +92,7 @@
   position: relative;
   font-family: "Mulish-Bold";
   top: 20px;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .create__team .text__field input,

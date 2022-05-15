@@ -106,6 +106,7 @@
   text-transform: uppercase;
   background-color: var(--blue-black);
   padding: 30px;
+  user-select: none;
 }
 .HeaderTeamDetail .headerteamdetail__tag a {
   font-size: 18px;
@@ -466,4 +467,14 @@
 .detail_info input{
   width: 100%;
   padding: 6px;
+}
+
+.teamdetail .btn__AddPlayer{
+  outline: none;
+  border: 1px solid var(--blue-black);
+}
+.teamdetail .btn__AddPlayer:focus,
+.teamdetail .btn__AddPlayer:hover{
+  background-color: var(--blue-black);
+  outline: none;
 }

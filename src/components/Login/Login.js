@@ -45,7 +45,7 @@ function Login() {
 
   const loginWithPass =async () => {
     try{
-      if(inputValues.username.trim() == "" || inputValues.password.trim() == null && inputValues.password.trim() == "" || inputValues.password.trim() == null ){
+      if(inputValues.username.trim() === "" || inputValues.password.trim() == null && inputValues.password.trim() == "" || inputValues.password.trim() == null ){
         setUserNameErr("Vui lòng nhập tên đăng nhập");
         setPasswordErr("Vui lòng nhập mật khẩu");
         return;
@@ -56,7 +56,7 @@ function Login() {
         setPasswordErr("");
         return
       }
-      else if(inputValues.password.trim() == "" || inputValues.password.trim() == null ){
+      else if(inputValues.password.trim() === "" || inputValues.password.trim() == null ){
         setPasswordErr("Vui lòng nhập mật khẩu");
         setUserNameErr("");
         return 
@@ -73,18 +73,17 @@ function Login() {
       }
       const response= await axios.post('https://afootballleague.ddns.net/api/v1/auth/login-email-password',data,{
         headers: { 'Content-Type': 'application/json'}});
-      console.log(response.data);
       localStorage.setItem("userInfo", JSON.stringify(response.data));
       navigate("../home", { replace: true })
     }
     catch(err){
       console.log(err);
       console.log(err.response.data);
-      if(err.response.data == "Tài khoản không tồn tại"){
+      if(err.response.data === "Tài khoản không tồn tại"){
         setUserNameErr(err.response.data);
         setPasswordErr("");
       }
-      if(err.response.data == "Sai mật khẩu"){
+      if(err.response.data === "Sai mật khẩu"){
         setUserNameErr("");
         setPasswordErr(err.response.data);
       }
@@ -101,8 +100,6 @@ function Login() {
         return;
       }
       const token = await user.getIdToken()
-      console.log(user)
-      console.log('Token ',  token );
     });
     return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
   }, []);
@@ -116,14 +113,12 @@ function Login() {
           "Content-type": "application/json"
         }
       })
-      console.log(response.data);
       localStorage.setItem("userInfo", JSON.stringify(response.data));
       navigate("../home", { replace: true })
      }
       catch(err){
-        if(err.response.data == "Tài khoản không tồn tại"){
+        if(err.response.data === "Tài khoản không tồn tại"){
           setNewAcc(true);
-  
         }
       }
   }
@@ -172,7 +167,7 @@ const auth = getAuth();
               <input
                 type="text"
                 required
-                autoComplete="none"
+                autoComplete="off"
                 className={styles.email}
                 name="username"
                 onChange={handleOnChange}
@@ -226,8 +221,8 @@ const auth = getAuth();
                   
                   const user = result.user;
                   const token = await user.getIdToken();
-                  console.log("token down" , token);
-                  console.log(user);
+                  // console.log("token down" , token); 
+                  // console.log(user);
                   setUserInfo(user);
                   await checkLoginGG(token);
                   setToken(token);
