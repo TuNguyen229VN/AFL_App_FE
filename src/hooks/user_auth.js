@@ -1,6 +1,4 @@
-import { useEffect } from "react";
-import { useState } from "react/cjs/react.development";
-import firebase from "firebase/compat/app";
+import { useEffect,useState } from "react";
 import "firebase/compat/auth";
 
 export default function useAuthListener() {
