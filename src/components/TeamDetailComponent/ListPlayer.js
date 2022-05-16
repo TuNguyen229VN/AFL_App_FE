@@ -11,16 +11,22 @@ function ListPlayer(props) {
     getListPlayerInTeamByIdTeam();
   },[])
 
-  const getListPlayerInTeamByIdTeam = () => {
+  const getListPlayerInTeamByIdTeam =  () => {
     const afterURL = `PlayerInTeam?teamId=${id}&pageIndex=1&limit=5`
     const response = getAPI(afterURL);
     response.then(res => {
-      setPlayerInTeam(res.data)
+      
       setLoading(false);
     }).catch(err => {
       console.error(err)
     })
   }
+
+  // const getPlayerById =  async (idPlayer) => {
+  //   const afterURL = `football-players/${idPlayer}`;
+  //   const response =  await getAPI(afterURL);
+  //   return response.data;
+  // }
   return (
     <> 
       <div className="teamdetail__content listPlayer">
@@ -34,21 +40,22 @@ function ListPlayer(props) {
         <AddPlayer id={id} gender={gender} />
         </div>
         {loading ? <Loading /> : 
+        
         <div>
-        <h2 className="listPlayer__total">Có {playerInTeam.playerInTeams.length} thành viên</h2>
+        <h2 className="listPlayer__total">Có thành viên</h2>
         <div className="listPlayer__list">
-          <div className="listPlayer__item">
-            <div className="avt">
-            <img src="/assets/img/teamdetail/TNB-48309.jpg" alt="dev" />
+               <div className="listPlayer__item">
+              <div className="avt">
+              <img src="/assets/img/teamdetail/TNB-48309.jpg" alt="dev" />
+              </div>
+              <div className="des">
+              <p className="namePlayer"><span>Tên:</span>Nguyễn Tú</p>
+                <p className="genderPlayer"><span>Giới tính:</span>Nam</p>
+                <p className="mailPlayer"><span>Email:</span>tunttse140127@fpt.edu.vn</p>
+                <p className="phonePlayer"><span>Sdt:</span>01239312830</p>
+                <p className="dobPlayer"><span>Ngày sinh:</span>22-09-2000</p>
+              </div>
             </div>
-            <div className="des">
-            <p className="namePlayer"><span>Tên:</span>Nguyễn Tú</p>
-              <p className="genderPlayer"><span>Giới tính:</span>Nam</p>
-              <p className="mailPlayer"><span>Email:</span>tunttse140127@fpt.edu.vn</p>
-              <p className="phonePlayer"><span>Sdt:</span>01239312830</p>
-              <p className="dobPlayer"><span>Ngày sinh:</span>22-09-2000</p>
-            </div>
-          </div>
         </div>
         </div>}
         

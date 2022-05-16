@@ -26,7 +26,7 @@ const AddPlayer = (props) => {
     value: "",
     error: null,
   });
-
+  const [deleteModel,setDeleteModel] = useState(null);
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     // imgPlayer emailPlayer namePlayer DOBPlayer phonePlayer
@@ -78,7 +78,7 @@ const AddPlayer = (props) => {
       gender: props.gender,
       dateOfBirth: DOBPlayer.value,
       playerAvatar: imgPlayer.value,
-      clothersNumber: 0,
+      "phone": phonePlayer.value,
       status: true,
     };
     const response = postAPI(afterDefaultURL, data, true);
@@ -111,6 +111,8 @@ const AddPlayer = (props) => {
             draggable: true,
             progress: undefined,
           });
+          
+          setDeleteModel("modal");
           navigate(`/teamDetail/${props.id}/inforTeamDetail`);
         }
       })
@@ -143,7 +145,7 @@ const AddPlayer = (props) => {
     <div>
       <button
         type="button"
-        className="btn btn-primary btn__AddPlayer"
+        class="btn btn-primary"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
         style={{
@@ -263,6 +265,7 @@ const AddPlayer = (props) => {
                   }}
                   type="submit"
                   class="btn btn-primary"
+                  data-backdrop="static`"
                 >
                   Thêm cầu thủ
                 </button>

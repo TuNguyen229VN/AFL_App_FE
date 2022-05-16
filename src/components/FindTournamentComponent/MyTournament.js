@@ -9,6 +9,7 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Transitions from "../Transitions/Transitions";
 import axios from "axios";
+import { getAPI } from "../../api/index";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import Loading from "../LoadingComponent/Loading";
@@ -22,20 +23,38 @@ const MyTournamemts = () => {
   const [contentSearch, setContentSearch] = useState("");
   const [check, setCheck] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [tourType, setTourType] = useState([]);
-  const [footballField, setFootballField] = useState([]);
-
-
+  const [tourType, setTourType] = useState("");
+  const [footballField, setFootballField] = useState("");
+  const [mode, setMode] = useState("");
+  const [sort, setSort] = useState("");
+  const [gender, setGender] = useState("");
   // Get Tournament
-  const getTournament = async (nameFind, currentPage) => {
+  const getTournament = async (nameFind, currentPage, anotherSearch, value) => {
     try {
       setLoading(true);
-      const res = await axios.get(
-        `https://afootballleague.ddns.net/api/v1/tournaments?tournament-name=${nameFind}&page-offset=${currentPage}&limit=8`
-      );
+      //console.log(anotherSearch);
+      let afterDefaultURL = null;
+      if (anotherSearch === null) {
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=&tournament-type=&tournament-gender=&tournament-football-type=&page-offset=${currentPage}&limit=8`;
+      } else if (anotherSearch === "MODE") {
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${value}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${footballField}&page-offset=${currentPage}&limit=8`;
+      } else if (anotherSearch === "TOURTYPE") {
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${value}&tournament-gender=${gender}&tournament-football-type=${footballField}&page-offset=${currentPage}&limit=8`;
+      } else if (anotherSearch === "FIELDTYPE") {
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${value}&page-offset=${currentPage}&limit=8`;
+      } else if (anotherSearch === "GENDER"){
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${value}&tournament-football-type=${footballField}&page-offset=${currentPage}&limit=8`;
+      } else if (anotherSearch === "NAME"){
+        console.log(gender)
+        //console.log(mode + "-" + tourType + "-" + gender + "-" + footballField);
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${footballField}&page-offset=${currentPage}&limit=8`;
+      }
+      console.log(afterDefaultURL);
+      const res = await getAPI(afterDefaultURL);
       if (res.status === 200) {
         setTournaments(await res.data.tournaments);
         setLoading(false);
+        setCount(res.data.countList);
       }
     } catch (error) {
       console.log(error);
@@ -57,49 +76,96 @@ const MyTournamemts = () => {
   };
 
   // Get Type Tournament
-  const getFootballField = async () => {
-    try {
-      const res = await axios.get(
-        `https://afootballleague.ddns.net/api/v1/football-field-types?page-offset=1&limit=5`
-      );
-      if (res.status === 200) {
-        setFootballField(await res.data.footballFieldTypes);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getFootballField = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       `https://afootballleague.ddns.net/api/v1/football-field-types?page-offset=1&limit=5`
+  //     );
+  //     if (res.status === 200) {
+  //       setFootballField(await res.data.footballFieldTypes);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   // Get FootballFiled Tournament
-  const getTourType = async () => {
-    try {
-      const res = await axios.get(
-        `https://afootballleague.ddns.net/api/v1/tournament-types?page-offset=1&limit=5`
-      );
-      if (res.status === 200) {
-        setTourType(await res.data.tournamentTypes);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getTourType = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       `https://afootballleague.ddns.net/api/v1/tournament-types?page-offset=1&limit=5`
+  //     );
+  //     if (res.status === 200) {
+  //       setTourType(await res.data.tournamentTypes);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   // Click paging number
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
     setCheck(!check);
-    getTournament(contentSearch, currentPage);
+    getTournament(contentSearch, data.selected + 1, "NAME", null);
   };
 
   // Search action
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    getTournament(contentSearch, currentPage);
-    setCheck(!check);
+      getTournament(contentSearch, currentPage, "NAME", null);
+      setCheck(!check);
   };
 
   const onChangeHandler = (e) => {
-    setContentSearch(e.target.value);
+    const { name, value } = e.target;
+
+
+    switch (name) {
+      case "searchName": 
+      setContentSearch(value);
+      break;
+      case "FIELDTYPE":
+        setFootballField(value === "default" ? "" : value);
+        getTournament(
+          contentSearch,
+          currentPage,
+          "FIELDTYPE",
+          value === "default" ? "" : value
+        );
+        break;
+      case "TOURTYPE":
+        setTourType(value === "default" ? "" : value);
+        getTournament(
+          contentSearch,
+          currentPage,
+           "TOURTYPE",
+          value === "default" ? "" : value
+        );
+        break;
+      case "SORT":
+        
+        setSort(value === "default" ? "" : value);
+        break;
+      case "MODE":
+        setMode(value === "default" ? "" : value);
+        getTournament(
+          contentSearch,
+          currentPage,
+           "MODE",
+          value === "default" ? "" : value
+        );
+        break;
+      default:
+        setGender(value === "default" ? "" : value);
+        getTournament(
+          contentSearch,
+          currentPage,
+          "GENDER",
+          value === "default" ? "" : value
+        );
+        break;
+    }
   };
 
   const getType = (id) => {
@@ -124,22 +190,21 @@ const MyTournamemts = () => {
     }
     if (3 === id) {
       return " | Sân 11";
-    }
-    else{
+    } else {
       return "";
     }
   };
-  const splitTeamArea=(teamArea)=>{
-    let a=teamArea;
-    if(a!==null){
-      let myArray=a.split(",");
-      return myArray[myArray.length-1];
+  const splitTeamArea = (teamArea) => {
+    let a = teamArea;
+    if (a !== null) {
+      let myArray = a.split(",");
+      return myArray[myArray.length - 1];
     }
-    return teamArea
-  }
+    return teamArea;
+  };
   // Use Effect
   useEffect(() => {
-    getTournament(contentSearch, currentPage);
+    getTournament(contentSearch, currentPage, "NAME", null);
     getCount();
     // getFootballField();
     // getTourType();
@@ -147,7 +212,7 @@ const MyTournamemts = () => {
 
   return (
     <>
-     <ScrollToTop />
+      <ScrollToTop />
       <Transitions timeline={tour} />
       <Header />
 
@@ -171,12 +236,13 @@ const MyTournamemts = () => {
               Tìm và đăng ký tham gia những giải đấu theo sở thích của mình
             </p>
           </div>
-          <form className={styles.formFindTour} onSubmit={onSubmitHandler}>
+          <form onSubmit={onSubmitHandler}>
             <div className={styles.findWrap}>
               <input
                 className={styles.inputNameTour}
                 placeholder="Tên giải đấu"
                 value={contentSearch}
+                name="searchName"
                 onChange={onChangeHandler}
               />
               <input
@@ -186,14 +252,198 @@ const MyTournamemts = () => {
               />
             </div>
             <div className={styles.selectOp}>
-              <select className={styles.selectArea}>
-                <option>Loại sân</option>
+
+              <select
+                onChange={onChangeHandler}
+                name="MODE"
+                value={mode}
+                className={styles.selectArea}
+              >
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="default"
+                  selected
+                >
+                  Chế độ
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="PUBLIC"
+                >
+                  Giải đấu mở rộng
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="PRIVATE"
+                >
+                  Giải đấu riêng tư
+                </option>
               </select>
-              <select className={styles.typeFootball}>
-                <option>Hình thức</option>
+              <select
+                onChange={onChangeHandler}
+                name="GENDER"
+                value={gender}
+                className={styles.selectArea}
+              >
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="default"
+                  selected
+                >
+                  Giới tính
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="Male"
+                >
+                  Nam
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="Female"
+                >
+                  Nữ
+                </option>
               </select>
-              <select className={styles.sortTour}>
-                <option>Sắp Xếp</option>
+              <select
+                onChange={onChangeHandler}
+                value={footballField}
+                name="FIELDTYPE"
+                className={styles.selectArea}
+              >
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="default"
+                  selected
+                >
+                  Loại sân
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="Field5"
+                >
+                  Sân 5
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="Field7"
+                >
+                  Sân 7
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="Field11"
+                >
+                  Sân 11
+                </option>
+              </select>
+              <select
+                onChange={onChangeHandler}
+                value={tourType}
+                name="TOURTYPE"
+                className={styles.typeFootball}
+              >
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  selected
+                  value="default"
+                >
+                  Hình thức
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="KnockoutStage"
+                >
+                  Loại trực tiếp
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="CircleStage"
+                >
+                  Vòng tròn
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="GroupStage"
+                >
+                  Chia bảng
+                </option>
+              </select>
+              <select
+                onChange={onChangeHandler}
+                value={sort}
+                name="SORT"
+                className={styles.sortTour}
+              >
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="default"
+                  selected
+                >
+                  Sắp Xếp
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="nameDesc"
+                >
+                  A -> Z
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="nameIns"
+                >
+                  Z -> A
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="timeDesc"
+                >
+                  Giải cũ nhất
+                </option>
+                <option
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  value="timeIns"
+                >
+                  Giải mới nhất
+                </option>
               </select>
             </div>
           </form>
@@ -206,47 +456,53 @@ const MyTournamemts = () => {
           <h1 className={styles.titleListTour}>Các Giải đấu</h1>
           <div className={styles.listTour}>
             {tournaments.map((tour) => {
-              return (
-                <div key={tour.id}>
-                  {loading ? (
-                    <Loading />
-                  ) : (
-                    <Link
-                      to={`/tournamentDetail/${tour.id}/inforTournamentDetail`}
-                      className={styles.tournament}
-                    >
-                      <div className={styles.tournamentImgAd}>
-                        <img
-                          className={styles.tournamentImg}
-                          src={tour.tournamentAvatar}
-                          alt={tour.tournamentName}
-                        />
-                      </div>
-
-                      <div className={styles.tournamentInfor}>
-                        <h1 className={styles.tournamentName}>
-                          {tour.tournamentName}
-                        </h1>
-                        <p className={styles.type}>
-                          {getType(tour.tournamentTypeId)}{tour.footballFieldAddress!==""?"| "+splitTeamArea(tour.footballFieldAddress):""}
-                          {getFeild(tour.footballFieldTypeId)}
-                        </p>
-
-                        <div className={styles.tournamentFooter}>
-                          <div className={styles.teamPart}>
-                            <img
-                              className={styles.teamPartImg}
-                              src="./assets/icons/join.png"
-                            />
-                            <p>{tour.numberTeamInTournament}</p>
-                          </div>
-                          <div className="heart__shape"></div>
+              if(tour.status === true){
+                return (
+                  <div key={tour.id}>
+                    {loading ? (
+                      <Loading />
+                    ) : (
+                      <Link
+                        to={`/tournamentDetail/${tour.id}/inforTournamentDetail`}
+                        className={styles.tournament}
+                      >
+                        <div className={styles.tournamentImgAd}>
+                          <img
+                            className={styles.tournamentImg}
+                            src={tour.tournamentAvatar}
+                            alt={tour.tournamentName}
+                          />
                         </div>
-                      </div>
-                    </Link>
-                  )}
-                </div>
-              );
+  
+                        <div className={styles.tournamentInfor}>
+                          <h1 className={styles.tournamentName}>
+                            {tour.tournamentName}
+                          </h1>
+                          <p className={styles.type}>
+                            {getType(tour.tournamentTypeId)}
+                            {tour.footballFieldAddress !== ""
+                              ? "| " + splitTeamArea(tour.footballFieldAddress)
+                              : ""}
+                            {getFeild(tour.footballFieldTypeId)}
+                          </p>
+  
+                          <div className={styles.tournamentFooter}>
+                            <div className={styles.teamPart}>
+                              <img
+                                className={styles.teamPartImg}
+                                src="./assets/icons/join.png"
+                              />
+                              <p>{tour.numberTeamInTournament}</p>
+                            </div>
+                            <div className="heart__shape"></div>
+                          </div>
+                        </div>
+                      </Link>
+                    )}
+                  </div>
+                );
+              }
+              
             })}
           </div>
         </div>
