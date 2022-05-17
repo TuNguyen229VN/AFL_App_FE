@@ -4,6 +4,7 @@ import "./styles/style.css";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { getAPI } from "../../api";
+import Notification from "../NotificationComponent/Notification";
 function Header(id) {
   const firebaseConfig = {
     apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
@@ -27,15 +28,12 @@ function Header(id) {
     localStorage.removeItem("userInfo");
     window.location.reload();
   };
-
-  console.log(user)
   const [myAccount, setMyAccount] = useState([]);
   const getMyAccount=()=>{
     const afterURL=`users/${user?user.userVM.id:""}`;
     const response=getAPI(afterURL);
     response.then(res=>{
         setMyAccount(res.data);
-        console.log(res.data)
     }).catch(err=>{
       console.log(err)
     })
@@ -189,11 +187,11 @@ function Header(id) {
               </Link>
             </div>
           )}
-
+          {user ? <Notification/>:null}
           {user ? (
             <div className={clickUserMenu ? "popup_down active" : "popup_down"}>
               <Link to={"/profile"}>Hồ sơ</Link>
-              <a href="#">Giải đấu của bạn</a>
+              <Link to={`/myListTournament`}>Giải đấu của bạn</Link>
               <Link to={`/teamDetail/${myAccount.id}/inforTeamDetail`}>
                 Đội bóng của bạn
               </Link>

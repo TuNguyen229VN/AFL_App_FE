@@ -14,10 +14,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import useAuthListener from "./hooks/user_auth";
 import Profile from "./components/ProfileComponent/Profile";
+import MyListTournamentComponent from "./components/MyListTournamentComponent/MyListTournamentComponent";
 function App() {
   // get Locoal Storage
   const { user } = useAuthListener();
-  
+
   return (
     <div>
       <BrowserRouter>
@@ -109,6 +110,13 @@ function App() {
             exact
             path="/profile"
             element={user ? <Profile /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            exact
+            path="/myListTournament"
+            element={
+              user ? <MyListTournamentComponent /> : <Navigate to={"/login"} />
+            }
           />
         </Routes>
       </BrowserRouter>

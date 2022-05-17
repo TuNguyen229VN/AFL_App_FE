@@ -1,0 +1,124 @@
+.my__tournament {
+  padding: 60px 150px;
+  margin-top: 80px;
+}
+
+.my__tournament .title {
+  font-size: 24px;
+  font-family: "Mulish-Bold";
+  text-transform: uppercase;
+}
+
+.my__tournament .title::after {
+  display: block;
+  content: "";
+  height: 4px;
+  background-color: var(--blue-black);
+  width: 150px;
+  margin-top: 10px;
+}
+
+.my__tournament .item__tournament {
+  position: relative;
+  display: flex;
+  color: var(--blue-black);
+  column-gap: 100px;
+  padding-bottom: 30px;
+  align-items: center;
+  user-select: none;
+}
+
+.my__tournament .item__tournament:hover h2 {
+  color: var(--green-bold);
+}
+.my__tournament .item__tournament:hover .details {
+  opacity: 1;
+  visibility: visible;
+}
+.my__tournament .item__tournament:not(:last-child) {
+  margin-bottom: 50px;
+  border-bottom: 2px solid #ccc;
+}
+.item__tournament h2 {
+  font-size: 24px;
+  font-family: "Mulish-Bold";
+}
+.item__tournament .tournament__img {
+  width: 350px;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 250px;
+  border: 1px solid var(--blue-black);
+}
+.my__tournament .tournament__img img{
+    transition: 0.3s;
+    min-height: 100%;
+    min-width: 100%;
+    object-fit: cover;
+}
+.item__tournament .man {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.item__tournament .sub__title {
+  margin-right: 10px;
+  margin-left: 20px;
+  width: 160px;
+  display: inline-block;
+}
+
+.item__tournament i {
+  width: 20px;
+}
+
+.item__tournament i img {
+  width: 20px;
+}
+
+.item__tournament .status {
+  background-color: var(--green-bold);
+  padding: 10px;
+  height: max-content;
+  width: 120px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  font-family: "Mulish-Bold";
+  border-radius: 5px;
+}
+
+.details {
+  background-color: var(--green-bold);
+  padding: 20px;
+  height: max-content;
+  width: max-content;
+  position: absolute;
+  text-align: center;
+  font-family: "Mulish-Bold";
+  border-radius: 5px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+}
+
+.titleNoContent{
+    margin-top: 50px;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.createnow{
+    display: block;
+    color: var(--blue-black);
+    margin-top: 20px;
+}
+
+.createnow:hover{
+    text-decoration: underline;
+    color: var(--blue-black);
+}

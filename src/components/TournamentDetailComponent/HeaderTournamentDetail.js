@@ -152,6 +152,15 @@ function HeaderTournamentDetail() {
                 <div className="headertext__team">
                   <h2>{tourDetail.tournamentName}</h2>
                   <div className="man name__manager">
+                        <i class="fa-solid fa-bullhorn"></i>
+                          <span className="title">
+                            Chế độ:{" "}
+                          </span>
+                          <span >
+                           {tourDetail.mode==="PRIVATE"?"Riêng tư":"Công khai"}
+                          </span>
+                        </div>
+                  <div className="man name__manager">
                     <i className="fas fa-light fa-user"></i>
                     <span className="title">Người tổ chức: </span>
                     <span>{host.username}</span>

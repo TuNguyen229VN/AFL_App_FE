@@ -22,8 +22,10 @@ function Profile() {
         setEmail({ value: res.data.email });
         setUsername({ value: res.data.username });
         setGender({ value: res.data.gender });
-        setDob({ value: new Date(res.data.dateOfBirth).toISOString().split("T")[0] });
-        setAvt({ value: res.data.avatar ,img:res.data.avatar});
+        setDob({
+          value: new Date(res.data.dateOfBirth).toISOString().split("T")[0],
+        });
+        setAvt({ value: res.data.avatar, img: res.data.avatar });
         setAddress({ value: res.data.address });
         setPhone({ value: res.data.phone });
         setBio({ value: res.data.bio });
@@ -50,7 +52,7 @@ function Profile() {
     value: "",
     error: "",
   });
-  const [dob, setDob] = useState({ value:"", error: "" });
+  const [dob, setDob] = useState({ value: "", error: "" });
   const [address, setAddress] = useState({
     value: "",
     error: "",
@@ -63,7 +65,7 @@ function Profile() {
   });
   const [bio, setBio] = useState({ value: "", error: "" });
   const [identityCard, setIdentityCard] = useState({
-    value:"",
+    value: "",
     error: "",
   });
   const [phoneBussiness, setPhoneBussiness] = useState({
@@ -71,9 +73,9 @@ function Profile() {
     error: "",
   });
   const [tinbussiness, setTinBussiness] = useState({
-    value:"",
-    error:"",
-  })
+    value: "",
+    error: "",
+  });
   const [nameBussiness, setNameBussiness] = useState({
     value: "",
     error: "",
@@ -87,12 +89,12 @@ function Profile() {
         if (value.length === 0) {
           return {
             flag: false,
-            content: "Không được để trống",
+            content: "*Không được để trống",
           };
         } else if (/\d+/.test(value)) {
           return {
             flag: false,
-            content: "Tên bạn là chữ",
+            content: "*Tên bạn là chữ",
           };
         }
         break;
@@ -100,17 +102,17 @@ function Profile() {
         if (value.length === 0) {
           return {
             flag: false,
-            content: "Không được để trống",
+            content: "*Không được để trống",
           };
         } else if (!/^[0-9]+$/.test(value)) {
           return {
             flag: false,
-            content: "Số điện thoại không được là chữ hay kí tự khác",
+            content: "*Số điện thoại không được là chữ hay kí tự khác",
           };
         } else if (!/(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(value)) {
           return {
             flag: false,
-            content: "Sai định dạng số điện thoại",
+            content: "*Sai định dạng số điện thoại",
           };
         }
 
@@ -121,7 +123,7 @@ function Profile() {
         if (value.length === 0) {
           return {
             flag: false,
-            content: "Không được để trống",
+            content: "*Không được để trống",
           };
         }
         break;
@@ -132,6 +134,17 @@ function Profile() {
       case "nameB":
         break;
       case "phoneB":
+        if (!/^[0-9]+$/.test(value)) {
+          return {
+            flag: false,
+            content: "*Số điện thoại không được là chữ hay kí tự khác",
+          };
+        } else if (!/(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(value)) {
+          return {
+            flag: false,
+            content: "*Sai định dạng số điện thoại",
+          };
+        }
         break;
       case "codeB":
         break;
@@ -333,11 +346,25 @@ function Profile() {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    let splitdate = dob.value.split("-");
+    let day = parseInt(splitdate[2]) + 1;
+    if (username.value.trim() === "" || phone.value.trim() === "") {
+      toast.error("Vui lòng kiểm tra lại thông tin", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
     const data = {
       id: user.userVM.id,
       username: username.value,
       gender: gender.value,
-      dateOfBirth: dob.value,
+      dateOfBirth: splitdate[0] + "-" + splitdate[1] + "-" + day,
       address: address.value,
       phone: phone.value,
       avatar: avt.value,
@@ -414,6 +441,9 @@ function Profile() {
                 value={username.value}
                 onChange={onChangeHandler}
               />
+              {username.error != null ? (
+                <p className={styles.error}>{username.error}</p>
+              ) : null}
             </div>
             <div className={styles.text}>
               <label htmlFor="phone">Số điện thoại</label>
@@ -425,6 +455,9 @@ function Profile() {
                 value={phone.value}
                 onChange={onChangeHandler}
               />
+              {phone.error != null ? (
+                <p className={styles.error}>{phone.error}</p>
+              ) : null}
             </div>
             <div className={styles.text}>
               <label htmlFor="gender" autoComplete="off">
@@ -466,6 +499,7 @@ function Profile() {
                 value={dob.value}
                 onChange={onChangeHandler}
                 min="1990-01-01"
+                placeholder="dd-mm-yyyy"
                 max={date}
                 name="dob"
               />

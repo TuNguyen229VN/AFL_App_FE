@@ -186,3 +186,9 @@
     color: var(--white-text);
     background-color: var(--blue-black);
 }
+
+.profile__text .error{
+    font-family: "Mulish-Regular";
+    margin-top: 15px;
+    color: red;
+}

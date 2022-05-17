@@ -24,7 +24,7 @@ header {
   width: 100px;
   height: 60px;
 }
-.logo img{
+.logo img {
   object-fit: cover;
 }
 .header .menu {
@@ -35,7 +35,8 @@ header {
   transform: translateX(-50%);
 }
 
-.header .menu a ,.header .menu span{
+.header .menu a,
+.header .menu span {
   user-select: none;
   cursor: pointer;
   font-family: "Mulish-Bold";
@@ -53,7 +54,8 @@ header {
   position: relative;
   overflow: hidden;
 }
-header .container-fluid .menu li a:after,header .container-fluid .menu li span:after {
+header .container-fluid .menu li a:after,
+header .container-fluid .menu li span:after {
   content: "";
   width: 100%;
   height: 2px;
@@ -90,10 +92,12 @@ header .container-fluid .menu li {
 .menu .title {
   position: relative;
 }
-.menu .tourheader ,.menu .teamheader{
+.menu .tourheader,
+.menu .teamheader {
   position: relative;
 }
-.menu .tourheader:hover .sub_menu ,.menu .teamheader:hover .sub_menu{
+.menu .tourheader:hover .sub_menu,
+.menu .teamheader:hover .sub_menu {
   /* position: relative; */
   display: block;
 }
@@ -169,7 +173,7 @@ header .container-fluid .menu li {
   color: black;
   text-align: right;
   width: max-content;
-  right: 0;
+  right: 40px;
   height: 0;
   background-color: var(--blue-black);
   display: flex;
@@ -198,22 +202,21 @@ header .container-fluid .menu li {
   border-bottom: 2px solid var(--white-text);
 }
 
-.account .popup_down a:first-child{
+.account .popup_down a:first-child {
   border-top: 2px solid var(--white-text);
 }
-.account .current .login__text{
+.account .current .login__text {
   color: var(--white-text);
   font-family: "Mulish-Bold";
-
 }
 
-.account .current .dash{
+.account .current .dash {
   color: var(--white-text);
   font-family: "Mulish-Bold";
   margin-left: 5px;
   margin-right: 5px;
 }
-.account .current .login__text:hover{
+.account .current .login__text:hover {
   color: var(--green-bold);
 }
 .header .btn__menu {
@@ -275,6 +278,16 @@ header .container-fluid .menu li {
   left: 0;
   opacity: 100%;
 }
+
+.header .name_account {
+  max-width: 150px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  height: 19px;
+}
 @media only screen and (max-width: 1279px) {
 }
 
@@ -326,7 +339,7 @@ header .container-fluid .menu li {
   .logo {
     width: 100px;
     height: 50px;
-  } 
+  }
 }
 @media only screen and (max-width: 480px) {
   header {
