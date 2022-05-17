@@ -17,6 +17,7 @@ import Profile from "./components/ProfileComponent/Profile";
 function App() {
   // get Locoal Storage
   const { user } = useAuthListener();
+  
   return (
     <div>
       <BrowserRouter>

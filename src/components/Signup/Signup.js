@@ -25,14 +25,9 @@ function Signup() {
   const [duplcate, setDuplicate] = useState(false);
   useEffect(() => {
     if (inputValues.firstName.trim() == "") {
-      setFirstNameErr("Vui lòng nhập tên*");
+      setFirstNameErr("Vui lòng nhập họ và tên*");
     } else {
       setFirstNameErr("");
-    }
-    if (inputValues.lastName.trim()=== "") {
-      setLastNameErr("Vui lòng nhập họ*");
-    } else {
-      setLastNameErr("");
     }
     if (inputValues.phone.trim() === "") {
       setPhoneErr("Vui lòng nhập số điện thoại*");
@@ -74,7 +69,6 @@ function Signup() {
   }
 
   const [inputValues, setInputValues] = useState({
-    lastName: "",
     firstName: "",
     email: "",
     phone: "",
@@ -94,7 +88,6 @@ function Signup() {
     try {
       if (
         inputValues.firstName.trim() === "" ||
-        inputValues.lastName.trim() === "" ||
         inputValues.phone.trim() === "" ||
         inputValues.gender.trim() === "" ||
         inputValues.email.trim() === "" ||
@@ -110,7 +103,7 @@ function Signup() {
       const data = {
         Email: inputValues.email,
         Password: inputValues.password,
-        Username: inputValues.lastName + " " + inputValues.firstName,
+        Username: inputValues.firstName,
         Gender: inputValues.gender,
         Phone: inputValues.phone,
         RoleId: 1,
@@ -137,7 +130,7 @@ function Signup() {
 
   return (
     <div className={styles.signup}>
-     <ScrollToTop />
+      <ScrollToTop />
       <div className={styles.container__wrap}>
         <div className={styles.sign__sub}>
           <img
@@ -173,33 +166,22 @@ function Signup() {
               <input
                 type="text"
                 autoComplete="none"
-                className={styles.lastname}
-                placeholder="Họ *"
-                name="lastName"
-                onChange={handleOnChange}
-              />
-            </div>
-            {isNull ? <p className="error">{lastNameErr}</p> : ""}
-            <div>
-              <img src="/assets/icons/user-icon.svg" alt="lock" />
-              <input
-                type="text"
-                autoComplete="none"
                 className={styles.firstname}
-                placeholder="Tên *"
+                placeholder="Họ và Tên *"
                 name="firstName"
                 onChange={handleOnChange}
               />
             </div>
             {isNull ? <p className={styles.error}>{firstNameErr}</p> : ""}
             <div>
-            <img src="/assets/icons/sex.png" alt="lock" className="aaa"/>
+              <img src="/assets/icons/sex.png" alt="lock" className="aaa" />
               <select
                 className={styles.gender}
                 id=""
                 name="gender"
                 onChange={handleOnChange}
               >
+                <option value=""></option>
                 <option value="Male">Nam</option>
                 <option value="Female">Nữ</option>
               </select>

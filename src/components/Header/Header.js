@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import "./styles/style.css";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import { getAPI } from "../../api";
 function Header(id) {
   const firebaseConfig = {
     apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
@@ -26,6 +27,20 @@ function Header(id) {
     localStorage.removeItem("userInfo");
     window.location.reload();
   };
+
+  console.log(user)
+  const [myAccount, setMyAccount] = useState([]);
+  const getMyAccount=()=>{
+    const afterURL=`users/${user?user.userVM.id:""}`;
+    const response=getAPI(afterURL);
+    response.then(res=>{
+        setMyAccount(res.data);
+        console.log(res.data)
+    }).catch(err=>{
+      console.log(err)
+    })
+  }
+
   const location = useLocation();
   const [clickMenu, setClickMenu] = useState(false);
   const [activeMenu, setactiveMenu] = useState(location.pathname);
@@ -50,6 +65,9 @@ function Header(id) {
     `/teamDetail/${id.id}/reportTeamDeatail`,
     `/teamDetail/${id.id}/commentTeamDetail`,
   ];
+  useEffect(()=>{
+    getMyAccount();
+  },[])
   useEffect(() => {
     setactiveMenu(location.pathname);
   }, [location]);
@@ -153,9 +171,9 @@ function Header(id) {
               onClick={() => setClickUserMenu(!clickUserMenu)}
             >
               <div className="avatar">
-                <img src={user.userVM.avatar} alt={user.userVM.username} />
+                <img src={myAccount.avatar} alt={myAccount.username} />
               </div>
-              <p className="name_account">{user.userVM.username}</p>
+              <p className="name_account">{myAccount.username}</p>
               <i>
                 <img src="/assets/icons/arrowDown.svg" alt="arrowDown" />
               </i>
@@ -176,7 +194,7 @@ function Header(id) {
             <div className={clickUserMenu ? "popup_down active" : "popup_down"}>
               <Link to={"/profile"}>Hồ sơ</Link>
               <a href="#">Giải đấu của bạn</a>
-              <Link to={`/teamDetail/${user.userVM.id}/inforTeamDetail`}>
+              <Link to={`/teamDetail/${myAccount.id}/inforTeamDetail`}>
                 Đội bóng của bạn
               </Link>
               <a href="#" onClick={signout}>

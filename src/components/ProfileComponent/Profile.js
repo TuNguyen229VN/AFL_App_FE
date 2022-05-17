@@ -1,8 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { postAPI, putAPI } from "../../api";
+import { getAPI, postAPI, putAPI } from "../../api";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
@@ -12,38 +12,70 @@ function Profile() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-  console.log(user)
-  const [email, setEmail] = useState({ value: user.userVM.email, error: "" });
+
+  const [myAccount, setMyAccount] = useState([]);
+  const getMyAccount = () => {
+    const afterURL = `users/${user.userVM.id}`;
+    const response = getAPI(afterURL);
+    response
+      .then((res) => {
+        setEmail({ value: res.data.email });
+        setUsername({ value: res.data.username });
+        setGender({ value: res.data.gender });
+        setDob({ value: new Date(res.data.dateOfBirth).toISOString().split("T")[0] });
+        setAvt({ value: res.data.avatar ,img:res.data.avatar});
+        setAddress({ value: res.data.address });
+        setPhone({ value: res.data.phone });
+        setBio({ value: res.data.bio });
+        setIdentityCard({ value: res.data.identityCard });
+        setNameBussiness({ value: res.data.nameBusiness });
+        setPhoneBussiness({ value: res.data.phoneBusiness });
+        setTinBussiness({ value: res.data.tinbusiness });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getMyAccount();
+  }, []);
+
+  const [email, setEmail] = useState({ value: "", error: "" });
   const [username, setUsername] = useState({
-    value: user.userVM.username,
+    value: myAccount.username,
     error: "",
   });
   const [gender, setGender] = useState({
-    value: user.userVM.gender,
+    value: "",
     error: "",
   });
-  const [dob, setDob] = useState({ value: "2022-05-07T13:57:00", error: "" });
+  const [dob, setDob] = useState({ value:"", error: "" });
   const [address, setAddress] = useState({
-    value: user.userVM.address,
+    value: "",
     error: "",
   });
-  const [phone, setPhone] = useState({ value: user.userVM.phone, error: "" });
-  const [avt, setAvt] = useState({ value: user.userVM.avatar, error: "",img:user.userVM.avatar });
-  const [bio, setBio] = useState({ value: user.userVM.bio, error: "" });
+  const [phone, setPhone] = useState({ value: "", error: "" });
+  const [avt, setAvt] = useState({
+    value: "",
+    error: "",
+    img: "",
+  });
+  const [bio, setBio] = useState({ value: "", error: "" });
   const [identityCard, setIdentityCard] = useState({
-    value: user.userVM.identityCard,
+    value:"",
     error: "",
   });
   const [phoneBussiness, setPhoneBussiness] = useState({
-    value: user.userVM.phoneBusiness,
+    value: "",
     error: "",
   });
+  const [tinbussiness, setTinBussiness] = useState({
+    value:"",
+    error:"",
+  })
   const [nameBussiness, setNameBussiness] = useState({
-    value: user.userVM.nameBusiness,
-    error: "",
-  });
-  const [tinBussiness, setTinBussiness] = useState({
-    value: user.userVM.tinBusiness,
+    value: "",
     error: "",
   });
 
@@ -313,10 +345,9 @@ function Profile() {
       identityCard: identityCard.value,
       phoneBusiness: phoneBussiness.value,
       nameBusiness: nameBussiness.value,
-      tinbusiness: tinBussiness.value,
+      tinbusiness: tinbussiness.value,
     };
     try {
-      console.log(data)
       const response = await axios.put(
         "https://afootballleague.ddns.net/api/v1/users",
         data,
@@ -430,13 +461,13 @@ function Profile() {
                 Ngày sinh
               </label>
               <input
-                type="datetime-local"
+                type="date"
                 id="dob"
                 value={dob.value}
                 onChange={onChangeHandler}
                 min="1990-01-01"
                 max={date}
-                name="date"
+                name="dob"
               />
             </div>
             <div className={styles.text}>
@@ -469,7 +500,7 @@ function Profile() {
                 type="text"
                 id="codeB"
                 autoComplete="off"
-                value={tinBussiness.value}
+                value={tinbussiness.value}
                 onChange={onChangeHandler}
                 name="codeB"
               />

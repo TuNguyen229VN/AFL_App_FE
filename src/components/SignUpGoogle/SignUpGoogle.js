@@ -15,14 +15,9 @@ function SignUpGoogle(props) {
 
   useEffect(() => {
     if (inputValues.firstName.trim() == "") {
-      setFirstNameErr("Vui lòng nhập Tên");
+      setFirstNameErr("Vui lòng nhập Họ và Tên");
     } else {
       setFirstNameErr("");
-    }
-    if (inputValues.lastName.trim() == "") {
-      setLastNameErr("Vui lòng nhập họ");
-    } else {
-      setLastNameErr("");
     }
     if (inputValues.phone.trim() == "") {
       setPhoneErr("Vui lòng nhập số điện thoại");
@@ -36,7 +31,6 @@ function SignUpGoogle(props) {
     }
   }, [check]);
   const [inputValues, setInputValues] = useState({
-    lastName: "",
     firstName: props.userInfo.displayName,
     phone: "",
     gender: "",
@@ -61,7 +55,6 @@ function SignUpGoogle(props) {
     try {
       if (
         inputValues.firstName.trim() == "" ||
-        inputValues.lastName.trim() == "" ||
         inputValues.phone.trim() == "" ||
         inputValues.gender.trim() == ""
       ) {
@@ -71,7 +64,7 @@ function SignUpGoogle(props) {
       }
       const data = {
         Email: props.userInfo.email.toString(),
-        Username: inputValues.lastName + " " + inputValues.firstName,
+        Username: inputValues.firstName,
         Gender: inputValues.gender,
         Phone: inputValues.phone,
         RoleId: 1,
@@ -122,20 +115,8 @@ function SignUpGoogle(props) {
               <input
                 type="text"
                 autoComplete="none"
-                className="lastname"
-                placeholder="Họ *"
-                name="lastName"
-                onChange={handleOnChange}
-              />
-            </div>
-            {isNull ? <p className="error">{lastNameErr}</p> : ""}
-            <div>
-              <img src="/assets/icons/user-icon.svg" alt="lock" />
-              <input
-                type="text"
-                autoComplete="none"
                 className="firstname"
-                placeholder="Tên *"
+                placeholder="Họ và Tên *"
                 name="firstName"
                 onChange={handleOnChange}
                 value={inputValues.firstName}
