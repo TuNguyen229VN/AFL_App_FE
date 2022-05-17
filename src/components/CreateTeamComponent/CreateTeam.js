@@ -18,6 +18,9 @@ const CreateTeam = () => {
     convertToRaw(editorState.getCurrentContent())
   );
   let navigate = useNavigate();
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
   const [imgClub, setImgClub] = useState({
     value: "",
     img: null,
@@ -43,6 +46,7 @@ const CreateTeam = () => {
     value: "",
     error: "",
   });
+  const[btnActive,setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
   const [provice, setProvice] = useState(null);
   const [districts, setDistricts] = useState(null);
@@ -136,7 +140,7 @@ const CreateTeam = () => {
     e.preventDefault();
     try {
       const data = {
-        id: 44,
+        id: user.userVM.id,
         teamName: nameClub.value,
         teamPhone: phoneContact.value,
         teamAvatar: imgClub.value,
@@ -178,6 +182,7 @@ const CreateTeam = () => {
         setDistricts(null);
         setWards(null);
         setResetProvice(0);
+        setBtnActive(false);
         navigate(`/teamDetail/${response.data.id}/inforTeamDetail`);
       }
     } catch (error) {
@@ -220,7 +225,11 @@ const CreateTeam = () => {
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const flagValid = validateForm(name, value);
-
+    if(flagValid.flag){
+      setBtnActive(true);
+    }else{
+      setBtnActive(false);
+    }
     switch (name) {
       case "imgClub":
         const valueImg = URL.createObjectURL(e.target.files[0]);
@@ -422,6 +431,7 @@ const CreateTeam = () => {
                   placeholder="Tên đội bóng *"
                   value={nameClub.value}
                   onChange={onChangeHandler}
+                  required
                 />
               </div>
               <div className={styles.text__field}>
@@ -514,6 +524,7 @@ const CreateTeam = () => {
                   placeholder="Tên người tạo *"
                   value="Trương Anh Khoa"
                   disabled
+                  
                 />
               </div>
               <div className={styles.text__field}>
@@ -637,6 +648,7 @@ const CreateTeam = () => {
                   padding: "10px 5px",
                 }}
                 name="provice"
+                required
                 onChange={onChangeHandler}
               >
                 <option selected disabled>
@@ -668,7 +680,7 @@ const CreateTeam = () => {
               >
                 Quận/Huyện
               </label>
-              <select
+              <select required
                 style={{
                   padding: "10px 5px",
                 }}
@@ -710,6 +722,7 @@ const CreateTeam = () => {
                 }}
                 name="wards"
                 onChange={onChangeHandler}
+                required
               >
                 <option selected disabled>
                   Chọn phường
@@ -754,7 +767,7 @@ const CreateTeam = () => {
               }}
             />
           </div>
-          <input
+          {btnActive ? <input
             style={{
               float: "right",
               // backgroundColor: buttonFlag === true ? "#d7fc6a" : "#D9D9D9",
@@ -764,7 +777,7 @@ const CreateTeam = () => {
             className={styles.createTeam_btn}
             value="Tạo đội"
             // disabled = {buttonFlag === true ? false : false}
-          />
+          /> : null}
         </div>
       </form>
       <ToastContainer />

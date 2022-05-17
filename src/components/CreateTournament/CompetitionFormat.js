@@ -3,7 +3,6 @@ import styles from "./styles/style.module.css";
 
 const CompetitionFormat = (props) => {
   const { onChangeHandler, competitionFormat } = props;
-  console.log(competitionFormat.value);
   return (
     <div className={styles.createTournament_row2}>
       <h1 className={styles.createTournament_img_title}>Hình thức thi đấu</h1>

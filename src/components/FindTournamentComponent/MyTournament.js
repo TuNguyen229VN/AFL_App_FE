@@ -8,7 +8,6 @@ import AOS from "aos";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Transitions from "../Transitions/Transitions";
-import axios from "axios";
 import { getAPI } from "../../api/index";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
@@ -45,11 +44,8 @@ const MyTournamemts = () => {
       } else if (anotherSearch === "GENDER") {
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${value}&tournament-football-type=${footballField}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "NAME") {
-        console.log(gender);
-        //console.log(mode + "-" + tourType + "-" + gender + "-" + footballField);
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${footballField}&page-offset=${currentPage}&limit=8`;
       }
-      console.log(afterDefaultURL);
       const res = await getAPI(afterDefaultURL);
       if (res.status === 200) {
         setTournaments(await res.data.tournaments);
@@ -62,18 +58,19 @@ const MyTournamemts = () => {
   };
 
   // Get Total Count Tournament
-  const getCount = async () => {
-    try {
-      const res = await axios.get(
-        `https://afootballleague.ddns.net/api/v1/tournaments/count`
-      );
-      if (res.status === 200) {
-        setCount(await res.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getCount = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       `https://afootballleague.ddns.net/api/v1/tournaments/count`
+  //     );
+  //     if (res.status === 200) {
+  //       console.log(res.data)
+  //       setCount(await res.data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   // Get Type Tournament
   // const getFootballField = async () => {
@@ -203,7 +200,7 @@ const MyTournamemts = () => {
   // Use Effect
   useEffect(() => {
     getTournament(contentSearch, currentPage, "NAME", null);
-    getCount();
+
     // getFootballField();
     // getTourType();
   }, [check, currentPage]);
@@ -475,6 +472,9 @@ const MyTournamemts = () => {
                           <h1 className={styles.tournamentName}>
                             {tour.tournamentName}
                           </h1>
+                          <p className={styles.type}>
+                            {tour.mode + " | " + tour.gender}
+                          </p>
                           <p className={styles.type}>
                             {getType(tour.tournamentTypeId)}
                             {tour.footballFieldAddress !== ""

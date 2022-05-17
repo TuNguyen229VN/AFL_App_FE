@@ -26,12 +26,15 @@ const AddPlayer = (props) => {
     value: "",
     error: null,
   });
-
+  const [btnActive,setBtnActive] = useState(false)
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
-    // imgPlayer emailPlayer namePlayer DOBPlayer phonePlayer
-    //console.log({name,value})
     const validate =validateForm(name,value);
+    if(validate.flag){
+      setBtnActive(true);
+    }else{
+      setBtnActive(false);
+    }
     switch (name) {
       case "imgPlayer":
         setImgPlayer({
@@ -138,7 +141,6 @@ const AddPlayer = (props) => {
     
     switch (name) {
       case "imgPlayer":
-
         break;
       case "emailPlayer":
         if (value.length === 0) {
@@ -154,6 +156,7 @@ const AddPlayer = (props) => {
             content: "Sai định dạng email",
           };
         }
+        
         break;
       case "namePlayer":
         if (value.length === 0) {
@@ -202,6 +205,7 @@ const AddPlayer = (props) => {
         }
         break;
     }
+
     return { flag: true, content: null };
   }
   const resetStateForm = () => {
@@ -214,6 +218,7 @@ const AddPlayer = (props) => {
     setNamePlayer(initialState);
     setDOBPlayer(initialState);
     setPhonePlayer(initialState);
+    setBtnActive(false);
   };
   //const gender = props.gender;
   return (
@@ -323,6 +328,7 @@ const AddPlayer = (props) => {
                       name="emailPlayer"
                       value={emailPlayer.value}
                       onChange={onChangeHandler}
+                      required
                     />
                   </div>
                   <div className="detail_info">
@@ -380,7 +386,6 @@ const AddPlayer = (props) => {
                       value={DOBPlayer.value}
                       type="text"
                       onChange={onChangeHandler}
-                      min={new Date().toISOString().split("T")[0]}
                       required
                     />
                   </div>
@@ -422,7 +427,7 @@ const AddPlayer = (props) => {
                 >
                   Hủy tạo
                 </button>
-                <button
+                {btnActive ? <button
                   style={{
                     padding: 10,
                   }}
@@ -431,7 +436,7 @@ const AddPlayer = (props) => {
                   data-backdrop="static`"
                 >
                   Thêm cầu thủ
-                </button>
+                </button> : null }
               </div>
             </form>
           </div>
