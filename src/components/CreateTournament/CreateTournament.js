@@ -101,7 +101,6 @@ const CreateTournament = () => {
     e.preventDefault();
     try {
       const data = {
-        id: user.userVM.id,
         tournamentName: nameTournament.value,
         mode: status === -1 ? "PRIVATE" : "PUBLIC",
         tournamentPhone: phoneContact.value,
@@ -116,7 +115,7 @@ const CreateTournament = () => {
         footballTeamNumber: teamPaticipate.value,
         footballPlayerMaxNumber: minimunPlayerInTournament.value,
         status: true,
-        userId: 6,
+        userId: user.userVM.id,
         tournamentTypeId:competitionFormat.value,
         footballFieldTypeId: parseInt(typeFootballField.value),
       };
