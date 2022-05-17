@@ -3,7 +3,6 @@ import { postAPI } from "../../api/index";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const AddPlayer = (props) => {
   let navigate = useNavigate();
@@ -109,7 +108,7 @@ const AddPlayer = (props) => {
         }
       })
       .catch((err) => {
-        toast.error(error.response.data.message, {
+        toast.error(err.response.data.message, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
