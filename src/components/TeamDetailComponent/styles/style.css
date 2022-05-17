@@ -478,3 +478,20 @@
   background-color: var(--blue-black);
   outline: none;
 }
+
+.add_img_detail{
+  width: 100%;
+  height: 90%;
+  cursor: pointer;
+}
+
+
+.add_img_detail_btn{
+  border: 1px solid black;
+  background-color: black;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  width: 50%;
+  margin: auto;
+}

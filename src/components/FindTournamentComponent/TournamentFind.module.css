@@ -266,7 +266,6 @@ transition: 0.5s;
   text-align: center;
   margin-bottom: 12px;
   line-height: 1.4;
-  height: 45px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -493,6 +492,14 @@ cursor: pointer;
   .btnResetFind {
     margin-right: 105px;
   }
+}
+
+
+.titleNoContent{
+  color: red;
+  font-weight: 700;
+  font-size: 36px;
+  margin-bottom: 50px;
 }
 
 /* @media only screen and (max-width: 900px) {

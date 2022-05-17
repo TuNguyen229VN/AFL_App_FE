@@ -468,7 +468,7 @@ const CreateTournament = () => {
                   >
                     <option value="1">Sân thi đấu bóng đá 5</option>
                     <option value="2">Sân thi đấu bóng đá 7</option>
-                    <option value="4">Sân thi đấu bóng đá 11</option>
+                    <option value="3">Sân thi đấu bóng đá 11</option>
                   </select>
                 </div>
                 <div>

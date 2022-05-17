@@ -42,10 +42,10 @@ const MyTournamemts = () => {
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${value}&tournament-gender=${gender}&tournament-football-type=${footballField}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "FIELDTYPE") {
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${value}&page-offset=${currentPage}&limit=8`;
-      } else if (anotherSearch === "GENDER"){
+      } else if (anotherSearch === "GENDER") {
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${value}&tournament-football-type=${footballField}&page-offset=${currentPage}&limit=8`;
-      } else if (anotherSearch === "NAME"){
-        console.log(gender)
+      } else if (anotherSearch === "NAME") {
+        console.log(gender);
         //console.log(mode + "-" + tourType + "-" + gender + "-" + footballField);
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${footballField}&page-offset=${currentPage}&limit=8`;
       }
@@ -113,18 +113,17 @@ const MyTournamemts = () => {
   // Search action
   const onSubmitHandler = (e) => {
     e.preventDefault();
-      getTournament(contentSearch, currentPage, "NAME", null);
-      setCheck(!check);
+    getTournament(contentSearch, currentPage, "NAME", null);
+    setCheck(!check);
   };
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
 
-
     switch (name) {
-      case "searchName": 
-      setContentSearch(value);
-      break;
+      case "searchName":
+        setContentSearch(value);
+        break;
       case "FIELDTYPE":
         setFootballField(value === "default" ? "" : value);
         getTournament(
@@ -139,12 +138,11 @@ const MyTournamemts = () => {
         getTournament(
           contentSearch,
           currentPage,
-           "TOURTYPE",
+          "TOURTYPE",
           value === "default" ? "" : value
         );
         break;
       case "SORT":
-        
         setSort(value === "default" ? "" : value);
         break;
       case "MODE":
@@ -152,7 +150,7 @@ const MyTournamemts = () => {
         getTournament(
           contentSearch,
           currentPage,
-           "MODE",
+          "MODE",
           value === "default" ? "" : value
         );
         break;
@@ -252,7 +250,6 @@ const MyTournamemts = () => {
               />
             </div>
             <div className={styles.selectOp}>
-
               <select
                 onChange={onChangeHandler}
                 name="MODE"
@@ -455,13 +452,13 @@ const MyTournamemts = () => {
         <div className={styles.listTournament}>
           <h1 className={styles.titleListTour}>Các Giải đấu</h1>
           <div className={styles.listTour}>
-            {tournaments.map((tour) => {
-              if(tour.status === true){
-                return (
-                  <div key={tour.id}>
-                    {loading ? (
-                      <Loading />
-                    ) : (
+            {loading ? (
+              <Loading />
+            ) : (
+              tournaments.length > 0 ? tournaments.map((tour) => {
+                if (tour.status === true) {
+                  return (
+                    <div key={tour.id}>
                       <Link
                         to={`/tournamentDetail/${tour.id}/inforTournamentDetail`}
                         className={styles.tournament}
@@ -473,7 +470,7 @@ const MyTournamemts = () => {
                             alt={tour.tournamentName}
                           />
                         </div>
-  
+
                         <div className={styles.tournamentInfor}>
                           <h1 className={styles.tournamentName}>
                             {tour.tournamentName}
@@ -485,7 +482,7 @@ const MyTournamemts = () => {
                               : ""}
                             {getFeild(tour.footballFieldTypeId)}
                           </p>
-  
+
                           <div className={styles.tournamentFooter}>
                             <div className={styles.teamPart}>
                               <img
@@ -498,17 +495,21 @@ const MyTournamemts = () => {
                           </div>
                         </div>
                       </Link>
-                    )}
-                  </div>
-                );
-              }
-              
-            })}
+                    </div>
+                  );
+                }
+              }) : <div></div>
+            )}
+            
           </div>
+          { tournaments.length <= 0 ?  <h1 className={styles.titleNoContent}>Không tìm thấy giải đấu phù hợp</h1> :
+          null}
+          
         </div>
 
         {/* Paging */}
-        <nav
+        {
+          tournaments.length > 0 ? <nav
           aria-label="Page navigation example"
           className={styles.pagingTournament}
         >
@@ -531,7 +532,9 @@ const MyTournamemts = () => {
             breakLinkClassName={styles.pagelink}
             pageRangeDisplayed={2}
           />
-        </nav>
+        </nav> : <nav></nav>
+        }
+
       </div>
       <Footer />
     </>
