@@ -3,6 +3,8 @@ import { postAPI } from "../../api/index";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const AddPlayer = (props) => {
   let navigate = useNavigate();
   const [imgPlayer, setImgPlayer] = useState({
@@ -94,11 +96,30 @@ const AddPlayer = (props) => {
     response
       .then((res) => {
         if (res.status === 201) {
-          console.log(res.data.id);
+          toast.success("Tạo giải đấu thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
           savePlayerInTeam(res.data.id);
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        console.error(err)
+      });
   };
   const savePlayerInTeam = (idPlayer) => {
     const afterDefaultURL = `PlayerInTeam`;
