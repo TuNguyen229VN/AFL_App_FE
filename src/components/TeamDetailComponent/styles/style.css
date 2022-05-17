@@ -41,7 +41,7 @@
   width: 150px;
   transform: translate(-50%, -50%);
 }
-.headertext__team{
+.headertext__team {
   padding-right: 45px;
 }
 .headertext__team h2 {
@@ -78,11 +78,11 @@
   width: 25px;
 }
 
-.HeaderTeamDetail .man.location .text_field{
+.HeaderTeamDetail .man.location .text_field {
   line-height: 1.1;
   width: 400px;
 }
-.HeaderTeamDetail .man i{
+.HeaderTeamDetail .man i {
   font-size: 25px;
   width: 25px;
 }
@@ -90,7 +90,7 @@
   margin-left: 10px;
   color: var(--white-text);
 }
-.man{
+.man {
   display: flex;
   align-items: center;
 }
@@ -433,60 +433,55 @@
   marginRight: -1
 }} */
 
-
 /* Add player */
 
-.modal-body{
+.modal-body {
   display: flex;
   justify-content: space-around;
-  
 }
-
-
 
 .add_img {
   width: 40%;
 }
 
-.add_infor{
+.add_infor {
   width: 50%;
 }
 
-.detail_info{
+.detail_info {
   width: 90%;
   margin-bottom: 30px;
 }
 
-
-.detail_info label , .add_img label{
+.detail_info label,
+.add_img label {
   margin-right: 30px;
   font-weight: 600;
   margin-bottom: 10px;
 }
 
-.detail_info input{
+.detail_info input {
   width: 100%;
   padding: 6px;
 }
 
-.teamdetail .btn__AddPlayer{
+.teamdetail .btn__AddPlayer {
   outline: none;
   border: 1px solid var(--blue-black);
 }
 .teamdetail .btn__AddPlayer:focus,
-.teamdetail .btn__AddPlayer:hover{
+.teamdetail .btn__AddPlayer:hover {
   background-color: var(--blue-black);
   outline: none;
 }
 
-.add_img_detail{
+.add_img_detail {
   width: 100%;
   height: 90%;
   cursor: pointer;
 }
 
-
-.add_img_detail_btn{
+.add_img_detail_btn {
   border: 1px solid black;
   background-color: black;
   color: white;
@@ -494,4 +489,35 @@
   text-align: center;
   width: 50%;
   margin: auto;
+}
+
+.nupakachi {
+  margin-top: 80px;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.nupakachi a {
+  display: block;
+  color: var(--blue-black);
+  margin-top: 20px;
+}
+.nupakachi a:hover {
+  text-decoration: underline;
+  color: var(--blue-black);
+}
+
+.popup__player{
+  display: none;
+  position: fixed;
+  top: 50%;
+  z-index: 10;
+  width: 100%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.popup__player.active{
+  display: block;
 }
