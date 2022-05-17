@@ -85,6 +85,7 @@ function Login() {
         }
       );
       localStorage.setItem("userInfo", JSON.stringify(response.data));
+      window.location.reload();
       navigate("../home", { replace: true });
     } catch (err) {
       console.log(err);
@@ -129,6 +130,7 @@ function Login() {
         }
       );
       localStorage.setItem("userInfo", JSON.stringify(response.data));
+      window.location.reload();
       navigate("../home", { replace: true });
     } catch (err) {
       if (err.response.data === "Tài khoản không tồn tại") {
@@ -240,6 +242,7 @@ function Login() {
                     setUserInfo(user);
                     await checkLoginGG(token);
                     setToken(token);
+                    console.log(user);
                     // ...
                   })
                   .catch((error) => {

@@ -65,6 +65,7 @@ function SignUpGoogle(props) {
       const data = {
         Email: props.userInfo.email.toString(),
         Username: inputValues.firstName,
+        Avatar: props.userInfo.photoURL.toString(),
         Gender: inputValues.gender,
         Phone: inputValues.phone,
         RoleId: 1,
@@ -91,6 +92,7 @@ function SignUpGoogle(props) {
         }
       );
       localStorage.setItem("userInfo", JSON.stringify(response.data));
+      window.location.reload();
       navigate("../home", { replace: true });
     } catch (error) {
       console.log(error);
