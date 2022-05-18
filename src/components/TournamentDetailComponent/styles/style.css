@@ -207,20 +207,31 @@
 .teamdetail .schedule__tour .schedule__table td:nth-child(3) {
   font-family: "Mulish-Bold";
   font-size: 18px;
-  /* transform: translateX(-80px); */
+  transform: translateX(40px);
+}
+.teamdetail .schedule__tour .schedule__table td:nth-child(5) {
+  width: 85px;
+}
+.teamdetail .schedule__tour .schedule__table td:nth-child(5) a{
+  color: var(--blue-black);
+  font-family: "Mulish-Bold";
+}
+
+.teamdetail .schedule__tour .schedule__table td:nth-child(5) a:hover{
+  text-decoration: underline;
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(2) img {
   top: 50%;
   transform: translateY(-50%);
   position: absolute;
-  left: 240px;
+  left: 140px;
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(4) img {
   position: absolute;
   font-family: "Mulish-Bold";
   top: 50%;
   transform: translateY(-50%);
-  right: 390px;
+  right: 250px;
 }
 
 .teamdetail .schedule__tour .wrap__title {
