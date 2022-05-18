@@ -44,6 +44,7 @@ const MyTournamemts = () => {
       } else if (anotherSearch === "FIELDTYPE") {
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${value}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "GENDER") {
+        console.log("Gender" + value)
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${value}&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "NAME") {
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
@@ -108,6 +109,7 @@ const MyTournamemts = () => {
   // Click paging number
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
+    
     setCheck(!check);
     getTournament(contentSearch, data.selected + 1, "NAME", null);
   };
@@ -115,6 +117,7 @@ const MyTournamemts = () => {
   // Search action
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    setCurrentPage(1);
     getTournament(contentSearch, currentPage, "NAME", null);
     setCheck(!check);
   };
@@ -125,6 +128,7 @@ const MyTournamemts = () => {
     switch (name) {
       case "searchName":
         setContentSearch(value);
+        
         break;
       case "FIELDTYPE":
         setFootballField(value === "default" ? "" : value);
@@ -178,6 +182,7 @@ const MyTournamemts = () => {
         setSort(value === "default" ? "" : value);
         break;
       case "MODE":
+        
         setMode(value === "default" ? "" : value);
         getTournament(
           contentSearch,
@@ -187,6 +192,7 @@ const MyTournamemts = () => {
         );
         break;
       default:
+        console.log(value)
         setGender(value === "default" ? "" : value);
         getTournament(
           contentSearch,

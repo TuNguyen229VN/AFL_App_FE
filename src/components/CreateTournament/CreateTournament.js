@@ -116,9 +116,10 @@ const CreateTournament = () => {
         footballPlayerMaxNumber: minimunPlayerInTournament.value,
         status: true,
         userId: user.userVM.id,
-        tournamentTypeId:competitionFormat.value,
-        footballFieldTypeId: parseInt(typeFootballField.value),
+        TournamentTypeEnum:competitionFormat.value,
+        TournamentFootballFieldTypeEnum:typeFootballField.value,
       };
+      console.log(data);
       const response = await axios.post(
         "https://afootballleague.ddns.net/api/v1/tournaments",
         data,
@@ -320,15 +321,10 @@ const CreateTournament = () => {
         });
         break;
       case "competitionFormat":
-        let numFormat = null;
-        if (value === "knockout") {
-          numFormat = 1;
-        } else if (value === "circle") {
-          numFormat = 2;
-        } else numFormat = 3;
+       
         setCompetitionFormat({
           ...competitionFormat,
-          value: numFormat,
+          value,
         });
         break;
       case "minimunPlayerInTournament":
@@ -584,9 +580,9 @@ const CreateTournament = () => {
                     value={typeFootballField.value}
                     name="typeFootballField"
                   >
-                    <option value="1">Sân thi đấu bóng đá 5</option>
-                    <option value="2">Sân thi đấu bóng đá 7</option>
-                    <option value="3">Sân thi đấu bóng đá 11</option>
+                    <option value="Field5">Sân thi đấu bóng đá 5</option>
+                    <option value="Field7">Sân thi đấu bóng đá 7</option>
+                    <option value="Field11">Sân thi đấu bóng đá 11</option>
                   </select>
                 </div>
                 <div>

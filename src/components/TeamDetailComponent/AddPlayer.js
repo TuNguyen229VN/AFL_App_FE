@@ -96,15 +96,6 @@ const AddPlayer = (props) => {
     response
       .then((res) => {
         if (res.status === 201) {
-          toast.success("Tạo giải đấu thành công", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
           savePlayerInTeam(res.data.id);
         }
       })
