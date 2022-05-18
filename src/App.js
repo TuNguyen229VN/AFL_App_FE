@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import useAuthListener from "./hooks/user_auth";
 import Profile from "./components/ProfileComponent/Profile";
 import MyListTournamentComponent from "./components/MyListTournamentComponent/MyListTournamentComponent";
+import Match from "./components/MatchComponent/Match";
 function App() {
   // get Locoal Storage
   const { user } = useAuthListener();
@@ -50,7 +51,7 @@ function App() {
             path="/createTournament"
             element={user ? <CreateTournament /> : <Navigate to={"/login"} />}
           />
-           <Route
+          <Route
             exact
             path="/changePassword"
             element={user ? <ChangePassWorld /> : <Navigate to={"/login"} />}
@@ -123,6 +124,16 @@ function App() {
             element={
               user ? <MyListTournamentComponent /> : <Navigate to={"/login"} />
             }
+          />
+          <Route
+            exact
+            path="/match/1/matchDetail"
+            element={user ? <Match /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            exact
+            path="/match/1/livestream"
+            element={user ? <Match /> : <Navigate to={"/login"} />}
           />
         </Routes>
       </BrowserRouter>

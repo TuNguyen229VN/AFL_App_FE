@@ -47,7 +47,11 @@ function HeaderTeamDetail() {
         getUserById(idTeam);
         setLoading(false);
       })
-      .catch((err) => setLoading(false));
+      .catch((err) => {
+        if (err.response.data.status === 500) {
+          setLoading(false);
+        }
+      });
   };
 
   //Get User
