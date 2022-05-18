@@ -1,0 +1,175 @@
+.create__team {
+  padding: 60px 150px;
+  margin-top: 80px;
+  --create-title: 50px;
+  --create-text: 22px;
+  --create-p: 16px;
+}
+
+.create__team .title {
+  font-size: 24px;
+  font-family: "Mulish-Bold";
+  text-transform: uppercase;
+}
+
+.create__team .title::after {
+  display: block;
+  content: "";
+  height: 4px;
+  background-color: var(--blue-black);
+  width: 100px;
+  margin-top: 10px;
+}
+
+.create__team .main__team {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 240px 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.create__team .input__field {
+  border: 1px solid var(--blue-black);
+  /* width: 220px; */
+  height: 240px;
+  /* padding: 20px; */
+  position: relative;
+  overflow: hidden;
+}
+.create__team .input__field input[type="file"] {
+  display: none;
+}
+
+.create__team .input__field .cmr {
+  width: 80px;
+  position: absolute;
+  left: 50%;
+  top: 50px;
+  transform: translateX(-50%);
+}
+.create__team .input__field .cmrb {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+}
+.create__team .input__field label {
+  color: var(--white-text);
+}
+.input__label {
+  display: flex;
+  background: var(--blue-black);
+  color: var(--white-text);
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  z-index: 2;
+  cursor: pointer;
+  padding: 10px 15px;
+  width: max-content;
+  bottom: 20px;
+  transform: translateX(-50%);
+  transition: 0.3s;
+}
+
+.input__field .icon__upload {
+  margin-left: 5px;
+  pointer-events: none;
+}
+
+.input__field .icon__upload .dw {
+  width: 20px;
+}
+
+.create__team .text__field label {
+  font-family: "Mulish-Bold";
+  color: var(--blue-black);
+  font-size: 18px;
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+.create__team .createteamwrap {
+  margin-top: -20px;
+}
+.create__team .avt {
+  position: relative;
+  font-family: "Mulish-Bold";
+  top: 20px;
+  font-size: 20px;
+}
+
+.create__team .text__field input,
+.create__team .text__field select {
+  width: 100%;
+  padding: 10px 5px;
+  border: 2px solid #ccc;
+  height: 50px;
+}
+
+.create__team .text__field input:focus,
+.create__team .text__field select:focus {
+  width: 100%;
+  padding: 5px;
+  border: 2px solid var(--blue-black);
+  height: 50px;
+}
+
+.clothes__team {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 100px;
+}
+
+.clothes__team .input__field {
+  height: 300px;
+}
+
+.create__team .descTeam {
+  margin-top: 30px;
+  border: 1px solid var(--blue-black);
+  height: 500px;
+  overflow: hidden;
+}
+
+.create__team .rdw-editor-toolbar {
+  border-bottom: 1px solid var(--blue-black);
+}
+.create__team .editor-class {
+  padding: 0 10px;
+}
+
+.create__team .line3 {
+  margin-top: 60px;
+  margin-bottom: 30px;
+  position: initial;
+}
+
+.create__team .createTeam_btn {
+  padding: 20px 35px;
+  width: max-content;
+  text-align: center;
+  font-family: "Mulish-Bold";
+  font-size: 18px;
+  background-color: var(--blue-black);
+  margin: 20px 0 0 auto;
+  transition: 0.5s;
+  color: var(--white-text);
+  cursor: pointer;
+  user-select: none;
+}
+
+.create__team .createTeam_btn:hover {
+  background-color: var(--green-bold);
+  color: var(--blue-black);
+}
+
+.createTournament_img_title {
+  margin-bottom: 10px;
+  font-weight: 600;
+}

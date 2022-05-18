@@ -1,9 +1,14 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { postAPI } from "../../api";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import styles from "./styles/style.module.css";
 function ChangePassword() {
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
   const [passwordShown, setPasswordShown] = useState(false);
   const [rePasswordShown, setRePasswordShown] = useState(false);
   const [oldPasswordShown, setOldPasswordShown] = useState(false);
@@ -28,7 +33,7 @@ function ChangePassword() {
       case "oldpassword":
         let oldpassword = null;
         if (flagValid.flag === false) {
-            console.log("asas")
+          console.log("asas");
           oldpassword = {
             value,
             error: flagValid.content,
@@ -85,6 +90,12 @@ function ChangePassword() {
   const validateForm = (name, value) => {
     switch (name) {
       case "oldpassword":
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "*Không được để trống",
+          };
+        }
         break;
       case "password":
         if (value.length === 0) {
@@ -100,6 +111,11 @@ function ChangePassword() {
             flag: false,
             content: "*Không được để trống",
           };
+        } else if (password.value !== value) {
+          return {
+            flag: false,
+            content: "*Xác nhận mật khẩu chưa khớp với mật khẩu",
+          };
         }
         break;
       default:
@@ -108,13 +124,69 @@ function ChangePassword() {
 
     return { flag: true, content: null };
   };
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    if (
+      password.value.trim() === "" ||
+      rePassword.value.trim() === "" ||
+      oldPassword.value.trim() === "" ||
+      password.value !== rePassword.value
+    ) {
+      toast.error("Vui lòng kiểm tra lại thông tin", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+    const data = {
+      id: user.userVM.id,
+      currentPassword: oldPassword.value,
+      newPassword: password.value,
+    };
+    const afterDefaultURL = `users/change-password`;
+    const response = postAPI(afterDefaultURL, data, false);
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Thay đổi mật khẩu thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          setOldPassword({value:"",error:""})
+          setPassword({value:"",error:""})
+          setRePassword({value:"",error:""})
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+
   return (
     <>
       <ScrollToTop />
       <Header />
       <div className={styles.changePass}>
         <h2 className={styles.changePass__title}>Đổi mật khẩu</h2>
-        <form>
+        <form onSubmit={onSubmitHandler}>
           <div>
             <img src="/assets/icons/lock-icon.svg" alt="lock" />
             <input
@@ -122,6 +194,7 @@ function ChangePassword() {
               className={styles.pass}
               placeholder="Mật khẩu cũ*"
               name="oldpassword"
+              value={oldPassword.value}
               onChange={handleOnChange}
             />
             <img
@@ -130,10 +203,10 @@ function ChangePassword() {
               className={styles.eyesPass}
               onClick={toggleOldPass}
             />
-            {oldPassword.error != null ? (
-              <p className={styles.error}>{oldPassword.error}</p>
-            ) : null}
           </div>
+          {oldPassword.error != null ? (
+            <p className={styles.error}>{oldPassword.error}</p>
+          ) : null}
           <div>
             <img src="/assets/icons/lock-icon.svg" alt="lock" />
             <input
@@ -141,6 +214,7 @@ function ChangePassword() {
               className={styles.pass}
               placeholder="Mật khẩu mới*"
               name="password"
+              value={password.value}
               onChange={handleOnChange}
             />
             <img
@@ -160,6 +234,7 @@ function ChangePassword() {
               className={`${styles.pass} ${styles.repass}`}
               placeholder="Xác nhận lại mật khẩu mới*"
               name="rePassword"
+              value={rePassword.value}
               onChange={handleOnChange}
             />
             <img
@@ -168,11 +243,15 @@ function ChangePassword() {
               className={styles.eyesPass}
               onClick={toggleRePass}
             />
-            {rePassword.error != null ? (
-              <p className={styles.error}>{rePassword.error}</p>
-            ) : null}
           </div>
-          <button className={styles.btnChange}>Đổi mật khẩu</button>
+          {rePassword.error != null ? (
+            <p className={styles.error}>{rePassword.error}</p>
+          ) : null}
+          <input
+            type="submit"
+            value="Đổi mật khẩu"
+            className={styles.btnChange}
+          />
         </form>
       </div>
       <Footer />

@@ -10,7 +10,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { getAPI } from "../../api";
 
 const CreateTeam = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -46,7 +47,7 @@ const CreateTeam = () => {
     value: "",
     error: "",
   });
-  const[btnActive,setBtnActive] = useState(false);
+  const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
   const [provice, setProvice] = useState(null);
   const [districts, setDistricts] = useState(null);
@@ -56,6 +57,20 @@ const CreateTeam = () => {
     setResetProvice(-1);
     getAllCity();
   }, [resetProvice]);
+
+  useEffect(() => {
+    getUser();
+  }, []);
+  const getUser = () => {
+    let afterDefaultURL = `users/${user.userVM.id}`;
+    let response = getAPI(afterDefaultURL);
+    response
+      .then((res) => {
+        setNameManager({ value: res.data.username });
+        setEmail({ value: res.data.email });
+      })
+      .catch((err) => console.error(err));
+  };
   const getAllCity = async () => {
     const response = await axios.get(
       "https://provinces.open-api.vn/api/?depth=3"
@@ -131,6 +146,8 @@ const CreateTeam = () => {
           };
         }
         break;
+      default:
+        break;
     }
 
     return { flag: true, content: null };
@@ -198,36 +215,14 @@ const CreateTeam = () => {
 
       console.error(error.response);
     }
-    // axios({
-    //   method: "post",
-    //   url: "https://afootballleague.ddns.net/api/v1/teams",
-    //   data: {
-    //     id: 6,
-    //     teamName: nameClub.value,
-    //     teamAvatar: imgClub.value,
-    //     description: textDescription,
-    //     status: true,
-    //   },
-    // })
-    //   .then((res) => {
-    //     NotificationManager.success("Tạo đội bóng thành công", "Chúc mừng");
-    //     console.log(res);
-    //   })
-    //   .catch((error) => {
-    //     NotificationManager.error(
-    //       "Tạo đội bóng thất bại",
-    //       "Không thể tạo đội bóng"
-    //     );
-    //     console.log(error);
-    //   });
   };
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const flagValid = validateForm(name, value);
-    if(flagValid.flag){
+    if (flagValid.flag) {
       setBtnActive(true);
-    }else{
+    } else {
       setBtnActive(false);
     }
     switch (name) {
@@ -348,6 +343,8 @@ const CreateTeam = () => {
           setAddressField(value + oldAddress);
         }
         break;
+      default:
+        break;
     }
   };
   //countError();
@@ -375,22 +372,21 @@ const CreateTeam = () => {
                 id="file"
                 onChange={onChangeHandler}
                 required
-                
               />
               <img
                 src={
                   imgClub.value === ""
-                    ? "assets/img/createteam/camera.png"
+                    ? "/assets/img/createteam/camera.png"
                     : imgClub.img
                 }
                 alt="camera"
-                className={styles.cmr}
+                className={imgClub.value === "" ? styles.cmr : styles.cmrb}
               />
               <label for="file" className={styles.input__label}>
                 Tải ảnh lên
                 <i className={styles.icon__upload}>
                   <img
-                    src="assets/img/createteam/download.svg"
+                    src="/assets/img/createteam/download.svg"
                     alt="dw"
                     className={styles.dw}
                   />
@@ -522,9 +518,8 @@ const CreateTeam = () => {
                   name="nameManager"
                   id="namemanager"
                   placeholder="Tên người tạo *"
-                  value="Trương Anh Khoa"
+                  value={nameManager.value}
                   disabled
-                  
                 />
               </div>
               <div className={styles.text__field}>
@@ -558,7 +553,7 @@ const CreateTeam = () => {
                   name="email"
                   id="emailmanager"
                   placeholder="Địa chỉ email *"
-                  value="truonganhkhoa1405@gmail.com"
+                  value={email.value}
                   required
                   disabled
                 />
@@ -680,7 +675,8 @@ const CreateTeam = () => {
               >
                 Quận/Huyện
               </label>
-              <select required
+              <select
+                required
                 style={{
                   padding: "10px 5px",
                 }}
@@ -767,17 +763,19 @@ const CreateTeam = () => {
               }}
             />
           </div>
-          {btnActive ? <input
-            style={{
-              float: "right",
-              // backgroundColor: buttonFlag === true ? "#d7fc6a" : "#D9D9D9",
-              // cursor: buttonFlag === true ? "pointer" : "default",
-            }}
-            type="submit"
-            className={styles.createTeam_btn}
-            value="Tạo đội"
-            // disabled = {buttonFlag === true ? false : false}
-          /> : null}
+          {btnActive ? (
+            <input
+              style={{
+                float: "right",
+                // backgroundColor: buttonFlag === true ? "#d7fc6a" : "#D9D9D9",
+                // cursor: buttonFlag === true ? "pointer" : "default",
+              }}
+              type="submit"
+              className={styles.createTeam_btn}
+              value="Tạo đội"
+              // disabled = {buttonFlag === true ? false : false}
+            />
+          ) : null}
         </div>
       </form>
       <ToastContainer />

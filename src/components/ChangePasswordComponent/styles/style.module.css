@@ -65,9 +65,16 @@
     padding: 20px 35px;
     transition: 0.5s;
     margin-top: 20px;
+    user-select: none;
 }
 
 .changePass .btnChange:hover{
     background-color: var(--green-bold);
     color: var(--blue-black);
+}
+
+.error{
+    margin-bottom: 20px;
+    color: red;
+    font-style: italic;
 }

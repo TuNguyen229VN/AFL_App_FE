@@ -18,6 +18,7 @@ import useAuthListener from "./hooks/user_auth";
 import Profile from "./components/ProfileComponent/Profile";
 import MyListTournamentComponent from "./components/MyListTournamentComponent/MyListTournamentComponent";
 import Match from "./components/MatchComponent/Match";
+import UpdateTeam from "./components/UpdateTeamComponent/UpdateTeam";
 function App() {
   // get Locoal Storage
   const { user } = useAuthListener();
@@ -51,6 +52,11 @@ function App() {
             exact
             path="/createTournament"
             element={user ? <CreateTournament /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            exact
+            path="/updateTeam/:idTeam"
+            element={user ? <UpdateTeam /> : <Navigate to={"/login"} />}
           />
           <Route
             exact

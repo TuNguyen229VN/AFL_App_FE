@@ -522,3 +522,25 @@
 .popup__player.active{
   display: block;
 }
+
+.teamdetail .editTeam{
+  display: block;
+  margin-top: 60px;
+  margin-left: auto;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  margin-left: 45px;
+  background-color: var(--green-bold);
+  font-family: "Mulish-Bold";
+  transition: 0.5s;
+  border-radius: 5px;
+}
+.teamdetail .editTeam:hover{
+  background-color: var(--blue-black);
+  color: var(--white-text);
+}
+
+.teamdetail .editTeam i{
+  margin-right: 5px;
+}

@@ -420,7 +420,7 @@ const CreateTournament = () => {
                 className={styles.switch__input}
               />
               <label
-                for="switch"
+                htmlFor="switch"
                 className={styles.switch}
                 onClick={() => {
                   setStartTime({

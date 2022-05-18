@@ -97,8 +97,13 @@ function HeaderTeamDetail() {
             {team !== "" ? (
               <div className="HeaderTeamDetail">
                 <div className="info__manager">
-                  <div className="avt__Team">
-                    <img src={team.teamAvatar} alt="team" />
+                  <div>
+                    <div className="avt__Team">
+                      <img src={team.teamAvatar} alt="team" />
+                    </div>
+                    <Link to={`/updateTeam/${team.id}`} className="editTeam">
+                      <i class="fa-solid fa-pen-to-square"></i>Chỉnh Sửa Đội Bóng
+                    </Link>
                   </div>
                   <div className="headertext__team">
                     <h2>{team.teamName}</h2>

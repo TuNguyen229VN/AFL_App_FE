@@ -1,5 +1,6 @@
 import axios from "axios";
-import { convertToRaw, Editor, EditorState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import { convertToRaw, EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,8 +11,10 @@ import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import styles from "./styles/style.module.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { getAPI } from "../../api";
 function UpdateTeam() {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [manager, setManager] = useState("");
   const textDescription = draftToHtml(
     convertToRaw(editorState.getCurrentContent())
   );
@@ -54,6 +57,37 @@ function UpdateTeam() {
     setResetProvice(-1);
     getAllCity();
   }, [resetProvice]);
+
+  useEffect(() => {
+    getUser();
+    getInforTeam();
+  }, []);
+  const getUser = () => {
+    let afterDefaultURL = `users/${user.userVM.id}`;
+    let response = getAPI(afterDefaultURL);
+    response
+      .then((res) => {
+        setManager(res.data);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const [area, setArea] = useState("");
+  const getInforTeam = () => {
+    let afterDefaultURL = `teams/${user.userVM.id}`;
+    let response = getAPI(afterDefaultURL);
+    response
+      .then((res) => {
+        setNameClub({ value: res.data.teamName });
+        setImgClub({ value: res.data.teamAvatar, img: res.data.teamAvatar });
+        setPhoneContact({ value: res.data.teamPhone });
+        setGender({ value: res.data.teamGender });
+        setArea(res.data.teamArea);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const getAllCity = async () => {
     const response = await axios.get(
       "https://provinces.open-api.vn/api/?depth=3"
@@ -129,6 +163,8 @@ function UpdateTeam() {
           };
         }
         break;
+      default:
+        break;
     }
 
     return { flag: true, content: null };
@@ -147,7 +183,7 @@ function UpdateTeam() {
         teamArea: addressField,
       };
 
-      const response = await axios.post(
+      const response = await axios.put(
         "https://afootballleague.ddns.net/api/v1/teams",
         data,
         {
@@ -155,7 +191,7 @@ function UpdateTeam() {
         }
       );
       if (response.status === 201) {
-        toast.success("Tạo đội bóng thành công", {
+        toast.success("Cập nhật đội bóng thành công", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -196,28 +232,6 @@ function UpdateTeam() {
 
       console.error(error.response);
     }
-    // axios({
-    //   method: "post",
-    //   url: "https://afootballleague.ddns.net/api/v1/teams",
-    //   data: {
-    //     id: 6,
-    //     teamName: nameClub.value,
-    //     teamAvatar: imgClub.value,
-    //     description: textDescription,
-    //     status: true,
-    //   },
-    // })
-    //   .then((res) => {
-    //     NotificationManager.success("Tạo đội bóng thành công", "Chúc mừng");
-    //     console.log(res);
-    //   })
-    //   .catch((error) => {
-    //     NotificationManager.error(
-    //       "Tạo đội bóng thất bại",
-    //       "Không thể tạo đội bóng"
-    //     );
-    //     console.log(error);
-    //   });
   };
 
   const onChangeHandler = (e) => {
@@ -346,8 +360,23 @@ function UpdateTeam() {
           setAddressField(value + oldAddress);
         }
         break;
+      default:
+        break;
     }
   };
+  const splitArea = (check) => {
+    let result = area.split(",");
+    if (check === "provice") {
+      return result[2];
+    }
+    if (check === "districts") {
+      return result[1];
+    }
+    if (check === "wards") {
+      return result[0];
+    }
+  };
+
   return (
     <>
       <ScrollToTop />
@@ -360,7 +389,7 @@ function UpdateTeam() {
             marginBottom: 40,
           }}
         >
-          <h2 className={styles.title}>Tạo đội bóng</h2>
+          <h2 className={styles.title}>Cập nhật đội bóng</h2>
           <p className={styles.avt}>Hình đội bóng</p>
           <div className={styles.main__team}>
             <div className={styles.input__field}>
@@ -375,17 +404,17 @@ function UpdateTeam() {
               <img
                 src={
                   imgClub.value === ""
-                    ? "assets/img/createteam/camera.png"
+                    ? "/assets/img/createteam/camera.png"
                     : imgClub.img
                 }
                 alt="camera"
-                className={styles.cmr}
+                className={imgClub.value === "" ? styles.cmr : styles.cmrb}
               />
               <label for="file" className={styles.input__label}>
                 Tải ảnh lên
                 <i className={styles.icon__upload}>
                   <img
-                    src="assets/img/createteam/download.svg"
+                    src="/assets/img/createteam/download.svg"
                     alt="dw"
                     className={styles.dw}
                   />
@@ -472,6 +501,7 @@ function UpdateTeam() {
                   onChange={onChangeHandler}
                   id="genderteam"
                   required
+                  disabled
                 >
                   <option value="Male">Nam</option>
                   <option value="Female">Nữ</option>
@@ -509,7 +539,7 @@ function UpdateTeam() {
                   name="nameManager"
                   id="namemanager"
                   placeholder="Tên người tạo *"
-                  value="Trương Anh Khoa"
+                  value={manager.username}
                   disabled
                 />
               </div>
@@ -544,7 +574,7 @@ function UpdateTeam() {
                   name="email"
                   id="emailmanager"
                   placeholder="Địa chỉ email *"
-                  value="truonganhkhoa1405@gmail.com"
+                  value={manager.email}
                   required
                   disabled
                 />
@@ -580,13 +610,19 @@ function UpdateTeam() {
                 required
                 onChange={onChangeHandler}
               >
-                <option selected disabled>
-                  Chọn thành phố
-                </option>
+                <option disabled>Chọn thành phố</option>
                 {provice != null
                   ? provice.map((item, index) => {
                       return (
-                        <option value={item.name} key={index}>
+                        <option
+                          value={item.name}
+                          key={index}
+                          selected={
+                            item.name === splitArea("provice")
+                              ? true
+                              : false
+                          }
+                        >
                           {item.name}
                         </option>
                       );
@@ -706,7 +742,7 @@ function UpdateTeam() {
               }}
               type="submit"
               className={styles.createTeam_btn}
-              value="Tạo đội"
+              value="Cập nhật đội"
               // disabled = {buttonFlag === true ? false : false}
             />
           ) : null}
