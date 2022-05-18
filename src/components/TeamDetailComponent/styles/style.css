@@ -169,6 +169,7 @@
 }
 
 .teamdetail .listPlayer .listPlayer__item .des {
+  border-top: 1px solid var(--blue-black);
   padding: 10px;
 }
 
@@ -212,7 +213,7 @@
 .teamdetail .listPlayer .listPlayer__item .avt {
   height: 0;
   overflow: hidden;
-  padding-bottom: 100%;
+  padding-bottom: 80%;
   position: relative;
 }
 .teamdetail .listPlayer .listPlayer__item .avt img {

@@ -94,7 +94,7 @@
   width: 110px !important;
 }
 .tournamentdetail .listPlayer .listPlayer__item .avt {
-  padding-bottom: 70%;
+  padding-bottom: 70% !important;
   border-bottom: 1px solid var(--blue-black);
 }
 

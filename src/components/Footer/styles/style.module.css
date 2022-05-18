@@ -4,6 +4,7 @@
   text-align: center;
   color: var(--white-text);
   --footer-title: 40px;
+  user-select: none;
 }
 
 .footer .footer_title {
