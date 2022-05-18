@@ -8,6 +8,7 @@ import MyTeam from "./components/FindTeamComponent/MyTeam";
 import CreateTeam from "./components/CreateTeamComponent/CreateTeam";
 import CreateTournament from "./components/CreateTournament/CreateTournament";
 import HeaderTournamentDetail from "./components/TournamentDetailComponent/HeaderTournamentDetail";
+import UpdateInformationTournament from "./components/TournamentDetailComponent/UpdateTournamentInformation";
 import HeaderTeamDetail from "./components/TeamDetailComponent/HeaderTeamDetail";
 import ChangePassWorld from "./components/ChangePasswordComponent/ChangePassword";
 import { ToastContainer } from "react-toastify";
@@ -111,6 +112,12 @@ function App() {
             path="/tournamentDetail/:idTour/teamInTournament"
             element={<HeaderTournamentDetail />}
             ignoreScrollBehavior={true}
+          />
+
+          <Route
+            exact
+            path="/tournamentDetail/:idTour/inforTournamentDetail/update-tournament-detail"
+            element={<UpdateInformationTournament />}
           />
           <Route
             exact

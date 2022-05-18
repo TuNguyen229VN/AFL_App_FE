@@ -14,6 +14,9 @@ import PredictionTournamentDetail from "./PredictionTournamentDetail";
 import CommentTournamentDetail from "./CommentTournamentDetail";
 import Loading from "../LoadingComponent/Loading";
 import { getAPI } from "../../api";
+import { useNavigate } from 'react-router-dom';
+
+
 function HeaderTournamentDetail() {
   const { idTour } = useParams();
   const location = useLocation();
@@ -21,6 +24,7 @@ function HeaderTournamentDetail() {
   const [tourDetail, setTourDetail] = useState("");
   const [host, setHost] = useState("");
   const [loading, setLoading] = useState(true);
+  let navigate = useNavigate();
   // Get Tour Detail
   const getTourDetail = async () => {
     let afterDefaultURL = `tournaments/${idTour}`;
@@ -132,6 +136,11 @@ function HeaderTournamentDetail() {
     getTourDetail();
   }, [location.pathname]);
 
+
+  const updateClick = (data) => {
+    navigate(`update-tournament-detail`,{state: {id: data} })
+  }
+
   return (
     <>
       <Header  id={idTour}/>
@@ -148,6 +157,16 @@ function HeaderTournamentDetail() {
                     src={tourDetail.tournamentAvatar}
                     alt={tourDetail.tournamentName}
                   />
+                  <button style={{
+                    marginTop: 300,
+                    padding: 20,
+                    marginLeft: 50,
+                    fontWeight: 600
+                  }}
+                  onClick={() => {
+                    updateClick(tourDetail.id)
+                  }}
+                  >Chỉnh sửa thông tin giải đấu</button>
                 </div>
                 <div className="headertext__team">
                   <h2>{tourDetail.tournamentName}</h2>

@@ -11,22 +11,25 @@ function ListPlayer(props) {
     getListPlayerInTeamByIdTeam();
   },[])
 
-  const getListPlayerInTeamByIdTeam =  () => {
+  const getListPlayerInTeamByIdTeam =  async () => {
     const afterURL = `PlayerInTeam?teamId=${id}&pageIndex=1&limit=5`
-    const response = getAPI(afterURL);
-    response.then(res => {
-      
-      setLoading(false);
-    }).catch(err => {
-      console.error(err)
+    const response = await getAPI(afterURL);
+    
+    const ids = response.data.playerInTeams;
+    const players = ids.map(async (player)=>{
+      const playerResponse = await getPlayerById(player.footballPlayerId);
+      return playerResponse;
     })
+    const playersData = await Promise.all(players)
+    setPlayerInTeam(playersData);
+    setLoading(false);
   }
 
-  // const getPlayerById =  async (idPlayer) => {
-  //   const afterURL = `football-players/${idPlayer}`;
-  //   const response =  await getAPI(afterURL);
-  //   return response.data;
-  // }
+  const getPlayerById =  async (idPlayer) => {
+    const afterURL = `football-players/${idPlayer}`;
+    const response =  await getAPI(afterURL);
+    return response.data;
+  }
   return (
     <> 
       <div className="teamdetail__content listPlayer">
@@ -42,22 +45,31 @@ function ListPlayer(props) {
         {loading ? <Loading /> : 
         
         <div>
-        <h2 className="listPlayer__total">Có thành viên</h2>
-        <div className="listPlayer__list">
-               <div className="listPlayer__item">
-              <div className="avt">
-              <img src="/assets/img/teamdetail/TNB-48309.jpg" alt="dev" />
-              </div>
-              <div className="des">
-              <p className="namePlayer"><span>Tên:</span>Nguyễn Tú</p>
-                <p className="genderPlayer"><span>Giới tính:</span>Nam</p>
-                <p className="mailPlayer"><span>Email:</span>tunttse140127@fpt.edu.vn</p>
-                <p className="phonePlayer"><span>Sdt:</span>01239312830</p>
-                <p className="dobPlayer"><span>Ngày sinh:</span>22-09-2000</p>
-              </div>
-            </div>
+        <h2 className="listPlayer__total">Có {playerInTeam.length} thành viên</h2>
+        <div>
+        {
+          playerInTeam.map((item,index) => {
+            return <div key={index} className="listPlayer__list">
+            <div className="listPlayer__item">
+           <div className="avt">
+           <img src={item.playerAvatar} alt="dev" />
+           </div>
+           <div className="des">
+           <p className="namePlayer"><span>Tên:</span>{item.playername}</p>
+             <p className="genderPlayer"><span>Giới tính:</span>{item.gender === 'Male' ? "Name" : "Nữ"}</p>
+             <p className="mailPlayer"><span>Email:</span>{item.email}</p>
+             <p className="phonePlayer"><span>Sdt:</span>{item.phone}</p>
+             <p className="dobPlayer"><span>Ngày sinh:</span>{item.dateOfBirth}</p>
+           </div>
+         </div>
+     </div>
+          })
+        }
         </div>
-        </div>}
+        
+        
+        </div>
+        }
         
         
       </div>

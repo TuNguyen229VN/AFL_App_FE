@@ -279,7 +279,7 @@ const AddPlayer = (props) => {
                       accept="image/*"
                       id="imgPlayer"
                       onChange={onChangeHandler}
-                      required
+                      
                       name="imgPlayer"
                       style={{
                         display: "none",
