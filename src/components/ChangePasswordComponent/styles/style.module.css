@@ -1,0 +1,73 @@
+.changePass{
+    padding: 60px 150px;
+    margin-top: 80px;
+}
+
+.changePass__title{
+    font-size: 24px;
+    font-family: "Mulish-Bold";
+    text-transform: uppercase;
+}
+
+.changePass__title::after{
+    display: block;
+    content: "";
+    height: 4px;
+    background-color: var(--blue-black);
+    width: 150px;
+    margin-top: 10px;
+}
+
+.changePass img{
+    width: 24px;
+ }
+ .changePass input{
+     display: block;
+     padding: 8px 10px;
+     padding-left: 45px;
+     margin-bottom: 20px;
+     border: 1px solid #ccc;
+     height: 60px;
+     width: 500px;
+     font-size: 18px;
+ }
+ 
+ .changePass input:focus{
+     border: 1px solid var(--blue-black);
+ }
+
+ .changePass div{
+    position: relative;
+}
+
+.changePass div img{
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+}
+
+.changePass .eyesPass{
+    width: 25px;
+   left: 460px;
+   cursor: pointer;
+}
+
+.changePass .btnChange{
+    font-family: "Mulish-Bold";
+    background-color: var(--blue-black);
+    outline: none;
+    border: none;
+    color: var(--white-text);
+    text-align: center;
+    width: max-content;
+    font-size: 18px;
+    padding: 20px 35px;
+    transition: 0.5s;
+    margin-top: 20px;
+}
+
+.changePass .btnChange:hover{
+    background-color: var(--green-bold);
+    color: var(--blue-black);
+}

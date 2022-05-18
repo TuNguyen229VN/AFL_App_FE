@@ -7,13 +7,35 @@ import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import styles from "./styles/style.module.css";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 function Profile() {
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-
+  const [checkGoogle, setCheckGoogle] = useState([]);
   const [myAccount, setMyAccount] = useState([]);
+  // const firebaseConfig = {
+  //   apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
+  //   authDomain: "amateurfoooballleague.firebaseapp.com",
+  //   databaseURL: "gs://amateurfoooballleague.appspot.com",
+  //   projectId: "amateurfoooballleague",
+  //   storageBucket: "amateurfoooballleague.appspot.com",
+  //   messagingSenderId: "765175452190",
+  //   appId: "1:765175452190:web:3e01517d116d4777c9140f",
+  //   measurementId: "G-7Z7LB0W52J",
+  // };
+
+  // firebase.initializeApp(firebaseConfig);
+  // const listener = firebase.auth().onAuthStateChanged((authUser) => {
+  //   if (authUser) {
+  //     setCheckGoogle(JSON.stringify(authUser));
+  //   } else {
+  //     setCheckGoogle([]);
+  //   }
+  // });
+  // listener();
   const getMyAccount = () => {
     const afterURL = `users/${user.userVM.id}`;
     const response = getAPI(afterURL);
@@ -392,6 +414,7 @@ function Profile() {
           draggable: true,
           progress: undefined,
         });
+        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -426,9 +449,11 @@ function Profile() {
               onChange={onChangeHandler}
             />
             <div className={styles.email}>{email.value}</div>
-            <Link to="" className={styles.changePass}>
-              Đổi mật khẩu
-            </Link>
+            {/* {checkGoogle === "" ? ( */}
+              <Link to="/changePassword" className={styles.changePass}>
+                Đổi mật khẩu
+              </Link>
+            {/* ) : null} */}
           </div>
           <div className={styles.profile__text}>
             <div className={styles.text}>

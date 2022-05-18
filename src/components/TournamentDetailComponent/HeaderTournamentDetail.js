@@ -232,6 +232,22 @@ function HeaderTournamentDetail() {
                   Thông tin
                 </Link>
                 <Link
+                  to={`/tournamentDetail/${idTour}/commentTournamentDetail`}
+                  className={
+                    activeTeamDetail ===
+                    `/tournamentDetail/${idTour}/commentTournamentDetail`
+                      ? "active"
+                      : ""
+                  }
+                  onClick={() =>
+                    setActiveTeamDetail(
+                      `/tournamentDetail/${idTour}/commentTournamentDetail`
+                    )
+                  }
+                >
+                  Tin tức
+                </Link>
+                <Link
                   to={`/tournamentDetail/${idTour}/galleryTournamentDetail`}
                   className={
                     activeTeamDetail ===
@@ -326,7 +342,7 @@ function HeaderTournamentDetail() {
                   }
                 >
                   Bình luận
-                </Link>
+                </Link>           
               </div>
             </div>
             {renderByLink()}

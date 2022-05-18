@@ -151,16 +151,6 @@ function Header(id) {
               Giới thiệu
             </Link>
           </li>
-          <li>
-            <Link
-              to={"/"}
-              href="#"
-              className={activeMenu === "news" ? "title active" : "title"}
-              onClick={() => setactiveMenu("news")}
-            >
-              Tin tức
-            </Link>
-          </li>
         </ul>
         <div className="account">
           {user ? (
@@ -246,9 +236,6 @@ function Header(id) {
             </li>
             <li>
               <a href="#">Giới thiệu</a>
-            </li>
-            <li>
-              <a href="#">Tin tức</a>
             </li>
           </ul>
         </nav>

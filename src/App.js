@@ -9,6 +9,7 @@ import CreateTeam from "./components/CreateTeamComponent/CreateTeam";
 import CreateTournament from "./components/CreateTournament/CreateTournament";
 import HeaderTournamentDetail from "./components/TournamentDetailComponent/HeaderTournamentDetail";
 import HeaderTeamDetail from "./components/TeamDetailComponent/HeaderTeamDetail";
+import ChangePassWorld from "./components/ChangePasswordComponent/ChangePassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
@@ -48,6 +49,11 @@ function App() {
             exact
             path="/createTournament"
             element={user ? <CreateTournament /> : <Navigate to={"/login"} />}
+          />
+           <Route
+            exact
+            path="/changePassword"
+            element={user ? <ChangePassWorld /> : <Navigate to={"/login"} />}
           />
           <Route
             exact

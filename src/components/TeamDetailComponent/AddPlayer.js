@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 const AddPlayer = (props) => {
+  const [hideShow, setHideShow] = useState(false)
   let navigate = useNavigate();
   const [imgPlayer, setImgPlayer] = useState({
     value: "",
@@ -140,8 +141,8 @@ const AddPlayer = (props) => {
             draggable: true,
             progress: undefined,
           });
-
-          navigate(`/teamDetail/${props.id}/inforTeamDetail`);
+          setHideShow(false)
+          // navigate(`/teamDetail/${props.id}/inforTeamDetail`);
         }
       })
       .catch((err) => {
@@ -239,28 +240,26 @@ const AddPlayer = (props) => {
     setDOBPlayer(initialState);
     setPhonePlayer(initialState);
     setBtnActive(false);
+    setHideShow(false)
   };
   //const gender = props.gender;
   return (
     <div>
+     <div className={hideShow?"overlay active":"overlay"} ></div>
       <button
         type="button"
         class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
         style={{
           padding: 10,
         }}
+        onClick={()=>{setHideShow(true)}}
       >
         Thêm thành viên
       </button>
 
       <div
-        class="modal fade"
+        className={hideShow?"popup__player active":"popup__player"}
         id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
       >
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
@@ -453,7 +452,7 @@ const AddPlayer = (props) => {
                   }}
                   type="submit"
                   class="btn btn-primary"
-                  data-backdrop="static`"
+                  data-backdrop="false"
                 >
                   Thêm cầu thủ
                 </button> : null }

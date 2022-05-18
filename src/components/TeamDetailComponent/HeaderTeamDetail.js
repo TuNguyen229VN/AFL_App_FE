@@ -218,9 +218,9 @@ function HeaderTeamDetail() {
           </div>
         )}
         {team === "" ? (
-          <h1>
-            Bạn chưa tổ chức giải đấu nào
-            <Link to="/createTournament">{`->`}Tạo giải đấu ngay</Link>
+          <h1 className="nupakachi">
+            Bạn chưa có đội bóng nào
+            <Link to="/createTeam">{`->`}Tạo đội bóng ngày</Link>
           </h1>
         ) : null}
       </div>
