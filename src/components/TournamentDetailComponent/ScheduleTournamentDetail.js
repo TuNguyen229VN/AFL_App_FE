@@ -27,6 +27,7 @@ const rounds: RoundProps[] = [
         date: new Date().toDateString(),
         teams: [{ name: "Đội C" }, { name: "Đội D" }],
       },
+
     ],
   },
   {

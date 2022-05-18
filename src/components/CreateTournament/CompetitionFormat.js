@@ -25,9 +25,9 @@ const CompetitionFormat = (props) => {
             type="radio"
             id="knockout"
             name="competitionFormat"
-            value="knockout"
+            value="KnockoutStage"
             onChange={onChangeHandler}
-            checked={competitionFormat.value === 1 ? true : false}
+            checked={competitionFormat.value === "KnockoutStage" ? true : false}
           ></input>
         </div>
         <div
@@ -48,7 +48,7 @@ const CompetitionFormat = (props) => {
             type="radio"
             id="circle"
             name="competitionFormat"
-            value="circle"
+            value="CircleStage"
             onChange={onChangeHandler}
           ></input>
         </div>
@@ -70,7 +70,7 @@ const CompetitionFormat = (props) => {
             type="radio"
             id="table"
             name="competitionFormat"
-            value="table"
+            value="GroupStage"
             onChange={onChangeHandler}
           ></input>
         </div>
