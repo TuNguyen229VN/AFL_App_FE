@@ -544,3 +544,14 @@
 .teamdetail .editTeam i{
   margin-right: 5px;
 }
+
+.namePlayerInTeam{
+
+    width: 175px !important;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    
+    text-overflow: ellipsis;
+    display: -webkit-box;
+}

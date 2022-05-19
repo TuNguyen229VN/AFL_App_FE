@@ -152,17 +152,21 @@ function ListPlayer(props) {
               
               {loading ? (
           <Loading />
-        ) : (<div className="listPlayer__list">
-        {playerInTeam.map((item, index) => {
+        ) : (
+        <div className="listPlayer__list">
+        { playerInTeam.length > 0 ?
+        playerInTeam.map((item, index) => {
           return (
-            <div key={index} className="listPlayer__item">
+            <div key={index} style={{
+              cursor: "pointer"
+            }} className="listPlayer__item">
               <div className="avt">
                 <img src={item.playerAvatar} alt="dev" />
               </div>
               <div className="des">
                 <p className="namePlayer">
                   <span>Tên:</span>
-                  {item.playername}
+                 {item.playername}
                 </p>
                 <p className="genderPlayer">
                   <span>Giới tính:</span>
@@ -170,7 +174,7 @@ function ListPlayer(props) {
                 </p>
                 <p className="mailPlayer">
                   <span>Email:</span>
-                  {item.email}
+                  <span className="namePlayerInTeam">{item.email}</span>
                 </p>
                 <p className="phonePlayer">
                   <span>Sdt:</span>
@@ -183,7 +187,11 @@ function ListPlayer(props) {
               </div>
             </div>
           );
-        })}
+        }) : <p style={{
+          color: "red",
+          fontWeight: 600,
+          fontSize: 24
+        }}>Không tìm thấy cầu thủ</p>}
       </div>)}
               
             </div>

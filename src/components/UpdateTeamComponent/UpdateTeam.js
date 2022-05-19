@@ -217,7 +217,8 @@ function UpdateTeam() {
         setWards(null);
         setResetProvice(0);
         setBtnActive(false);
-        navigate(`/teamDetail/${response.data.id}/inforTeamDetail`);
+        // navigate(`/teamDetail/${response.data.id}/inforTeamDetail`);
+        navigate(-1)
       }
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -399,7 +400,6 @@ function UpdateTeam() {
                 name="imgClub"
                 id="file"
                 onChange={onChangeHandler}
-                required
               />
               <img
                 src={
