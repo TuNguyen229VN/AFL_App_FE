@@ -138,7 +138,6 @@ function HeaderTournamentDetail() {
 
 
   const updateClick = (data,addressTour) => {
-    
     navigate(`update-tournament-detail`,{state: {id: data,address:addressTour} })
   }
 
