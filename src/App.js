@@ -19,6 +19,7 @@ import Profile from "./components/ProfileComponent/Profile";
 import MyListTournamentComponent from "./components/MyListTournamentComponent/MyListTournamentComponent";
 import Match from "./components/MatchComponent/Match";
 import UpdateTeam from "./components/UpdateTeamComponent/UpdateTeam";
+import ResetPassword from "./components/ResetPasswordComponent/ResetPassword";
 function App() {
   // get Locoal Storage
   const { user } = useAuthListener();
@@ -148,6 +149,7 @@ function App() {
             path="/match/1/livestream"
             element={user ? <Match /> : <Navigate to={"/login"} />}
           />
+          <Route exact path="/resetPassword" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -524,7 +524,6 @@ function Profile() {
             </div>
             <div className={styles.text}>
               <label htmlFor="nameB">Tên doanh nghiệp</label>
-              <span>*Thông tin nếu bạn muốn trở thành người tạo giải</span>
               <input
                 type="text"
                 id="nameB"
@@ -536,7 +535,7 @@ function Profile() {
             </div>
             <div className={styles.text}>
               <label htmlFor="codeB">Mã doanh nghiệp</label>
-              <span>*Thông tin nếu bạn muốn trở thành người tạo giải</span>
+
               <input
                 type="text"
                 id="codeB"
@@ -548,7 +547,6 @@ function Profile() {
             </div>
             <div className={styles.text}>
               <label htmlFor="phoneB">Số điện thoại doanh nghiệp</label>
-              <span>*Thông tin nếu bạn muốn trở thành người tạo giải</span>
               <input
                 type="number"
                 id="phoneB"
@@ -568,6 +566,62 @@ function Profile() {
               />
             </div>
             <input type="submit" value="Lưu" className={styles.btnSave} />
+          </div>
+        </form>
+        <h2 className={styles.profile__title2}>Nâng cấp tài khoản</h2>
+        <span className={styles.note}>
+          *Thông tin nếu bạn muốn trở thành người tạo giải
+        </span>
+        <form
+          onSubmit={onSubmitHandler}
+          className={`${styles.profile__wrap} ${styles.update}`}
+        >
+          <div className={styles.profile__text}>
+            <div className={styles.text}>
+              <label htmlFor="cmnd">CMND</label>
+              <input
+                type="text"
+                id="cmnd"
+                autoComplete="off"
+                value={identityCard.value}
+                onChange={onChangeHandler}
+                name="cmnd"
+              />
+            </div>
+            <div className={styles.text}>
+              <label htmlFor="nameB">Tên doanh nghiệp</label>
+              <input
+                type="text"
+                id="nameB"
+                autoComplete="off"
+                value={nameBussiness.value}
+                onChange={onChangeHandler}
+                name="nameB"
+              />
+            </div>
+            <div className={styles.text}>
+              <label htmlFor="codeB">Mã doanh nghiệp</label>{" "}
+              <input
+                type="text"
+                id="codeB"
+                autoComplete="off"
+                value={tinbussiness.value}
+                onChange={onChangeHandler}
+                name="codeB"
+              />
+            </div>
+            <div className={styles.text}>
+              <label htmlFor="phoneB">Số điện thoại doanh nghiệp</label>
+              <input
+                type="number"
+                id="phoneB"
+                autoComplete="off"
+                value={phoneBussiness.value}
+                onChange={onChangeHandler}
+                name="phoneB"
+              />
+            </div>
+            <input type="submit" value="Nâng cấp" className={styles.btnSave} />
           </div>
         </form>
         <div className={styles.profile__delete}>

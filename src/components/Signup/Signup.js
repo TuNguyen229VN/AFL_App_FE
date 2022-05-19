@@ -249,10 +249,7 @@ function Signup() {
                 onClick={toggleRePass}
               />
             </div>
-            {isNull ? <p className={styles.error}>{rePasswordErr}</p> : ""}
-            <div className={styles.remember__pass}>
-              <a href="#">Quên mật khẩu?</a>
-            </div>
+            {isNull ? <p className={styles.error}>{rePasswordErr}</p> : ""} 
             <button type="submit" className={styles.btn_login}>
               Đăng ký
             </button>
