@@ -1,9 +1,7 @@
 import axios from "axios";
 
 const URL = "https://afootballleague.ddns.net/api/v1/";
-const headers = {
-  headers: { "content-type": "multipart/form-data" },
-};
+
 
 export const getAPI = (afterURL) => {
   const fullURL = URL + afterURL;
@@ -34,4 +32,10 @@ export const putAPI = (afterURL, data, status) => {
   } catch (err) {
     console.error(err);
   }
+};
+
+
+export const url = "https://afootballleague.ddns.net/api/v1/";
+export const headers = {
+  headers: { "content-type": "multipart/form-data" },
 };
