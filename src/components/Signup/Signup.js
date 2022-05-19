@@ -3,6 +3,7 @@ import styles from "./styles/style.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
+import { toast } from "react-toastify";
 function Signup() {
   const [passwordShown, setPasswordShown] = useState(false);
   const [rePasswordShown, setRePasswordShown] = useState(false);
@@ -23,6 +24,8 @@ function Signup() {
   const [rePasswordErr, setRePasswordErr] = useState("");
   const [emailErr, setEmailErr] = useState("");
   const [duplcate, setDuplicate] = useState(false);
+  const [verifyStatus, setVerifyStatus] = useState("");
+  const [popUp,setPopUp] = useState(false);
   useEffect(() => {
     if (inputValues.firstName.trim() == "") {
       setFirstNameErr("Vui lòng nhập họ và tên*");
@@ -75,6 +78,7 @@ function Signup() {
     password: "",
     rePassword: "",
     gender: "",
+    verify:""
   });
 
   const handleOnChange = (event) => {
@@ -84,8 +88,87 @@ function Signup() {
     setCheck(check + 1);
     setDuplicate(false);
   };
+
+  const getVerifyCode = async () => {
+    try {
+      if (
+        inputValues.firstName.trim() === "" ||
+        inputValues.phone.trim() === "" ||
+        inputValues.gender.trim() === "" ||
+        inputValues.email.trim() === "" ||
+        inputValues.password.trim() === "" ||
+        inputValues.rePassword.trim() === "" ||
+        inputValues.password !== inputValues.rePassword
+      ) {
+        setCheck(check + 1);
+        setIsNull(true);
+        return;
+      }
+      const response = await axios.post(
+        `https://afootballleague.ddns.net/api/v1/auth/send-verify-code?email=${inputValues.email}&toDo=1`,
+        {
+          headers: {
+            "Content-type": "application/json"
+          },
+        }
+      );
+      console.log(response.data);
+      setPopUp(true);
+      toast.success(
+        "Một mã xác thực đã được gửi đến eamil của bạn",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+    } catch (error) {
+      console.log(error)
+      console.log(error.response.data.message);
+      if (error.response.data.message == "Tài khoản đã tồn tại"){
+        setCheck(check + 1);
+      setDuplicate(true);
+      }
+    }
+  };
+
+ 
+
+  const checkVerifyCode = async () => {
+    try{
+      if(inputValues.verify.trim()===""){
+        setVerifyStatus("Vui lòng nhập mã xác nhận");
+        return;
+      }
+     
+      const response = await axios.post(
+        `https://afootballleague.ddns.net/api/v1/auth/check-verify-code?email=${inputValues.email}&code=${inputValues.verify}`,
+        {
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
+      await postNewAccount();
+      setVerifyStatus("")
+    }
+    catch (error){
+      console.log(error)
+      console.log(error.response.data.message);
+      if (error.response.data == "Xác nhận thất bại")
+       setVerifyStatus(error.response.data);
+    }
+    }
+  
+
   const postNewAccount = async () => {
     try {
+      
+
       if (
         inputValues.firstName.trim() === "" ||
         inputValues.phone.trim() === "" ||
@@ -131,6 +214,33 @@ function Signup() {
   return (
     <div className={styles.signup}>
       <ScrollToTop />
+      {popUp?<div className={styles.popup}>
+        <form action="" method="post" className={styles.verifyForm} >
+        <h4>Nhập mã xác minh</h4>
+            <div>
+              <input
+                type="number"
+                autoComplete="none"
+                className={styles.verify}
+                placeholder="Mã xác minh *"
+                name="verify"
+                onChange={handleOnChange}
+              />
+            </div>
+            <p className={styles.error}>{verifyStatus}</p>
+            <p className={styles.remind}>Lưu ý mã xác minh tồn tại trong 2 phút</p>
+            <div className={styles.buttonWrapper}>
+            <button type ="submit" onClick={(e) =>{
+              getVerifyCode();
+          e.preventDefault();
+        }}>Gửi lại mã</button>
+            <button type ="submit" onClick={(e) =>{
+              checkVerifyCode();
+          e.preventDefault();
+        }}>Hoàn tất</button>
+            </div>
+        </form>
+      </div>:""}
       <div className={styles.container__wrap}>
         <div className={styles.sign__sub}>
           <img
@@ -156,7 +266,8 @@ function Signup() {
             method="POST"
             className={styles.signup__form}
             onSubmit={(e) => {
-              postNewAccount();
+              
+              getVerifyCode();
               e.preventDefault();
             }}
           >

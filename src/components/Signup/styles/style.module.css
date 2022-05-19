@@ -228,3 +228,79 @@
   .logo img{
     object-fit: cover;
   }
+
+  
+  .popup{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+   z-index: 10;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+  }
+
+  .popup:after{
+    content: "";
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    background-color:black;
+    opacity: 0.2;
+    top: 0;
+    bottom: 0;
+  }
+
+
+  .verifyForm{
+    position: relative;
+    z-index: 12;
+    width: 500px;
+    height: max-content;
+    background:white;
+    padding:40px 40px
+  }
+
+  .verifyForm h4{
+    font-family: "Mulish-Bold";
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+
+  .remind{
+    font-size: 15px;
+    display: flex;
+    justify-content: flex-end;
+    color: #e74c3c;
+    margin-bottom: 40px;
+  }
+
+  .verify{
+      padding:10px;
+      width: 100%;
+      margin-bottom: 10px;
+  }
+
+  .buttonWrapper{
+    display: flex;
+    justify-content:space-between;
+  }
+
+  .buttonWrapper button{
+    font-family: "Mulish-Bold";
+      background-color: var(--blue-black);
+      outline: none;
+      border: none;
+      color: var(--white-text);
+      text-align: center;
+      width: max-content;
+      font-size: 18px;
+      padding: 10px 15px;
+      transition: 0.5s;
+      border-radius: 5px;
+  }
+
+  .buttonWrapper button:first-child{
+    background-color:#cf3c3c;
+  }
