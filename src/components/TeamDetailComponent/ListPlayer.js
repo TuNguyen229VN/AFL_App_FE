@@ -9,7 +9,7 @@ import {addPlayerInTeamAPI} from "../../api/PlayerInTeamAPI";
 import ReactPaginate from "react-paginate";
 import styles from "../FindTeamComponent/TeamFind.module.css";
 function ListPlayer(props) {
-  const { id, gender } = props;
+  const { id, gender,numberPlayerInTeam } = props;
   const [loading, setLoading] = useState(true);
   const [playerInTeam, setPlayerInTeam] = useState(null);
   const [addPlayerComplete,setAddPlayerComplete] = useState(false);
@@ -35,6 +35,7 @@ function ListPlayer(props) {
     const playersData = await Promise.all(players);
     setPlayerInTeam(playersData);
     setLoading(false);
+    
   };    
 
   const getPlayerById = async (idPlayer) => {
@@ -51,9 +52,7 @@ function ListPlayer(props) {
     response
       .then((res) => {
         if (res.status === 201) {
-          
-          const add = addPlayerInTeam(res.data.id);
-          console.log(add);
+          addPlayerInTeam(res.data.id);
         }
       })
       .catch((err) => {
@@ -113,7 +112,9 @@ function ListPlayer(props) {
   const onHandleChange = (e) => {
     const {name,value} = e.target;
     setNamePlayer(value);
+    setCurrentPage(1);
   }
+
   return (
     <>
       <div className="teamdetail__content listPlayer">
@@ -127,14 +128,13 @@ function ListPlayer(props) {
         >
           <AddPlayer id={id} gender={gender} addPlayerInListPlayer={addPlayerInListPlayer} onClickAddPlayer={onClickAddPlayer} />
         </div>
-        {loading ? (
-          <Loading />
-        ) : (
+      
           <div>
             <h2 className="listPlayer__total">
-              Có {count} thành viên
+              Có {numberPlayerInTeam} thành viên
             </h2>
             <div>
+              
               <div>
                   <label htmlFor="namePlayer" style={{
                     fontWeight: 700,
@@ -146,43 +146,49 @@ function ListPlayer(props) {
                     padding:"5px 10px",
                     width: 300
                   }} placeholder="Tên cầu thủ" value={namePlayer} id="namePlayer" name="namePlayer"  onChange={onHandleChange} />
+
+
               </div>
-              <div className="listPlayer__list">
-                {playerInTeam.map((item, index) => {
-                  return (
-                    <div key={index} className="listPlayer__item">
-                      <div className="avt">
-                        <img src={item.playerAvatar} alt="dev" />
-                      </div>
-                      <div className="des">
-                        <p className="namePlayer">
-                          <span>Tên:</span>
-                          {item.playername}
-                        </p>
-                        <p className="genderPlayer">
-                          <span>Giới tính:</span>
-                          {item.gender === "Male" ? "Name" : "Nữ"}
-                        </p>
-                        <p className="mailPlayer">
-                          <span>Email:</span>
-                          {item.email}
-                        </p>
-                        <p className="phonePlayer">
-                          <span>Sdt:</span>
-                          {item.phone}
-                        </p>
-                        <p className="dobPlayer">
-                          <span>Ngày sinh:</span>
-                          {item.dateOfBirth}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
+              
+              {loading ? (
+          <Loading />
+        ) : (<div className="listPlayer__list">
+        {playerInTeam.map((item, index) => {
+          return (
+            <div key={index} className="listPlayer__item">
+              <div className="avt">
+                <img src={item.playerAvatar} alt="dev" />
+              </div>
+              <div className="des">
+                <p className="namePlayer">
+                  <span>Tên:</span>
+                  {item.playername}
+                </p>
+                <p className="genderPlayer">
+                  <span>Giới tính:</span>
+                  {item.gender === "Male" ? "Name" : "Nữ"}
+                </p>
+                <p className="mailPlayer">
+                  <span>Email:</span>
+                  {item.email}
+                </p>
+                <p className="phonePlayer">
+                  <span>Sdt:</span>
+                  {item.phone}
+                </p>
+                <p className="dobPlayer">
+                  <span>Ngày sinh:</span>
+                  {item.dateOfBirth.split("-")[2].split("T")[0] + "/" + item.dateOfBirth.split("-")[1] + "/" +item.dateOfBirth.split("-")[0]}
+                </p>
               </div>
             </div>
+          );
+        })}
+      </div>)}
+              
+            </div>
           </div>
-        )}
+        
         <nav
         aria-label="Page navigation example"
         className={styles.pagingTournament}

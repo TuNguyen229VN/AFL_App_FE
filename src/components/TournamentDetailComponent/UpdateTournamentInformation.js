@@ -12,14 +12,18 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import CompetitionFormat from "../CreateTournament/CompetitionFormat";
 import Description from "../CreateTournament/Description";
-import axios from "axios";
+import {updateTournamentInfoAPI} from "../../api/TournamentAPI"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import styles from "../CreateTournament/styles/style.module.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const UpdateTournamentInformation = () => {
+  let navigate = useNavigate();
   const location = useLocation();
+  const addressTour = location.state.address;
   const idTournament = location.state.id;
   const [team, setTeam] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -90,6 +94,9 @@ const UpdateTournamentInformation = () => {
   const [districts, setDistricts] = useState(null);
   const [wards, setWards] = useState(null);
   const [addressField, setAddressField] = useState(null);
+  const [proviceSearch,setProviceSearch] = useState(null);
+  const [districSearch,setDistricSearch] = useState(null);
+  const [wardSearch,setWardSearch] = useState(null);
   AOS.init();
   const tour = gsap.timeline();
 
@@ -99,15 +106,20 @@ const UpdateTournamentInformation = () => {
       "https://provinces.open-api.vn/api/?depth=3"
     );
     if (response.status === 200) {
-        console.log(response.data)
       setProvice(response.data);
+      
+      const proviceCurrent =  addressTour.split(", ")[3];
+      const findDistrictByNameProvice = response.data.find((item) => item.name === proviceCurrent)
+      setDistricts(findDistrictByNameProvice.districts);
+      const districtCurrent =  addressTour.split(", ")[2];
+      const findWardsByDistrictName = findDistrictByNameProvice.districts.find((item) => item.name === districtCurrent);
+      setWards(findWardsByDistrictName.wards);
     }
   };
   const getInforTournamentById = async () => {
     const response = await getTournamentById(idTournament);
     if (response.status === 200) {
       const team = response.data
-      
       setTeam(response.data);
       setStatus(team.mode === "PUBLIC" ? 0 : -1);
       setImgTournament({
@@ -148,7 +160,7 @@ const UpdateTournamentInformation = () => {
           error:null
       })
       setCompetitionFormat({
-          value: team.tournamentTypeId === 1 ? "KnockoutStage" : team.tournamentTypeId === 2 ? "CricleState" : "GroupStage",
+          value: team.tournamentTypeId === 1 ? "KnockoutStage" : team.tournamentTypeId === 2 ? "CircleStage" : "GroupStage",
           error: null
       })
       setMinimunPlayerInTournament({
@@ -164,6 +176,18 @@ const UpdateTournamentInformation = () => {
         error:null
       })
       
+      // setProviceSearch({
+      //   value: team.footballFieldAddress.split(", ")[3],
+      //   error:null
+      // })
+      // setDistricSearch({
+      //   value: team.footballFieldAddress.split(", ")[2],
+      //   error:null
+      // })
+      // setWardSearch({
+      //   value: team.footballFieldAddress.split(", ")[1],
+      //   error:null
+      // })
     //   setEditorState(team.description)
       setLoading(false);
     }
@@ -173,6 +197,7 @@ const UpdateTournamentInformation = () => {
     e.preventDefault();
     try {
       const data = {
+        Id:idTournament,
         tournamentName: nameTournament.value,
         mode: status === -1 ? "PRIVATE" : "PUBLIC",
         tournamentPhone: phoneContact.value,
@@ -180,7 +205,7 @@ const UpdateTournamentInformation = () => {
         registerEndDate: closeRegister.value,
         tournamentStartDate: startTime.value,
         tournamentEndDate: endTime.value,
-        footballFieldAddress: footballField.value + addressField,
+        footballFieldAddress: addressField != null ? footballField.value + addressField : addressTour,
         tournamentAvatar: imgTournament.value,
         description: descriptionText,
         matchMinutes: +timeDuration.value,
@@ -192,15 +217,9 @@ const UpdateTournamentInformation = () => {
         TournamentFootballFieldTypeEnum: typeFootballField.value,
       };
       console.log(data);
-      const response = await axios.post(
-        "https://afootballleague.ddns.net/api/v1/tournaments",
-        data,
-        {
-          headers: { "content-type": "multipart/form-data" },
-        }
-      );
+      const response = await updateTournamentInfoAPI(data);
       if (response.status === 201) {
-        toast.success("Tạo giải đấu thành công", {
+        toast.success("Thay đổi thông tin giải đấu thành công", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -248,6 +267,8 @@ const UpdateTournamentInformation = () => {
         setDistricts(null);
         setWards(null);
         setResetProvice(0);
+        // navigate(`tournamentDetail/${idTournament}/inforTournamentDetail`);
+        navigate(-1);
       }
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -437,7 +458,7 @@ const UpdateTournamentInformation = () => {
       case "provice":
         let dataProvice = provice;
         const proviceFind = dataProvice.find((item) => item.name === value);
-
+        setProviceSearch(value)
         setDistricts(proviceFind.districts);
         setWards(null);
         setAddressField(", " + value);
@@ -446,12 +467,13 @@ const UpdateTournamentInformation = () => {
         let dataDis = districts;
 
         const disFind = dataDis.find((item) => item.name === value);
-
+        setDistricSearch(value)
         setWards(disFind.wards);
         const oldAddress = addressField;
         setAddressField(", " + value + oldAddress);
         break;
       case "wards":
+        setWardSearch(value)
         {
           const oldAddress = addressField;
           setAddressField(", " + value + oldAddress);
@@ -460,13 +482,15 @@ const UpdateTournamentInformation = () => {
     }
   };
 
+  useEffect( () => {
+     getInforTournamentById();
+  }, []);
+
   useEffect(() => {
     setResetProvice(-1);
     getAllCity();
   }, [resetProvice]);
-  useEffect(() => {
-    getInforTournamentById();
-  }, []);
+
 
   return (
     <>
@@ -1006,7 +1030,7 @@ const UpdateTournamentInformation = () => {
                       padding: "10px 5px",
                     }}
                     name="provice"
-                    value={team.footballFieldAddress.split(", ")[3]}
+                    value={proviceSearch != null ? proviceSearch : team.footballFieldAddress.split(", ")[3]}
                     onChange={onChangeHandler}
                   >
                     <option selected disabled>
@@ -1043,7 +1067,7 @@ const UpdateTournamentInformation = () => {
                       padding: "10px 5px",
                     }}
                     name="districts"
-                    value={team.footballFieldAddress.split(", ")[2]}
+                    value={districSearch != null ? districSearch : team.footballFieldAddress.split(", ")[2]}
                     onChange={onChangeHandler}
                   >
                     <option selected disabled>
@@ -1076,7 +1100,7 @@ const UpdateTournamentInformation = () => {
                     Phường/Xã
                   </label>
                   <select
-                   value={team.footballFieldAddress.split(", ")[1]}
+                   value={wardSearch != null ? wardSearch : team.footballFieldAddress.split(", ")[1]}
                     style={{
                       padding: "10px 5px",
                     }}
@@ -1144,7 +1168,7 @@ const UpdateTournamentInformation = () => {
               <input
                 type="submit"
                 className={styles.btn_Next}
-                value="Tiếp theo"
+                value="Cập nhật"
               />
             ) : null}
           </div>

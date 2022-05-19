@@ -50,6 +50,7 @@ const CompetitionFormat = (props) => {
             name="competitionFormat"
             value="CircleStage"
             onChange={onChangeHandler}
+            checked={competitionFormat.value === "CircleStage" ? true : false}
           ></input>
         </div>
         <div
@@ -72,6 +73,7 @@ const CompetitionFormat = (props) => {
             name="competitionFormat"
             value="GroupStage"
             onChange={onChangeHandler}
+            checked={competitionFormat.value === "GroupStage" ? true : false}
           ></input>
         </div>
       </div>

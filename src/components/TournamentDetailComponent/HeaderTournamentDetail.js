@@ -137,8 +137,9 @@ function HeaderTournamentDetail() {
   }, [location.pathname]);
 
 
-  const updateClick = (data) => {
-    navigate(`update-tournament-detail`,{state: {id: data} })
+  const updateClick = (data,addressTour) => {
+    
+    navigate(`update-tournament-detail`,{state: {id: data,address:addressTour} })
   }
 
   return (
@@ -164,7 +165,7 @@ function HeaderTournamentDetail() {
                     fontWeight: 600
                   }}
                   onClick={() => {
-                    updateClick(tourDetail.id)
+                    updateClick(tourDetail.id,tourDetail.footballFieldAddress)
                   }}
                   >Chỉnh sửa thông tin giải đấu</button>
                 </div>

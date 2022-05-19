@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+
 import "react-toastify/dist/ReactToastify.css";
 const AddPlayer = (props) => {
   const [hideShow, setHideShow] = useState(false)
   const {addPlayerInListPlayer,onClickAddPlayer} = props;
-  let navigate = useNavigate();
+
   const [imgPlayer, setImgPlayer] = useState({
     value: "",
     img: null,
@@ -93,6 +93,7 @@ const AddPlayer = (props) => {
     };
     
     addPlayerInListPlayer(data);
+    resetStateForm();
     setHideShow(false)  
     // if(addPlayer.status === 201){
     //   setHideShow(false)  
