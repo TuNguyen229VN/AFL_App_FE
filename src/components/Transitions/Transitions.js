@@ -15,7 +15,7 @@ function Transitions({ timeline }) {
   return (
     <div>
       <div className="transitions" ref={trans}>
-          <img src="assets/img/homepage/logo.png" alt="logo"/>
+          <img src="/assets/img/homepage/logo.png" alt="logo"/>
       </div>
     </div>
   );

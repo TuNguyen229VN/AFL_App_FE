@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { postAPI } from "../../api/index";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 const AddPlayer = (props) => {
   const [hideShow, setHideShow] = useState(false)
+  const {addPlayerInListPlayer,onClickAddPlayer} = props;
   let navigate = useNavigate();
   const [imgPlayer, setImgPlayer] = useState({
     value: "",
@@ -81,7 +80,7 @@ const AddPlayer = (props) => {
   };
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    const afterDefaultURL = `football-players`;
+    
     const birthday = DOBPlayer.value.split("/");
     const data = {
       email: emailPlayer.value,
@@ -92,63 +91,14 @@ const AddPlayer = (props) => {
       phone: phonePlayer.value,
       status: true,
     };
-    const response = postAPI(afterDefaultURL, data, true);
-    response
-      .then((res) => {
-        if (res.status === 201) {
-          savePlayerInTeam(res.data.id);
-        }
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        console.error(err)
-      });
+    
+    addPlayerInListPlayer(data);
+    setHideShow(false)  
+    // if(addPlayer.status === 201){
+    //   setHideShow(false)  
+    // }
   };
-  const savePlayerInTeam = (idPlayer) => {
-    const afterDefaultURL = `PlayerInTeam`;
-    const data = {
-      teamId: props.id,
-      footballPlayerId: idPlayer,
-    };
-    const response = postAPI(afterDefaultURL, data, false);
-    response
-      .then((res) => {
-        if (res.status === 201) {
-          //resetStateForm();
-          toast.success("Thêm cầu thủ vào đội bóng thành công", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-          setHideShow(false)
-          // navigate(`/teamDetail/${props.id}/inforTeamDetail`);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error("Thêm cầu thủ vào đội bóng thất bại", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      });
-  };
+
   const validateForm = (name,value) => {
     
     switch (name) {
@@ -243,7 +193,10 @@ const AddPlayer = (props) => {
         style={{
           padding: 10,
         }}
-        onClick={()=>{setHideShow(true)}}
+        onClick={()=>{
+          setHideShow(true);
+          onClickAddPlayer();
+        }}
       >
         Thêm thành viên
       </button>
