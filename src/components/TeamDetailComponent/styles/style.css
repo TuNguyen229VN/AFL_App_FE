@@ -546,12 +546,15 @@
 }
 
 .namePlayerInTeam{
-
     width: 175px !important;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    
     text-overflow: ellipsis;
     display: -webkit-box;
+}
+
+.btn_EditInforPlayer:hover{
+  color: white;
+  background-color: #000!important;
 }

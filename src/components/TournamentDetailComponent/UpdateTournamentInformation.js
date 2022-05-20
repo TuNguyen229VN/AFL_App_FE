@@ -18,13 +18,13 @@ import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import styles from "../CreateTournament/styles/style.module.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 
-const UpdateTournamentInformation = () => {
+const UpdateTournamentInformation = (props) => {
   let navigate = useNavigate();
   const location = useLocation();
-  const addressTour = location.state.address;
-  const idTournament = location.state.id;
+   const addressTour = location.state.address;
+   const idTournament = location.state.id;
   const [team, setTeam] = useState(null);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(-1);
@@ -351,6 +351,7 @@ const UpdateTournamentInformation = () => {
 
       case "footballField":
         break;
+      default: break;
     }
     return { flag: true, content: null };
   };
@@ -479,6 +480,7 @@ const UpdateTournamentInformation = () => {
           setAddressField(", " + value + oldAddress);
         }
         break;
+      default: break;
     }
   };
 

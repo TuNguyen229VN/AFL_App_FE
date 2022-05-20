@@ -18,7 +18,9 @@ function HeaderTeamDetail() {
   const [team, setTeam] = useState("");
   const [manager, setManager] = useState("");
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
-
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
   // format Date
   const formatDate = (date) => {
     const day = new Date(date);
@@ -82,7 +84,7 @@ function HeaderTeamDetail() {
 
   useEffect(() => {
     getInforTeam();
-  }, []);
+  }, [idTeam]);
   useEffect(() => {
     setActiveTeamDetail(location.pathname);
   }, [location.pathname]);
@@ -101,9 +103,10 @@ function HeaderTeamDetail() {
                     <div className="avt__Team">
                       <img src={team.teamAvatar} alt="team" />
                     </div>
-                    <Link to={`/updateTeam/${team.id}`} className="editTeam">
+                    {user.userVM.id === team.id ?  <Link to={`/updateTeam/${team.id}`} className="editTeam">
                       <i class="fa-solid fa-pen-to-square"></i>Chỉnh Sửa Đội Bóng
-                    </Link>
+                    </Link> : null }
+                   
                   </div>
                   <div className="headertext__team">
                     <h2>{team.teamName}</h2>

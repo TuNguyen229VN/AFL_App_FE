@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./styles/style.css";
@@ -14,12 +13,15 @@ import PredictionTournamentDetail from "./PredictionTournamentDetail";
 import CommentTournamentDetail from "./CommentTournamentDetail";
 import Loading from "../LoadingComponent/Loading";
 import { getAPI } from "../../api";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 function HeaderTournamentDetail() {
   const { idTour } = useParams();
   const location = useLocation();
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
+
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
   const [tourDetail, setTourDetail] = useState("");
   const [host, setHost] = useState("");
@@ -31,6 +33,7 @@ function HeaderTournamentDetail() {
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
+        console.log(res.data);
         setTourDetail(res.data);
         getUserById(res.data.userId);
         setLoading(false);
@@ -136,14 +139,13 @@ function HeaderTournamentDetail() {
     getTourDetail();
   }, [location.pathname]);
 
-
-  const updateClick = (data,addressTour) => {
-    navigate(`update-tournament-detail`,{state: {id: data,address:addressTour} })
-  }
+  // const updateClick = (data,addressTour) => {
+  //   navigate(`update-tournament-detail`,{state: {id: data,address:addressTour} })
+  // }
 
   return (
     <>
-      <Header  id={idTour}/>
+      <Header id={idTour} />
 
       <div className="teamdetail">
         {loading ? (
@@ -157,28 +159,43 @@ function HeaderTournamentDetail() {
                     src={tourDetail.tournamentAvatar}
                     alt={tourDetail.tournamentName}
                   />
-                  <button style={{
-                    marginTop: 300,
-                    padding: 20,
-                    marginLeft: 50,
-                    fontWeight: 600
-                  }}
-                  onClick={() => {
-                    updateClick(tourDetail.id,tourDetail.footballFieldAddress)
-                  }}
-                  >Chỉnh sửa thông tin giải đấu</button>
+                  {user.userVM.id === tourDetail.userId ? (
+                    <Link
+                      to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
+                      state={{id: tourDetail.id,address:tourDetail.footballFieldAddress}}
+                      className="btn_UpdateTournament"
+                      style={{
+                        padding: "20px 50px",
+                        marginLeft: 50,
+                        fontWeight: 600,
+                        fontFamily: "Mulish-Bold",
+                        borderRadius: 5,
+                        backgroundColor: "#D7FC6A",
+                        border: 1,
+                        borderColor: "#D7FC6A",
+                        transition: "0.5s",
+                        position: "absolute",
+                        top: 275,
+                      }}
+                      // onClick={() => {
+                      //   updateClick(,)
+                      // }}
+                    >
+                      {" "}
+                      <i class="fa-solid fa-pen-to-square" />
+                      Chỉnh sửa giải đấu
+                    </Link>
+                  ) : null}
                 </div>
                 <div className="headertext__team">
                   <h2>{tourDetail.tournamentName}</h2>
                   <div className="man name__manager">
-                        <i class="fa-solid fa-bullhorn"></i>
-                          <span className="title">
-                            Chế độ:{" "}
-                          </span>
-                          <span >
-                           {tourDetail.mode==="PRIVATE"?"Riêng tư":"Công khai"}
-                          </span>
-                        </div>
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <span className="title">Chế độ: </span>
+                    <span>
+                      {tourDetail.mode === "PRIVATE" ? "Riêng tư" : "Công khai"}
+                    </span>
+                  </div>
                   <div className="man name__manager">
                     <i className="fas fa-light fa-user"></i>
                     <span className="title">Người tổ chức: </span>
@@ -361,7 +378,7 @@ function HeaderTournamentDetail() {
                   }
                 >
                   Bình luận
-                </Link>           
+                </Link>
               </div>
             </div>
             {renderByLink()}
