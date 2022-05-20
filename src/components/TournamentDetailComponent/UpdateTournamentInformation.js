@@ -109,16 +109,11 @@ const UpdateTournamentInformation = (props) => {
       setProvice(response.data);
       const proviceCurrent =  addressTour.split(", ")[3];
       const findDistrictByNameProvice = response.data.find((item) => item.name === proviceCurrent);
-      console.log(response.data);
-      console.log(proviceCurrent);
-      console.log(findDistrictByNameProvice);
       const allDistrict = findDistrictByNameProvice.districts;
-      console.log(allDistrict);
       setDistricts(allDistrict);
       const districtCurrent =  addressTour.split(", ")[2];
       const findWardsByDistrictName = findDistrictByNameProvice.districts.find((item) => item.name === districtCurrent);
       const allWard =findWardsByDistrictName.wards;
-      console.log(allWard);
       setWards(allWard);
     }
   };
