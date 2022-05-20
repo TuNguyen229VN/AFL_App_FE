@@ -7,7 +7,9 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import axios from "axios";
 import SignUpGoogle from "../SignUpGoogle/SignUpGoogle";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
+import LoadingAction from "../LoadingComponent/LoadingAction";
 function Login() {
+  const [checkLoading, setCheckLoading] = useState(false);
   const firebaseConfig = {
     apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
     authDomain: "amateurfoooballleague.firebaseapp.com",
@@ -44,6 +46,7 @@ function Login() {
   const [passwordErr, setPasswordErr] = useState("");
 
   const loginWithPass = async () => {
+    setCheckLoading(true)
     try {
       if (
         inputValues.username.trim() === "" ||
@@ -85,11 +88,13 @@ function Login() {
         }
       );
       localStorage.setItem("userInfo", JSON.stringify(response.data));
+      setCheckLoading(false)
       window.location.reload();
       navigate("../home", { replace: true });
     } catch (err) {
       console.log(err);
       console.log(err.response.data);
+      setCheckLoading(false)
       if (err.response.data === "Tài khoản không tồn tại") {
         setUserNameErr(err.response.data);
         setPasswordErr("");
@@ -117,6 +122,7 @@ function Login() {
   }, []);
 
   const checkLoginGG = async (token) => {
+    setCheckLoading(true)
     try {
       const response = await axios.post(
         "https://afootballleague.ddns.net/api/v1/auth/login-with-google",
@@ -130,6 +136,7 @@ function Login() {
         }
       );
       localStorage.setItem("userInfo", JSON.stringify(response.data));
+      setCheckLoading(false)
       window.location.reload();
       navigate("../home", { replace: true });
     } catch (err) {
@@ -152,6 +159,7 @@ function Login() {
   return (
     <div className={styles.login}>
       <ScrollToTop />
+      {checkLoading ? <LoadingAction /> : null}
       {newAcc ? (
         <SignUpGoogle newAcc={newAcc} userInfo={userInfo} token={token} />
       ) : (
