@@ -3,7 +3,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertToRaw, EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { getAPI } from "../../api";
 function UpdateTeam() {
+  const location=useLocation();
+  const address=location.state.address;
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [manager, setManager] = useState("");
   const textDescription = draftToHtml(
@@ -53,6 +55,9 @@ function UpdateTeam() {
   const [districts, setDistricts] = useState(null);
   const [wards, setWards] = useState(null);
   const [addressField, setAddressField] = useState(null);
+  const [proviceSearch,setProviceSearch] = useState(null);
+  const [districSearch,setDistricSearch] = useState(null);
+  const [wardSearch,setWardSearch] = useState(null);
   useEffect(() => {
     setResetProvice(-1);
     getAllCity();
@@ -89,11 +94,21 @@ function UpdateTeam() {
       });
   };
   const getAllCity = async () => {
+    console.log(address)
     const response = await axios.get(
       "https://provinces.open-api.vn/api/?depth=3"
     );
     if (response.status === 200) {
       setProvice(response.data);
+        
+      const proviceCurrent =  address.split(", ")[2];
+      const findDistrictByNameProvice = response.data.find((item) => item.name === proviceCurrent)
+      console.log(findDistrictByNameProvice)
+      setDistricts(findDistrictByNameProvice.districts);
+      const districtCurrent =  address.split(", ")[1];
+      const findWardsByDistrictName = findDistrictByNameProvice.districts.find((item) => item.name === districtCurrent);
+      console.log(findWardsByDistrictName)
+      setWards(findWardsByDistrictName.wards);
     }
   };
   const validateForm = (name, value) => {
@@ -180,7 +195,7 @@ function UpdateTeam() {
         teamAvatar: imgClub.value,
         description: textDescription,
         teamGender: gender.value,
-        teamArea: addressField,
+        teamArea: addressField != null ?  addressField : address,
       };
 
       const response = await axios.put(
@@ -218,7 +233,7 @@ function UpdateTeam() {
         setResetProvice(0);
         setBtnActive(false);
         // navigate(`/teamDetail/${response.data.id}/inforTeamDetail`);
-        navigate(-1)
+        navigate(-1);
       }
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -342,6 +357,7 @@ function UpdateTeam() {
       case "provice":
         let dataProvice = provice;
         const proviceFind = dataProvice.find((item) => item.name === value);
+        setProviceSearch(value)
         setDistricts(proviceFind.districts);
         setWards(null);
         setAddressField(", " + value);
@@ -350,31 +366,21 @@ function UpdateTeam() {
         let dataDis = districts;
 
         const disFind = dataDis.find((item) => item.name === value);
-
+        setDistricSearch(value)
         setWards(disFind.wards);
         const oldAddress = addressField;
         setAddressField(", " + value + oldAddress);
         break;
       case "wards":
+        console.log(value)
+        setWardSearch(value)
         {
           const oldAddress = addressField;
-          setAddressField(value + oldAddress);
+          setAddressField(", " + value + oldAddress);
         }
         break;
       default:
         break;
-    }
-  };
-  const splitArea = (check) => {
-    let result = area.split(",");
-    if (check === "provice") {
-      return result[2];
-    }
-    if (check === "districts") {
-      return result[1];
-    }
-    if (check === "wards") {
-      return result[0];
     }
   };
 
@@ -609,20 +615,13 @@ function UpdateTeam() {
                 name="provice"
                 required
                 onChange={onChangeHandler}
+                value={proviceSearch != null ? proviceSearch : address.split(", ")[2]}
               >
-                <option disabled>Chọn thành phố</option>
+                <option disabled selected>Chọn thành phố</option>
                 {provice != null
                   ? provice.map((item, index) => {
                       return (
-                        <option
-                          value={item.name}
-                          key={index}
-                          selected={
-                            item.name === splitArea("provice")
-                              ? true
-                              : false
-                          }
-                        >
+                        <option value={item.name} key={index}>
                           {item.name}
                         </option>
                       );
@@ -652,6 +651,7 @@ function UpdateTeam() {
                 }}
                 name="districts"
                 onChange={onChangeHandler}
+                value={districSearch != null ? districSearch : address.split(", ")[1]}
               >
                 <option selected disabled>
                   Chọn quận
@@ -689,6 +689,7 @@ function UpdateTeam() {
                 name="wards"
                 onChange={onChangeHandler}
                 required
+                value={wardSearch != null ? wardSearch : address.split(", ")[0]}
               >
                 <option selected disabled>
                   Chọn phường

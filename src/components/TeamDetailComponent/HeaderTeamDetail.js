@@ -103,7 +103,7 @@ function HeaderTeamDetail() {
                     <div className="avt__Team">
                       <img src={team.teamAvatar} alt="team" />
                     </div>
-                    {user.userVM.id === team.id ?  <Link to={`/updateTeam/${team.id}`} className="editTeam">
+                    {user.userVM.id === team.id ?  <Link to={`/updateTeam/${team.id}`} state={{address:team.teamArea}} className="editTeam">
                       <i class="fa-solid fa-pen-to-square"></i>Chỉnh Sửa Đội Bóng
                     </Link> : null }
                    

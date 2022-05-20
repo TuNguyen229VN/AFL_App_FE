@@ -176,7 +176,7 @@ function ResetPassword() {
       email: email.value,
       toDo: 2,
     };
-    const afterDefaultURL = `auth/send-verify-code?email=${email.value}&toDo=2`;
+    let afterDefaultURL = `auth/send-verify-code?email=${email.value}&toDo=2`;
     const response = postAPI(afterDefaultURL, data, false);
     response
       .then((res) => {
@@ -194,7 +194,6 @@ function ResetPassword() {
             }
           );
         }
-        setCodeFromMail({ value: res.data });
         setCheck(true);
       })
       .catch((err) => {
@@ -212,8 +211,12 @@ function ResetPassword() {
 
   const confirmVerify = (e) => {
     e.preventDefault();
-    if (codeFromMail.value !== code.value) {
-      toast.error("Mã xác thực không đúng vui lòng kiểm tra lại", {
+    if (
+      code.value.trim() === "" ||
+      email.value.trim() === "" ||
+      code.value.length !== 6
+    ) {
+      toast.error("Vui lòng kiểm tra lại thông tin", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -222,18 +225,41 @@ function ResetPassword() {
         draggable: true,
         progress: undefined,
       });
-    } else {
-      toast.success("Vui lòng điền mật khẩu mới", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      setChangePassword(true);
+      return;
     }
+    const data = {
+      email: email.value,
+      code: code.value,
+    };
+    let afterDefaultURL = `auth/check-verify-code?email=${email.value}&code=${code.value}`;
+    const response = postAPI(afterDefaultURL, data, false);
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Vui lòng điền mật khẩu mới", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          setChangePassword(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error(err.response.data, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
 
   const onSubmitHandler = (e) => {
