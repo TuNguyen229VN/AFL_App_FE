@@ -83,6 +83,9 @@ const CreateTournament = () => {
   const [districts, setDistricts] = useState(null);
   const [wards, setWards] = useState(null);
   const [addressField, setAddressField] = useState(null);
+  const [proviceSearch,setProviceSearch] = useState(null);
+  const [districSearch,setDistricSearch] = useState(null);
+  const [wardSearch,setWardSearch] = useState(null);
   AOS.init();
   const tour = gsap.timeline();
   useEffect(() => {
@@ -366,7 +369,8 @@ const CreateTournament = () => {
       case "provice":
         let dataProvice = provice;
         const proviceFind = dataProvice.find((item) => item.name === value);
-
+        setProviceSearch(value);
+        setDistricSearch("default")
         setDistricts(proviceFind.districts);
         setWards(null);
         setAddressField(", " + value);
@@ -375,12 +379,14 @@ const CreateTournament = () => {
         let dataDis = districts;
 
         const disFind = dataDis.find((item) => item.name === value);
-
+        setDistricSearch(value);
+        setWardSearch("default")
         setWards(disFind.wards);
         const oldAddress = addressField;
         setAddressField(", " + value + oldAddress);
         break;
       case "wards":
+        setWardSearch(value);
         {
           const oldAddress = addressField;
           setAddressField(", " + value + oldAddress);
@@ -916,6 +922,7 @@ const CreateTournament = () => {
                       }}
                       name="provice"
                       onChange={onChangeHandler}
+                      value={proviceSearch}
                     >
                       <option selected disabled>
                         Chọn thành phố
@@ -952,8 +959,9 @@ const CreateTournament = () => {
                       }}
                       name="districts"
                       onChange={onChangeHandler}
+                      value={districSearch}
                     >
-                      <option selected disabled>
+                      <option value="default" selected disabled>
                         Chọn quận
                       </option>
                       {districts != null
@@ -988,8 +996,9 @@ const CreateTournament = () => {
                       }}
                       name="wards"
                       onChange={onChangeHandler}
+                      value={wardSearch}
                     >
-                      <option selected disabled>
+                      <option value="default" selected disabled>
                         Chọn phường
                       </option>
                       {wards != null

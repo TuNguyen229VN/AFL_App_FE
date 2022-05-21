@@ -39,6 +39,7 @@ const AddPlayer = (props) => {
     }
     switch (name) {
       case "imgPlayer":
+        
         setImgPlayer({
           value: e.target.files[0],
           img: URL.createObjectURL(e.target.files[0]),

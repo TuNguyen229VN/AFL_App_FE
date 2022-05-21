@@ -358,13 +358,14 @@ function UpdateTeam() {
         let dataProvice = provice;
         const proviceFind = dataProvice.find((item) => item.name === value);
         setProviceSearch(value)
+        setDistricSearch("default")
         setDistricts(proviceFind.districts);
         setWards(null);
         setAddressField(", " + value);
         break;
       case "districts":
         let dataDis = districts;
-
+        setWardSearch("default")
         const disFind = dataDis.find((item) => item.name === value);
         setDistricSearch(value)
         setWards(disFind.wards);
@@ -376,7 +377,7 @@ function UpdateTeam() {
         setWardSearch(value)
         {
           const oldAddress = addressField;
-          setAddressField(", " + value + oldAddress);
+          setAddressField(value + oldAddress);
         }
         break;
       default:
@@ -653,11 +654,14 @@ function UpdateTeam() {
                 onChange={onChangeHandler}
                 value={districSearch != null ? districSearch : address.split(", ")[1]}
               >
-                <option selected disabled>
-                  Chọn quận
-                </option>
+                
                 {districts != null
                   ? districts.map((item, index) => {
+                      if(index === 0) {
+                        return <option value="default" key={index} selected disabled>
+                        Chọn quận
+                      </option>
+                      }
                       return (
                         <option value={item.name} key={index}>
                           {item.name}
@@ -691,11 +695,14 @@ function UpdateTeam() {
                 required
                 value={wardSearch != null ? wardSearch : address.split(", ")[0]}
               >
-                <option selected disabled>
-                  Chọn phường
-                </option>
+                
                 {wards != null
                   ? wards.map((item, index) => {
+                    if(index === 0) {
+                      return <option value="default" key={index} selected disabled>
+                      Chọn phường
+                    </option>
+                    }
                       return (
                         <option value={item.name} key={index}>
                           {item.name}

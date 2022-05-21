@@ -108,6 +108,7 @@ const UpdateTournamentInformation = (props) => {
       "https://provinces.open-api.vn/api/?depth=3"
     );
     if (response.status === 200) {
+      
       setProvice(response.data);
       const proviceCurrent =  addressTour.split(", ")[3];
       const findDistrictByNameProvice = response.data.find((item) => item.name === proviceCurrent);
@@ -465,7 +466,8 @@ const UpdateTournamentInformation = (props) => {
       case "provice":
         let dataProvice = provice;
         const proviceFind = dataProvice.find((item) => item.name === value);
-        setProviceSearch(value)
+        setProviceSearch(value);
+        setDistricSearch("default");
         setDistricts(proviceFind.districts);
         setWards(null);
         setAddressField(", " + value);
@@ -475,6 +477,7 @@ const UpdateTournamentInformation = (props) => {
 
         const disFind = dataDis.find((item) => item.name === value);
         setDistricSearch(value)
+        setWardSearch("default")
         setWards(disFind.wards);
         const oldAddress = addressField;
         setAddressField(", " + value + oldAddress);
@@ -1041,7 +1044,7 @@ const UpdateTournamentInformation = (props) => {
                     value={proviceSearch != null ? proviceSearch : team.footballFieldAddress.split(", ")[3]}
                     onChange={onChangeHandler}
                   >
-                    <option selected disabled>
+                    <option value="default" selected disabled>
                       Chọn thành phố
                     </option>
                     {provice != null
@@ -1078,7 +1081,7 @@ const UpdateTournamentInformation = (props) => {
                     value={districSearch != null ? districSearch : team.footballFieldAddress.split(", ")[2]}
                     onChange={onChangeHandler}
                   >
-                    <option selected disabled>
+                    <option value="default" selected disabled>
                       Chọn quận
                     </option>
                     {districts != null
@@ -1115,7 +1118,7 @@ const UpdateTournamentInformation = (props) => {
                     name="wards"
                     onChange={onChangeHandler}
                   >
-                    <option selected disabled>
+                    <option value="default" selected disabled>
                       Chọn phường
                     </option>
                     {wards != null

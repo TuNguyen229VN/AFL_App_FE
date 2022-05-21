@@ -29,7 +29,7 @@ const EditInforPlayer = (props) => {
   });
   const [btnActive,setBtnActive] = useState(false)
   useEffect(() => {
-    console.log(player);
+    
     setNamePlayer({
       value: player.playername,
       error: null
@@ -54,10 +54,10 @@ const EditInforPlayer = (props) => {
       error:null
     })
     
-  },[player])
+  },[team])
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
-    console.log({ name, value } )
+    
     const validate =validateForm(name,value);
     if(validate.flag){
       setBtnActive(true);
@@ -66,7 +66,7 @@ const EditInforPlayer = (props) => {
     }
     switch (name) {
       case "imgPlayerUpdate":
-        console.log(value)
+       
         setImgPlayer({
           value: e.target.files[0],
           img: URL.createObjectURL(e.target.files[0]),
@@ -237,6 +237,7 @@ const EditInforPlayer = (props) => {
         onClick={()=>{
           setHideShow(true);
           //onClickAddPlayer();
+          setTeam(player)
         }}
       >
         Chỉnh sửa thông tin
@@ -272,13 +273,9 @@ const EditInforPlayer = (props) => {
                   <label htmlFor="email">Hình ảnh cầu thủ</label>
                   <input
                       type="file"
-                      accept="image/*"
                       id="imgPlayerUpdate"
                       onChange={onChangeHandler}
                       name="imgPlayerUpdate"
-                      style={{
-                        display: "none",
-                      }}
                     />
                  
                     <label htmlFor="imgPlayerUpdate" className="add_img_detail">
@@ -443,6 +440,7 @@ const EditInforPlayer = (props) => {
                   type="submit"
                   class="btn btn-primary"
                   data-backdrop="false"
+                  onClick={() => setTeam(null)}
                 >
                   Thay đổi
                 </button> : null }
