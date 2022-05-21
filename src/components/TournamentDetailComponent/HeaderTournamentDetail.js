@@ -155,42 +155,47 @@ function HeaderTournamentDetail() {
             <div className="HeaderTeamDetail">
               <div className="info__manager infor_tourdetail">
                 <div>
-                <div className="avt__Team">
-                  <img
-                    src={tourDetail.tournamentAvatar}
-                    alt={tourDetail.tournamentName}
-                  />
-                </div>
-                {user.userVM.id === tourDetail.userId ? (
-                    <Link
-                      to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
-                      state={{id: tourDetail.id,address:tourDetail.footballFieldAddress}}
-                      className="btn_UpdateTournament"
-                      style={{
-                        padding: "20px 50px",
-                        marginLeft: 75,
-                        fontWeight: 600,
-                        fontFamily: "Mulish-Bold",
-                        borderRadius: 5,
-                        backgroundColor: "#D7FC6A",
-                        border: 1,
-                        borderColor: "#D7FC6A",
-                        transition: "0.5s",
-                        position: "absolute",
-                        top: 365,
-                      }}
-                      // onClick={() => {
-                      //   updateClick(,)
-                      // }}
-                    >
-                      {" "}
-                      <i class="fa-solid fa-pen-to-square" />
-                      Chỉnh sửa giải đấu
-                    </Link>
+                  <div className="avt__Team">
+                    <img
+                      src={tourDetail.tournamentAvatar}
+                      alt={tourDetail.tournamentName}
+                    />
+                  </div>
+                  {user !== null ? (
+                    <>
+                      {user.userVM.id === tourDetail.userId ? (
+                        <Link
+                          to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
+                          state={{
+                            id: tourDetail.id,
+                            address: tourDetail.footballFieldAddress,
+                          }}
+                          className="btn_UpdateTournament"
+                          style={{
+                            padding: "20px 50px",
+                            marginLeft: 75,
+                            fontWeight: 600,
+                            fontFamily: "Mulish-Bold",
+                            borderRadius: 5,
+                            backgroundColor: "#D7FC6A",
+                            border: 1,
+                            borderColor: "#D7FC6A",
+                            transition: "0.5s",
+                            position: "absolute",
+                            top: 365,
+                          }}
+                          // onClick={() => {
+                          //   updateClick(,)
+                          // }}
+                        >
+                          {" "}
+                          <i class="fa-solid fa-pen-to-square" />
+                          Chỉnh sửa giải đấu
+                        </Link>
+                      ) : null}
+                    </>
                   ) : null}
                 </div>
-                
-
 
                 <div className="headertext__team">
                   <h2>{tourDetail.tournamentName}</h2>
