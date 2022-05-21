@@ -9,9 +9,11 @@ import { addPlayerInTeamAPI } from "../../api/PlayerInTeamAPI";
 import ReactPaginate from "react-paginate";
 import styles from "../FindTeamComponent/TeamFind.module.css";
 import EditInforPlayer from "./EditInForPlayer";
+import LoadingAction from "../LoadingComponent/LoadingAction"
 function ListPlayer(props) {
-  const { id, gender, numberPlayerInTeam } = props;
+  const { id, gender, numberPlayerInTeam, idHost } = props;
   const [loading, setLoading] = useState(true);
+  const [loadingAdd,setLoadingAdd] = useState(false);
   const [playerInTeam, setPlayerInTeam] = useState(null);
   const [addPlayerComplete, setAddPlayerComplete] = useState(false);
   const [namePlayer, setNamePlayer] = useState("");
@@ -20,10 +22,8 @@ function ListPlayer(props) {
   useEffect(() => {
     getListPlayerInTeamByIdTeam();
   }, [addPlayerComplete, currentPage, namePlayer]);
-
   const getListPlayerInTeamByIdTeam = async () => {
     setLoading(true);
-
     const afterURL = `PlayerInTeam?teamId=${id}&name=${namePlayer}&pageIndex=${currentPage}&limit=8`;
     const response = await getAPI(afterURL);
     console.log(response);
@@ -50,6 +50,7 @@ function ListPlayer(props) {
     setCurrentPage(data.selected + 1);
   };
   const addPlayerInListPlayer = (data) => {
+    setLoadingAdd(true);
     const response = addFootballPlayer(data);
     // postAPI(url, data, true);
     response
@@ -59,6 +60,7 @@ function ListPlayer(props) {
         }
       })
       .catch((err) => {
+        setLoadingAdd(false);
         toast.error(err.response.data.message, {
           position: "top-right",
           autoClose: 3000,
@@ -72,6 +74,7 @@ function ListPlayer(props) {
       });
   };
   const addPlayerInTeam = (idPlayer) => {
+    setLoadingAdd(true);
     const data = {
       teamId: props.id,
       footballPlayerId: idPlayer,
@@ -79,6 +82,7 @@ function ListPlayer(props) {
     const response = addPlayerInTeamAPI(data);
     response
       .then((res) => {
+        setLoadingAdd(false);
         if (res.status === 201) {
           //resetStateForm();
           setAddPlayerComplete(true);
@@ -96,8 +100,9 @@ function ListPlayer(props) {
         }
       })
       .catch((err) => {
+        setLoadingAdd(false);
         console.error(err);
-        toast.error("Thêm cầu thủ vào đội bóng thất bại", {
+        toast.error(err.response.data.message, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -120,12 +125,12 @@ function ListPlayer(props) {
     e.preventDefault();
   };
   const editInforFootballPlayer = (data) => {
-    console.log(data);
+    setLoadingAdd(true);
     const response = editFootballPlayerAPI(data);
     response
     .then((res) => {
-      if (res.status === 201) {
-        //resetStateForm();
+      if (res.status === 200) {
+        setLoadingAdd(false);
         setAddPlayerComplete(true);
         toast.success("Thay đổi thông tin cầu thủ thành công", {
           position: "top-right",
@@ -141,8 +146,9 @@ function ListPlayer(props) {
       }
     })
     .catch((err) => {
+      setLoadingAdd(false);
       console.error(err);
-      toast.error("Thêm cầu thủ vào đội bóng thất bại", {
+      toast.error(err.response.data.message, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -157,7 +163,7 @@ function ListPlayer(props) {
     <>
       <div className="teamdetail__content listPlayer">
         <h3 className="listPlayer__title">Danh sách thành viên</h3>
-        <div
+        {idHost === id ?  <div
           style={{
             display: "flex",
             justifyContent: "right",
@@ -165,12 +171,14 @@ function ListPlayer(props) {
           }}
         >
           <AddPlayer
+          
             id={id}
             gender={gender}
             addPlayerInListPlayer={addPlayerInListPlayer}
             onClickAddPlayer={onClickAddPlayer}
           />
-        </div>
+        </div> : null}
+      
 
         <div>
           <h2 className="listPlayer__total">
@@ -265,8 +273,9 @@ function ListPlayer(props) {
                             type="submit"
                             value="Chỉnh sửa thông tin"
                           /> */}
-
+                        {idHost === id ?
                           <EditInforPlayer onClickAddPlayer={onClickAddPlayer} editInforFootballPlayer={editInforFootballPlayer} player={item} />
+                          : null }
                         </form>
                       </div>
                     );
@@ -311,6 +320,8 @@ function ListPlayer(props) {
             pageRangeDisplayed={2}
           />
         </nav>
+
+        {loadingAdd === true ? <LoadingAction /> : null}
       </div>
     </>
   );

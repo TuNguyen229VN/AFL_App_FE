@@ -154,19 +154,21 @@ function HeaderTournamentDetail() {
           <div>
             <div className="HeaderTeamDetail">
               <div className="info__manager infor_tourdetail">
+                <div>
                 <div className="avt__Team">
                   <img
                     src={tourDetail.tournamentAvatar}
                     alt={tourDetail.tournamentName}
                   />
-                  {user.userVM.id === tourDetail.userId ? (
+                </div>
+                {user.userVM.id === tourDetail.userId ? (
                     <Link
                       to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
                       state={{id: tourDetail.id,address:tourDetail.footballFieldAddress}}
                       className="btn_UpdateTournament"
                       style={{
                         padding: "20px 50px",
-                        marginLeft: 50,
+                        marginLeft: 75,
                         fontWeight: 600,
                         fontFamily: "Mulish-Bold",
                         borderRadius: 5,
@@ -175,7 +177,7 @@ function HeaderTournamentDetail() {
                         borderColor: "#D7FC6A",
                         transition: "0.5s",
                         position: "absolute",
-                        top: 275,
+                        top: 365,
                       }}
                       // onClick={() => {
                       //   updateClick(,)
@@ -187,6 +189,9 @@ function HeaderTournamentDetail() {
                     </Link>
                   ) : null}
                 </div>
+                
+
+
                 <div className="headertext__team">
                   <h2>{tourDetail.tournamentName}</h2>
                   <div className="man name__manager">

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 
+
 import "react-toastify/dist/ReactToastify.css";
 const AddPlayer = (props) => {
   const [hideShow, setHideShow] = useState(false)
   const {addPlayerInListPlayer,onClickAddPlayer} = props;
-
+  
   const [imgPlayer, setImgPlayer] = useState({
     value: "",
     img: null,

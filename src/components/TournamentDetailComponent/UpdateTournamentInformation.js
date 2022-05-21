@@ -19,12 +19,14 @@ import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import styles from "../CreateTournament/styles/style.module.css";
 import axios from "axios";
 import { useNavigate  } from "react-router-dom";
+import LoadingAction from "../LoadingComponent/LoadingAction"
 
 const UpdateTournamentInformation = (props) => {
   let navigate = useNavigate();
   const location = useLocation();
    const addressTour = location.state.address;
    const idTournament = location.state.id;
+   const [loadingAction,setLoadingAction] = useState(false);
   const [team, setTeam] = useState(null);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(-1);
@@ -196,6 +198,7 @@ const UpdateTournamentInformation = (props) => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    setLoadingAction(true);
     try {
       const data = {
         Id:idTournament,
@@ -217,9 +220,10 @@ const UpdateTournamentInformation = (props) => {
         TournamentTypeEnum: competitionFormat.value,
         TournamentFootballFieldTypeEnum: typeFootballField.value,
       };
-      console.log(data);
+      
       const response = await updateTournamentInfoAPI(data);
       if (response.status === 201) {
+        setLoadingAction(false);
         toast.success("Thay đổi thông tin giải đấu thành công", {
           position: "top-right",
           autoClose: 3000,
@@ -272,6 +276,7 @@ const UpdateTournamentInformation = (props) => {
         navigate(-1);
       }
     } catch (error) {
+      setLoadingAction(false);
       toast.error(error.response.data.message, {
         position: "top-right",
         autoClose: 3000,
@@ -1179,7 +1184,7 @@ const UpdateTournamentInformation = (props) => {
       </div>
     </div>
       }
-      
+      {loadingAction ? <LoadingAction /> : null}
       <ToastContainer />
       <Footer />
     </>
