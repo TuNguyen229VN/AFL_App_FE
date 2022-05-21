@@ -72,7 +72,13 @@ function HeaderTeamDetail() {
       return <InforTeamDetail description={team.description} />;
     }
     if (activeTeamDetail === `/teamDetail/${idTeam}/listPlayer`) {
-      return <ListPlayer id={team.id} gender={team.teamGender} numberPlayerInTeam={team.numberPlayerInTeam} />;
+      return (
+        <ListPlayer
+          id={team.id}
+          gender={team.teamGender}
+          numberPlayerInTeam={team.numberPlayerInTeam}
+        />
+      );
     }
     if (activeTeamDetail === `/teamDetail/${idTeam}/reportTeamDeatail`) {
       return <ReportTeamDetail />;
@@ -103,10 +109,20 @@ function HeaderTeamDetail() {
                     <div className="avt__Team">
                       <img src={team.teamAvatar} alt="team" />
                     </div>
-                    {user.userVM.id === team.id ?  <Link to={`/updateTeam/${team.id}`} state={{address:team.teamArea}} className="editTeam">
-                      <i class="fa-solid fa-pen-to-square"></i>Chỉnh Sửa Đội Bóng
-                    </Link> : null }
-                   
+                    {user !== null ? (
+                      <>
+                        {user.userVM.id === team.id ? (
+                          <Link
+                            to={`/updateTeam/${team.id}`}
+                            state={{ address: team.teamArea }}
+                            className="editTeam"
+                          >
+                            <i class="fa-solid fa-pen-to-square"></i>Chỉnh Sửa
+                            Đội Bóng
+                          </Link>
+                        ) : null}
+                      </>
+                    ) : null}
                   </div>
                   <div className="headertext__team">
                     <h2>{team.teamName}</h2>
