@@ -20,6 +20,7 @@ function ListPlayer(props) {
   const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
+    setAddPlayerComplete(false);
     getListPlayerInTeamByIdTeam();
   }, [addPlayerComplete, currentPage, namePlayer]);
   const getListPlayerInTeamByIdTeam = async () => {

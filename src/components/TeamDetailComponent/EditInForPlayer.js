@@ -236,7 +236,7 @@ const EditInforPlayer = (props) => {
           }}
         onClick={()=>{
           setHideShow(true);
-          onClickAddPlayer();
+          //onClickAddPlayer();
         }}
       >
         Chỉnh sửa thông tin
