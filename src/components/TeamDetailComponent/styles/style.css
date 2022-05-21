@@ -31,6 +31,7 @@
   width: 250px;
   left: 45px;
   top: 40px;
+  overflow: hidden;
 }
 
 .avt__Team img {
@@ -38,7 +39,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 150px;
+  
   transform: translate(-50%, -50%);
 }
 .headertext__team {
@@ -447,6 +448,7 @@
 
 .add_infor {
   width: 50%;
+  margin-left: 20px;
 }
 
 .detail_info {
@@ -558,3 +560,7 @@
   color: white;
   background-color: #000!important;
 }
+
+/* #imgPlayerUpdate{
+  display: vis;
+} */

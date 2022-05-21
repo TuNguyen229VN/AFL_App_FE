@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 const EditInforPlayer = (props) => {
   const [hideShow, setHideShow] = useState(false)
   const {player,editInforFootballPlayer,onClickAddPlayer} = props;
+  const [team,setTeam] = useState(player);
   const [imgPlayer, setImgPlayer] = useState({
     value: "",
     img: null,
@@ -28,7 +29,7 @@ const EditInforPlayer = (props) => {
   });
   const [btnActive,setBtnActive] = useState(false)
   useEffect(() => {
-    console.log(player);
+    
     setNamePlayer({
       value: player.playername,
       error: null
@@ -47,14 +48,16 @@ const EditInforPlayer = (props) => {
       error:null
     })
     setImgPlayer({
-      value:"",
+      value:null,
       img: player.playerAvatar,
+      // img: null,
       error:null
     })
     
-  },[])
+  },[team])
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
+    
     const validate =validateForm(name,value);
     if(validate.flag){
       setBtnActive(true);
@@ -62,7 +65,8 @@ const EditInforPlayer = (props) => {
       setBtnActive(false);
     }
     switch (name) {
-      case "imgPlayer":
+      case "imgPlayerUpdate":
+       
         setImgPlayer({
           value: e.target.files[0],
           img: URL.createObjectURL(e.target.files[0]),
@@ -103,6 +107,7 @@ const EditInforPlayer = (props) => {
         break;
     }
   };
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const birthday = DOBPlayer.value.split("/");
@@ -118,7 +123,7 @@ const EditInforPlayer = (props) => {
     };
     editInforFootballPlayer(data);
     //addPlayerInListPlayer(data);
-    resetStateForm();
+    // resetStateForm();
     setHideShow(false)  
     // if(addPlayer.status === 201){
     //   setHideShow(false)  
@@ -128,7 +133,7 @@ const EditInforPlayer = (props) => {
   const validateForm = (name,value) => {
     
     switch (name) {
-      case "imgPlayer":
+      case "imgPlayerUpdate":
         break;
       case "emailPlayer":
         if (value.length === 0) {
@@ -231,7 +236,8 @@ const EditInforPlayer = (props) => {
           }}
         onClick={()=>{
           setHideShow(true);
-          onClickAddPlayer();
+          //onClickAddPlayer();
+          setTeam(player)
         }}
       >
         Chỉnh sửa thông tin
@@ -253,7 +259,9 @@ const EditInforPlayer = (props) => {
                 data-bs-dismiss="modal"
                 aria-label="Close"
                 onClick={() => {
-                  setHideShow(false)  
+                  setHideShow(false) 
+                  //resetStateForm();
+                  setTeam(null);
                 }}
               ></button>
             </div>
@@ -265,17 +273,12 @@ const EditInforPlayer = (props) => {
                   <label htmlFor="email">Hình ảnh cầu thủ</label>
                   <input
                       type="file"
-                      accept="image/*"
-                      id="imgPlayer"
+                      id="imgPlayerUpdate"
                       onChange={onChangeHandler}
-                      
-                      name="imgPlayer"
-                      style={{
-                        display: "none",
-                      }}
+                      name="imgPlayerUpdate"
                     />
                  
-                    <label htmlFor="imgPlayer" className="add_img_detail">
+                    <label htmlFor="imgPlayerUpdate" className="add_img_detail">
                       <div style={{
                         width: "50%",
                         height: "50%",
@@ -422,7 +425,11 @@ const EditInforPlayer = (props) => {
                   type="button"
                   class="btn btn-secondary"
                   data-bs-dismiss="modal"
-                  onClick={() => setHideShow(false)}
+                  onClick={() => {
+                    setHideShow(false)
+                    //resetStateForm();
+                    setTeam(null);
+                  }}
                 >
                   Hủy tạo
                 </button>
@@ -433,8 +440,9 @@ const EditInforPlayer = (props) => {
                   type="submit"
                   class="btn btn-primary"
                   data-backdrop="false"
+                  onClick={() => setTeam(null)}
                 >
-                  Thêm cầu thủ
+                  Thay đổi
                 </button> : null }
               </div>
             </form>

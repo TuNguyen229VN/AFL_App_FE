@@ -18,8 +18,10 @@
 }
 
 .HeaderTeamDetail .infor_tourdetail .avt__Team {
-  border-radius: 5px;
-  width: 400px;
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
 }
 
 .HeaderTeamDetail .infor_tourdetail .avt__Team img {

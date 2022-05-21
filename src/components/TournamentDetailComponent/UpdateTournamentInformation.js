@@ -19,12 +19,14 @@ import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import styles from "../CreateTournament/styles/style.module.css";
 import axios from "axios";
 import { useNavigate  } from "react-router-dom";
+import LoadingAction from "../LoadingComponent/LoadingAction"
 
 const UpdateTournamentInformation = (props) => {
   let navigate = useNavigate();
   const location = useLocation();
    const addressTour = location.state.address;
    const idTournament = location.state.id;
+   const [loadingAction,setLoadingAction] = useState(false);
   const [team, setTeam] = useState(null);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(-1);
@@ -106,6 +108,7 @@ const UpdateTournamentInformation = (props) => {
       "https://provinces.open-api.vn/api/?depth=3"
     );
     if (response.status === 200) {
+      
       setProvice(response.data);
       const proviceCurrent =  addressTour.split(", ")[3];
       const findDistrictByNameProvice = response.data.find((item) => item.name === proviceCurrent);
@@ -196,6 +199,7 @@ const UpdateTournamentInformation = (props) => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    setLoadingAction(true);
     try {
       const data = {
         Id:idTournament,
@@ -217,9 +221,10 @@ const UpdateTournamentInformation = (props) => {
         TournamentTypeEnum: competitionFormat.value,
         TournamentFootballFieldTypeEnum: typeFootballField.value,
       };
-      console.log(data);
+      
       const response = await updateTournamentInfoAPI(data);
       if (response.status === 201) {
+        setLoadingAction(false);
         toast.success("Thay đổi thông tin giải đấu thành công", {
           position: "top-right",
           autoClose: 3000,
@@ -272,6 +277,7 @@ const UpdateTournamentInformation = (props) => {
         navigate(-1);
       }
     } catch (error) {
+      setLoadingAction(false);
       toast.error(error.response.data.message, {
         position: "top-right",
         autoClose: 3000,
@@ -460,7 +466,8 @@ const UpdateTournamentInformation = (props) => {
       case "provice":
         let dataProvice = provice;
         const proviceFind = dataProvice.find((item) => item.name === value);
-        setProviceSearch(value)
+        setProviceSearch(value);
+        setDistricSearch("default");
         setDistricts(proviceFind.districts);
         setWards(null);
         setAddressField(", " + value);
@@ -470,6 +477,7 @@ const UpdateTournamentInformation = (props) => {
 
         const disFind = dataDis.find((item) => item.name === value);
         setDistricSearch(value)
+        setWardSearch("default")
         setWards(disFind.wards);
         const oldAddress = addressField;
         setAddressField(", " + value + oldAddress);
@@ -1036,7 +1044,7 @@ const UpdateTournamentInformation = (props) => {
                     value={proviceSearch != null ? proviceSearch : team.footballFieldAddress.split(", ")[3]}
                     onChange={onChangeHandler}
                   >
-                    <option selected disabled>
+                    <option value="default" selected disabled>
                       Chọn thành phố
                     </option>
                     {provice != null
@@ -1073,7 +1081,7 @@ const UpdateTournamentInformation = (props) => {
                     value={districSearch != null ? districSearch : team.footballFieldAddress.split(", ")[2]}
                     onChange={onChangeHandler}
                   >
-                    <option selected disabled>
+                    <option value="default" selected disabled>
                       Chọn quận
                     </option>
                     {districts != null
@@ -1110,7 +1118,7 @@ const UpdateTournamentInformation = (props) => {
                     name="wards"
                     onChange={onChangeHandler}
                   >
-                    <option selected disabled>
+                    <option value="default" selected disabled>
                       Chọn phường
                     </option>
                     {wards != null
@@ -1179,7 +1187,7 @@ const UpdateTournamentInformation = (props) => {
       </div>
     </div>
       }
-      
+      {loadingAction ? <LoadingAction /> : null}
       <ToastContainer />
       <Footer />
     </>
