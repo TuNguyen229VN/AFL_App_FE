@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 
 
 import "react-toastify/dist/ReactToastify.css";
 const AddPlayer = (props) => {
-  const [hideShow, setHideShow] = useState(false)
-  const {addPlayerInListPlayer,onClickAddPlayer} = props;
+  
+  const {addPlayerInListPlayer,onClickAddPlayer,hideShow,setHideShowAdd} = props;
   
   const [imgPlayer, setImgPlayer] = useState({
     value: "",
@@ -28,7 +28,13 @@ const AddPlayer = (props) => {
     value: "",
     error: null,
   });
-  const [btnActive,setBtnActive] = useState(false)
+  const [btnActive,setBtnActive] = useState(false);
+  // useEffect(() => {
+  //   if(checkAdd === true) setHideShow(true);
+  //   else {
+  //     setHideShow(false);
+  //   }
+  // },[checkAdd])
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const validate =validateForm(name,value);
@@ -80,9 +86,8 @@ const AddPlayer = (props) => {
         break;
     }
   };
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async(e) => {
     e.preventDefault();
-    
     const birthday = DOBPlayer.value.split("/");
     const data = {
       email: emailPlayer.value,
@@ -93,10 +98,10 @@ const AddPlayer = (props) => {
       phone: phonePlayer.value,
       status: true,
     };
-    
-    addPlayerInListPlayer(data);
-    resetStateForm();
-    setHideShow(false)  
+    await addPlayerInListPlayer(data);
+      if(hideShow === false){
+        resetStateForm();
+    }
     // if(addPlayer.status === 201){
     //   setHideShow(false)  
     // }
@@ -184,7 +189,7 @@ const AddPlayer = (props) => {
     setDOBPlayer(initialState);
     setPhonePlayer(initialState);
     setBtnActive(false);
-    setHideShow(false)
+    setHideShowAdd(false);
   };
   //const gender = props.gender;
   return (
@@ -197,7 +202,7 @@ const AddPlayer = (props) => {
           padding: 10,
         }}
         onClick={()=>{
-          setHideShow(true);
+          setHideShowAdd(true)
           onClickAddPlayer();
         }}
       >

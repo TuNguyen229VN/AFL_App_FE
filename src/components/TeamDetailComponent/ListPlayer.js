@@ -19,6 +19,7 @@ function ListPlayer(props) {
   const [namePlayer, setNamePlayer] = useState("");
   const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [hideShow, setHideShow] = useState(false);
   useEffect(() => {
     setAddPlayerComplete(false);
     getListPlayerInTeamByIdTeam();
@@ -27,7 +28,7 @@ function ListPlayer(props) {
     setLoading(true);
     const afterURL = `PlayerInTeam?teamId=${id}&name=${namePlayer}&pageIndex=${currentPage}&limit=8`;
     const response = await getAPI(afterURL);
-    console.log(response);
+   
     setCount(response.data.countList);
     const ids =
       namePlayer === ""
@@ -61,6 +62,7 @@ function ListPlayer(props) {
         }
       })
       .catch((err) => {
+        
         setLoadingAdd(false);
         toast.error(err.response.data.message, {
           position: "top-right",
@@ -83,9 +85,10 @@ function ListPlayer(props) {
     const response = addPlayerInTeamAPI(data);
     response
       .then((res) => {
-        setLoadingAdd(false);
+        
         if (res.status === 201) {
-          //resetStateForm();
+          setLoadingAdd(false);
+          setHideShow(false);
           setAddPlayerComplete(true);
           toast.success("Thêm cầu thủ vào đội bóng thành công", {
             position: "top-right",
@@ -122,6 +125,13 @@ function ListPlayer(props) {
     setNamePlayer(value);
     setCurrentPage(1);
   };
+  const setHideShowAdd = (status) => {
+    if(status === false){
+      setHideShow(false);
+    }else{
+      setHideShow(true);
+    }
+  }
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
@@ -172,8 +182,9 @@ function ListPlayer(props) {
           }}
         >
           <AddPlayer
-          
+            hideShow={hideShow}
             id={id}
+            setHideShowAdd={setHideShowAdd}
             gender={gender}
             addPlayerInListPlayer={addPlayerInListPlayer}
             onClickAddPlayer={onClickAddPlayer}
