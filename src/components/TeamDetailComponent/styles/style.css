@@ -561,6 +561,6 @@
   background-color: #000!important;
 }
 
-/* #imgPlayerUpdate{
-  display: vis;
-} */
+#imgPlayerUpdate{
+  display: none;
+}
