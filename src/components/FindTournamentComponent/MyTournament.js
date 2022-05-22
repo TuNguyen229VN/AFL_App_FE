@@ -453,7 +453,7 @@ const MyTournamemts = () => {
                   }}
                   value="nameDesc"
                 >
-                  A -> Z
+                  A - Z
                 </option>
                 <option
                   style={{
@@ -461,7 +461,7 @@ const MyTournamemts = () => {
                   }}
                   value="nameIns"
                 >
-                  Z -> A
+                  Z - A
                 </option>
                 <option
                   style={{
@@ -519,7 +519,7 @@ const MyTournamemts = () => {
                           <p className={styles.type}>
                             {getType(tour.tournamentTypeId)}
                             {tour.footballFieldAddress !== ""
-                              ? "| " + splitTeamArea(tour.footballFieldAddress)
+                              ? " | " + splitTeamArea(tour.footballFieldAddress)
                               : ""}
                             {getFeild(tour.footballFieldTypeId)}
                           </p>

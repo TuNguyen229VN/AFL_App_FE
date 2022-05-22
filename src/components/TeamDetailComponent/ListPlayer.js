@@ -236,7 +236,7 @@ function ListPlayer(props) {
                             </p>
                             <p className="genderPlayer">
                               <span>Giới tính:</span>
-                              {item.gender === "Male" ? "Name" : "Nữ"}
+                              {item.gender === "Male" ? "Nam" : "Nữ"}
                             </p>
                             <p className="mailPlayer">
                               <span>Email:</span>
