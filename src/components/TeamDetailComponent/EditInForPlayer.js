@@ -3,8 +3,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "react-toastify/dist/ReactToastify.css";
 const EditInforPlayer = (props) => {
-  const [hideShow, setHideShow] = useState(false)
-  const {player,editInforFootballPlayer,onClickAddPlayer} = props;
+  
+  let {player,editInforFootballPlayer,onClickAddPlayer,hideShow,setHideShowAdd} = props;
   const [team,setTeam] = useState(player);
   const [imgPlayer, setImgPlayer] = useState({
     value: "",
@@ -29,7 +29,7 @@ const EditInforPlayer = (props) => {
   });
   const [btnActive,setBtnActive] = useState(false)
   useEffect(() => {
-    
+    console.log(player.playername);
     setNamePlayer({
       value: player.playername,
       error: null
@@ -53,8 +53,7 @@ const EditInforPlayer = (props) => {
       // img: null,
       error:null
     })
-    
-  },[team])
+  },[player])
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     
@@ -66,7 +65,6 @@ const EditInforPlayer = (props) => {
     }
     switch (name) {
       case "imgPlayerUpdate":
-       
         setImgPlayer({
           value: e.target.files[0],
           img: URL.createObjectURL(e.target.files[0]),
@@ -74,8 +72,8 @@ const EditInforPlayer = (props) => {
         });
         break;
       case "emailPlayer":
+        //console.log(value)
         setEmailPlayer({
-          ...emailPlayer,
           value,
           error: validate.content
         });
@@ -121,10 +119,15 @@ const EditInforPlayer = (props) => {
       phone: phonePlayer.value,
       status: true,
     };
+    console.log(data);
+    //console.log(emailPlayer.value);
     editInforFootballPlayer(data);
+    if(hideShow === false){
+      resetStateForm();
+    }
     //addPlayerInListPlayer(data);
     // resetStateForm();
-    setHideShow(false)  
+    //setHideShow(false)  
     // if(addPlayer.status === 201){
     //   setHideShow(false)  
     // }
@@ -212,37 +215,11 @@ const EditInforPlayer = (props) => {
     setDOBPlayer(initialState);
     setPhonePlayer(initialState);
     setBtnActive(false);
-    setHideShow(false)
+    //setHideShow(false)
   };
   //const gender = props.gender;
   return (
     <div>
-     <div className={hideShow?"overlay active":"overlay"} ></div>
-      <button
-        type="button"
-        class="btn btn-primary btn_EditInforPlayer"
-        style={{
-            padding: "10px 20px",
-            display: "block",
-            margin: "0 auto",
-            marginBottom: 20,
-            fontWeight: 500,
-            fontFamily: "Mulish-Bold",
-            borderRadius: 5,
-            backgroundColor: "#D7FC6A",
-            border: 1,
-            borderColor: "#D7FC6A",
-            transition: "0.5s",
-          }}
-        onClick={()=>{
-          setHideShow(true);
-          //onClickAddPlayer();
-          setTeam(player)
-        }}
-      >
-        Chỉnh sửa thông tin
-      </button>
-
       <div
         className={hideShow?"popup__player active":"popup__player"}
         id="exampleModal"
@@ -259,8 +236,9 @@ const EditInforPlayer = (props) => {
                 data-bs-dismiss="modal"
                 aria-label="Close"
                 onClick={() => {
-                  setHideShow(false) 
+                  setHideShowAdd(false) 
                   //resetStateForm();
+                  
                   setTeam(null);
                 }}
               ></button>
@@ -426,7 +404,7 @@ const EditInforPlayer = (props) => {
                   class="btn btn-secondary"
                   data-bs-dismiss="modal"
                   onClick={() => {
-                    setHideShow(false)
+                    setHideShowAdd(false)
                     //resetStateForm();
                     setTeam(null);
                   }}
