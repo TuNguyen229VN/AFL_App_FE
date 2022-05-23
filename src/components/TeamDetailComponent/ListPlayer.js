@@ -272,69 +272,6 @@ function ListPlayer(props) {
               <div className="listPlayer__list">
                 {playerInTeam.length > 0  ? (
                   playerInTeam.map((item, index) => {
-                    return (
-                      <div
-                        key={index}
-                        // style={{
-                        //   cursor: "pointer",
-                        // }}
-                        className="listPlayer__item"
-                      >
-                        <form onSubmit={onSubmitHandler}>
-                          <div className="avt">
-                            <img src={item.playerAvatar} alt="dev" />
-                          </div>
-                          <div className="des">
-                            <p className="namePlayer">
-                              <span>Tên:</span>
-                              {item.playername}
-                            </p>
-                            <p className="genderPlayer">
-                              <span>Giới tính:</span>
-                              {item.gender === "Male" ? "Nam" : "Nữ"}
-                            </p>
-                            <p className="mailPlayer">
-                              <span>Email:</span>
-                              <span className="namePlayerInTeam">
-                                {item.email}
-                              </span>
-                            </p>
-                            <p className="phonePlayer">
-                              <span>Sdt:</span>
-                              {item.phone}
-                            </p>
-                            <p className="dobPlayer">
-                              <span>Ngày sinh:</span>
-                              {item.dateOfBirth.split("-")[2].split("T")[0] +
-                                "/" +
-                                item.dateOfBirth.split("-")[1] +
-                                "/" +
-                                item.dateOfBirth.split("-")[0]}
-                            </p>
-                          </div>
-                          {/* <input className="btn_EditInforPlayer"
-                            style={{
-                              padding: "10px 20px",
-                              display: "block",
-                              margin: "0 auto",
-                              marginBottom: 20,
-                              fontWeight: 500,
-                              fontFamily: "Mulish-Bold",
-                              borderRadius: 5,
-                              backgroundColor: "#D7FC6A",
-                              border: 1,
-                              borderColor: "#D7FC6A",
-                              transition: "0.5s",
-                            }}
-                            type="submit"
-                            value="Chỉnh sửa thông tin"
-                          /> */}
-                        {idHost === id ?
-                          <EditInforPlayer onClickAddPlayer={onClickAddPlayer} editInforFootballPlayer={editInforFootballPlayer} player={item} />
-                          : null }
-                        </form>
-                      </div>
-                    );
                     if(item != undefined){
                       return (
                         <div
@@ -376,23 +313,7 @@ function ListPlayer(props) {
                                   item.dateOfBirth.split("-")[0]}
                               </p>
                             </div>
-                            {/* <input className="btn_EditInforPlayer"
-                              style={{
-                                padding: "10px 20px",
-                                display: "block",
-                                margin: "0 auto",
-                                marginBottom: 20,
-                                fontWeight: 500,
-                                fontFamily: "Mulish-Bold",
-                                borderRadius: 5,
-                                backgroundColor: "#D7FC6A",
-                                border: 1,
-                                borderColor: "#D7FC6A",
-                                transition: "0.5s",
-                              }}
-                              type="submit"
-                              value="Chỉnh sửa thông tin"
-                            /> */}
+                           
                             {idHost === id ? (
                               <div>
                                 <div
@@ -454,7 +375,6 @@ function ListPlayer(props) {
                         </div>
                       );
                     }
-                    
                   })
                 ) : (
                   <p
