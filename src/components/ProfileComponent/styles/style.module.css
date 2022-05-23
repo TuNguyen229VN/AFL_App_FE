@@ -117,7 +117,7 @@
     -moz-appearance:textfield; /* Firefox */
 }
 
-.profile__text .text:nth-child(10){
+.profile__text .text:nth-child(6){
     grid-column: 1/3;
     row-gap: 2/3;
 }

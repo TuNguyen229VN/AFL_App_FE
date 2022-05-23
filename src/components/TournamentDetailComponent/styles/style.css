@@ -139,7 +139,7 @@
   border: 1px solid #ccc;
   padding: 10px;
 }
-.teamdetail .rank__tour .table__team:last-child{
+.teamdetail .rank__tour .table__team:last-child {
   margin-bottom: 0;
 }
 .teamdetail .prediction__tournament .predict__table tr:nth-child(odd),
@@ -201,7 +201,7 @@
   text-transform: uppercase;
   position: relative;
   width: max-content;
-  width: 100px;
+  width: 120px;
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(4) {
   width: 280px;
@@ -209,31 +209,31 @@
 .teamdetail .schedule__tour .schedule__table td:nth-child(3) {
   font-family: "Mulish-Bold";
   font-size: 18px;
-  transform: translateX(40px);
+  transform: translateX(10px);
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(5) {
   width: 85px;
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(5) a{
+.teamdetail .schedule__tour .schedule__table td:nth-child(5) a {
   color: var(--blue-black);
   font-family: "Mulish-Bold";
 }
 
-.teamdetail .schedule__tour .schedule__table td:nth-child(5) a:hover{
+.teamdetail .schedule__tour .schedule__table td:nth-child(5) a:hover {
   text-decoration: underline;
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(2) img {
   top: 50%;
   transform: translateY(-50%);
   position: absolute;
-  left: 140px;
+  left: 200px;
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(4) img {
   position: absolute;
   font-family: "Mulish-Bold";
   top: 50%;
   transform: translateY(-50%);
-  right: 250px;
+  right: 290px;
 }
 
 .teamdetail .schedule__tour .wrap__title {
@@ -318,13 +318,13 @@
 }
 
 /* Prediction Tournament Detail */
-.teamdetail .prediction .btnPrediction{
-background-color: #fff;
-border: 2px solid var(--green-bold);
-padding: 10px;
-outline: none;
+.teamdetail .prediction .btnPrediction {
+  background-color: #fff;
+  border: 2px solid var(--green-bold);
+  padding: 10px;
+  outline: none;
 }
-.teamdetail .prediction .btnPrediction:hover{
+.teamdetail .prediction .btnPrediction:hover {
   background-color: var(--green-bold);
 }
 
@@ -332,7 +332,7 @@ outline: none;
   width: 120px;
 }
 
-.teamdetail .prediction .schedule__table td:nth-child(2){
+.teamdetail .prediction .schedule__table td:nth-child(2) {
   width: 190px;
 }
 
@@ -340,58 +340,58 @@ outline: none;
   right: 330px;
 }
 
-.popup__prediction{
+.popup__prediction {
   background-color: #fff;
-  border:2px solid var(--blue-black);
+  border: 2px solid var(--blue-black);
   position: fixed;
   padding: 20px 30px;
   text-align: center;
   z-index: 8;
   top: -100%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   border-radius: 5px;
   visibility: hidden;
   opacity: 0;
   transition: 0.5s;
 }
-.popup__prediction.active{
+.popup__prediction.active {
   top: 30%;
   left: 50%;
   opacity: 1;
   visibility: visible;
 }
-.overlay.active{
+.overlay.active {
   opacity: 0.8;
   visibility: visible;
 }
-.popup__prediction h2{
+.popup__prediction h2 {
   text-transform: uppercase;
   margin-top: 30px;
 }
-.popup__prediction .popup__prediction__wrap{
+.popup__prediction .popup__prediction__wrap {
   display: flex;
   justify-content: center;
   align-items: center;
   column-gap: 30px;
 }
-.popup__prediction .popup__prediction__wrap input{
+.popup__prediction .popup__prediction__wrap input {
   width: 60px;
   height: 40px;
   padding: 5px;
   border: 1px solid #ccc;
 }
-.popup__prediction .popup__prediction__wrap input:focus{
+.popup__prediction .popup__prediction__wrap input:focus {
   border: 1px solid var(--blue-black);
 }
-.popup__prediction .popup__prediction__wrap .line{
+.popup__prediction .popup__prediction__wrap .line {
   width: 10px;
   background-color: var(--blue-black);
   position: absolute;
   height: 2px;
 }
 
-.popup__prediction button{
+.popup__prediction button {
   margin-top: 25px;
   padding: 10px 20px;
   outline: none;
@@ -403,17 +403,17 @@ outline: none;
 
 .popup__prediction input::-webkit-outer-spin-button,
 .popup__prediction input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-.popup__prediction input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
-    text-align: center;
+.popup__prediction input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+  text-align: center;
 }
 
-.overlay{
+.overlay {
   position: fixed;
   background-color: #000;
   width: 100%;
@@ -426,7 +426,7 @@ outline: none;
   transition: 0.5s;
 }
 
-.popup__prediction .close{
+.popup__prediction .close {
   position: absolute;
   font-family: "Mulish-Bold";
   right: 10px;
@@ -446,7 +446,7 @@ outline: none;
   min-height: 55% !important;
 }
 
-.btn_UpdateTournament:hover{
+.btn_UpdateTournament:hover {
   color: white;
-  background-color: #000!important;
+  background-color: #000 !important;
 }

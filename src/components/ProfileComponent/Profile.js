@@ -511,7 +511,7 @@ function Profile() {
                 name="dob"
               />
             </div>
-            <div className={styles.text}>
+            {/* <div className={styles.text}>
               <label htmlFor="cmnd">CMND</label>
               <input
                 type="text"
@@ -555,7 +555,7 @@ function Profile() {
                 onChange={onChangeHandler}
                 name="phoneB"
               />
-            </div>
+            </div> */}
             <div className={styles.text}>
               <label htmlFor="bio">Mô tả </label>
               <textarea
