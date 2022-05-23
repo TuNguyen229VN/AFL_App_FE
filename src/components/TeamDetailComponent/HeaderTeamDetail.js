@@ -72,7 +72,7 @@ function HeaderTeamDetail() {
       return <InforTeamDetail description={team.description} />;
     }
     if (activeTeamDetail === `/teamDetail/${idTeam}/listPlayer`) {
-      return <ListPlayer idHost={user.userVM.id} id={team.id} gender={team.teamGender} numberPlayerInTeam={team.numberPlayerInTeam} />;
+      return <ListPlayer idHost={user != undefined ? user.userVM.id : undefined} id={team.id} gender={team.teamGender} numberPlayerInTeam={team.numberPlayerInTeam} />;
     }
     if (activeTeamDetail === `/teamDetail/${idTeam}/reportTeamDeatail`) {
       return <ReportTeamDetail />;
@@ -105,7 +105,7 @@ function HeaderTeamDetail() {
                     </div>
                     {user !== null ? (
                       <>
-                        {user.userVM.id === team.id ? (
+                        {user.userVM.id != undefined &&  user.userVM.id === team.id ? (
                           <Link
                             to={`/updateTeam/${team.id}`}
                             state={{ address: team.teamArea }}

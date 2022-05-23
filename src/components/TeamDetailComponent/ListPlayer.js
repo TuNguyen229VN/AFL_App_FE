@@ -217,7 +217,7 @@ function ListPlayer(props) {
     <>
       <div className="teamdetail__content listPlayer">
         <h3 className="listPlayer__title">Danh sách thành viên</h3>
-        {idHost === id ? (
+        {idHost != undefined && idHost === id ? (
           <div
             style={{
               display: "flex",
@@ -314,7 +314,7 @@ function ListPlayer(props) {
                               </p>
                             </div>
                            
-                            {idHost === id ? (
+                            {idHost != undefined && idHost === id ? (
                               <div>
                                 <div
                                   className={

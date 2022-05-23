@@ -21,7 +21,6 @@ function HeaderTournamentDetail() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
   const [tourDetail, setTourDetail] = useState("");
   const [host, setHost] = useState("");
@@ -192,7 +191,34 @@ function HeaderTournamentDetail() {
                           <i class="fa-solid fa-pen-to-square" />
                           Chỉnh sửa giải đấu
                         </Link>
-                      ) : null}
+                      ) : user.userVM.roleId === 3 ? <Link
+                      to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
+                      state={{
+                        id: tourDetail.id,
+                        address: tourDetail.footballFieldAddress,
+                      }}
+                      className="btn_UpdateTournament"
+                      style={{
+                        padding: "20px 50px",
+                        marginLeft: 75,
+                        fontWeight: 600,
+                        fontFamily: "Mulish-Bold",
+                        borderRadius: 5,
+                        backgroundColor: "#D7FC6A",
+                        border: 1,
+                        borderColor: "#D7FC6A",
+                        transition: "0.5s",
+                        position: "absolute",
+                        top: 365,
+                      }}
+                      // onClick={() => {
+                      //   updateClick(,)
+                      // }}
+                    >
+                      {" "}
+                      <i class="fa-solid fa-pen-to-square" />
+                      Tham gia giải đấu
+                    </Link> : null}
                     </>
                   ) : null}
                 </div>
