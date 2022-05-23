@@ -283,7 +283,9 @@ function ListPlayer(props) {
                         >
                           <form onSubmit={onSubmitHandler}>
                             <div className="avt">
-                              <img src={item.playerAvatar} alt="dev" />
+                              <img style={{
+                                objectFit: "cover"
+                              }} src={item.playerAvatar} alt="dev" />
                             </div>
                             <div className="des">
                               <p className="namePlayer">

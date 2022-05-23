@@ -39,7 +39,6 @@ function HeaderTournamentDetail() {
       })
       .catch((err) => console.error(err));
   };
-
   //Get User
   const getUserById = async (id) => {
     let afterDefaultURL = `users/${id}`;
@@ -109,7 +108,7 @@ function HeaderTournamentDetail() {
       activeTeamDetail ===
       `/tournamentDetail/${idTour}/scheduleTournamentDetail`
     ) {
-      return <ScheduleTournamentDetail />;
+      return <ScheduleTournamentDetail tourDetailId={tourDetail.id} />;
     }
     if (
       activeTeamDetail ===
