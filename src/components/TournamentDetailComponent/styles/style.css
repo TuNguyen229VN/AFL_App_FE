@@ -450,3 +450,31 @@
   color: white;
   background-color: #000 !important;
 }
+
+.choicePlayerTable, .choicePlayerTable th, .choicePlayerTable td {
+  border: 1px solid black;
+}
+
+.listFootballPlayerChoice tr{
+  transition: all 0.3s ease 0s;
+  font-family: Mulish;
+
+}
+
+.listFootballPlayerChoice tr:hover{
+  background-color: #f0f2f5;
+}
+
+.popup__player{
+  display: none;
+  position: fixed;
+  top: 50%;
+  z-index: 10;
+  width: 100%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.popup__player.active{
+  display: block;
+}

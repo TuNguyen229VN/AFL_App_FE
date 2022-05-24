@@ -748,7 +748,7 @@ const UpdateTournamentInformation = (props) => {
                     name="closeRegister"
                     value={closeRegister.value}
                     onChange={onChangeHandler}
-                    min={new Date().toISOString().split(".")[0]}
+                    // min={new Date().toISOString().split(".")[0]}
                     required
                   />
                 </div>
@@ -796,7 +796,7 @@ const UpdateTournamentInformation = (props) => {
                       type="datetime-local"
                       name="startTime"
                       value={startTime.value}
-                      min={closeRegister.value}
+                      // min={closeRegister.value}
                       onChange={onChangeHandler}
                     />
                   </div>
@@ -884,7 +884,7 @@ const UpdateTournamentInformation = (props) => {
                     name="endTime"
                     value={endTime.value}
                     onChange={onChangeHandler}
-                    min={startTime.value}
+                    // min={startTime.value}
                   />
                 </div>
               ) : (
@@ -934,7 +934,7 @@ const UpdateTournamentInformation = (props) => {
                     htmlFor="mininum_member"
                     className={styles.createTournament_img_title}
                   >
-                    Số cầu thủ tối thiểu mỗi đội
+                    Số cầu thủ tối đa mỗi đội
                   </label>
                   {minimunPlayerInTournament.error != null ? (
                     <p

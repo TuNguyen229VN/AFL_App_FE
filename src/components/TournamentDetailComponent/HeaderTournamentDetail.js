@@ -14,6 +14,7 @@ import CommentTournamentDetail from "./CommentTournamentDetail";
 import Loading from "../LoadingComponent/Loading";
 import { getAPI } from "../../api";
 import { useNavigate } from "react-router-dom";
+import RegisterInTournament from "./RegisterInTournament";
 
 function HeaderTournamentDetail() {
   const { idTour } = useParams();
@@ -21,6 +22,7 @@ function HeaderTournamentDetail() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+    
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
   const [tourDetail, setTourDetail] = useState("");
   const [host, setHost] = useState("");
@@ -190,7 +192,10 @@ function HeaderTournamentDetail() {
                           <i class="fa-solid fa-pen-to-square" />
                           Chỉnh sửa giải đấu
                         </Link>
-                      ) : user.userVM.roleId === 3 ? <Link
+                      ) : user.userVM.roleId === 3 && tourDetail.mode !== "PRIVATE" ?
+                      <div>
+                           <button
+                      data-bs-toggle="modal" data-bs-target="#exampleModal"
                       to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
                       state={{
                         id: tourDetail.id,
@@ -214,10 +219,11 @@ function HeaderTournamentDetail() {
                       //   updateClick(,)
                       // }}
                     >
-                      {" "}
-                      <i class="fa-solid fa-pen-to-square" />
                       Tham gia giải đấu
-                    </Link> : null}
+                    </button> 
+                       <RegisterInTournament tourDetail={tourDetail} idUser={user != undefined ? user.userVM.id : undefined} />
+                      </div>                    
+                    : null}
                     </>
                   ) : null}
                 </div>

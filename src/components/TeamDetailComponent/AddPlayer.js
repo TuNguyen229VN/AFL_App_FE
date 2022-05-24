@@ -5,8 +5,15 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.css";
 const AddPlayer = (props) => {
   
+
+
+
   const {addPlayerInListPlayer,onClickAddPlayer,hideShow,setHideShowAdd} = props;
-  
+  useEffect(() => {
+    if(hideShow === false){
+      resetStateForm();
+  }
+  },[hideShow])
   const [imgPlayer, setImgPlayer] = useState({
     value: "",
     img: null,
@@ -99,9 +106,7 @@ const AddPlayer = (props) => {
       status: true,
     };
     await addPlayerInListPlayer(data);
-      if(hideShow === false){
-        resetStateForm();
-    }
+      
     // if(addPlayer.status === 201){
     //   setHideShow(false)  
     // }

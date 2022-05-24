@@ -66,25 +66,30 @@ function ScheduleTournamentDetail(props) {
   const [allTeamA,setAllTeamA] = useState(null);
   const [allTeamB,setAllTeamB] = useState(null);
   useEffect(() => {
-    
     getAllTeamInMatch();
-  },[])
+  },[tourDetailId])
   const getAllTeamInMatch = () => {
     setLoading(true);
     const response = getTeamInMatchByTourId(tourDetailId);
     response.then(res =>{
-      const allMatch = res.data.teamsInMatch;
-      const teamB = [];
-      const teamA = allMatch.reduce((accumulator,currentValue) => {
-        if(currentValue.id % 2 === 1){
-           accumulator.push(currentValue);
-        }else{
-          teamB.push(currentValue)
-        }
-        return accumulator
-      },[])
-      setAllTeamA(teamA);
-      setAllTeamB(teamB);
+      if(res.status === 200){
+        const allMatch = res.data.teamsInMatch;
+        const teamB = [];
+        const teamA = allMatch.reduce((accumulator,currentValue) => {
+          if(currentValue.id % 2 === 1){
+             accumulator.push(currentValue);
+          }else{
+            teamB.push(currentValue)
+          }
+          return accumulator
+        },[])
+        setAllTeamA(teamA);
+        setAllTeamB(teamB);
+        setLoading(false);
+      }
+    }).catch(err => {
+      setAllTeamA(null);
+        setAllTeamB(null);
       setLoading(false);
     })
       
@@ -151,7 +156,12 @@ function ScheduleTournamentDetail(props) {
                    <Link to={`/match/${item.match.id}/matchDetail`}>Chi tiết</Link>
                  </td>
                </tr>
-               }) : null}
+               }) : <p style={{
+                 padding: 20,
+                 fontSize: 24,
+                 fontWeight: 700,
+                 color: "red"
+               }}>Hệ thống chưa xếp lịch thi đấu cho giải này</p>}
               
             </table>
             {/* <table className="schedule__table">

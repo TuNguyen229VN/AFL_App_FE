@@ -514,7 +514,7 @@ const MyTournamemts = () => {
                             {tour.tournamentName}
                           </h1>
                           <p className={styles.type}>
-                            {tour.mode + " | " + tour.gender}
+                            {tour.mode + " | " +  tour.tournamentGender}
                           </p>
                           <p className={styles.type}>
                             {getType(tour.tournamentTypeId)}
