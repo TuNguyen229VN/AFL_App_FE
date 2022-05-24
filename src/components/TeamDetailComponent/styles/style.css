@@ -162,6 +162,7 @@
 }
 
 .teamdetail .listPlayer .listPlayer__item {
+  position: relative;
   border: 1px solid #ccc;
   overflow: hidden;
   border-radius: 5px;
@@ -190,6 +191,8 @@
   margin-bottom: 50px;
   position: relative;
   font-size: 18px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .teamdetail .listPlayer .listPlayer__total::before {
@@ -514,6 +517,7 @@
 .popup__player{
   display: none;
   position: fixed;
+  user-select: none;
   top: 50%;
   z-index: 10;
   width: 100%;
@@ -563,4 +567,62 @@
 
 #imgPlayerUpdate{
   display: none;
+}
+
+.listPlayer__item .view__more{
+  position: absolute;
+  background-color: #fff;
+  z-index: 2;
+  right: 15px;
+  top: 10px;
+  padding: 5px;
+  width: max-content;
+  border-radius: 50%;
+  user-select: none;
+  cursor: pointer;
+}
+
+.listPlayer__item .view__more:hover{
+background-color: #f0f2f5;
+}
+.listPlayer__item .option__player.active{
+  display: block;
+}
+.listPlayer__item .option__player{
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  z-index: 2;
+  width: max-content;
+  border-radius: 5px;
+  right: 15px;
+  top: 45px;
+}
+
+.listPlayer .option__player p{
+  cursor: pointer;
+  padding: 10px;
+}
+.listPlayer__item .option__player p:hover{
+  background-color: #f0f2f5;
+  border-radius: 5px;
+}
+
+.listPlayer .option__player p i{
+  margin-right: 10px;
+}
+
+.addPlayerWrap .btn{
+  outline: none;
+  border-radius: none;
+  transition: 0.5s;
+}
+
+.addPlayerWrap .btn:hover{
+  background-color: var(--blue-black);
+  color: var(--white-text);
+}
+
+.addPlayerWrap .btn:focus{
+  outline: 0;
 }

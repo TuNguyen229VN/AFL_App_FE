@@ -198,11 +198,11 @@ const AddPlayer = (props) => {
   };
   //const gender = props.gender;
   return (
-    <div>
+    <div className="addPlayerWrap">
      <div className={hideShow?"overlay active":"overlay"} ></div>
-      <button
+      <div
         type="button"
-        class="btn btn-primary"
+        className="btn"
         style={{
           padding: 10,
         }}
@@ -212,7 +212,7 @@ const AddPlayer = (props) => {
         }}
       >
         Thêm thành viên
-      </button>
+      </div>
 
       <div
         className={hideShow?"popup__player active":"popup__player"}

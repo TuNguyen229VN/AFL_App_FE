@@ -8,7 +8,10 @@ import {
   addFootballPlayer,
   editFootballPlayerAPI,
 } from "../../api/FootballPlayer";
-import { addPlayerInTeamAPI,deletePlayerInTeamAPI } from "../../api/PlayerInTeamAPI";
+import {
+  addPlayerInTeamAPI,
+  deletePlayerInTeamAPI,
+} from "../../api/PlayerInTeamAPI";
 import ReactPaginate from "react-paginate";
 import styles from "../FindTeamComponent/TeamFind.module.css";
 import EditInforPlayer from "./EditInForPlayer";
@@ -24,7 +27,12 @@ function ListPlayer(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [hideShow, setHideShow] = useState(false);
   const [hideShowEdit, setHideShowEdit] = useState(false);
-  const [inforPlayerEdit,setInforPlayerEdit] = useState(null);
+  const [inforPlayerEdit, setInforPlayerEdit] = useState(null);
+
+  const [viewMoreOption, setViewMoreOption] = useState({
+    index: "0",
+    check: false,
+  });
   useEffect(() => {
     setAddPlayerComplete(false);
     getListPlayerInTeamByIdTeam();
@@ -36,14 +44,13 @@ function ListPlayer(props) {
     setCount(response.data.countList);
     const ids = response.data.playerInTeamsFull;
     const players = ids.map(async (player) => {
-        const playerResponse = await getPlayerById(player.footballPlayerId);
-        playerResponse.idPlayerInTeam = player.id;
-        return playerResponse;
-      
+      const playerResponse = await getPlayerById(player.footballPlayerId);
+      playerResponse.idPlayerInTeam = player.id;
+      return playerResponse;
     });
 
     const playersData = await Promise.all(players);
-    console.log(playersData)
+    console.log(playersData);
     setPlayerInTeam(playersData);
     setLoading(false);
   };
@@ -146,7 +153,6 @@ function ListPlayer(props) {
     e.preventDefault();
   };
   const editInforFootballPlayer = (data) => {
-    
     setLoadingAdd(true);
     const response = editFootballPlayerAPI(data);
     response
@@ -184,7 +190,7 @@ function ListPlayer(props) {
   };
   const deletePlayerInTeam = (id) => {
     const response = deletePlayerInTeamAPI(id, "false");
-    console.log(id)
+    console.log(id);
     response
       .then((res) => {
         if (res.status === 200) {
@@ -197,7 +203,7 @@ function ListPlayer(props) {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-          });       
+          });
         }
       })
       .catch((err) => {
@@ -212,34 +218,33 @@ function ListPlayer(props) {
           progress: undefined,
         });
       });
-  }
+  };
   return (
     <>
       <div className="teamdetail__content listPlayer">
         <h3 className="listPlayer__title">Danh sách thành viên</h3>
-        {idHost != undefined && idHost === id ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "right",
-              marginTop: 30,
-            }}
-          >
-            <AddPlayer
-              hideShow={hideShow}
-              id={id}
-              setHideShowAdd={setHideShowAdd}
-              gender={gender}
-              addPlayerInListPlayer={addPlayerInListPlayer}
-              onClickAddPlayer={onClickAddPlayer}
-            />
-          </div>
-        ) : null}
 
         <div>
-          <h2 className="listPlayer__total">
-            Có {numberPlayerInTeam} thành viên
-          </h2>
+          <div className="listPlayer__total">
+            <h2>Có {numberPlayerInTeam} thành viên</h2>
+            {idHost != undefined && idHost === id ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "right",
+                }}
+              >
+                <AddPlayer
+                  hideShow={hideShow}
+                  id={id}
+                  setHideShowAdd={setHideShowAdd}
+                  gender={gender}
+                  addPlayerInListPlayer={addPlayerInListPlayer}
+                  onClickAddPlayer={onClickAddPlayer}
+                />
+              </div>
+            ) : null}
+          </div>
           <div>
             <div>
               <label
@@ -270,9 +275,9 @@ function ListPlayer(props) {
               <Loading />
             ) : (
               <div className="listPlayer__list">
-                {playerInTeam.length > 0  ? (
+                {playerInTeam.length > 0 ? (
                   playerInTeam.map((item, index) => {
-                    if(item != undefined){
+                    if (item != undefined) {
                       return (
                         <div
                           key={index}
@@ -282,10 +287,51 @@ function ListPlayer(props) {
                           className="listPlayer__item"
                         >
                           <form onSubmit={onSubmitHandler}>
+                            <div
+                              className="view__more"
+                              onClick={() => {
+                                setViewMoreOption({
+                                  index: index,
+                                  check: !viewMoreOption.check,
+                                });
+                              }}
+                            >
+                              <i className="fa-solid fa-ellipsis"></i>
+                            </div>
+                            <div
+                              className={
+                                viewMoreOption.index === index &&
+                                viewMoreOption.check
+                                  ? "option__player active"
+                                  : "option__player"
+                              }
+                            >
+                              <p
+                                onClick={() => {
+                                  setHideShowEdit(true);
+                                  setInforPlayerEdit(item);
+                                  //setTeam(player);
+                                }}
+                              >
+                                <i className="fa-solid fa-pen-to-square"></i>
+                                Chỉnh sửa thông tin
+                              </p>
+                              <p
+                                onClick={() => {
+                                  deletePlayerInTeam(item.idPlayerInTeam);
+                                }}
+                              >
+                                <i class="fa-solid fa-trash"></i>Xóa cầu thủ
+                              </p>
+                            </div>
                             <div className="avt">
-                              <img style={{
-                                objectFit: "cover"
-                              }} src={item.playerAvatar} alt="dev" />
+                              <img
+                                style={{
+                                  objectFit: "cover",
+                                }}
+                                src={item.playerAvatar}
+                                alt="dev"
+                              />
                             </div>
                             <div className="des">
                               <p className="namePlayer">
@@ -315,7 +361,7 @@ function ListPlayer(props) {
                                   item.dateOfBirth.split("-")[0]}
                               </p>
                             </div>
-                           
+
                             {idHost != undefined && idHost === id ? (
                               <div>
                                 <div
@@ -323,54 +369,6 @@ function ListPlayer(props) {
                                     hideShowEdit ? "overlay active" : "overlay"
                                   }
                                 ></div>
-                                <button
-                                  type="button"
-                                  class="btn btn-primary btn_EditInforPlayer"
-                                  style={{
-                                    padding: "10px 20px",
-                                    display: "block",
-                                    margin: "0 auto",
-                                    marginBottom: 20,
-                                    fontWeight: 500,
-                                    fontFamily: "Mulish-Bold",
-                                    borderRadius: 5,
-                                    backgroundColor: "#D7FC6A",
-                                    border: 1,
-                                    borderColor: "#D7FC6A",
-                                    transition: "0.5s",
-                                  }}
-                                  onClick={() => {
-                                    setHideShowEdit(true);
-                                    setInforPlayerEdit(item);
-                                    //setTeam(player);
-                                   
-                                  }}
-                                >
-                                  Chỉnh sửa thông tin
-                                </button>
-  
-                                <button
-                                  type="button"
-                                  class="btn btn-primary btn_EditInforPlayer"
-                                  style={{
-                                    padding: "10px 20px",
-                                    display: "block",
-                                    margin: "0 auto",
-                                    marginBottom: 20,
-                                    fontWeight: 500,
-                                    fontFamily: "Mulish-Bold",
-                                    borderRadius: 5,
-                                    backgroundColor: "#D7FC6A",
-                                    border: 1,
-                                    borderColor: "#D7FC6A",
-                                    transition: "0.5s",
-                                  }}
-                                  onClick={() => {
-                                    deletePlayerInTeam(item.idPlayerInTeam);
-                                  }}
-                                >
-                                  Xóa cầu thủ
-                                </button>
                               </div>
                             ) : null}
                           </form>
@@ -390,13 +388,15 @@ function ListPlayer(props) {
                   </p>
                 )}
 
-                {inforPlayerEdit != null ? <EditInforPlayer
-                  onClickAddPlayer={onClickAddPlayer}
-                  editInforFootballPlayer={editInforFootballPlayer}
-                  player={inforPlayerEdit}
-                  setHideShowAdd={ setHideShowEditInfor}
-                  hideShow={hideShowEdit}
-                />:null}
+                {inforPlayerEdit != null ? (
+                  <EditInforPlayer
+                    onClickAddPlayer={onClickAddPlayer}
+                    editInforFootballPlayer={editInforFootballPlayer}
+                    player={inforPlayerEdit}
+                    setHideShowAdd={setHideShowEditInfor}
+                    hideShow={hideShowEdit}
+                  />
+                ) : null}
               </div>
             )}
           </div>
