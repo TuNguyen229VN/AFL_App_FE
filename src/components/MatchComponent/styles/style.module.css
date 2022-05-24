@@ -8,6 +8,7 @@
   font-family: "Mulish-Bold";
   text-transform: uppercase;
   text-align: center;
+  margin-top: 30px;
 }
 
 .match .title::after {
@@ -66,7 +67,9 @@
 .logo img {
   width: 140px;
   height: 140px;
+  border-radius: 50%;
   object-fit: cover;
+  border: 1px solid var(--green-bold);
 }
 
 .match__team::after {
@@ -140,6 +143,7 @@
 .match__detail .match__statics th img{
     width: 50px;
     height: 50px;
+    border-radius: 50%;
 }
 
 .match__detail .match__statics tr{
@@ -226,6 +230,7 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    border: 1px solid var(--green-bold);
 }
 
 .one__comment .name{
@@ -233,4 +238,29 @@
     color: #70757a;
     font-family: "Mulish-Bold";
     margin-bottom: 10px;
+}
+
+.linkBack{
+  margin-right: 10px;
+  font-family: "Mulish-Bold";
+}
+.linkBack:hover{
+  color: var(--blue-black);
+  text-decoration: underline;
+}
+.match .sw{
+  margin-right: 10px;
+  font-family: "Mulish-Bold";
+}
+
+.linkBack:nth-child(5){
+  text-decoration: underline;
+}
+
+.error{
+  font-size: 24px;
+  margin-bottom: 90px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 60px;
 }

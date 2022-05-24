@@ -141,12 +141,12 @@ function App() {
           />
           <Route
             exact
-            path="/match/1/matchDetail"
+            path="/match/:idMatch/matchDetail"
             element={user ? <Match /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
-            path="/match/1/livestream"
+            path="/match/:idMatch/livestream"
             element={user ? <Match /> : <Navigate to={"/login"} />}
           />
           <Route exact path="/resetPassword" element={<ResetPassword />} />
