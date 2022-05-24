@@ -89,9 +89,12 @@ export default function RegisterInTournament(props) {
     }
     const response = addTeamInTournamentAPI(data);
     response.then(res => {
-      if(res === 201){
+      if(res.status === 201){
+        setLoading(false);
         addPlayerInTournament(res.data.id);
+        //console.log(res.data);
       }
+      
       // toast.success("Tạo đội bóng thành công", {
       //   position: "top-right",
       //   autoClose: 3000,
