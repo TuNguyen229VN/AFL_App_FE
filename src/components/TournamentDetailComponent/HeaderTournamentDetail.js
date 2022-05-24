@@ -119,7 +119,7 @@ function HeaderTournamentDetail() {
       return <RankTableTournamentDetail />;
     }
     if (activeTeamDetail === `/tournamentDetail/${idTour}/teamInTournament`) {
-      return <TeamInTournament />;
+      return <TeamInTournament tourDetailId={tourDetail.id} />;
     }
     if (
       activeTeamDetail ===

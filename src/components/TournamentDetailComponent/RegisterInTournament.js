@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { getAPI } from "../../api/index";
 import LoadingAction from "../LoadingComponent/LoadingAction";
-import styles from "../FindTournamentComponent/TournamentFind.module.css";
-import ReactPaginate from "react-paginate";
+import { toast } from "react-toastify";
+import {addTeamInTournamentAPI} from "../../api/TeamInTournamentAPI"
+import {addPlayerInTournamentAPI} from "../../api/PlayerInTournamentAPI"
 export default function RegisterInTournament(props) {
   const { idUser, tourDetail } = props;
-  console.log(tourDetail);
   const [playerInTeam, setPlayerInTeam] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [count, setCount] = useState(0);
+  const [countChoice, setCountChoice] = useState(0);
+  const [listClothes, setListClothes] = useState([]);
+  const [error, setError] = useState(false);
   useEffect(() => {
     getListPlayerInTeamByIdTeam();
   }, [idUser]);
 
   const getListPlayerInTeamByIdTeam = async () => {
     setLoading(true);
-    const afterURL = `PlayerInTeam?teamId=${idUser}&status=true&pageIndex=${currentPage}&limit=10`;
+    const afterURL = `PlayerInTeam?teamId=${idUser}&status=true&pageIndex=1&limit=50`;
     const response = await getAPI(afterURL);
-    setCount(response.data.countList);
+    
     const ids = response.data.playerInTeamsFull;
     const players = ids.map(async (player) => {
       const playerResponse = await getPlayerById(player.footballPlayerId);
@@ -29,7 +30,7 @@ export default function RegisterInTournament(props) {
     });
     const playersData = await Promise.all(players);
     playersData.countList = response.data.countList;
-    console.log(playersData);
+    
     setPlayerInTeam(playersData);
     setLoading(false);
   };
@@ -47,8 +48,90 @@ export default function RegisterInTournament(props) {
     } else return 11;
   };
 
-  const handlePageClick = (e) => {
 
+
+  // const checkDuplicateClothes = (data) => {
+  //   const checkDup = listClothes.findIndex((item) => item === data);
+  //   if(checkDup === -1){
+  //     setListClothes([
+  //       ...listClothes,data
+  //     ])
+  //   }
+  // }
+
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+    const allPlayer = playerInTeam;
+    if (name === "checkChoicePlayer") {
+      if (allPlayer[value].choice) {
+        allPlayer[value].choice = false;
+        setCountChoice(countChoice - 1);
+      } else {
+        allPlayer[value].choice = true;
+        setCountChoice(countChoice + 1);
+      }
+    } else {
+      const getIndex = name.split("t")[2];
+      allPlayer[getIndex].clothesNumber = value;
+    }
+
+    setPlayerInTeam(allPlayer);
+  };
+
+  const addTeamInTournament = () => {
+    setLoading(true);
+    const data = {
+      "point": 0,
+      "differentPoint": 0,
+      "status": "Chờ xét duyệt",
+      "tournamentId": tourDetail.id,
+      "teamId": idUser
+    }
+    const response = addTeamInTournamentAPI(data);
+    response.then(res => {
+      if(res === 201){
+        addPlayerInTournament(res.data.id);
+      }
+      // toast.success("Tạo đội bóng thành công", {
+      //   position: "top-right",
+      //   autoClose: 3000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
+    }).catch(err => {
+      setLoading(false);
+      console.error(err);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    })
+  }
+  const addPlayerInTournament = () => {
+
+  }
+  // const checkChoice = (index) => {
+  //   const allPlayer = playerInTeam;
+  //   console.log(allPlayer[index].choice)
+  //   if(allPlayer[index].choice){
+  //     allPlayer[index].choice = false;
+  //   }else{
+  //     allPlayer[index].choice = true;
+  //   }
+  //   console.log(allPlayer);
+  //   setPlayerInTeam(allPlayer);
+  // }
+  const onSubmitHandler = (e) => {
+      e.preventDefault();
+      addTeamInTournament();
   }
   return (
     <div
@@ -78,6 +161,7 @@ export default function RegisterInTournament(props) {
               aria-label="Close"
             ></button>
           </div>
+          <form onSubmit={onSubmitHandler}>
           <div
             style={{
               justifyContent: "flex-start",
@@ -102,19 +186,65 @@ export default function RegisterInTournament(props) {
                   style={{
                     fontWeight: 600,
                     fontSize: 20,
-                    marginBottom: 20,
+                    marginBottom: 10,
                   }}
                 >
                   Danh sách cầu thủ
                 </h1>
                 <div
                   style={{
-                    width: "73vw",
-                    height: 350,
-                    overflowY: "scroll"
+                    display: "flex",
+                    alignItems: "baseline",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <table 
+                  <p
+                    style={{
+                      fontWeight: 600,
+                      fontSize: 18,
+                      marginBottom: 10,
+                    }}
+                  >
+                    Lưu ý: Chọn ít nhất {getNumberInField()} cầu thủ - tối đa{" "}
+                    {tourDetail.footballPlayerMaxNumber} cầu thủ
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                    }}
+                  >
+                    {error ?  <p
+                      style={{
+                        color: "red",
+                        fontWeight: 600,
+                        fontSize: 18,
+                        marginRight: 20
+                      }}
+                    >
+                      Số áo bị trùng 
+                    </p> : null}
+                    
+                    <p
+                      style={{
+                        fontWeight: 600,
+                        fontSize: 18,
+                        marginRight: 15,
+                      }}
+                    >
+                      Số cầu thủ đã chọn {countChoice}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    width: "73vw",
+                    height: 350,
+                    overflowY: "scroll",
+                  }}
+                >
+                  <table
                     className="choicePlayerTable"
                     style={{
                       width: "72vw",
@@ -123,29 +253,41 @@ export default function RegisterInTournament(props) {
                   >
                     <thead>
                       <tr>
-                      <th >STT</th>
-                        <th  style={{
-                          width: "29%"
-                        }}>Email</th>
-                        <th >Tên</th>
-                        <th >Số áo</th>
-                        <th >Chọn</th>
+                        <th>STT</th>
+                        <th
+                          style={{
+                            width: "29%",
+                          }}
+                        >
+                          Email
+                        </th>
+                        <th>Tên</th>
+                        <th>Số áo</th>
+                        <th>Chọn</th>
                       </tr>
                     </thead>
                     <tbody className="listFootballPlayerChoice">
                       {playerInTeam != null
                         ? playerInTeam.map((item, index) => {
                             return (
-                              <tr key={index}>
+                              <tr
+                                style={{
+                                  cursor: "pointer",
+                                }}
+                                // onClick={() => {
+                                //   checkChoice(index)
+                                // }}
+                                key={index}
+                              >
                                 <td>{index + 1}</td>
                                 <td>{item.email}</td>
 
-                                <td 
+                                <td
                                 // style={{
                                 //   textAlign: "center"
                                 // }}
                                 >
-                                    {/* {" "}
+                                  {/* {" "}
                                     <div
                                       style={{
                                         width: 70,
@@ -169,13 +311,18 @@ export default function RegisterInTournament(props) {
                                   <input
                                     type="text"
                                     placeholder="Nhập số áo"
-                                    disabled
+                                    disabled={!item.choice}
+                                    name={`clothesNumberInput${index}`}
+                                    onChange={onChangeHandler}
                                   />
                                 </td>
                                 <td>
                                   <input
                                     type="checkbox"
                                     name="checkChoicePlayer"
+                                    defaultChecked={item.choice}
+                                    onChange={onChangeHandler}
+                                    value={index}
                                   />
                                 </td>
                               </tr>
@@ -185,31 +332,6 @@ export default function RegisterInTournament(props) {
                     </tbody>
                   </table>
                 </div>
-                <nav
-          aria-label="Page navigation example"
-          className={styles.pagingTournament}
-        >
-          <ReactPaginate
-            previousLabel={"Trang trước"}
-            nextLabel={"Trang sau"}
-            containerClassName="pagination"
-            activeClassName={styles.active}
-            pageClassName={styles.pageItem}
-            nextClassName={styles.pageItem}
-            previousClassName={styles.pageItem}
-            breakLabel={"..."}
-            pageCount={Math.ceil(count / 8)}
-            marginPagesDisplayed={3}
-            onPageChange={handlePageClick}
-            pageLinkClassName={styles.pagelink}
-            previousLinkClassName={styles.pagelink}
-            nextLinkClassName={styles.pagelink}
-            breakClassName={styles.pageItem}
-            breakLinkClassName={styles.pagelink}
-            pageRangeDisplayed={2}
-          />
-        </nav>       
-
               </div>
             )}
           </div>
@@ -226,19 +348,21 @@ export default function RegisterInTournament(props) {
             </button>
             {playerInTeam != null &&
             playerInTeam.countList < getNumberInField() ? null : (
-              <button
+              <input
                 style={{
                   padding: 10,
                 }}
-                type="button"
+                type="submit"
                 class="btn btn-primary"
-              >
-                Lưu danh sách
-              </button>
+                value=" Lưu danh sách"
+                />
             )}
           </div>
+          </form>
+          
         </div>
       </div>
+      {loading ? <LoadingAction /> : null}
     </div>
   );
 }
