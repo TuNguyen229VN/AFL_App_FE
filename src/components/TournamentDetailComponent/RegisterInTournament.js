@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { getAPI } from "../../api/index";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import { toast } from "react-toastify";
-import {addTeamInTournamentAPI} from "../../api/TeamInTournamentAPI"
-import {addPlayerInTournamentAPI} from "../../api/PlayerInTournamentAPI"
+import { addTeamInTournamentAPI } from "../../api/TeamInTournamentAPI";
+import { addPlayerInTournamentAPI } from "../../api/PlayerInTournamentAPI";
 export default function RegisterInTournament(props) {
   const { idUser, tourDetail } = props;
   const [playerInTeam, setPlayerInTeam] = useState(null);
@@ -11,6 +11,8 @@ export default function RegisterInTournament(props) {
   const [countChoice, setCountChoice] = useState(0);
   const [listClothes, setListClothes] = useState([]);
   const [error, setError] = useState(false);
+  const rowRef = useRef();
+
   useEffect(() => {
     getListPlayerInTeamByIdTeam();
   }, [idUser]);
@@ -19,7 +21,7 @@ export default function RegisterInTournament(props) {
     setLoading(true);
     const afterURL = `PlayerInTeam?teamId=${idUser}&status=true&pageIndex=1&limit=50`;
     const response = await getAPI(afterURL);
-    
+
     const ids = response.data.playerInTeamsFull;
     const players = ids.map(async (player) => {
       const playerResponse = await getPlayerById(player.footballPlayerId);
@@ -30,7 +32,7 @@ export default function RegisterInTournament(props) {
     });
     const playersData = await Promise.all(players);
     playersData.countList = response.data.countList;
-    
+
     setPlayerInTeam(playersData);
     setLoading(false);
   };
@@ -47,8 +49,6 @@ export default function RegisterInTournament(props) {
       return 7;
     } else return 11;
   };
-
-
 
   // const checkDuplicateClothes = (data) => {
   //   const checkDup = listClothes.findIndex((item) => item === data);
@@ -81,46 +81,69 @@ export default function RegisterInTournament(props) {
   const addTeamInTournament = () => {
     setLoading(true);
     const data = {
-      "point": 0,
-      "differentPoint": 0,
-      "status": "Chờ xét duyệt",
-      "tournamentId": tourDetail.id,
-      "teamId": idUser
-    }
+      point: 0,
+      differentPoint: 0,
+      status: "Chờ duyệt",
+      tournamentId: tourDetail.id,
+      teamId: idUser,
+    };
     const response = addTeamInTournamentAPI(data);
-    response.then(res => {
-      if(res.status === 201){
-        setLoading(false);
-        addPlayerInTournament(res.data.id);
-        //console.log(res.data);
-      }
-      
-      // toast.success("Tạo đội bóng thành công", {
-      //   position: "top-right",
-      //   autoClose: 3000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      // });
-    }).catch(err => {
-      setLoading(false);
-      console.error(err);
-      toast.error(error.response.data.message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    })
-  }
-  const addPlayerInTournament = () => {
+    response
+      .then((res) => {
+        if (res.status === 201) {
+          //setLoading(false);
+          addPlayerInTournament(res.data.id);
+          //console.log(res.data);
+        }
 
-  }
+        // toast.success("Tạo đội bóng thành công", {
+        //   position: "top-right",
+        //   autoClose: 3000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        // });
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.error(err);
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+  const addPlayerInTournament = (id) => {
+    const getPlayerChoice = playerInTeam.reduce((accumulator, currentValue) => {
+      if (currentValue.choice === true) {
+        accumulator.push(currentValue);
+      }
+      return accumulator;
+    }, []);
+    console.log(getPlayerChoice);
+    getPlayerChoice.map((iteam, index) => {
+      const data = {
+        teamInTournamentId: id,
+        playerInTeamId: iteam.idPlayerInTeam,
+      };
+      const response = addPlayerInTournamentAPI(data);
+      response
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+    setLoading(false);
+  };
   // const checkChoice = (index) => {
   //   const allPlayer = playerInTeam;
   //   console.log(allPlayer[index].choice)
@@ -133,9 +156,14 @@ export default function RegisterInTournament(props) {
   //   setPlayerInTeam(allPlayer);
   // }
   const onSubmitHandler = (e) => {
-      e.preventDefault();
-      addTeamInTournament();
-  }
+    e.preventDefault();
+    addTeamInTournament();
+  };
+  const onRowClick = () => {
+     rowRef.current.focus();
+    console.log(rowRef.current)
+    // rowRef.current.disabled = false;
+  };
   return (
     <div
       class="modal fade"
@@ -165,132 +193,132 @@ export default function RegisterInTournament(props) {
             ></button>
           </div>
           <form onSubmit={onSubmitHandler}>
-          <div
-            style={{
-              justifyContent: "flex-start",
-            }}
-            class="modal-body"
-          >
-            {playerInTeam != null &&
-            playerInTeam.countList < getNumberInField() ? (
-              <h1
-                style={{
-                  fontWeight: 600,
-                  fontSize: 20,
-                  color: "red",
-                }}
-              >
-                Đội bóng của bạn không đủ thành viên để tham gia giải đấu, tối
-                thiểu đội bóng phải có {getNumberInField()} cầu thủ
-              </h1>
-            ) : (
-              <div>
+            <div
+              style={{
+                justifyContent: "flex-start",
+              }}
+              class="modal-body"
+            >
+              {playerInTeam != null &&
+              playerInTeam.countList < getNumberInField() ? (
                 <h1
                   style={{
                     fontWeight: 600,
                     fontSize: 20,
-                    marginBottom: 10,
+                    color: "red",
                   }}
                 >
-                  Danh sách cầu thủ
+                  Đội bóng của bạn không đủ thành viên để tham gia giải đấu, tối
+                  thiểu đội bóng phải có {getNumberInField()} cầu thủ
                 </h1>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <p
+              ) : (
+                <div>
+                  <h1
                     style={{
                       fontWeight: 600,
-                      fontSize: 18,
+                      fontSize: 20,
                       marginBottom: 10,
                     }}
                   >
-                    Lưu ý: Chọn ít nhất {getNumberInField()} cầu thủ - tối đa{" "}
-                    {tourDetail.footballPlayerMaxNumber} cầu thủ
-                  </p>
+                    Danh sách cầu thủ
+                  </h1>
                   <div
                     style={{
                       display: "flex",
                       alignItems: "baseline",
+                      justifyContent: "space-between",
                     }}
                   >
-                    {error ?  <p
-                      style={{
-                        color: "red",
-                        fontWeight: 600,
-                        fontSize: 18,
-                        marginRight: 20
-                      }}
-                    >
-                      Số áo bị trùng 
-                    </p> : null}
-                    
                     <p
                       style={{
                         fontWeight: 600,
                         fontSize: 18,
-                        marginRight: 15,
+                        marginBottom: 10,
                       }}
                     >
-                      Số cầu thủ đã chọn {countChoice}
+                      Lưu ý: Chọn ít nhất {getNumberInField()} cầu thủ - tối đa{" "}
+                      {tourDetail.footballPlayerMaxNumber} cầu thủ
                     </p>
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    width: "73vw",
-                    height: 350,
-                    overflowY: "scroll",
-                  }}
-                >
-                  <table
-                    className="choicePlayerTable"
-                    style={{
-                      width: "72vw",
-                    }}
-                    class="table"
-                  >
-                    <thead>
-                      <tr>
-                        <th>STT</th>
-                        <th
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "baseline",
+                      }}
+                    >
+                      {error ? (
+                        <p
                           style={{
-                            width: "29%",
+                            color: "red",
+                            fontWeight: 600,
+                            fontSize: 18,
+                            marginRight: 20,
                           }}
                         >
-                          Email
-                        </th>
-                        <th>Tên</th>
-                        <th>Số áo</th>
-                        <th>Chọn</th>
-                      </tr>
-                    </thead>
-                    <tbody className="listFootballPlayerChoice">
-                      {playerInTeam != null
-                        ? playerInTeam.map((item, index) => {
-                            return (
-                              <tr
-                                style={{
-                                  cursor: "pointer",
-                                }}
-                                // onClick={() => {
-                                //   checkChoice(index)
-                                // }}
-                                key={index}
-                              >
-                                <td>{index + 1}</td>
-                                <td>{item.email}</td>
+                          Số áo bị trùng
+                        </p>
+                      ) : null}
 
-                                <td
-                                // style={{
-                                //   textAlign: "center"
-                                // }}
+                      <p
+                        style={{
+                          fontWeight: 600,
+                          fontSize: 18,
+                          marginRight: 15,
+                        }}
+                      >
+                        Số cầu thủ đã chọn {countChoice}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    style={{
+                      width: "73vw",
+                      height: 350,
+                      overflowY: "scroll",
+                    }}
+                  >
+                    <table
+                      className="choicePlayerTable"
+                      style={{
+                        width: "72vw",
+                      }}
+                      class="table"
+                    >
+                      <thead>
+                        <tr>
+                          <th>STT</th>
+                          <th
+                            style={{
+                              width: "29%",
+                            }}
+                          >
+                            Email
+                          </th>
+                          <th>Tên</th>
+                          <th>Số áo</th>
+                          <th>Chọn</th>
+                        </tr>
+                      </thead>
+                      <tbody className="listFootballPlayerChoice">
+                        {playerInTeam != null
+                          ? playerInTeam.map((item, index) => {
+                              return (
+                                <tr
+                                  style={{
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={onRowClick}
+                                  key={index}
                                 >
-                                  {/* {" "}
+                                  <td>{index + 1}</td>
+                                  <td>{item.email}</td>
+
+                                  <td
+                                  // style={{
+                                  //   textAlign: "center"
+                                  // }}
+                                  >
+                                    {/* {" "}
                                     <div
                                       style={{
                                         width: 70,
@@ -307,62 +335,63 @@ export default function RegisterInTournament(props) {
                                         alt="avatarPlayer"
                                       />
                                     </div>{" "} */}
-                                  {item.playername}
-                                </td>
+                                    {item.playername}
+                                  </td>
 
-                                <td>
-                                  <input
-                                    type="text"
-                                    placeholder="Nhập số áo"
-                                    disabled={!item.choice}
-                                    name={`clothesNumberInput${index}`}
-                                    onChange={onChangeHandler}
-                                  />
-                                </td>
-                                <td>
-                                  <input
-                                    type="checkbox"
-                                    name="checkChoicePlayer"
-                                    defaultChecked={item.choice}
-                                    onChange={onChangeHandler}
-                                    value={index}
-                                  />
-                                </td>
-                              </tr>
-                            );
-                          })
-                        : null}
-                    </tbody>
-                  </table>
+                                  <td>
+                                    <input
+                                      type="text"
+                                      placeholder="Nhập số áo"
+                                      disabled={!item.choice}
+                                      name={`clothesNumberInput${index}`}
+                                      onChange={onChangeHandler}
+                                      ref={rowRef}
+                                    />
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      name="checkChoicePlayer"
+                                      // defaultChecked={item.choice}
+                                      onChange={onChangeHandler}
+                                      value={index}
+                                      // ref={rowRef}
+                                    />
+                                  </td>
+                                </tr>
+                              );
+                            })
+                          : null}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-          <div class="modal-footer">
-            <button
-              style={{
-                padding: 10,
-              }}
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Đóng
-            </button>
-            {playerInTeam != null &&
-            playerInTeam.countList < getNumberInField() ? null : (
-              <input
+              )}
+            </div>
+            <div class="modal-footer">
+              <button
                 style={{
                   padding: 10,
                 }}
-                type="submit"
-                class="btn btn-primary"
-                value=" Lưu danh sách"
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Đóng
+              </button>
+              {playerInTeam != null &&
+              playerInTeam.countList < getNumberInField() ? null : (
+                <input
+                  style={{
+                    padding: 10,
+                  }}
+                  type="submit"
+                  class="btn btn-primary"
+                  value=" Lưu danh sách"
                 />
-            )}
-          </div>
+              )}
+            </div>
           </form>
-          
         </div>
       </div>
       {loading ? <LoadingAction /> : null}

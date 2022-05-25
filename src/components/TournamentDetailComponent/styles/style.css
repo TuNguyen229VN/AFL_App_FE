@@ -105,6 +105,15 @@
   color: var(--white-text);
 }
 
+.des p {
+  margin: 10px 0;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+    display: -webkit-box;
+}
+
 /* Rank Table Tournament */
 
 .teamdetail .rank__tour .note {
@@ -478,3 +487,16 @@
 .popup__player.active{
   display: block;
 }
+
+.btn_deleteTeam , .btn_acceptTeam{
+  background-color: #D7FC6A;
+  border: 1px solid #D7FC6A;
+  transition: all 0.5s ease 0s;
+}
+
+.btn_deleteTeam:hover , .btn_acceptTeam:hover{
+  background-color: black;
+  border: 1px solid black;
+  color: white;
+}
+

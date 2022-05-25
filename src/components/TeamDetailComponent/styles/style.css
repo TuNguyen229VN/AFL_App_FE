@@ -182,7 +182,7 @@
 }
 
 .teamdetail .listPlayer .listPlayer__item .des p {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-size: 14px;
 }
 
@@ -626,3 +626,4 @@ background-color: #f0f2f5;
 .addPlayerWrap .btn:focus{
   outline: 0;
 }
+

@@ -15,19 +15,24 @@ import Loading from "../LoadingComponent/Loading";
 import { getAPI } from "../../api";
 import { useNavigate } from "react-router-dom";
 import RegisterInTournament from "./RegisterInTournament";
-
+import {getTeamByIdAPI} from "../../api/TeamAPI";
+import {getTeamInTournamentByTourIdAPI,updateStatusTeamInTournament} from "../../api/TeamInTournamentAPI"
+import { toast } from "react-toastify";
 function HeaderTournamentDetail() {
   const { idTour } = useParams();
   const location = useLocation();
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-    
+  const [statusTeamInTour,setStatusInTour] = useState("Tham gia")  
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
   const [tourDetail, setTourDetail] = useState("");
   const [host, setHost] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadingAc,setLoadingAc] = useState(false);
   let navigate = useNavigate();
+  const [currentPage,setCurrentPage] = useState(1);
+  const [allTeam,setAllTeam] = useState(null);
   // Get Tour Detail
   const getTourDetail = async () => {
     let afterDefaultURL = `tournaments/${idTour}`;
@@ -119,7 +124,7 @@ function HeaderTournamentDetail() {
       return <RankTableTournamentDetail />;
     }
     if (activeTeamDetail === `/tournamentDetail/${idTour}/teamInTournament`) {
-      return <TeamInTournament tourDetailId={tourDetail.id} />;
+      return <TeamInTournament  acceptTeamInTournament={acceptTeamInTournament} setStatusTeam={setStatusTeam} tourDetailId={tourDetail.id} allTeam={allTeam} loadingAc={loadingAc} />;
     }
     if (
       activeTeamDetail ===
@@ -138,11 +143,81 @@ function HeaderTournamentDetail() {
     setActiveTeamDetail(location.pathname);
     getTourDetail();
   }, [location.pathname]);
+  useEffect(() => {
+    if(tourDetail.id != undefined){
+      getAllTeamInTournamentByTourId();
+    }
+    
+  }, [tourDetail.id,statusTeamInTour]);
 
   // const updateClick = (data,addressTour) => {
   //   navigate(`update-tournament-detail`,{state: {id: data,address:addressTour} })
-  // }
+  // }  
 
+  const acceptTeamInTournament = (teamInTournament,status) => {
+    const data = {
+      ...teamInTournament.teamInTournament,
+      "status": status ? "Tham gia" : "Từ chối",
+    }
+    setLoadingAc(true);
+
+    const response = updateStatusTeamInTournament(data);
+    response.then(res => {
+      if(res.status === 200){
+        getAllTeamInTournamentByTourId()
+        toast.success("Đội bóng đã được thêm vào giải", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    }).catch(err => {
+      setLoadingAc(false);
+      console.error(err);
+      toast.error(err.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    })
+
+  }
+
+  const getAllTeamInTournamentByTourId = async() => {
+    setLoadingAc(true);
+    try{
+      const response = await getTeamInTournamentByTourIdAPI(tourDetail.id,statusTeamInTour,currentPage);
+    
+      const data = response.data.teamInTournaments;
+      const teams = data.map(async (team) => {
+        const teamResponse = await getTeamByID(team.teamId);
+        teamResponse.teamInTournament = team;
+        return teamResponse;
+      });
+      const teamData = await Promise.all(teams);
+      setLoadingAc(false);
+      setAllTeam(teamData);
+    }catch(err){
+      setLoadingAc(false);
+      console.error(err)
+    }
+  }
+
+  const getTeamByID =  async(idTeam) => {
+    const response = await getTeamByIdAPI(idTeam);
+    return response.data
+  }
+  const setStatusTeam = data => {
+    setStatusInTour(data)
+  }
   return (
     <>
       <Header id={idTour} />

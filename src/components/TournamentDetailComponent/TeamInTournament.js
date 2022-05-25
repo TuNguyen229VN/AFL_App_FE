@@ -1,26 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./styles/style.css";
 import LoadingAction from "../LoadingComponent/LoadingAction";
-import {getTeamByIdAPI} from "../../api/TeamAPI";
-import {getTeamInTournamentByTourIdAPI} from "../../api/TeamInTournamentAPI"
+
 function TeamInTournament(props) {
-  const {tourDetailId } = props;
+  const { tourDetailId, allTeam, loadingAc, setStatusTeam, acceptTeamInTournament } = props;
   const [active, setactive] = useState(true);
-
-
-  useEffect(() => {
-
-  },[tourDetailId])
-
-  const getAllTeamInTournamentByTourId = () => {
-
+  const [teamPaticipate, setTeamPaticipate] = useState(null);
+  const [loading, setLoading] = useState(false);
+  
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
   }
-
-  const getTeamByID = () => {
-
-  }
-
-
+  
   return (
     <>
       <div className="tournamentdetail">
@@ -37,6 +28,7 @@ function TeamInTournament(props) {
               className={active ? "active" : ""}
               onClick={() => {
                 setactive(true);
+                setStatusTeam("Tham gia");
               }}
             >
               Tham gia
@@ -45,6 +37,7 @@ function TeamInTournament(props) {
               className={!active ? "active" : ""}
               onClick={() => {
                 setactive(false);
+                setStatusTeam("Chờ duyệt");
               }}
             >
               Chờ duyệt
@@ -52,29 +45,136 @@ function TeamInTournament(props) {
           </div>
           {active ? (
             <div className="listPlayer__list">
-              <div className="listPlayer__item">
-                <div className="avt">
-                  <img src="/assets/img/homepage/team1.png" alt="team" />
-                </div>
-                <div className="des">
-                  <p className="namePlayer">
-                    <span>Tên đội:</span>FC.Bình
-                  </p>
-                  <p className="mailPlayer">
-                    <span>Người quản lý:</span>Tú Nguyễn
-                  </p>
-                  <p className="genderPlayer">
-                    <span>Số cầu thủ:</span>12
-                  </p>
-                  <p className="phonePlayer">
-                    <span>Khu vực:</span>Bình Thạnh, TP. HCM
-                  </p>
-                </div>
-              </div>
-
+              {allTeam != null && allTeam.length > 0 ? (
+                allTeam.map((item, index) => {
+                  return (
+                    <div key={index} className="listPlayer__item">
+                      <div className="avt">
+                        <img src={item.teamAvatar} alt="team" />
+                      </div>
+                      <div className="des">
+                        <p className="namePlayer">
+                          <span>Tên đội:</span>
+                          {item.teamName}
+                        </p>
+                        <p className="mailPlayer">
+                          <span>Người quản lý:</span>Tú Nguyễn
+                        </p>
+                        <p className="genderPlayer">
+                          <span>Số cầu thủ:</span>
+                          {item.numberPlayerInTeam}
+                        </p>
+                        <p className="phonePlayer">
+                          <span>Khu vực:</span>
+                          {item.teamArea}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <h1
+                  style={{
+                    color: "red",
+                    fontWeight: 600,
+                    fontSize: 18,
+                  }}
+                >
+                  Chưa có đội bóng tham gia
+                </h1>
+              )}
             </div>
-          ) : null}
+          ) : (
+            <div className="listPlayer__list">
+              {allTeam != null && allTeam.length > 0 ? (
+                allTeam.map((item, index) => {
+                  return (
+                    <form onSubmit={onSubmitHandler}>
+                      <div key={index} className="listPlayer__item">
+                        <div className="avt">
+                          <img src={item.teamAvatar} alt="team" />
+                        </div>
+                        <div className="des">
+                          <p className="namePlayer">
+                            <span>Tên đội:</span>
+                            {item.teamName}
+                          </p>
+                          <p className="mailPlayer">
+                            <span>Người quản lý:</span>Tú Nguyễn
+                          </p>
+                          <p className="genderPlayer">
+                            <span>Số cầu thủ:</span>
+                            {item.numberPlayerInTeam}
+                          </p>
+                          <p className="phonePlayer">
+                            <span>Khu vực:</span>
+                            {item.teamArea}
+                          </p>
+                          <a
+                            className="list_regis"
+                            style={{
+                              color: "#D7FC6A",
+                              textDecoration: "underline",
+                              cursor: "pointer",
+                            }}
+                          >
+                            Danh sách cầu thủ đăng ký
+                          </a>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-around",
+                              marginTop: 20,
+                              marginBottom: 20,
+                            }}
+                          >
+                            <input
+                              className="btn_deleteTeam"
+                              style={{
+                                width: 80,
+                                padding: 10,
+                                cursor: "pointer",
+                              }}
+                              onClick={() => {
+                                acceptTeamInTournament(item,false);
+                              }}
+                              type="submit"
+                              value="Từ chối"
+                            />
+                            <input
+                              style={{
+                                width: 80,
+                                padding: 10,
+                                cursor: "pointer",
+                              }}
+                              onClick={() => {
+                                acceptTeamInTournament(item,true);
+                              }}
+                              type="submit"
+                              className="btn_acceptTeam"
+                              value="Đồng ý"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  );
+                })
+              ) : (
+                <h1
+                  style={{
+                    color: "red",
+                    fontWeight: 600,
+                    fontSize: 18,
+                  }}
+                >
+                  Chưa có đội bóng tham gia
+                </h1>
+              )}
+            </div>
+          )}
         </div>
+        {loadingAc ? <LoadingAction /> : null}
       </div>
     </>
   );
