@@ -15,8 +15,11 @@ import Loading from "../LoadingComponent/Loading";
 import { getAPI } from "../../api";
 import { useNavigate } from "react-router-dom";
 import RegisterInTournament from "./RegisterInTournament";
-import {getTeamByIdAPI} from "../../api/TeamAPI";
-import {getTeamInTournamentByTourIdAPI,updateStatusTeamInTournament} from "../../api/TeamInTournamentAPI"
+import { getTeamByIdAPI } from "../../api/TeamAPI";
+import {
+  getTeamInTournamentByTourIdAPI,
+  updateStatusTeamInTournament,
+} from "../../api/TeamInTournamentAPI";
 import { toast } from "react-toastify";
 function HeaderTournamentDetail() {
   const { idTour } = useParams();
@@ -24,15 +27,16 @@ function HeaderTournamentDetail() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-  const [statusTeamInTour,setStatusInTour] = useState("Tham gia")  
+  const [checkPaticipate, setCheckPaticipate] = useState(false);
+  const [statusTeamInTour, setStatusInTour] = useState("Tham gia");
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
   const [tourDetail, setTourDetail] = useState("");
   const [host, setHost] = useState("");
   const [loading, setLoading] = useState(true);
-  const [loadingAc,setLoadingAc] = useState(false);
+  const [loadingAc, setLoadingAc] = useState(false);
   let navigate = useNavigate();
-  const [currentPage,setCurrentPage] = useState(1);
-  const [allTeam,setAllTeam] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [allTeam, setAllTeam] = useState(null);
   // Get Tour Detail
   const getTourDetail = async () => {
     let afterDefaultURL = `tournaments/${idTour}`;
@@ -124,7 +128,16 @@ function HeaderTournamentDetail() {
       return <RankTableTournamentDetail />;
     }
     if (activeTeamDetail === `/tournamentDetail/${idTour}/teamInTournament`) {
-      return <TeamInTournament  acceptTeamInTournament={acceptTeamInTournament} setStatusTeam={setStatusTeam} tourDetailId={tourDetail.id} allTeam={allTeam} loadingAc={loadingAc} />;
+      return (
+        <TeamInTournament
+          user={user != undefined ? user : undefined}
+          acceptTeamInTournament={acceptTeamInTournament}
+          setStatusTeam={setStatusTeam}
+          hostTournamentId={tourDetail.userId}
+          allTeam={allTeam}
+          loadingAc={loadingAc}
+        />
+      );
     }
     if (
       activeTeamDetail ===
@@ -144,28 +157,66 @@ function HeaderTournamentDetail() {
     getTourDetail();
   }, [location.pathname]);
   useEffect(() => {
-    if(tourDetail.id != undefined){
+    if (tourDetail.id != undefined) {
       getAllTeamInTournamentByTourId();
     }
-    
-  }, [tourDetail.id,statusTeamInTour]);
+  }, [tourDetail.id, statusTeamInTour]);
 
+  useEffect(() => {
+    if (user != undefined) {
+      checkTeamPaticipate();
+    }
+  }, []);
+  const checkTeamPaticipate = async () => {
+    setLoadingAc(true);
+    try {
+      const response = await getTeamInTournamentByTourIdAPI(
+        idTour,
+        "",
+        currentPage,
+        user.userVM.id
+      );
+      
+      if (response.data.teamInTournaments.length > 0) {
+        setCheckPaticipate(true);
+      }
+      setLoadingAc(false);
+    } catch (err) {
+      setLoadingAc(false);
+      console.error(err);
+    }
+  };
   // const updateClick = (data,addressTour) => {
   //   navigate(`update-tournament-detail`,{state: {id: data,address:addressTour} })
-  // }  
+  // }
 
-  const acceptTeamInTournament = (teamInTournament,status) => {
+  const acceptTeamInTournament = (teamInTournament, status) => {
     const data = {
       ...teamInTournament.teamInTournament,
-      "status": status ? "Tham gia" : "Từ chối",
-    }
+      status: status ? "Tham gia" : "Từ chối",
+    };
     setLoadingAc(true);
 
     const response = updateStatusTeamInTournament(data);
-    response.then(res => {
-      if(res.status === 200){
-        getAllTeamInTournamentByTourId()
-        toast.success("Đội bóng đã được thêm vào giải", {
+    response
+      .then((res) => {
+        if (res.status === 201) {
+          getAllTeamInTournamentByTourId();
+          toast.success("Đội bóng đã được thêm vào giải", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .catch((err) => {
+        setLoadingAc(false);
+        console.error(err);
+        toast.error(err.response.data.message, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -174,28 +225,20 @@ function HeaderTournamentDetail() {
           draggable: true,
           progress: undefined,
         });
-      }
-    }).catch(err => {
-      setLoadingAc(false);
-      console.error(err);
-      toast.error(err.response.data.message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
       });
-    })
+  };
 
-  }
-
-  const getAllTeamInTournamentByTourId = async() => {
+  const getAllTeamInTournamentByTourId = async () => {
     setLoadingAc(true);
-    try{
-      const response = await getTeamInTournamentByTourIdAPI(tourDetail.id,statusTeamInTour,currentPage);
-    
+    //console.log(idTour);
+    try {
+      const response = await getTeamInTournamentByTourIdAPI(
+        idTour,
+        statusTeamInTour,
+        currentPage,
+        ""
+      );
+
       const data = response.data.teamInTournaments;
       const teams = data.map(async (team) => {
         const teamResponse = await getTeamByID(team.teamId);
@@ -205,19 +248,19 @@ function HeaderTournamentDetail() {
       const teamData = await Promise.all(teams);
       setLoadingAc(false);
       setAllTeam(teamData);
-    }catch(err){
+    } catch (err) {
       setLoadingAc(false);
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
-  const getTeamByID =  async(idTeam) => {
+  const getTeamByID = async (idTeam) => {
     const response = await getTeamByIdAPI(idTeam);
-    return response.data
-  }
-  const setStatusTeam = data => {
-    setStatusInTour(data)
-  }
+    return response.data;
+  };
+  const setStatusTeam = (data) => {
+    setStatusInTour(data);
+  };
   return (
     <>
       <Header id={idTour} />
@@ -236,7 +279,7 @@ function HeaderTournamentDetail() {
                       alt={tourDetail.tournamentName}
                     />
                   </div>
-                  {user !== null ? (
+                  {user !== null && tourDetail != null ? (
                     <>
                       {user.userVM.id === tourDetail.userId ? (
                         <Link
@@ -267,38 +310,71 @@ function HeaderTournamentDetail() {
                           <i class="fa-solid fa-pen-to-square" />
                           Chỉnh sửa giải đấu
                         </Link>
-                      ) : user.userVM.roleId === 3 && tourDetail.mode !== "PRIVATE" ?
-                      <div>
-                           <button
-                      data-bs-toggle="modal" data-bs-target="#exampleModal"
-                      to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
-                      state={{
-                        id: tourDetail.id,
-                        address: tourDetail.footballFieldAddress,
-                      }}
-                      className="btn_UpdateTournament"
-                      style={{
-                        padding: "20px 50px",
-                        marginLeft: 75,
-                        fontWeight: 600,
-                        fontFamily: "Mulish-Bold",
-                        borderRadius: 5,
-                        backgroundColor: "#D7FC6A",
-                        border: 1,
-                        borderColor: "#D7FC6A",
-                        transition: "0.5s",
-                        position: "absolute",
-                        top: 365,
-                      }}
-                      // onClick={() => {
-                      //   updateClick(,)
-                      // }}
-                    >
-                      Tham gia giải đấu
-                    </button> 
-                       <RegisterInTournament tourDetail={tourDetail} idUser={user != undefined ? user.userVM.id : undefined} />
-                      </div>                    
-                    : null}
+                      ) : 
+                      tourDetail.mode !== "PRIVATE" ?
+                      user.userVM.roleId === 3 && 
+                        checkPaticipate === false ? (
+                        <div>
+                          <button
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"
+                            to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
+                            state={{
+                              id: tourDetail.id,
+                              address: tourDetail.footballFieldAddress,
+                            }}
+                            className="btn_UpdateTournament"
+                            style={{
+                              padding: "20px 50px",
+                              marginLeft: 75,
+                              fontWeight: 600,
+                              fontFamily: "Mulish-Bold",
+                              borderRadius: 5,
+                              backgroundColor: "#D7FC6A",
+                              border: 1,
+                              borderColor: "#D7FC6A",
+                              transition: "0.5s",
+                              position: "absolute",
+                              top: 365,
+                            }}
+                            // onClick={() => {
+                            //   updateClick(,)
+                            // }}
+                          >
+                            Tham gia giải đấu
+                          </button>
+                          <RegisterInTournament
+                            tourDetail={tourDetail}
+                            idUser={
+                              user != undefined ? user.userVM.id : undefined
+                            }
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <button
+                            style={{
+                              padding: "20px 50px",
+                              marginLeft: 75,
+                              fontWeight: 600,
+                              fontFamily: "Mulish-Bold",
+                              borderRadius: 5,
+                              backgroundColor: "#D7FC6A",
+                              border: 1,
+                              borderColor: "#D7FC6A",
+                              transition: "0.5s",
+                              position: "absolute",
+                              top: 365,
+                              cursor: "default",
+                            }}
+                            // onClick={() => {
+                            //   updateClick(,)
+                            // }}
+                          >
+                            Đã tham gia giải đấu
+                          </button>
+                        </div>
+                      ) : null}
                     </>
                   ) : null}
                 </div>

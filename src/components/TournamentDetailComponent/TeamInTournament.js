@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,  } from "react";
 import "./styles/style.css";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 
 function TeamInTournament(props) {
-  const { tourDetailId, allTeam, loadingAc, setStatusTeam, acceptTeamInTournament } = props;
+  const {  allTeam, loadingAc, setStatusTeam, acceptTeamInTournament,user,hostTournamentId } = props;
   const [active, setactive] = useState(true);
-  const [teamPaticipate, setTeamPaticipate] = useState(null);
-  const [loading, setLoading] = useState(false);
-  
   const onSubmitHandler = (e) => {
     e.preventDefault();
   }
-  
+
   return (
     <>
       <div className="tournamentdetail">
@@ -58,7 +55,7 @@ function TeamInTournament(props) {
                           {item.teamName}
                         </p>
                         <p className="mailPlayer">
-                          <span>Người quản lý:</span>Tú Nguyễn
+                          <span>Người quản lý:</span>{user != undefined ? user.userVM.username : null}
                         </p>
                         <p className="genderPlayer">
                           <span>Số cầu thủ:</span>
@@ -68,6 +65,16 @@ function TeamInTournament(props) {
                           <span>Khu vực:</span>
                           {item.teamArea}
                         </p>
+                        <p
+                            className="list_regis"
+                            style={{
+                              color: "#D7FC6A",
+                              textDecoration: "underline",
+                              cursor: "pointer",
+                            }}
+                          >
+                            Danh sách cầu thủ đăng ký
+                          </p>
                       </div>
                     </div>
                   );
@@ -110,7 +117,7 @@ function TeamInTournament(props) {
                             <span>Khu vực:</span>
                             {item.teamArea}
                           </p>
-                          <a
+                          <p
                             className="list_regis"
                             style={{
                               color: "#D7FC6A",
@@ -119,8 +126,10 @@ function TeamInTournament(props) {
                             }}
                           >
                             Danh sách cầu thủ đăng ký
-                          </a>
-                          <div
+                          </p>
+                          {
+                            user !== undefined && user.userVM.id === hostTournamentId ?
+<div
                             style={{
                               display: "flex",
                               justifyContent: "space-around",
@@ -154,7 +163,10 @@ function TeamInTournament(props) {
                               className="btn_acceptTeam"
                               value="Đồng ý"
                             />
-                          </div>
+                          </div> :
+                          null
+                          }
+
                         </div>
                       </div>
                     </form>
