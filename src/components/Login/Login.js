@@ -140,6 +140,7 @@ function Login() {
       window.location.reload();
       navigate("../home", { replace: true });
     } catch (err) {
+      setCheckLoading(false)
       if (err.response.data === "Tài khoản không tồn tại") {
         setNewAcc(true);
       }

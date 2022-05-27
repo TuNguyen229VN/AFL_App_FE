@@ -8,13 +8,13 @@ function TeamInTournament(props) {
   const onSubmitHandler = (e) => {
     e.preventDefault();
   }
-
+  console.log(allTeam)
   return (
     <>
       <div className="tournamentdetail">
         <div className="teamdetail__content listPlayer schedule__tour">
           <h3 className="listPlayer__title">Danh sách đội bóng</h3>
-          <h2 className="listPlayer__total">Có 30 đội bóng đã tham gia</h2>
+          <h2 className="listPlayer__total"> {allTeam != null && allTeam.length > 0 ? "Có " + allTeam.countList + " đội bóng đã tham gia" : "Chưa có đội bóng tham gia"}</h2>
           <div
             style={{
               marginBottom: 20,
@@ -107,7 +107,7 @@ function TeamInTournament(props) {
                             {item.teamName}
                           </p>
                           <p className="mailPlayer">
-                            <span>Người quản lý:</span>Tú Nguyễn
+                            <span>Người quản lý:</span>{user != undefined ? user.userVM.username : null}
                           </p>
                           <p className="genderPlayer">
                             <span>Số cầu thủ:</span>
@@ -180,7 +180,7 @@ function TeamInTournament(props) {
                     fontSize: 18,
                   }}
                 >
-                  Chưa có đội bóng tham gia
+                  Chưa có đội bóng đăng ký
                 </h1>
               )}
             </div>

@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 import { addTeamInTournamentAPI } from "../../api/TeamInTournamentAPI";
 import { addPlayerInTournamentAPI } from "../../api/PlayerInTournamentAPI";
 export default function RegisterInTournament(props) {
-  const { idUser, tourDetail } = props;
+  const { idUser, tourDetail, setCheckRegistertour, hideShow, setHideShow } =
+    props;
   const [playerInTeam, setPlayerInTeam] = useState(null);
   const [loading, setLoading] = useState(false);
   const [countChoice, setCountChoice] = useState(0);
@@ -95,16 +96,6 @@ export default function RegisterInTournament(props) {
           addPlayerInTournament(res.data.id);
           //console.log(res.data);
         }
-
-        // toast.success("Tạo đội bóng thành công", {
-        //   position: "top-right",
-        //   autoClose: 3000,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        // });
       })
       .catch((err) => {
         setLoading(false);
@@ -127,11 +118,13 @@ export default function RegisterInTournament(props) {
       }
       return accumulator;
     }, []);
-    console.log(getPlayerChoice);
+    //console.log(getPlayerChoice);
     getPlayerChoice.map((iteam, index) => {
       const data = {
         teamInTournamentId: id,
         playerInTeamId: iteam.idPlayerInTeam,
+        status: "string",
+        clothesNumber: iteam.clothesNumber,
       };
       const response = addPlayerInTournamentAPI(data);
       response
@@ -142,7 +135,17 @@ export default function RegisterInTournament(props) {
           console.error(err);
         });
     });
+    setCheckRegistertour(true);
     setLoading(false);
+    toast.success("Đăng ký tham gia giải đấu thành công ", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
   // const checkChoice = (index) => {
   //   const allPlayer = playerInTeam;
@@ -158,19 +161,17 @@ export default function RegisterInTournament(props) {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     addTeamInTournament();
+    setHideShow(false);
   };
   const onRowClick = () => {
-     rowRef.current.focus();
-    console.log(rowRef.current)
+    rowRef.current.focus();
+    console.log(rowRef.current);
     // rowRef.current.disabled = false;
   };
   return (
     <div
-      class="modal fade"
+      className={hideShow ? "popup__player active" : "popup__player"}
       id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
     >
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -190,6 +191,7 @@ export default function RegisterInTournament(props) {
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              onClick={setHideShow(false)}
             ></button>
           </div>
           <form onSubmit={onSubmitHandler}>
@@ -376,6 +378,7 @@ export default function RegisterInTournament(props) {
                 type="button"
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
+                onClick={setHideShow(false)}
               >
                 Đóng
               </button>

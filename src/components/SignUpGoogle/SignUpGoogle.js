@@ -68,7 +68,7 @@ function SignUpGoogle(props) {
         Avatar: props.userInfo.photoURL.toString(),
         Gender: inputValues.gender,
         Phone: inputValues.phone,
-        RoleId: 1,
+        RoleId: 4,
       };
       const response = await axios.post(
         "https://afootballleague.ddns.net/api/v1/users/CreateWithGoogle",

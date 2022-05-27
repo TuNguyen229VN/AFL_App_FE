@@ -27,6 +27,8 @@ function HeaderTournamentDetail() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [hideShow,setHideShow] = useState(false);
+  const [checkRegisterTour,setCheckRegistertour] = useState(false)
   const [checkPaticipate, setCheckPaticipate] = useState(false);
   const [statusTeamInTour, setStatusInTour] = useState("Tham gia");
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
@@ -162,11 +164,12 @@ function HeaderTournamentDetail() {
     }
   }, [tourDetail.id, statusTeamInTour]);
 
+
   useEffect(() => {
     if (user != undefined) {
       checkTeamPaticipate();
     }
-  }, []);
+  }, [checkRegisterTour]);
   const checkTeamPaticipate = async () => {
     setLoadingAc(true);
     try {
@@ -176,9 +179,9 @@ function HeaderTournamentDetail() {
         currentPage,
         user.userVM.id
       );
-      
+      //console.log(response.data)
       if (response.data.teamInTournaments.length > 0) {
-        setCheckPaticipate(true);
+        setCheckPaticipate(response.data.teamInTournaments[0].status);
       }
       setLoadingAc(false);
     } catch (err) {
@@ -245,7 +248,9 @@ function HeaderTournamentDetail() {
         teamResponse.teamInTournament = team;
         return teamResponse;
       });
+      
       const teamData = await Promise.all(teams);
+      teamData.countList = response.data.countList;
       setLoadingAc(false);
       setAllTeam(teamData);
     } catch (err) {
@@ -279,7 +284,7 @@ function HeaderTournamentDetail() {
                       alt={tourDetail.tournamentName}
                     />
                   </div>
-                  {user !== null && tourDetail != null ? (
+                  {user !== null && tourDetail != null && user.userVM.roleId !== 4 ? (
                     <>
                       {user.userVM.id === tourDetail.userId ? (
                         <Link
@@ -311,18 +316,11 @@ function HeaderTournamentDetail() {
                           Chỉnh sửa giải đấu
                         </Link>
                       ) : 
-                      tourDetail.mode !== "PRIVATE" ?
-                      user.userVM.roleId === 3 && 
-                        checkPaticipate === false ? (
+                      tourDetail.mode !== "PRIVATE" &&
+                       checkPaticipate === false ? (
                         <div>
+                          <div className={hideShow?"overlay active":"overlay"} ></div>
                           <button
-                            data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"
-                            to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
-                            state={{
-                              id: tourDetail.id,
-                              address: tourDetail.footballFieldAddress,
-                            }}
                             className="btn_UpdateTournament"
                             style={{
                               padding: "20px 50px",
@@ -337,44 +335,67 @@ function HeaderTournamentDetail() {
                               position: "absolute",
                               top: 365,
                             }}
-                            // onClick={() => {
-                            //   updateClick(,)
-                            // }}
+                            onClick={() => {
+                              setHideShow(true);
+                            }}
                           >
                             Tham gia giải đấu
                           </button>
                           <RegisterInTournament
                             tourDetail={tourDetail}
+                            setCheckRegistertour={setCheckRegistertour}
+                            hideShow={hideShow}
+                            setHideShow={setHideShow}
                             idUser={
                               user != undefined ? user.userVM.id : undefined
                             }
                           />
                         </div>
-                      ) : (
-                        <div>
-                          <button
-                            style={{
-                              padding: "20px 50px",
-                              marginLeft: 75,
-                              fontWeight: 600,
-                              fontFamily: "Mulish-Bold",
-                              borderRadius: 5,
-                              backgroundColor: "#D7FC6A",
-                              border: 1,
-                              borderColor: "#D7FC6A",
-                              transition: "0.5s",
-                              position: "absolute",
-                              top: 365,
-                              cursor: "default",
-                            }}
-                            // onClick={() => {
-                            //   updateClick(,)
-                            // }}
-                          >
-                            Đã tham gia giải đấu
-                          </button>
-                        </div>
-                      ) : null}
+                      ) : checkPaticipate === "Tham gia" ?  <button
+                      
+                      
+                      style={{
+                        padding: "20px 50px",
+                        marginLeft: 75,
+                        fontWeight: 600,
+                        fontFamily: "Mulish-Bold",
+                        borderRadius: 5,
+                        backgroundColor: "#D7FC6A",
+                        border: 1,
+                        borderColor: "#D7FC6A",
+                        transition: "0.5s",
+                        position: "absolute",
+                        top: 365,
+                        cursor: "default"
+                      }}
+                      // onClick={() => {
+                      //   updateClick(,)
+                      // }}
+                    >
+                      Đã tham gia giải đấu
+                    </button> : <button
+                      
+                      
+                      style={{
+                        padding: "20px 50px",
+                        marginLeft: 75,
+                        fontWeight: 600,
+                        fontFamily: "Mulish-Bold",
+                        borderRadius: 5,
+                        backgroundColor: "#D7FC6A",
+                        border: 1,
+                        borderColor: "#D7FC6A",
+                        transition: "0.5s",
+                        position: "absolute",
+                        top: 365,
+                        cursor: "default"
+                      }}
+                      // onClick={() => {
+                      //   updateClick(,)
+                      // }}
+                    >
+                      Đang chờ xét duyệt
+                    </button>}
                     </>
                   ) : null}
                 </div>

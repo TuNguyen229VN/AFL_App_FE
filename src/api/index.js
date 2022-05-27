@@ -39,3 +39,7 @@ export const url = "https://afootballleague.ddns.net/api/v1/";
 export const headers = {
   headers: { "content-type": "multipart/form-data" },
 };
+// const axiosInstance = axios.create({
+//   baseURL:"",
+
+// })
