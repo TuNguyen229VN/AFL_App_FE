@@ -3,7 +3,7 @@ import styles from "./styles/style.module.css";
 import AgoraRTC from "agora-rtc-sdk";
 import AgoraUIKit, { PropsInterface, layout } from "agora-react-uikit";
 
-function Livestream() {
+function Livestream(data) {
   var rtc = {
     client: null,
     joined: false,
@@ -16,10 +16,9 @@ function Livestream() {
   // Options for joining a channel
   var option = {
     appID: "629c856215b345779a8fb2a691f51976",
-    channel: "MATCH_1",
+    channel: "MATCH_" + data.idMatch,
     uid: null,
-    token:
-      "006629c856215b345779a8fb2a691f51976IACLSjaM9OS/T5DHbsJ7TzFm9rgcIK+HmmdEN1HMa6kDUg8R8ioh39v0KABmtJQEx/aMYgUAAQAAAAAAAgAAAAAAAwAAAAAABAAAAAAA6AMAAAAA",
+    token: data.tokenLivestream,
     key: "",
     secret: "",
   };

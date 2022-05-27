@@ -1,3 +1,4 @@
+import { data } from "flickity";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { getAPI } from "../../api";
@@ -15,6 +16,7 @@ function Match() {
   const [tournamentID, setTournamentID] = useState(0);
   const [footballFeild, setFootballFeild] = useState("");
   const [loading, setLoading] = useState(false);
+  const [tokenLivestream, setTokenLivestream] = useState("");
   const getMatch = () => {
     setLoading(true);
     let afterURL = `TeamInMatch/matchId?matchId=${idMatch}`;
@@ -34,6 +36,7 @@ function Match() {
         setAllTeamA(teamA);
         setAllTeamB(teamB);
         setTournamentID(res.data.teamsInMatch[0].match.tournamentId);
+        setTokenLivestream(res.data.teamsInMatch[0].match.tokenLivestream);
         getTourDetail(res.data.teamsInMatch[0].match.tournamentId);
       })
       .catch((err) => {
@@ -71,7 +74,7 @@ function Match() {
       );
     }
     if (activeTeamDetail === `/match/${idMatch}/livestream`) {
-      return <Livestream />;
+      return <Livestream idMatch={idMatch} tokenLivestream={tokenLivestream}/>;
     }
   };
 
@@ -178,24 +181,24 @@ function Match() {
             </div>
             <div className={styles.match__menu}>
               <Link
-                to={`/match/1/matchDetail`}
+                to={`/match/${idMatch}/matchDetail`}
                 className={
-                  activeTeamDetail === `/match/1/matchDetail`
+                  activeTeamDetail === `/match/${idMatch}/matchDetail`
                     ? styles.active
                     : ""
                 }
-                onClick={() => setActiveTeamDetail(`/match/1/matchDetail`)}
+                onClick={() => setActiveTeamDetail(`/match/${idMatch}/matchDetail`)}
               >
                 Thống kê
               </Link>
               <Link
-                to={`/match/1/livestream`}
+                to={`/match/${idMatch}/livestream`}
                 className={
-                  activeTeamDetail === `/match/1/livestream`
+                  activeTeamDetail === `/match/${idMatch}/livestream`
                     ? styles.active
                     : ""
                 }
-                onClick={() => setActiveTeamDetail(`/match/1/livestream`)}
+                onClick={() => setActiveTeamDetail(`/match/${idMatch}/livestream`)}
               >
                 Livestream
               </Link>
