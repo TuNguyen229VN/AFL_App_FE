@@ -1,14 +1,13 @@
-import React, { useState,  } from "react";
+import React, { useState } from "react";
 import "./styles/style.css";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 
 function TeamInTournament(props) {
-  const {  allTeam, loadingAc, setStatusTeam, acceptTeamInTournament,user,hostTournamentId } = props;
+  const { allTeam, loadingAc, setStatusTeam, acceptTeamInTournament,user,hostTournamentId } = props;
   const [active, setactive] = useState(true);
   const onSubmitHandler = (e) => {
     e.preventDefault();
   }
-  console.log(allTeam)
   return (
     <>
       <div className="tournamentdetail">
@@ -55,7 +54,7 @@ function TeamInTournament(props) {
                           {item.teamName}
                         </p>
                         <p className="mailPlayer">
-                          <span>Người quản lý:</span>{user != undefined ? user.userVM.username : null}
+                          <span>Người quản lý:</span>{item.user.username}
                         </p>
                         <p className="genderPlayer">
                           <span>Số cầu thủ:</span>
@@ -107,7 +106,7 @@ function TeamInTournament(props) {
                             {item.teamName}
                           </p>
                           <p className="mailPlayer">
-                            <span>Người quản lý:</span>{user != undefined ? user.userVM.username : null}
+                            <span>Người quản lý:</span>{item.user.username}
                           </p>
                           <p className="genderPlayer">
                             <span>Số cầu thủ:</span>

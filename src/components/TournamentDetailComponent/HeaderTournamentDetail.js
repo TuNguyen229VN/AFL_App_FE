@@ -21,6 +21,7 @@ import {
   updateStatusTeamInTournament,
 } from "../../api/TeamInTournamentAPI";
 import { toast } from "react-toastify";
+import {getUserByIdAPI} from "../../api/User"
 function HeaderTournamentDetail() {
   const { idTour } = useParams();
   const location = useLocation();
@@ -164,6 +165,12 @@ function HeaderTournamentDetail() {
     }
   }, [tourDetail.id, statusTeamInTour]);
 
+  const getInForManagerById = async(id) => {
+        const response = await getUserByIdAPI(id);
+        if(response.status === 200){
+          return response.data;
+        }
+  }
 
   useEffect(() => {
     if (user != undefined) {
@@ -245,7 +252,9 @@ function HeaderTournamentDetail() {
       const data = response.data.teamInTournaments;
       const teams = data.map(async (team) => {
         const teamResponse = await getTeamByID(team.teamId);
+        const user = await getInForManagerById(team.teamId);
         teamResponse.teamInTournament = team;
+        teamResponse.user = user;
         return teamResponse;
       });
       
