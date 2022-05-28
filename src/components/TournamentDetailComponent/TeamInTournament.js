@@ -1,19 +1,34 @@
 import React, { useState } from "react";
 import "./styles/style.css";
 import LoadingAction from "../LoadingComponent/LoadingAction";
+import ViewListPlayerRegister from "./ViewListPlayerRegister";
 
 function TeamInTournament(props) {
-  const { allTeam, loadingAc, setStatusTeam, acceptTeamInTournament,user,hostTournamentId } = props;
+  const {
+    allTeam,
+    loadingAc,
+    setStatusTeam,
+    acceptTeamInTournament,
+    user,
+    hostTournamentId,
+  } = props;
   const [active, setactive] = useState(true);
+  const [viewList, setViewList] = useState(null);
   const onSubmitHandler = (e) => {
     e.preventDefault();
-  }
+  };
+  console.log(allTeam);
   return (
     <>
       <div className="tournamentdetail">
         <div className="teamdetail__content listPlayer schedule__tour">
           <h3 className="listPlayer__title">Danh sách đội bóng</h3>
-          <h2 className="listPlayer__total"> {allTeam != null && allTeam.length > 0 ? "Có " + allTeam.countList + " đội bóng đã tham gia" : "Chưa có đội bóng tham gia"}</h2>
+          <h2 className="listPlayer__total">
+            {" "}
+            {allTeam != null && allTeam.length > 0
+              ? "Có " + allTeam.countList + " đội bóng đã tham gia"
+              : "Chưa có đội bóng tham gia"}
+          </h2>
           <div
             style={{
               marginBottom: 20,
@@ -54,7 +69,8 @@ function TeamInTournament(props) {
                           {item.teamName}
                         </p>
                         <p className="mailPlayer">
-                          <span>Người quản lý:</span>{item.user.username}
+                          <span>Người quản lý:</span>
+                          {item.user.username}
                         </p>
                         <p className="genderPlayer">
                           <span>Số cầu thủ:</span>
@@ -65,15 +81,20 @@ function TeamInTournament(props) {
                           {item.teamArea}
                         </p>
                         <p
-                            className="list_regis"
-                            style={{
-                              color: "#D7FC6A",
-                              textDecoration: "underline",
-                              cursor: "pointer",
-                            }}
-                          >
-                            Danh sách cầu thủ đăng ký
-                          </p>
+                          className="list_regis"
+                          style={{
+                            color: "#D7FC6A",
+                            textDecoration: "underline",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            setViewList(item.teamInTournament);
+                          }}
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                        >
+                          Danh sách cầu thủ đăng ký
+                        </p>
                       </div>
                     </div>
                   );
@@ -106,7 +127,8 @@ function TeamInTournament(props) {
                             {item.teamName}
                           </p>
                           <p className="mailPlayer">
-                            <span>Người quản lý:</span>{item.user.username}
+                            <span>Người quản lý:</span>
+                            {item.user.username}
                           </p>
                           <p className="genderPlayer">
                             <span>Số cầu thủ:</span>
@@ -126,46 +148,44 @@ function TeamInTournament(props) {
                           >
                             Danh sách cầu thủ đăng ký
                           </p>
-                          {
-                            user !== undefined && user.userVM.id === hostTournamentId ?
-<div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-around",
-                              marginTop: 20,
-                              marginBottom: 20,
-                            }}
-                          >
-                            <input
-                              className="btn_deleteTeam"
+                          {user !== undefined &&
+                          user.userVM.id === hostTournamentId ? (
+                            <div
                               style={{
-                                width: 80,
-                                padding: 10,
-                                cursor: "pointer",
+                                display: "flex",
+                                justifyContent: "space-around",
+                                marginTop: 20,
+                                marginBottom: 20,
                               }}
-                              onClick={() => {
-                                acceptTeamInTournament(item,false);
-                              }}
-                              type="submit"
-                              value="Từ chối"
-                            />
-                            <input
-                              style={{
-                                width: 80,
-                                padding: 10,
-                                cursor: "pointer",
-                              }}
-                              onClick={() => {
-                                acceptTeamInTournament(item,true);
-                              }}
-                              type="submit"
-                              className="btn_acceptTeam"
-                              value="Đồng ý"
-                            />
-                          </div> :
-                          null
-                          }
-
+                            >
+                              <input
+                                className="btn_deleteTeam"
+                                style={{
+                                  width: 80,
+                                  padding: 10,
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                  acceptTeamInTournament(item, false);
+                                }}
+                                type="submit"
+                                value="Từ chối"
+                              />
+                              <input
+                                style={{
+                                  width: 80,
+                                  padding: 10,
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                  acceptTeamInTournament(item, true);
+                                }}
+                                type="submit"
+                                className="btn_acceptTeam"
+                                value="Đồng ý"
+                              />
+                            </div>
+                          ) : null}
                         </div>
                       </div>
                     </form>
@@ -184,6 +204,7 @@ function TeamInTournament(props) {
               )}
             </div>
           )}
+          <ViewListPlayerRegister teamInTournament={viewList} />
         </div>
         {loadingAc ? <LoadingAction /> : null}
       </div>

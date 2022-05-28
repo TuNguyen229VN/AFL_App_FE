@@ -23,6 +23,7 @@ function Match() {
     let response = getAPI(afterURL);
     response
       .then((res) => {
+        console.log(res.data)
         const allMatch = res.data.teamsInMatch;
         const teamB = [];
         const teamA = allMatch.reduce((accumulator, currentValue) => {
@@ -44,6 +45,7 @@ function Match() {
         console.log(err);
       });
   };
+
 
   const getTourDetail = async (id) => {
     let afterDefaultURL = `tournaments/${id}`;

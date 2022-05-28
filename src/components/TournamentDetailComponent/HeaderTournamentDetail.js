@@ -382,9 +382,7 @@ function HeaderTournamentDetail() {
                       // }}
                     >
                       Đã tham gia giải đấu
-                    </button> : <button
-                      
-                      
+                    </button> : tourDetail.mode !== "PRIVATE" && checkPaticipate === "Chờ duyệt" ? <button
                       style={{
                         padding: "20px 50px",
                         marginLeft: 75,
@@ -404,7 +402,7 @@ function HeaderTournamentDetail() {
                       // }}
                     >
                       Đang chờ xét duyệt
-                    </button>}
+                    </button> : null}
                     </>
                   ) : null}
                 </div>

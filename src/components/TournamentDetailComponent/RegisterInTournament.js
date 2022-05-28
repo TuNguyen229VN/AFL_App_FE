@@ -43,10 +43,12 @@ export default function RegisterInTournament(props) {
     const response = await getAPI(afterURL);
     return response.data;
   };
+  console.log(tourDetail)
   const getNumberInField = () => {
-    if (tourDetail.footballPlayerMaxNumber === 1) {
+    
+    if (tourDetail.footballFieldTypeId === 1) {
       return 5;
-    } else if (tourDetail.footballPlayerMaxNumber === 7) {
+    } else if (tourDetail.footballFieldTypeId === 2) {
       return 7;
     } else return 11;
   };
@@ -191,7 +193,7 @@ export default function RegisterInTournament(props) {
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onClick={setHideShow(false)}
+              onClick={() => setHideShow(false)}
             ></button>
           </div>
           <form onSubmit={onSubmitHandler}>
@@ -233,8 +235,9 @@ export default function RegisterInTournament(props) {
                   >
                     <p
                       style={{
-                        fontWeight: 600,
-                        fontSize: 18,
+                        fontWeight: 500,
+                        fontSize: 16,
+                        fontStyle: "italic",
                         marginBottom: 10,
                       }}
                     >
@@ -378,7 +381,7 @@ export default function RegisterInTournament(props) {
                 type="button"
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
-                onClick={setHideShow(false)}
+                onClick={() => setHideShow(false)}
               >
                 Đóng
               </button>

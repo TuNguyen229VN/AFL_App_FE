@@ -14,6 +14,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
+import {createSchedule} from "../../api/MatchAPI"
+import LoadingAction from "../LoadingComponent/LoadingAction";
 
 const CreateTournament = () => {
   const [status, setStatus] = useState(-1);
@@ -77,6 +79,7 @@ const CreateTournament = () => {
     value: "15",
     error: null,
   });
+  const [loading,setLoading] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
   const [provice, setProvice] = useState(null);
@@ -100,7 +103,40 @@ const CreateTournament = () => {
       setProvice(response.data);
     }
   };
+
+  const createGenerateTable = (id) => {
+    const response = createSchedule(id);
+    response.then(res => {
+      console.log(res)
+      if(res.status === 201){
+        setLoading(false);
+        toast.success("Tạo lịch thi đấu thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    }).catch(err => {
+      console.error(err);
+      setLoading(false);
+      toast.error(err.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }) 
+  }
+
   const onSubmitHandler = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       const data = {
@@ -122,7 +158,7 @@ const CreateTournament = () => {
         TournamentTypeEnum:competitionFormat.value,
         TournamentFootballFieldTypeEnum:typeFootballField.value,
       };
-      console.log(data);
+      //console.log(data);
       const response = await axios.post(
         "https://afootballleague.ddns.net/api/v1/tournaments",
         data,
@@ -131,6 +167,7 @@ const CreateTournament = () => {
         }
       );
       if (response.status === 201) {
+        createGenerateTable(response.data.id);
         toast.success("Tạo giải đấu thành công", {
           position: "top-right",
           autoClose: 3000,
@@ -181,6 +218,7 @@ const CreateTournament = () => {
         setResetProvice(0);
       }
     } catch (error) {
+      setLoading(false);
       toast.error(error.response.data.message, {
         position: "top-right",
         autoClose: 3000,
@@ -646,7 +684,7 @@ const CreateTournament = () => {
                       name="closeRegister"
                       value={closeRegister.value}
                       onChange={onChangeHandler}
-                      min={new Date().toISOString().split(".")[0]}
+                      
                       required
                     />
                   </div>
@@ -691,7 +729,7 @@ const CreateTournament = () => {
                       type="datetime-local"
                       name="startTime"
                       value={startTime.value}
-                      min={closeRegister.value}
+                      
                       onChange={onChangeHandler}
                     />
                   </div> : <div style={{
@@ -771,7 +809,7 @@ const CreateTournament = () => {
                     name="endTime"
                     value={endTime.value}
                     onChange={onChangeHandler}
-                    min={startTime.value}
+                   
                   />
                 </div> : 
                <div
@@ -1061,6 +1099,7 @@ const CreateTournament = () => {
           </form>
         </div>
       </div>
+      {loading ? <LoadingAction /> : null}
       <ToastContainer />
       <Footer />
     </>
