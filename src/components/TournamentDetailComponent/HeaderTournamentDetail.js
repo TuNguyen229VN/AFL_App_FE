@@ -402,9 +402,9 @@ function HeaderTournamentDetail() {
                       // }}
                     >
                       Đang chờ xét duyệt
-                    </button> : null}
+                    </button> : <button>null1</button>}
                     </>
-                  ) : null}
+                  ) : <button>null2</button>}
                 </div>
 
                 <div className="headertext__team">

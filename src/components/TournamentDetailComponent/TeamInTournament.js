@@ -145,6 +145,9 @@ function TeamInTournament(props) {
                               textDecoration: "underline",
                               cursor: "pointer",
                             }}
+                            onClick={() => {
+                              setViewList(item.teamInTournament);
+                            }}
                           >
                             Danh sách cầu thủ đăng ký
                           </p>
@@ -204,7 +207,7 @@ function TeamInTournament(props) {
               )}
             </div>
           )}
-          <ViewListPlayerRegister teamInTournament={viewList} />
+          <ViewListPlayerRegister teamInTournament={viewList} setViewList={setViewList} />
         </div>
         {loadingAc ? <LoadingAction /> : null}
       </div>

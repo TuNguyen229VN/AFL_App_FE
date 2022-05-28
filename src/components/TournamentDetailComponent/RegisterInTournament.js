@@ -4,6 +4,7 @@ import LoadingAction from "../LoadingComponent/LoadingAction";
 import { toast } from "react-toastify";
 import { addTeamInTournamentAPI } from "../../api/TeamInTournamentAPI";
 import { addPlayerInTournamentAPI } from "../../api/PlayerInTournamentAPI";
+
 export default function RegisterInTournament(props) {
   const { idUser, tourDetail, setCheckRegistertour, hideShow, setHideShow } =
     props;
@@ -13,7 +14,6 @@ export default function RegisterInTournament(props) {
   const [listClothes, setListClothes] = useState([]);
   const [error, setError] = useState(false);
   const rowRef = useRef();
-
   useEffect(() => {
     getListPlayerInTeamByIdTeam();
   }, [idUser]);
@@ -43,7 +43,7 @@ export default function RegisterInTournament(props) {
     const response = await getAPI(afterURL);
     return response.data;
   };
-  console.log(tourDetail)
+  //console.log(tourDetail)
   const getNumberInField = () => {
     
     if (tourDetail.footballFieldTypeId === 1) {
@@ -75,9 +75,10 @@ export default function RegisterInTournament(props) {
       }
     } else {
       const getIndex = name.split("t")[2];
+      console.log(getIndex)
       allPlayer[getIndex].clothesNumber = value;
     }
-
+    console.log(allPlayer)
     setPlayerInTeam(allPlayer);
   };
 
@@ -115,18 +116,20 @@ export default function RegisterInTournament(props) {
   };
   const addPlayerInTournament = (id) => {
     const getPlayerChoice = playerInTeam.reduce((accumulator, currentValue) => {
+      
       if (currentValue.choice === true) {
         accumulator.push(currentValue);
       }
       return accumulator;
     }, []);
-    //console.log(getPlayerChoice);
+    
     getPlayerChoice.map((iteam, index) => {
+      console.log(+iteam.clothesNumber)
       const data = {
         teamInTournamentId: id,
         playerInTeamId: iteam.idPlayerInTeam,
         status: "string",
-        clothesNumber: iteam.clothesNumber,
+        clothesNumber: +iteam.clothesNumber,
       };
       const response = addPlayerInTournamentAPI(data);
       response
