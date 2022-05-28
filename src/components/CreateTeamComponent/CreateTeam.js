@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import { useNavigate } from "react-router-dom";
 import { getAPI } from "../../api";
+import LoadingAction from "../LoadingComponent/LoadingAction"
 
 const CreateTeam = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -47,6 +48,7 @@ const CreateTeam = () => {
     value: "",
     error: "",
   });
+  const [loading,setLoading] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
   const [provice, setProvice] = useState(null);
@@ -158,6 +160,7 @@ const CreateTeam = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const data = {
         id: user.userVM.id,
@@ -177,6 +180,7 @@ const CreateTeam = () => {
         }
       );
       if (response.status === 201) {
+        setLoading(false);
         toast.success("Tạo đội bóng thành công", {
           position: "top-right",
           autoClose: 3000,
@@ -206,6 +210,7 @@ const CreateTeam = () => {
         navigate(`/teamDetail/${response.data.id}/inforTeamDetail`);
       }
     } catch (error) {
+      setLoading(false);
       toast.error(error.response.data.message, {
         position: "top-right",
         autoClose: 3000,
@@ -788,6 +793,7 @@ const CreateTeam = () => {
           ) : null}
         </div>
       </form>
+     {loading ? <LoadingAction /> : null } 
       <ToastContainer />
       <Footer />
     </>

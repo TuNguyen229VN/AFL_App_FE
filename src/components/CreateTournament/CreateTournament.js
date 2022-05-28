@@ -16,8 +16,10 @@ import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import {createSchedule} from "../../api/MatchAPI"
 import LoadingAction from "../LoadingComponent/LoadingAction";
+import { useNavigate } from "react-router-dom";
 
 const CreateTournament = () => {
+  const naviage = useNavigate();
   const [status, setStatus] = useState(-1);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const descriptionText = draftToHtml(
@@ -108,7 +110,8 @@ const CreateTournament = () => {
     const response = createSchedule(id);
     response.then(res => {
       console.log(res)
-      if(res.status === 201){
+      if(res.status === 200){
+        naviage(`/tournamentDetail/${id}/inforTournamentDetail`)
         setLoading(false);
         toast.success("Tạo lịch thi đấu thành công", {
           position: "top-right",
