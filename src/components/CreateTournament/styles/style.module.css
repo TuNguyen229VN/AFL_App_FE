@@ -92,7 +92,7 @@ input:focus {
   border: 2px solid var(--green-bold);
 }
 
-.select_lengthTeam,
+
 .select_typeFootballField {
   width: 100%;
   padding: 10px 5px;

@@ -58,7 +58,7 @@ const CreateTournament = () => {
     error: null,
   });
   const [competitionFormat, setCompetitionFormat] = useState({
-    value: 1,
+    value: "CircleStage",
     error: null,
   });
   const [minimunPlayerInTournament, setMinimunPlayerInTournament] = useState({
@@ -330,6 +330,7 @@ const CreateTournament = () => {
         });
         break;
       case "teamPaticipate":
+        console.log(value)
         setTeamPaticipate({
           ...teamPaticipate,
           value,
@@ -483,8 +484,24 @@ const CreateTournament = () => {
                       value:null,
                       error: null
                     })
+                    setStartTime({
+                      value: null,
+                      error: null
+                    })
+                    setEndTime({
+                      value: null,
+                      error: null
+                    })
                     setStatus(-1);
                   } else {
+                    setStartTime({
+                      value: null,
+                      error: null
+                    })
+                    setEndTime({
+                      value: null,
+                      error: null
+                    })
                     setStatus(0);
                   }
                 }}
@@ -580,8 +597,8 @@ const CreateTournament = () => {
                     required
                   />
                 </div>
-                <div className={styles.lengthTeam}>
-                  <div
+                <div className={styles.contactPhone}>
+                <div
                     style={{
                       display: "flex",
                       alignItems: "baseline",
@@ -589,12 +606,12 @@ const CreateTournament = () => {
                     }}
                   >
                     <label
-                      htmlFor="select_lengthTeam"
-                      className={styles.createTournament_img_title}
-                    >
-                      Số đội tham gia
-                    </label>
-                    {teamPaticipate.error != null ? 
+                    htmlFor="phoneContact"
+                    className={styles.createTournament_img_title}
+                  >
+                    Số điện thoại liên lạc
+                  </label>
+                    {phoneContact.error != null ? 
                     <p
                     style={{
                       color: "red",
@@ -602,35 +619,19 @@ const CreateTournament = () => {
                       fontSize: 18,
                     }}
                   >
-                    {teamPaticipate.error}
+                    {phoneContact.error}
                   </p> : <p></p>}
                   </div>
-
+                  
                   <input
-                    className={styles.select_lengthTeam}
-                    id="select_lengthTeam"
-                    name="teamPaticipate"
-                    value={teamPaticipate.value}
-                    placeholder="Nhập số đội tham gia"
+                    type="text"
+                    id="phoneContact"
+                    className={styles.phoneContact}
+                    placeholder="Số điện thoại"
+                    name="phoneContact"
+                    value={phoneContact.value}
                     onChange={onChangeHandler}
-                    required
                   />
-                </div>
-
-                <div className={styles.typeFootballField}>
-                  <label className={styles.createTournament_img_title}>
-                    Loại sân thi đấu
-                  </label>
-                  <select
-                    className={styles.select_typeFootballField}
-                    onChange={onChangeHandler}
-                    value={typeFootballField.value}
-                    name="typeFootballField"
-                  >
-                    <option value="Field5">Sân thi đấu bóng đá 5</option>
-                    <option value="Field7">Sân thi đấu bóng đá 7</option>
-                    <option value="Field11">Sân thi đấu bóng đá 11</option>
-                  </select>
                 </div>
                 <div>
                   <label
@@ -654,7 +655,7 @@ const CreateTournament = () => {
               </div>
 
               <div className={styles.createTournament_row1_col3}>
-              {status === 0 ? (
+              
                   <div className={styles.timeCloseRegister}>
                     <div
                     style={{
@@ -687,59 +688,13 @@ const CreateTournament = () => {
                       name="closeRegister"
                       value={closeRegister.value}
                       onChange={onChangeHandler}
-                      
+                      disabled={status === 0 ? "" : "disable"}
                       required
                     />
                   </div>
-                ) : (
-                  <div
-                    style={{
-                      height: 70,
-                    }}
-                  ></div>
-                )}
-                {status === 0 ?
-                  closeRegister.value != null ? 
-                    <div className={styles.timeStart}>
-                  <div
-                      style={{
-                        display: "flex",
-                        alignItems: "baseline",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                       <label
-                      className={styles.createTournament_img_title}
-                      htmlFor="startTime"
-                    >
-                      Ngày bắt đầu
-                    </label>
-                    {startTime.error != null ? 
-                      <p
-                      style={{
-                        color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
-                      }}
-                    >
-                      {startTime.error}
-                    </p> : <p></p>}
-                    </div>
-                   
-                    <input
-                      className={styles.timeStart_input}
-                      id="startTime"
-                      type="datetime-local"
-                      name="startTime"
-                      value={startTime.value}
-                      
-                      onChange={onChangeHandler}
-                    />
-                  </div> : <div style={{
-                    height: 70
-                  }}>
-                  </div>
-                :
+
+                
+                
                 <div className={styles.timeStart}>
                 <div
                     style={{
@@ -769,16 +724,18 @@ const CreateTournament = () => {
                     className={styles.timeStart_input}
                     id="startTime"
                     type="datetime-local"
+                    
                     name="startTime"
                     value={startTime.value}
+                    disabled={status === 0 && closeRegister.value != null  ? "" : status === -1 ? "" : "disable"}
                     onChange={onChangeHandler}
                     
                   />
                 </div>
-                }
                 
                 
-                {startTime.value != null ? 
+                
+               
                 <div className={styles.timeEnd}>
                 <div
                     style={{
@@ -811,38 +768,17 @@ const CreateTournament = () => {
                     type="datetime-local"
                     name="endTime"
                     value={endTime.value}
+                    disabled={startTime.value != null ? "" : "disable"}
                     onChange={onChangeHandler}
                    
                   />
-                </div> : 
-               <div
-               style={{
-                 height: 70,
-               }}
-             ></div>}
-                <div className={styles.timeDuration}>
-                  <label
-                    className={styles.createTournament_img_title}
-                    htmlFor="timeDuration"
-                  >
-                    Thời gian thi đấu mỗi trận
-                  </label>
-                  <select
-                    className={styles.select_typeFootballField}
-                    id="timeDuration"
-                    onChange={onChangeHandler}
-                    value={timeDuration.value}
-                    name="timeDuration"
-                  >
-                    <option value="15">15p</option>
-                    <option value="30">30p</option>
-                    <option value="45">45p</option>
-                  </select>
-                </div>
+                </div> 
+                
 
               </div>
             </div>
             <CompetitionFormat
+            teamPaticipate={teamPaticipate}
               competitionFormat={competitionFormat}
               onChangeHandler={onChangeHandler}
             />
@@ -885,42 +821,7 @@ const CreateTournament = () => {
                   />
                 </div>
 
-                <div className={styles.contactPhone}>
-                <div
-                    style={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <label
-                    htmlFor="phoneContact"
-                    className={styles.createTournament_img_title}
-                  >
-                    Số điện thoại liên lạc
-                  </label>
-                    {phoneContact.error != null ? 
-                    <p
-                    style={{
-                      color: "red",
-                      fontWeight: 900,
-                      fontSize: 18,
-                    }}
-                  >
-                    {phoneContact.error}
-                  </p> : <p></p>}
-                  </div>
-                  
-                  <input
-                    type="text"
-                    id="phoneContact"
-                    className={styles.phoneContact}
-                    placeholder="Số điện thoại"
-                    name="phoneContact"
-                    value={phoneContact.value}
-                    onChange={onChangeHandler}
-                  />
-                </div>
+               
 
                 <div className={styles.description_tournament}>
                   <label
@@ -942,6 +843,40 @@ const CreateTournament = () => {
                 </div>
               </div>
               <div className={styles.createTournament_row4_col2}>
+              <div className={styles.typeFootballField}>
+                  <label className={styles.createTournament_img_title}>
+                    Loại sân thi đấu
+                  </label>
+                  <select
+                    className={styles.select_typeFootballField}
+                    onChange={onChangeHandler}
+                    value={typeFootballField.value}
+                    name="typeFootballField"
+                  >
+                    <option value="Field5">Sân thi đấu bóng đá 5</option>
+                    <option value="Field7">Sân thi đấu bóng đá 7</option>
+                    <option value="Field11">Sân thi đấu bóng đá 11</option>
+                  </select>
+                </div>
+                <div className={styles.timeDuration}>
+                  <label
+                    className={styles.createTournament_img_title}
+                    htmlFor="timeDuration"
+                  >
+                    Thời gian thi đấu mỗi trận
+                  </label>
+                  <select
+                    className={styles.select_typeFootballField}
+                    id="timeDuration"
+                    onChange={onChangeHandler}
+                    value={timeDuration.value}
+                    name="timeDuration"
+                  >
+                    <option value="15">15p</option>
+                    <option value="30">30p</option>
+                    <option value="45">45p</option>
+                  </select>
+                </div>
                 <div className={styles.fieldSoccer}>
                   <div
                     style={{
