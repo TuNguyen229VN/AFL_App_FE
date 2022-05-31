@@ -19,7 +19,11 @@ import { getTeamByIdAPI } from "../../api/TeamAPI";
 import {
   getTeamInTournamentByTourIdAPI,
   updateStatusTeamInTournament,
+  deleteRegisterTeamAPI
 } from "../../api/TeamInTournamentAPI";
+import {
+  deletePlayerInTournamentById
+} from "../../api/PlayerInTournamentAPI";
 import { toast } from "react-toastify";
 import {getUserByIdAPI} from "../../api/User"
 function HeaderTournamentDetail() {
@@ -28,6 +32,7 @@ function HeaderTournamentDetail() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [hideShowDelete,setHideShowDelete] = useState(false);
   const [hideShow,setHideShow] = useState(false);
   const [checkRegisterTour,setCheckRegistertour] = useState(false)
   const [checkPaticipate, setCheckPaticipate] = useState(false);
@@ -139,6 +144,9 @@ function HeaderTournamentDetail() {
           hostTournamentId={tourDetail.userId}
           allTeam={allTeam}
           loadingAc={loadingAc}
+          hideShow={hideShowDelete}
+          setHideShow={setHideShowDelete}
+          
         />
       );
     }
@@ -201,18 +209,35 @@ function HeaderTournamentDetail() {
   // }
 
   const acceptTeamInTournament = (teamInTournament, status) => {
-    const data = {
-      ...teamInTournament.teamInTournament,
-      status: status ? "Tham gia" : "Từ chối",
-    };
-    setLoadingAc(true);
-
-    const response = updateStatusTeamInTournament(data);
-    response
-      .then((res) => {
-        if (res.status === 201) {
-          getAllTeamInTournamentByTourId();
-          toast.success("Đội bóng đã được thêm vào giải", {
+    if(teamInTournament != null){
+      const data = {
+        ...teamInTournament.teamInTournament,
+        status: status ? "Tham gia" : "Từ chối",
+      };
+      setLoadingAc(true);
+  
+      const response = updateStatusTeamInTournament(data);
+      response
+        .then((res) => {
+          if (res.status === 201) {
+            setHideShowDelete(false);
+            getAllTeamInTournamentByTourId();
+            toast.success(status ? "Đội bóng đã được thêm vào giải" : "Từ chối đội bóng thành công", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+        })
+        .catch((err) => {
+          setHideShowDelete(false);
+          setLoadingAc(false);
+          console.error(err);
+          toast.error(err.response.data.message, {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -221,21 +246,8 @@ function HeaderTournamentDetail() {
             draggable: true,
             progress: undefined,
           });
-        }
-      })
-      .catch((err) => {
-        setLoadingAc(false);
-        console.error(err);
-        toast.error(err.response.data.message, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
         });
-      });
+    }
   };
 
   const getAllTeamInTournamentByTourId = async () => {
@@ -402,9 +414,9 @@ function HeaderTournamentDetail() {
                       // }}
                     >
                       Đang chờ xét duyệt
-                    </button> : <button>null1</button>}
+                    </button> : null}
                     </>
-                  ) : <button>null2</button>}
+                  ) : null}
                 </div>
 
                 <div className="headertext__team">

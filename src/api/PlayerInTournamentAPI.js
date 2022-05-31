@@ -10,3 +10,8 @@ export function getAllPlayerInTournamentByTeamInTournamentIdAPI(id){
     const afterDefaultURL = `PlayerInTournament?team-in-tournament-id=${id}&page-offset=1&limit=30`
     return axios.get(url + afterDefaultURL);
 }
+
+export function deletePlayerInTournamentById(id){
+    const afterDefaultURL = `PlayerInTournament?id=${id}`;
+    return axios.delete(url + afterDefaultURL)
+}

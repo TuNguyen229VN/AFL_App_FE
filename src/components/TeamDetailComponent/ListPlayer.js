@@ -16,6 +16,7 @@ import ReactPaginate from "react-paginate";
 import styles from "../FindTeamComponent/TeamFind.module.css";
 import EditInforPlayer from "./EditInForPlayer";
 import LoadingAction from "../LoadingComponent/LoadingAction";
+import ModelAcceptDeletePlayer from "./ModelAcceptDeletePlayer";
 function ListPlayer(props) {
   const { id, gender, numberPlayerInTeam, idHost } = props;
   const [loading, setLoading] = useState(true);
@@ -28,7 +29,8 @@ function ListPlayer(props) {
   const [hideShow, setHideShow] = useState(false);
   const [hideShowEdit, setHideShowEdit] = useState(false);
   const [inforPlayerEdit, setInforPlayerEdit] = useState(null);
-
+  const [hideShowDelete, setHideShowDelete] = useState(false);
+  const [idDelete, setIdDelete] = useState(null);
   const [viewMoreOption, setViewMoreOption] = useState({
     index: "0",
     check: false,
@@ -189,13 +191,29 @@ function ListPlayer(props) {
       });
   };
   const deletePlayerInTeam = (id) => {
-    const response = deletePlayerInTeamAPI(id, "false");
-    console.log(id);
-    response
-      .then((res) => {
-        if (res.status === 200) {
-          setAddPlayerComplete(true);
-          toast.success("Xóa cầu thủ ra khỏi đội bóng thành công", {
+    if (id != null) {
+      const response = deletePlayerInTeamAPI(id, "false");
+      console.log(id);
+      response
+        .then((res) => {
+          if (res.status === 200) {
+            setHideShowDelete(false);
+            setAddPlayerComplete(true);
+            toast.success("Xóa cầu thủ ra khỏi đội bóng thành công", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+        })
+        .catch((err) => {
+          setHideShowDelete(false);
+          console.error(err);
+          toast.error(err.response.data.message, {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -204,20 +222,8 @@ function ListPlayer(props) {
             draggable: true,
             progress: undefined,
           });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error(err.response.data.message, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
         });
-      });
+    }
   };
   return (
     <>
@@ -316,9 +322,12 @@ function ListPlayer(props) {
                                 <i className="fa-solid fa-pen-to-square"></i>
                                 Chỉnh sửa thông tin
                               </p>
+
                               <p
                                 onClick={() => {
-                                  deletePlayerInTeam(item.idPlayerInTeam);
+                                  //deletePlayerInTeam(item.idPlayerInTeam);
+                                  setHideShowDelete(true);
+                                  setIdDelete(item.idPlayerInTeam);
                                 }}
                               >
                                 <i class="fa-solid fa-trash"></i>Xóa cầu thủ
@@ -369,6 +378,11 @@ function ListPlayer(props) {
                                     hideShowEdit ? "overlay active" : "overlay"
                                   }
                                 ></div>
+                                <div
+                                  className={
+                                    hideShowDelete ? "overlay active" : "overlay"
+                                  }
+                                ></div>
                               </div>
                             ) : null}
                           </form>
@@ -389,13 +403,22 @@ function ListPlayer(props) {
                 )}
 
                 {inforPlayerEdit != null ? (
-                  <EditInforPlayer
-                    onClickAddPlayer={onClickAddPlayer}
-                    editInforFootballPlayer={editInforFootballPlayer}
-                    player={inforPlayerEdit}
-                    setHideShowAdd={setHideShowEditInfor}
-                    hideShow={hideShowEdit}
-                  />
+                  <div>
+                    <EditInforPlayer
+                      onClickAddPlayer={onClickAddPlayer}
+                      editInforFootballPlayer={editInforFootballPlayer}
+                      player={inforPlayerEdit}
+                      setHideShowAdd={setHideShowEditInfor}
+                      hideShow={hideShowEdit}
+                    />
+                    <ModelAcceptDeletePlayer
+                      deletePlayerInTeam={deletePlayerInTeam}
+                      idDelete={idDelete}
+                      setIdDelete={setIdDelete}
+                      setHideShowDelete={setHideShowDelete}
+                      hideShowDelete={hideShowDelete}
+                    />
+                  </div>
                 ) : null}
               </div>
             )}

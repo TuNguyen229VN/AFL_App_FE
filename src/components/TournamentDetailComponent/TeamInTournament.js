@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./styles/style.css";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import ViewListPlayerRegister from "./ViewListPlayerRegister";
+import DenyTeamInTournament from "./DenyTeamInTournament";
 
 function TeamInTournament(props) {
   const {
@@ -11,13 +12,16 @@ function TeamInTournament(props) {
     acceptTeamInTournament,
     user,
     hostTournamentId,
+    hideShow,
+    setHideShow
   } = props;
   const [active, setactive] = useState(true);
   const [viewList, setViewList] = useState(null);
+  const [teamDelete, setTeamDelete] = useState(null);
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
-  console.log(allTeam);
+  //console.log(allTeam);
   return (
     <>
       <div className="tournamentdetail">
@@ -169,7 +173,9 @@ function TeamInTournament(props) {
                                   cursor: "pointer",
                                 }}
                                 onClick={() => {
-                                  acceptTeamInTournament(item, false);
+                                  //acceptTeamInTournament(item, false);
+                                  setTeamDelete(item);
+                                  setHideShow(true);
                                 }}
                                 type="submit"
                                 value="Từ chối"
@@ -205,9 +211,20 @@ function TeamInTournament(props) {
                   Chưa có đội bóng đăng ký
                 </h1>
               )}
+              <div className={hideShow ? "overlay active" : "overlay"}></div>
+              <DenyTeamInTournament
+                acceptTeamInTournament={acceptTeamInTournament}
+                teamDelete={teamDelete}
+                setTeamDelete={setTeamDelete}
+                setHideShow={setHideShow}
+                hideShow={hideShow}
+              />
             </div>
           )}
-          <ViewListPlayerRegister teamInTournament={viewList} setViewList={setViewList} />
+          <ViewListPlayerRegister
+            teamInTournament={viewList}
+            setViewList={setViewList}
+          />
         </div>
         {loadingAc ? <LoadingAction /> : null}
       </div>
