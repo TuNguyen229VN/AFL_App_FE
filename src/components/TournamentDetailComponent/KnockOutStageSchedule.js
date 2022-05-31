@@ -63,12 +63,14 @@ export default function KnockOutStageSchedule(props) {
 
     const nullTeamRoundOne = calcAllTeamRoundOne() - data[0].seeds.length;
     if (nullTeamRoundOne > 0) {
+      let countI = 1;
       for (let i = 0; i < nullTeamRoundOne; i++) {
-        data[0].seeds.push({
+        data[0].seeds.splice(countI,0,{
           id: null,
           date: null,
           teams: [{ name: null }, { name: null }],
         });
+        countI += 2;
       }
     }
     setKnoukoutTeam(data);
