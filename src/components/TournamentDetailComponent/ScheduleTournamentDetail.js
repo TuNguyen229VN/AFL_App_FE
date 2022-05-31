@@ -1,68 +1,16 @@
 import React, { useState,useEffect } from "react";
 import "./styles/style.css";
-// import { Bracket, RoundProps } from "react-brackets";
 import { Link } from "react-router-dom";
 import {getTeamInMatchByTourId} from "../../api/TeamInMatchAPI"
 import LoadingAction from "../LoadingComponent/LoadingAction"
+import KnockOutStageSchedule from "./KnockOutStageSchedule";
 
-  
-// const rounds: RoundProps[] = [
-//   {
-//     title: "Vòng tứ kết",
-//     seeds: [
-//       {
-//         id: 1,
-//         date: new Date().toDateString(),
-//         teams: [{ name: "Đội A" }, { name: "Đội B" }],
-//       },
-//       {
-//         id: 2,
-//         date: new Date().toDateString(),
-//         teams: [{ name: "Đội C" }, { name: "Đội D" }],
-//       },
-//       {
-//         id: 3,
-//         date: new Date().toDateString(),
-//         teams: [{ name: "Đội A" }, { name: "Đội B" }],
-//       },
-//       {
-//         id: 4,
-//         date: new Date().toDateString(),
-//         teams: [{ name: "Đội C" }, { name: "Đội D" }],
-//       },
 
-//     ],
-//   },
-//   {
-//     title: "Vòng bán kết",
-//     seeds: [
-//       {
-//         id: 3,
-//         date: new Date().toDateString(),
-//         teams: [{ name: "Đội A" }, { name: "Đội B" }],
-//       },
-//       {
-//         id: 4,
-//         date: new Date().toDateString(),
-//         teams: [{ name: "Đội C" }, { name: "Đội D" }],
-//       },
-//     ],
-//   },
-//   {
-//     title: "Vòng chung kết",
-//     seeds: [
-//       {
-//         id: 3,
-//         date: new Date().toDateString(),
-//         teams: [{ name: "Đội A" }, { name: "Đội B" }],
-//       },
-//     ],
-//   },
-// ];
 function ScheduleTournamentDetail(props) {
   const {tourDetailId} = props;
   const [loading,setLoading] = useState(false);
   const [active, setactive] = useState(true);
+  const [allTeam,setAllTeam] = useState(null);
   const [allTeamA,setAllTeamA] = useState(null);
   const [allTeamB,setAllTeamB] = useState(null);
   useEffect(() => {
@@ -73,6 +21,7 @@ function ScheduleTournamentDetail(props) {
     const response = getTeamInMatchByTourId(tourDetailId);
     response.then(res =>{
       if(res.status === 200){
+        setAllTeam(res.data.teamsInMatch)
         const allMatch = res.data.teamsInMatch;
         const teamB = [];
         const teamA = allMatch.reduce((accumulator,currentValue) => {
@@ -223,10 +172,7 @@ function ScheduleTournamentDetail(props) {
             </table> */}
           </div>
         ) : (
-          // <div className="round">
-          //   <Bracket rounds={rounds} />;
-          // </div>
-          null
+          <KnockOutStageSchedule allTeam={allTeam}  />
         )}
       </div>
     </>
