@@ -15,7 +15,7 @@ function Profile() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-  const [checkGoogle, setCheckGoogle] = useState([]);
+  const [selectStep1, setSelectStep1] = useState(null);
   const [myAccount, setMyAccount] = useState([]);
   const { userGG } = useAuthListener();
   const getMyAccount = () => {
@@ -23,6 +23,8 @@ function Profile() {
     const response = getAPI(afterURL);
     response
       .then((res) => {
+        let splitdate = dob.value.split("-");
+        let day = parseInt(splitdate[2]) + 1;
         setEmail({ value: res.data.email });
         setUsername({ value: res.data.username });
         setGender({ value: res.data.gender });
@@ -69,6 +71,10 @@ function Profile() {
   });
   const [bio, setBio] = useState({ value: "", error: "" });
   const [identityCard, setIdentityCard] = useState({
+    value: "",
+    error: "",
+  });
+  const [dateIdentityCard, setDateIdentityCard] = useState({
     value: "",
     error: "",
   });
@@ -134,11 +140,33 @@ function Profile() {
       case "dob":
         break;
       case "cmnd":
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "*Không được để trống",
+          };
+        } else if (value.length !== 9 && value.length !== 12) {
+          return {
+            flag: false,
+            content: "CMND/CCCD phải có 9 hoặc 12 số",
+          };
+        }
         break;
       case "nameB":
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "*Không được để trống",
+          };
+        }
         break;
       case "phoneB":
-        if (!/^[0-9]+$/.test(value)) {
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "*Không được để trống",
+          };
+        } else if (!/^[0-9]+$/.test(value)) {
           return {
             flag: false,
             content: "*Số điện thoại không được là chữ hay kí tự khác",
@@ -151,6 +179,20 @@ function Profile() {
         }
         break;
       case "codeB":
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "*Không được để trống",
+          };
+        }
+        break;
+      case "nc":
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "*Không được để trống",
+          };
+        }
         break;
       case "bio":
         break;
@@ -160,6 +202,16 @@ function Profile() {
 
     return { flag: true, content: null };
   };
+
+  const selectMyHost = (e) => {
+    let { id } = e.target;
+    if (id === "male") {
+      setSelectStep1("canhan");
+    } else if ((id = "fmale")) {
+      setSelectStep1("doanhnghiep");
+    }
+  };
+
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const flagValid = validateForm(name, value);
@@ -326,6 +378,23 @@ function Profile() {
           ...phoneB,
         });
         break;
+      case "nc":
+        let nc = null;
+        if (flagValid.flag === false) {
+          nc = {
+            value,
+            error: flagValid.content,
+          };
+        } else {
+          nc = {
+            value,
+            error: null,
+          };
+        }
+        setDateIdentityCard({
+          ...nc,
+        });
+        break;
       case "bio":
         let bio = null;
         if (flagValid.flag === false) {
@@ -348,11 +417,159 @@ function Profile() {
     }
   };
 
+  const onPromoteHandler = async (e) => {
+    e.preventDefault();
+    if (
+      identityCard.value === "" ||
+      dateIdentityCard.value === "" ||
+      dateIdentityCard.value === null ||
+      identityCard.value === null
+    ) {
+      toast.error("Vui lòng kiểm tra lại thông tin", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    } else if (
+      identityCard.value.length !== 9 &&
+      identityCard.value.length !== 12
+    ) {
+      toast.error("CMND/CCCD phải có 9 hoặc 12 số", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+    const data = {
+      requestContent:
+        myAccount.username + " đã gửi yêu cầu thăng cấp người tạo giải",
+      identityCard: identityCard.value,
+      phoneBusiness: phoneBussiness.value,
+      nameBussiness: nameBussiness.value,
+      tinbussiness: tinbussiness.value,
+      userId: user.userVM.id,
+    };
+    try {
+      const response = await axios.post(
+        "https://afootballleague.ddns.net/api/v1/PromoteRequest",
+        data
+      );
+      if (response.status === 201) {
+        toast.success(
+          "Gửi yêu cầu thăng cấp thành công, vui lòng chờ xét duyệt",
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
+      }
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.error(error.response);
+    }
+  };
+
+  const onPromoteHandlerBusiness = async (e) => {
+    e.preventDefault();
+    if (
+      nameBussiness.value === "" ||
+      phoneBussiness.value === "" ||
+      tinbussiness.value === "" ||
+      nameBussiness.value === null ||
+      phoneBussiness.value === null ||
+      tinbussiness.value === null
+    ) {
+      toast.error("Vui lòng kiểm tra lại thông tin", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+    const data = {
+      requestContent:
+        myAccount.username + " đã gửi yêu cầu thăng cấp người tạo giải",
+      identityCard: identityCard.value,
+      phoneBusiness: phoneBussiness.value,
+      nameBussiness: nameBussiness.value,
+      tinbussiness: tinbussiness.value,
+      userId: user.userVM.id,
+    };
+    try {
+      // const response = await axios.get(
+      //   "https://thongtindoanhnghiep.co/api/company/3901212654",
+      //   {headers: {"Access-Control-Allow-Origin": "*"}}
+      // );
+      //     console.log(response)
+      const response = await axios.post(
+        "https://afootballleague.ddns.net/api/v1/PromoteRequest",
+        data
+      );
+      if (response.status === 201) {
+        toast.success(
+          "Gửi yêu cầu thăng cấp thành công, vui lòng chờ xét duyệt",
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
+      }
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.error(error.response);
+    }
+  };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     let splitdate = dob.value.split("-");
     let day = parseInt(splitdate[2]) + 1;
-    if (username.value.trim() === "" || phone.value.trim() === "") {
+    if (
+      username.value.trim() === "" ||
+      phone.value.trim() === "" ||
+      dob.value === null ||
+      dob.value === ""
+    ) {
       toast.error("Vui lòng kiểm tra lại thông tin", {
         position: "top-right",
         autoClose: 3000,
@@ -511,51 +728,6 @@ function Profile() {
                 name="dob"
               />
             </div>
-            {/* <div className={styles.text}>
-              <label htmlFor="cmnd">CMND</label>
-              <input
-                type="text"
-                id="cmnd"
-                autoComplete="off"
-                value={identityCard.value}
-                onChange={onChangeHandler}
-                name="cmnd"
-              />
-            </div>
-            <div className={styles.text}>
-              <label htmlFor="nameB">Tên doanh nghiệp</label>
-              <input
-                type="text"
-                id="nameB"
-                autoComplete="off"
-                value={nameBussiness.value}
-                onChange={onChangeHandler}
-                name="nameB"
-              />
-            </div>
-            <div className={styles.text}>
-              <label htmlFor="codeB">Mã doanh nghiệp</label>
-
-              <input
-                type="text"
-                id="codeB"
-                autoComplete="off"
-                value={tinbussiness.value}
-                onChange={onChangeHandler}
-                name="codeB"
-              />
-            </div>
-            <div className={styles.text}>
-              <label htmlFor="phoneB">Số điện thoại doanh nghiệp</label>
-              <input
-                type="number"
-                id="phoneB"
-                autoComplete="off"
-                value={phoneBussiness.value}
-                onChange={onChangeHandler}
-                name="phoneB"
-              />
-            </div> */}
             <div className={styles.text}>
               <label htmlFor="bio">Mô tả </label>
               <textarea
@@ -572,60 +744,140 @@ function Profile() {
         <span className={styles.note}>
           *Thông tin nếu bạn muốn trở thành người tạo giải
         </span>
-        <form
-          onSubmit={onSubmitHandler}
-          className={`${styles.profile__wrap} ${styles.update}`}
-        >
-          <div className={styles.profile__text}>
-            <div className={styles.text}>
-              <label htmlFor="cmnd">CMND</label>
-              <input
-                type="text"
-                id="cmnd"
-                autoComplete="off"
-                value={identityCard.value}
-                onChange={onChangeHandler}
-                name="cmnd"
-              />
-            </div>
-            <div className={styles.text}>
-              <label htmlFor="nameB">Tên doanh nghiệp</label>
-              <input
-                type="text"
-                id="nameB"
-                autoComplete="off"
-                value={nameBussiness.value}
-                onChange={onChangeHandler}
-                name="nameB"
-              />
-            </div>
-            <div className={styles.text}>
-              <label htmlFor="codeB">Mã doanh nghiệp</label>{" "}
-              <input
-                type="text"
-                id="codeB"
-                autoComplete="off"
-                value={tinbussiness.value}
-                onChange={onChangeHandler}
-                name="codeB"
-              />
-            </div>
-            <div className={styles.text}>
-              <label htmlFor="phoneB">Số điện thoại doanh nghiệp</label>
-              <input
-                type="number"
-                id="phoneB"
-                autoComplete="off"
-                value={phoneBussiness.value}
-                onChange={onChangeHandler}
-                name="phoneB"
-              />
-            </div>
-            <input type="submit" value="Nâng cấp" className={styles.btnSave} />
-          </div>
-        </form>
+        <p className={styles.step}>Bước 1:</p>
+        <span className={styles.textChoose}>Bạn là một</span>
+        <input
+          type="radio"
+          id="male"
+          className={styles.radio__input}
+          name="gender"
+          onChange={selectMyHost}
+        />
+        <label
+          for="male"
+          className={`${styles.radio__label} ${styles.r1}`}
+        ></label>
+        <input
+          type="radio"
+          id="fmale"
+          className={styles.radio__input}
+          name="gender"
+          onChange={selectMyHost}
+        />
+        <label
+          for="fmale"
+          className={`${styles.radio__label} ${styles.r2}`}
+        ></label>
+        {selectStep1 !== null ? (
+          <>
+            <p className={styles.step2}>Bước 2:</p>
+            {selectStep1 === "canhan" ? (
+              <form
+                onSubmit={onPromoteHandler}
+                className={`${styles.profile__wrap} ${styles.update}`}
+              >
+                <div className={styles.profile__text}>
+                  <div className={styles.text}>
+                    <label htmlFor="cmnd">CMND</label>
+                    <input
+                      type="number"
+                      id="cmnd"
+                      autoComplete="off"
+                      value={identityCard.value}
+                      onChange={onChangeHandler}
+                      name="cmnd"
+                    />
+                    {identityCard.error != null ? (
+                      <p className={styles.error}>{identityCard.error}</p>
+                    ) : null}
+                  </div>
+                  <div className={styles.text}>
+                    <label htmlFor="nc">Ngày cấp</label>
+                    <input
+                      type="date"
+                      id="nc"
+                      autoComplete="off"
+                      value={dateIdentityCard.value}
+                      onChange={onChangeHandler}
+                      name="nc"
+                      min="1990-01-01"
+                      placeholder="dd-mm-yyyy"
+                      max={date}
+                    />
+                    {dateIdentityCard.error != null ? (
+                      <p className={styles.error}>{dateIdentityCard.error}</p>
+                    ) : null}
+                  </div>
+                  <input
+                    type="submit"
+                    value="Nâng cấp"
+                    className={styles.btnSave}
+                  />
+                </div>
+              </form>
+            ) : null}
+
+            {selectStep1 === "doanhnghiep" ? (
+              <form
+                onSubmit={onPromoteHandlerBusiness}
+                className={`${styles.profile__wrap} ${styles.update}`}
+              >
+                <div className={styles.profile__text}>
+                  <div className={styles.text}>
+                    <label htmlFor="nameB">Tên doanh nghiệp</label>
+                    <input
+                      type="text"
+                      id="nameB"
+                      autoComplete="off"
+                      value={nameBussiness.value}
+                      onChange={onChangeHandler}
+                      name="nameB"
+                    />
+                    {nameBussiness.error != null ? (
+                      <p className={styles.error}>{nameBussiness.error}</p>
+                    ) : null}
+                  </div>
+                  <div className={styles.text}>
+                    <label htmlFor="codeB">Mã doanh nghiệp</label>{" "}
+                    <input
+                      type="text"
+                      id="codeB"
+                      autoComplete="off"
+                      value={tinbussiness.value}
+                      onChange={onChangeHandler}
+                      name="codeB"
+                    />
+                    {tinbussiness.error != null ? (
+                      <p className={styles.error}>{tinbussiness.error}</p>
+                    ) : null}
+                  </div>
+                  <div className={styles.text}>
+                    <label htmlFor="phoneB">Số điện thoại doanh nghiệp</label>
+                    <input
+                      type="number"
+                      id="phoneB"
+                      autoComplete="off"
+                      value={phoneBussiness.value}
+                      onChange={onChangeHandler}
+                      name="phoneB"
+                    />
+                    {phoneBussiness.error != null ? (
+                      <p className={styles.error}>{phoneBussiness.error}</p>
+                    ) : null}
+                  </div>
+                  <input
+                    type="submit"
+                    value="Nâng cấp"
+                    className={styles.btnSave}
+                  />
+                </div>
+              </form>
+            ) : null}
+          </>
+        ) : null}
+
         <div className={styles.profile__delete}>
-          <div className={styles.delete__title}>Xóa tài khoản</div>
+          {/* <div className={styles.delete__title}>Xóa tài khoản</div>
           <div className={styles.delete__wrap}>
             <p>
               Hãy nhớ rằng khi xóa tài khoản thì tất cả thông tin về tài khoản,
@@ -633,7 +885,7 @@ function Profile() {
               lại được.
             </p>
             <button>Xóa tài khoản</button>
-          </div>
+          </div> */}
         </div>
       </div>
       <Footer />

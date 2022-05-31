@@ -181,10 +181,13 @@ function Header(id) {
           {user ? (
             <div className={clickUserMenu ? "popup_down active" : "popup_down"}>
               <Link to={"/profile"}>Hồ sơ</Link>
-              <Link to={`/myListTournament`}>Giải đấu của bạn</Link>
+              <Link to={`/playerDetail/${myAccount.id}/myTeamInPlayer`}>
+                Thông tin cầu thủ
+              </Link>
               <Link to={`/teamDetail/${myAccount.id}/inforTeamDetail`}>
                 Đội bóng của bạn
               </Link>
+              <Link to={`/myListTournament`}>Giải đấu của bạn</Link>
               <a href="#" onClick={signout}>
                 Đăng xuất
               </a>

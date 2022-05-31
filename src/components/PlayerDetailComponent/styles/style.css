@@ -1,0 +1,10 @@
+.HeaderTeamDetail .player_detail{
+    height: 430px;
+}
+
+.HeaderTeamDetail .player_detail::after{
+    background-image: url("../../../../public/assets/img/teamdetail/edoardo-busti-2QwMsZ1TIdI-unsplash.jpg");
+}
+.HeaderTeamDetail .player_detail .man .title{
+    width: 160px;
+} 

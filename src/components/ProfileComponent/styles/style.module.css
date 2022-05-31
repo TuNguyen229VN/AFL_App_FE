@@ -1,201 +1,268 @@
-.profile{
-    padding: 60px 150px;
-    margin-top: 80px;
+.profile {
+  padding: 60px 150px;
+  margin-top: 80px;
 }
 
-.profile__title,.delete__title,.profile__title2{
-    font-size: 24px;
-    font-family: "Mulish-Bold";
-    text-transform: uppercase;
+.profile__title,
+.delete__title,
+.profile__title2 {
+  font-size: 24px;
+  font-family: "Mulish-Bold";
+  text-transform: uppercase;
 }
 
-.profile__title::after,.delete__title::after,.profile__title2::after{
-    display: block;
-    content: "";
-    height: 4px;
-    background-color: var(--blue-black);
-    width: 150px;
-    margin-top: 10px;
+.profile__title::after,
+.delete__title::after,
+.profile__title2::after {
+  display: block;
+  content: "";
+  height: 4px;
+  background-color: var(--blue-black);
+  width: 150px;
+  margin-top: 10px;
 }
 
-.profile__title2{
-    margin-top: 60px;
+.profile__title2 {
+  margin-top: 60px;
 }
-.profile__wrap{
-    margin-top: 40px;
-    display: flex;
-    padding: 20px;
-    column-gap: 200px;
+.profile__wrap {
+  margin-top: 40px;
+  display: flex;
+  padding: 20px;
+  column-gap: 200px;
 }
 
-.profile__wrap .profile__img img{
-    cursor: pointer;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    border: 2px solid var(--green-bold);
+.profile__wrap .profile__img img {
+  cursor: pointer;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  border: 2px solid var(--green-bold);
 }
 
 .profile__img input[type="file"] {
-    display: none;
-  }
-  .profile__img label{
-      position: relative;
-      cursor: pointer;
-      user-select: none;
-  }
-.profile__img label h5{
-    padding: 10px;
-    border-radius: 5px;
-    background-color: var(--green-bold);
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    width: max-content;
-    transition: 0.5s;
-    opacity: 0;
-    visibility: hidden;
+  display: none;
+}
+.profile__img label {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+.profile__img label h5 {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: var(--green-bold);
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  transition: 0.5s;
+  opacity: 0;
+  visibility: hidden;
 }
 
-.profile__img label:hover h5{
-    opacity: 1;
-    visibility: visible;
+.profile__img label:hover h5 {
+  opacity: 1;
+  visibility: visible;
 }
 
-.profile__img .email{
-    margin-top: 20px;
-    text-align: center;
-    font-size: 18px;
-    font-family: "Mulish-Bold";
+.profile__img .email {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 18px;
+  font-family: "Mulish-Bold";
 }
 
-.profile__text{
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    column-gap: 60px;
+.profile__text {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 60px;
 }
 
-.update{
-   display: block;
+.update {
+  margin-top: 0;
+  display: block;
 }
-.profile__text .text{
-    font-size: 18px;
-    font-family: "Mulish-Bold";
-    margin-bottom: 20px;
-}
-
-.profile__text .text input,.profile__text .text select,.profile__text .text textarea{
-    margin-top: 10px;
-    width: 100%;
-    padding: 10px 5px;
-    border: 2px solid #ccc;
-    height: 50px;
-    font-family: "Mulish-Regular";
+.profile__text .text {
+  font-size: 18px;
+  font-family: "Mulish-Bold";
+  margin-bottom: 20px;
 }
 
-.profile__text .text textarea{
-    height: 200px;
-    resize: none;
+.profile__text .text input,
+.profile__text .text select,
+.profile__text .text textarea {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px 5px;
+  border: 2px solid #ccc;
+  height: 50px;
+  font-family: "Mulish-Regular";
 }
 
-.profile__text .text input:focus,.profile__text .text select:focus,.profile__text .text textarea:focus{
-    border: 2px solid var(--blue-black);
- 
+.profile__text .text textarea {
+  height: 200px;
+  resize: none;
+}
+
+.profile__text .text input:focus,
+.profile__text .text select:focus,
+.profile__text .text textarea:focus {
+  border: 2px solid var(--blue-black);
 }
 
 .profile__text input::-webkit-outer-spin-button,
 .profile__text input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-.profile__text input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
+.profile__text input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
 }
 
-.profile__text .text:nth-child(6){
-    grid-column: 1/3;
-    row-gap: 2/3;
+.profile__text .text:nth-child(6) {
+  grid-column: 1/3;
+  row-gap: 2/3;
 }
 
-.profile__text .btnSave{
-    position: absolute;
-    bottom: -60px;
-    right: 0px;
-    padding: 15px 20px;
-    width: 180px;
-    border: 1px solid var(--blue-black);
-    border-radius: 5px;
-    border: none;
-    background-color: var(--green-bold);
-    color: var(--blue-black);
-    transition: 0.5s;
+.profile__text .btnSave {
+  position: absolute;
+  bottom: -60px;
+  right: 0px;
+  padding: 15px 20px;
+  width: 180px;
+  border: 1px solid var(--blue-black);
+  border-radius: 5px;
+  border: none;
+  background-color: var(--green-bold);
+  color: var(--blue-black);
+  transition: 0.5s;
 }
 
-.profile__text .btnSave:hover,.delete__wrap button:hover{
-    background-color: var(--blue-black);
-    color: var(--white-text);
+.profile__text .btnSave:hover,
+.delete__wrap button:hover {
+  background-color: var(--blue-black);
+  color: var(--white-text);
 }
 
-.profile__delete{
-    margin-top: 80px;
+.profile__delete {
+  margin-top: 80px;
 }
 
-.delete__wrap{
+.delete__wrap {
+  margin-top: 40px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 30px;
+  font-size: 18px;
+}
+
+.delete__wrap p {
+  line-height: 1.3;
+}
+.delete__wrap button {
+  border: 1px solid var(--blue-black);
+  border-radius: 5px;
+  border: none;
+  background-color: var(--green-bold);
+  color: var(--blue-black);
+  transition: 0.5s;
+  padding: 15px 20px;
+  width: 215px;
+  font-size: 16px;
+}
+
+.note {
+  font-size: 16px;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: "Mulish-Regular";
+  font-style: italic;
+}
+
+.changePass {
+  text-align: center;
+  margin: 20px 60px;
+  background-color: var(--green-bold);
+  display: inline-block;
+  padding: 10px;
+  width: max-content;
+  border-radius: 5px;
+  transition: 0.5s;
+}
+
+.changePass:hover {
+  color: var(--white-text);
+  background-color: var(--blue-black);
+}
+
+.profile__text .error {
+  font-family: "Mulish-Regular";
+  margin-top: 15px;
+  color: red;
+}
+
+.step {
+  font-size: 20px;
+  font-family: "Mulish-Bold";
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.step2 {
+    font-size: 20px;
+    font-family: "Mulish-Bold";
     margin-top: 40px;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    column-gap: 30px;
-    font-size: 18px;
+  }
+.textChoose {
+  font-size: 18px;
+  margin-right: 20px;
+  margin-left: 20px;
 }
 
-.delete__wrap p{
-    line-height: 1.3;
-}
-.delete__wrap button{
-    border: 1px solid var(--blue-black);
-    border-radius: 5px;
-    border: none;
-    background-color: var(--green-bold);
-    color: var(--blue-black);
-    transition: 0.5s;
-    padding: 15px 20px;
-    width: 215px;
-    font-size: 16px;
+.radio__input {
+  display: none;
 }
 
- .note{
-    font-size: 16px;
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-family: "Mulish-Regular";
-    font-style: italic;
+.radio__label {
+  width: 18px;
+  height: 18px;
+  border-radius: 2rem;
+  background-color: #eee;
+  display: inline-block;
+  cursor: pointer;
+  margin: 0 1rem;
+  box-shadow: 0 0 0 4px #eee;
+  transition: all 0.25s linear;
+  position: relative;
+  margin-right: 185px;
 }
 
-.changePass{
-    text-align: center;
-    margin: 20px 60px;
-    background-color: var(--green-bold);
-    display: inline-block;
-    padding: 10px;
-    width: max-content;
-    border-radius: 5px;
-    transition: 0.5s;
+.r1::after {
+  position: absolute;
+  display: block;
+  width: max-content;
+  content: "Tổ chức cá nhân";
+  right: -155px;
+  font-size: 18px;
 }
 
-.changePass:hover{
-    color: var(--white-text);
-    background-color: var(--blue-black);
+.r2::after {
+  position: absolute;
+  content: "Tổ chức doanh nghiệp";
+  width: max-content;
+  display: block;
+  right: -195px;
+  font-size: 18px;
 }
-
-.profile__text .error{
-    font-family: "Mulish-Regular";
-    margin-top: 15px;
-    color: red;
+.radio__input:checked + .radio__label {
+  box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--blue-black);
+  background-color: var(--blue-black);
 }

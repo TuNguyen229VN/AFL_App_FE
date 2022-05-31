@@ -54,13 +54,13 @@ const Slider = () => {
           </div>
           <div className="slider__item-gallery">
             <div className="slider_item-img">
-              <img src="/assets/img/homepage/a1.png" alt="img" />
+              <img src="/assets/img/homepage/a1.jpg" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="/assets/img/homepage/a2.png" alt="img" />
+              <img src="/assets/img/homepage/a2.jpg" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="/assets/img/homepage/a3.png" alt="img" />
+              <img src="/assets/img/homepage/a3.jpg" alt="img" />
             </div>
           </div>
           <img
@@ -86,13 +86,13 @@ const Slider = () => {
           </div>
           <div className="slider__item-gallery">
             <div className="slider_item-img">
-              <img src="/assets/img/homepage/a1.png" alt="img" />
+              <img src="/assets/img/homepage/a1.jpg" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="/assets/img/homepage/a2.png" alt="img" />
+              <img src="/assets/img/homepage/a2.jpg" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="/assets/img/homepage/a3.png" alt="img" />
+              <img src="/assets/img/homepage/a3.jpg" alt="img" />
             </div>
           </div>
           <img
@@ -118,13 +118,13 @@ const Slider = () => {
           </div>
           <div className="slider__item-gallery">
             <div className="slider_item-img">
-              <img src="/assets/img/homepage/a1.png" alt="img" />
+              <img src="/assets/img/homepage/a1.jpg" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="/assets/img/homepage/a2.png" alt="img" />
+              <img src="/assets/img/homepage/a2.jpg" alt="img" />
             </div>
             <div className="slider_item-img">
-              <img src="/assets/img/homepage/a3.png" alt="img" />
+              <img src="/assets/img/homepage/a3.jpg" alt="img" />
             </div>
           </div>
           <img

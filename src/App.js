@@ -10,6 +10,7 @@ import CreateTournament from "./components/CreateTournament/CreateTournament";
 import HeaderTournamentDetail from "./components/TournamentDetailComponent/HeaderTournamentDetail";
 import UpdateInformationTournament from "./components/TournamentDetailComponent/UpdateTournamentInformation";
 import HeaderTeamDetail from "./components/TeamDetailComponent/HeaderTeamDetail";
+import HeaderPlayerDetail from "./components/PlayerDetailComponent/HeaderPlayerDetail";
 import ChangePassWorld from "./components/ChangePasswordComponent/ChangePassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -150,6 +151,41 @@ function App() {
             element={user ? <Match /> : <Navigate to={"/login"} />}
           />
           <Route exact path="/resetPassword" element={<ResetPassword />} />
+          <Route
+            exact
+            path="/playerDetail/:idPlayer/myTeamInPlayer"
+            element={
+              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
+            }
+          />
+          <Route
+            exact
+            path="/playerDetail/:idPlayer/myTournamentInPlayer"
+            element={
+              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
+            }
+          />
+          <Route
+            exact
+            path="/playerDetail/:idPlayer/requestInPlayer"
+            element={
+              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
+            }
+          />
+          <Route
+            exact
+            path="/playerDetail/:idPlayer/scheduleInPlayer"
+            element={
+              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
+            }
+          />
+          <Route
+            exact
+            path="/playerDetail/:idPlayer/achivementInPlayer"
+            element={
+              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>

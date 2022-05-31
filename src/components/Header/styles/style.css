@@ -178,7 +178,7 @@ header .container-fluid .menu li {
   background-color: var(--blue-black);
   display: flex;
   flex-direction: column;
-  bottom: -190px;
+  bottom: -240px;
   visibility: hidden;
   opacity: 0;
 }

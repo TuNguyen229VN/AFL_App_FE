@@ -152,8 +152,9 @@
   right: 80px;
 }
 .slider__item-gallery .slider_item-img:nth-child(2) {
+  top: 40px;
   right: 200px;
-  width: 500px;
+  width: 520px;
   z-index: 2;
 }
 .slider__item-gallery .slider_item-img:nth-child(1) {

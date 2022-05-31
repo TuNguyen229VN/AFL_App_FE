@@ -45,19 +45,22 @@
   cursor: pointer;
   height: 180px;
   background-color: var(--white-text);
+  position: relative;
 }
 
 .teamhome .tournament__img img {
-  margin: 20px auto;
-  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  position: absolute;
   object-fit: cover;
-  opacity: 0.8;
+  opacity: 0.9;
   transition: 0.5s;
 }
 
 .teamhome .tournaments__list-item:hover .tournament__img img {
   opacity: 1;
-  transform: scale(1.2);
+  transform:translate(-50%,-50%) scale(1.2);
 }
 .teamhome .tournaments__list-item:hover .tournament__text h3 {
   color: var(--green-bold);
