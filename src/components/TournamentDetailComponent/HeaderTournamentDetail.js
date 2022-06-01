@@ -159,7 +159,7 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/commentTournamentDetail`
     ) {
-      return <CommentTournamentDetail />;
+      return <CommentTournamentDetail/>;
     }
   };
 

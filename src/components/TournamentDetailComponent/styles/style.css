@@ -500,3 +500,28 @@
   color: white;
 }
 
+.btnLoadMore{
+    display: block;
+    width: max-content;
+    margin: 40px auto 0;
+    padding: 15px 40px;
+    font-size: 18px;
+    outline: none;
+    border: none;
+    background-color: var(--blue-black);
+    color: var(--white-text);
+    transition: 0.5s;
+    font-family: "Mulish-Bold";
+}
+
+.btnLoadMore:hover{
+  background-color: var(--green-bold);
+  color: var(--blue-black);
+  transition: 0.5s;
+}
+
+.error{
+  color: red;
+  margin-top: 10px;
+  font-size: 15px;
+}
