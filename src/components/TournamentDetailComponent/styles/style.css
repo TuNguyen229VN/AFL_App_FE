@@ -525,3 +525,65 @@
   margin-top: 10px;
   font-size: 15px;
 }
+
+.modifyIcon{
+  position: absolute;
+  right:10px;
+  top:5px;
+  width: max-content !important;
+  padding:0 !important;
+}
+.editIcon{
+  border-radius: 0 !important;
+  width: 20px !important;
+  height: 20px !important;
+  cursor: pointer;
+  margin-left: 15px;
+}
+.editComment_form{
+  display: none;
+}
+.editComment_form.active{
+  display: block;
+}
+
+.editComment_form textarea{
+  border:none;
+  padding:10px !important;
+ 
+}
+
+.editComment_form button{
+  margin:0 10px;
+  border-radius:5px;
+  font-size: 15px;
+  padding:10px;
+}
+.btnWrap{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.deletePopup{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform:translate(-50%, -50%);
+  background:rgb(80 230 126);
+  z-index: 10;
+  padding:20px 50px;
+  border-radius: 5px;
+  width: max-content !important;
+}
+.deleteShadow{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 10;
+  top:0;
+  left: 0;
+}
+
+.deletePopup .btnLoadMore{
+  padding:10px 20px;
+}
