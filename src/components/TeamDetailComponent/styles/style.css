@@ -627,3 +627,8 @@ background-color: #f0f2f5;
   outline: 0;
 }
 
+.error{
+  color: red;
+  margin-top: 10px;
+  font-size: 15px;
+}
