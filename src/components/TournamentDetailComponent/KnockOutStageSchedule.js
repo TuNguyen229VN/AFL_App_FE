@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Bracket, RoundProps } from "react-brackets";
-
+import { Link } from "react-router-dom";
 export default function KnockOutStageSchedule(props) {
-  const { allTeam } = props;
+  const { allTeam, typeView } = props;
   const [knockoutTeam, setKnoukoutTeam] = useState(null);
   useEffect(() => {
+    
     if (allTeam != null) {
       devideRound();
     }
-  },[]);
+  }, [allTeam]);
 
   const devideRound = () => {
     const data = [];
@@ -32,7 +33,7 @@ export default function KnockOutStageSchedule(props) {
             ],
           });
         } else if (roundCurrent === item.match.round) {
-          console.log(indexCurrent);
+          
           data[indexCurrent].seeds.push({
             id: item.id,
             date: new Date().toDateString(),
@@ -60,19 +61,21 @@ export default function KnockOutStageSchedule(props) {
         }
       }
     });
-
-    const nullTeamRoundOne = calcAllTeamRoundOne() - data[0].seeds.length;
-    if (nullTeamRoundOne > 0) {
-      let countI = 1;
-      for (let i = 0; i < nullTeamRoundOne; i++) {
-        data[0].seeds.splice(countI,0,{
-          id: null,
-          date: null,
-          teams: [{ name: null }, { name: null }],
-        });
-        countI += 2;
+    if (typeView === "diagram") {
+      const nullTeamRoundOne = calcAllTeamRoundOne() - data[0].seeds.length;
+      if (nullTeamRoundOne > 0) {
+        let countI = 1;
+        for (let i = 0; i < nullTeamRoundOne; i++) {
+          data[0].seeds.splice(countI, 0, {
+            id: null,
+            date: null,
+            teams: [{ name: null }, { name: null }],
+          });
+          countI += 2;
+        }
       }
     }
+    console.log(data)
     setKnoukoutTeam(data);
   };
 
@@ -86,5 +89,49 @@ export default function KnockOutStageSchedule(props) {
 
   const rounds = knockoutTeam != null ? [...knockoutTeam] : null;
 
-  return knockoutTeam !== null ? <Bracket rounds={rounds} /> : null;
+  return knockoutTeam !== null ? (
+    typeView === "diagram" ? (
+      <Bracket rounds={rounds} />
+    ) : (
+      knockoutTeam.map((item, index) => {
+       return <table style={{
+         marginBottom: 50
+       }} key={index} className="schedule__table">
+          <tr>
+            <th colSpan={5}>Bảng đấu trực tiếp - {item.title}</th>
+          </tr>
+          {item.seeds.map((itemSeeds,indexSeeds) => {
+            return <tr key={indexSeeds}>
+            <td>{itemSeeds.date}</td>
+            {/* <td>{index + 1}</td> */}
+            <td>
+              {itemSeeds.teams[0].name}
+              <img
+                src="/assets/img/homepage/banner1.jpg"
+                alt="gallery_item"
+              />
+            </td>
+            <td>
+              <span className="score">0</span>
+              <span className="score"> - </span>
+              <span className="score">0</span>
+            </td>
+            <td>
+              <img
+                src="/assets/img/homepage/banner1.jpg"
+                alt="gallery_item"
+              />
+              {itemSeeds.teams[1].name}
+            </td>
+            <td>
+              {" "}
+              <Link to={`/match/${itemSeeds.id}/matchDetail`}>Chi tiết</Link>
+            </td>
+          </tr>
+          })}
+        </table>;
+
+      })
+    )
+  ) : null;
 }

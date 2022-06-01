@@ -127,7 +127,7 @@ function HeaderTournamentDetail() {
       activeTeamDetail ===
       `/tournamentDetail/${idTour}/scheduleTournamentDetail`
     ) {
-      return <ScheduleTournamentDetail tourDetailId={tourDetail.id} />;
+      return <ScheduleTournamentDetail tournamentType={tourDetail.tournamentTypeId === 1 ? "KnockoutStage" : tourDetail.tournamentTypeId === 2 ? "CircleStage" : "GroupStage"} tourDetailId={tourDetail.id} />;
     }
     if (
       activeTeamDetail ===
