@@ -10,7 +10,9 @@ import styles from "./styles/style.module.css";
 import firebase from "firebase/compat/app";
 import useAuthListener from "../../hooks/user_auth";
 import "firebase/compat/auth";
+import LoadingAction from "../LoadingComponent/LoadingAction";
 function Profile() {
+  const [loading, setLoading] = useState(false);
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
@@ -19,6 +21,7 @@ function Profile() {
   const [myAccount, setMyAccount] = useState([]);
   const { userGG } = useAuthListener();
   const getMyAccount = () => {
+    setLoading(true);
     const afterURL = `users/${user.userVM.id}`;
     const response = getAPI(afterURL);
     response
@@ -39,8 +42,11 @@ function Profile() {
         setNameBussiness({ value: res.data.nameBusiness });
         setPhoneBussiness({ value: res.data.phoneBusiness });
         setTinBussiness({ value: res.data.tinbusiness });
+        setRole(res.data.roleId);
+        setLoading(false);
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
       });
   };
@@ -48,7 +54,7 @@ function Profile() {
   useEffect(() => {
     getMyAccount();
   }, []);
-
+  const [role, setRole] = useState("");
   const [email, setEmail] = useState({ value: "", error: "" });
   const [username, setUsername] = useState({
     value: myAccount.username,
@@ -452,11 +458,9 @@ function Profile() {
     }
     const data = {
       requestContent:
-        myAccount.username + " đã gửi yêu cầu thăng cấp người tạo giải",
+        username.value + " đã gửi yêu cầu thăng cấp người tạo giải",
       identityCard: identityCard.value,
-      phoneBusiness: phoneBussiness.value,
-      nameBussiness: nameBussiness.value,
-      tinbussiness: tinbussiness.value,
+      dateIssuance: dateIdentityCard.value,
       userId: user.userVM.id,
     };
     try {
@@ -515,11 +519,10 @@ function Profile() {
     }
     const data = {
       requestContent:
-        myAccount.username + " đã gửi yêu cầu thăng cấp người tạo giải",
-      identityCard: identityCard.value,
+        username.value + " đã gửi yêu cầu thăng cấp người tạo giải",
       phoneBusiness: phoneBussiness.value,
-      nameBussiness: nameBussiness.value,
-      tinbussiness: tinbussiness.value,
+      nameBusiness: nameBussiness.value,
+      tinbusiness: tinbussiness.value,
       userId: user.userVM.id,
     };
     try {
@@ -631,6 +634,7 @@ function Profile() {
   return (
     <>
       <ScrollToTop />
+      {loading?<LoadingAction/>:null}
       <Header />
       <div className={styles.profile}>
         <h2 className={styles.profile__title}>Thông tin cá nhân</h2>
@@ -741,140 +745,150 @@ function Profile() {
           </div>
         </form>
         <h2 className={styles.profile__title2}>Nâng cấp tài khoản</h2>
-        <span className={styles.note}>
-          *Thông tin nếu bạn muốn trở thành người tạo giải
-        </span>
-        <p className={styles.step}>Bước 1:</p>
-        <span className={styles.textChoose}>Bạn là một</span>
-        <input
-          type="radio"
-          id="male"
-          className={styles.radio__input}
-          name="gender"
-          onChange={selectMyHost}
-        />
-        <label
-          for="male"
-          className={`${styles.radio__label} ${styles.r1}`}
-        ></label>
-        <input
-          type="radio"
-          id="fmale"
-          className={styles.radio__input}
-          name="gender"
-          onChange={selectMyHost}
-        />
-        <label
-          for="fmale"
-          className={`${styles.radio__label} ${styles.r2}`}
-        ></label>
-        {selectStep1 !== null ? (
+        {role !== 3 ? (
           <>
-            <p className={styles.step2}>Bước 2:</p>
-            {selectStep1 === "canhan" ? (
-              <form
-                onSubmit={onPromoteHandler}
-                className={`${styles.profile__wrap} ${styles.update}`}
-              >
-                <div className={styles.profile__text}>
-                  <div className={styles.text}>
-                    <label htmlFor="cmnd">CMND</label>
-                    <input
-                      type="number"
-                      id="cmnd"
-                      autoComplete="off"
-                      value={identityCard.value}
-                      onChange={onChangeHandler}
-                      name="cmnd"
-                    />
-                    {identityCard.error != null ? (
-                      <p className={styles.error}>{identityCard.error}</p>
-                    ) : null}
-                  </div>
-                  <div className={styles.text}>
-                    <label htmlFor="nc">Ngày cấp</label>
-                    <input
-                      type="date"
-                      id="nc"
-                      autoComplete="off"
-                      value={dateIdentityCard.value}
-                      onChange={onChangeHandler}
-                      name="nc"
-                      min="1990-01-01"
-                      placeholder="dd-mm-yyyy"
-                      max={date}
-                    />
-                    {dateIdentityCard.error != null ? (
-                      <p className={styles.error}>{dateIdentityCard.error}</p>
-                    ) : null}
-                  </div>
-                  <input
-                    type="submit"
-                    value="Nâng cấp"
-                    className={styles.btnSave}
-                  />
-                </div>
-              </form>
-            ) : null}
+            <span className={styles.note}>
+              *Thông tin nếu bạn muốn trở thành người tạo giải
+            </span>
+            <p className={styles.step}>Bước 1:</p>
+            <span className={styles.textChoose}>Bạn là một</span>
+            <input
+              type="radio"
+              id="male"
+              className={styles.radio__input}
+              name="gender"
+              onChange={selectMyHost}
+            />
+            <label
+              for="male"
+              className={`${styles.radio__label} ${styles.r1}`}
+            ></label>
+            <input
+              type="radio"
+              id="fmale"
+              className={styles.radio__input}
+              name="gender"
+              onChange={selectMyHost}
+            />
+            <label
+              for="fmale"
+              className={`${styles.radio__label} ${styles.r2}`}
+            ></label>
+            {selectStep1 !== null ? (
+              <>
+                <p className={styles.step2}>Bước 2:</p>
+                {selectStep1 === "canhan" ? (
+                  <form
+                    onSubmit={onPromoteHandler}
+                    className={`${styles.profile__wrap} ${styles.update}`}
+                  >
+                    <div className={styles.profile__text}>
+                      <div className={styles.text}>
+                        <label htmlFor="cmnd">CMND</label>
+                        <input
+                          type="number"
+                          id="cmnd"
+                          autoComplete="off"
+                          value={identityCard.value}
+                          onChange={onChangeHandler}
+                          name="cmnd"
+                        />
+                        {identityCard.error != null ? (
+                          <p className={styles.error}>{identityCard.error}</p>
+                        ) : null}
+                      </div>
+                      <div className={styles.text}>
+                        <label htmlFor="nc">Ngày cấp</label>
+                        <input
+                          type="date"
+                          id="nc"
+                          autoComplete="off"
+                          value={dateIdentityCard.value}
+                          onChange={onChangeHandler}
+                          name="nc"
+                          min="1990-01-01"
+                          placeholder="dd-mm-yyyy"
+                          max={date}
+                        />
+                        {dateIdentityCard.error != null ? (
+                          <p className={styles.error}>
+                            {dateIdentityCard.error}
+                          </p>
+                        ) : null}
+                      </div>
+                      <input
+                        type="submit"
+                        value="Nâng cấp"
+                        className={styles.btnSave}
+                      />
+                    </div>
+                  </form>
+                ) : null}
 
-            {selectStep1 === "doanhnghiep" ? (
-              <form
-                onSubmit={onPromoteHandlerBusiness}
-                className={`${styles.profile__wrap} ${styles.update}`}
-              >
-                <div className={styles.profile__text}>
-                  <div className={styles.text}>
-                    <label htmlFor="nameB">Tên doanh nghiệp</label>
-                    <input
-                      type="text"
-                      id="nameB"
-                      autoComplete="off"
-                      value={nameBussiness.value}
-                      onChange={onChangeHandler}
-                      name="nameB"
-                    />
-                    {nameBussiness.error != null ? (
-                      <p className={styles.error}>{nameBussiness.error}</p>
-                    ) : null}
-                  </div>
-                  <div className={styles.text}>
-                    <label htmlFor="codeB">Mã doanh nghiệp</label>{" "}
-                    <input
-                      type="text"
-                      id="codeB"
-                      autoComplete="off"
-                      value={tinbussiness.value}
-                      onChange={onChangeHandler}
-                      name="codeB"
-                    />
-                    {tinbussiness.error != null ? (
-                      <p className={styles.error}>{tinbussiness.error}</p>
-                    ) : null}
-                  </div>
-                  <div className={styles.text}>
-                    <label htmlFor="phoneB">Số điện thoại doanh nghiệp</label>
-                    <input
-                      type="number"
-                      id="phoneB"
-                      autoComplete="off"
-                      value={phoneBussiness.value}
-                      onChange={onChangeHandler}
-                      name="phoneB"
-                    />
-                    {phoneBussiness.error != null ? (
-                      <p className={styles.error}>{phoneBussiness.error}</p>
-                    ) : null}
-                  </div>
-                  <input
-                    type="submit"
-                    value="Nâng cấp"
-                    className={styles.btnSave}
-                  />
-                </div>
-              </form>
+                {selectStep1 === "doanhnghiep" ? (
+                  <form
+                    onSubmit={onPromoteHandlerBusiness}
+                    className={`${styles.profile__wrap} ${styles.update}`}
+                  >
+                    <div className={styles.profile__text}>
+                      <div className={styles.text}>
+                        <label htmlFor="nameB">Tên doanh nghiệp</label>
+                        <input
+                          type="text"
+                          id="nameB"
+                          autoComplete="off"
+                          value={nameBussiness.value}
+                          onChange={onChangeHandler}
+                          name="nameB"
+                        />
+                        {nameBussiness.error != null ? (
+                          <p className={styles.error}>{nameBussiness.error}</p>
+                        ) : null}
+                      </div>
+                      <div className={styles.text}>
+                        <label htmlFor="codeB">Mã doanh nghiệp</label>{" "}
+                        <input
+                          type="text"
+                          id="codeB"
+                          autoComplete="off"
+                          value={tinbussiness.value}
+                          onChange={onChangeHandler}
+                          name="codeB"
+                        />
+                        {tinbussiness.error != null ? (
+                          <p className={styles.error}>{tinbussiness.error}</p>
+                        ) : null}
+                      </div>
+                      <div className={styles.text}>
+                        <label htmlFor="phoneB">
+                          Số điện thoại doanh nghiệp
+                        </label>
+                        <input
+                          type="number"
+                          id="phoneB"
+                          autoComplete="off"
+                          value={phoneBussiness.value}
+                          onChange={onChangeHandler}
+                          name="phoneB"
+                        />
+                        {phoneBussiness.error != null ? (
+                          <p className={styles.error}>{phoneBussiness.error}</p>
+                        ) : null}
+                      </div>
+                      <input
+                        type="submit"
+                        value="Nâng cấp"
+                        className={styles.btnSave}
+                      />
+                    </div>
+                  </form>
+                ) : null}
+              </>
             ) : null}
           </>
-        ) : null}
+        ) : (
+          <p className={styles.acer}><i class="fa-solid fa-trophy"></i> Bạn đã là một người tạo giải </p>
+        )}
 
         <div className={styles.profile__delete}>
           {/* <div className={styles.delete__title}>Xóa tài khoản</div>

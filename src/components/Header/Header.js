@@ -54,6 +54,7 @@ function Header(id) {
     `/tournamentDetail/${id.id}/teamInTournament`,
     `/tournamentDetail/${id.id}/commentTournamentDetail`,
     `/tournamentDetail/${id.id}/predictionTournamentDetail`,
+    `/tournamentDetail/${id.id}/newsTournamentDetail`,
   ];
   const teamHighlight = [
     "/findTeam",

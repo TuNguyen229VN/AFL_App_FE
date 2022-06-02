@@ -12,6 +12,7 @@ import TeamInTournament from "./TeamInTournament";
 import PredictionTournamentDetail from "./PredictionTournamentDetail";
 import CommentTournamentDetail from "./CommentTournamentDetail";
 import Loading from "../LoadingComponent/Loading";
+import NewsTournamentDetail from "./NewsTournamentDetail";
 import { getAPI } from "../../api";
 import { useNavigate } from "react-router-dom";
 import RegisterInTournament from "./RegisterInTournament";
@@ -19,22 +20,20 @@ import { getTeamByIdAPI } from "../../api/TeamAPI";
 import {
   getTeamInTournamentByTourIdAPI,
   updateStatusTeamInTournament,
-  deleteRegisterTeamAPI
+  deleteRegisterTeamAPI,
 } from "../../api/TeamInTournamentAPI";
-import {
-  deletePlayerInTournamentById
-} from "../../api/PlayerInTournamentAPI";
+import { deletePlayerInTournamentById } from "../../api/PlayerInTournamentAPI";
 import { toast } from "react-toastify";
-import {getUserByIdAPI} from "../../api/User"
+import { getUserByIdAPI } from "../../api/User";
 function HeaderTournamentDetail() {
   const { idTour } = useParams();
   const location = useLocation();
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-  const [hideShowDelete,setHideShowDelete] = useState(false);
-  const [hideShow,setHideShow] = useState(false);
-  const [checkRegisterTour,setCheckRegistertour] = useState(false)
+  const [hideShowDelete, setHideShowDelete] = useState(false);
+  const [hideShow, setHideShow] = useState(false);
+  const [checkRegisterTour, setCheckRegistertour] = useState(false);
   const [checkPaticipate, setCheckPaticipate] = useState(false);
   const [statusTeamInTour, setStatusInTour] = useState("Tham gia");
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
@@ -127,7 +126,18 @@ function HeaderTournamentDetail() {
       activeTeamDetail ===
       `/tournamentDetail/${idTour}/scheduleTournamentDetail`
     ) {
-      return <ScheduleTournamentDetail tournamentType={tourDetail.tournamentTypeId === 1 ? "KnockoutStage" : tourDetail.tournamentTypeId === 2 ? "CircleStage" : "GroupStage"} tourDetailId={tourDetail.id} />;
+      return (
+        <ScheduleTournamentDetail
+          tournamentType={
+            tourDetail.tournamentTypeId === 1
+              ? "KnockoutStage"
+              : tourDetail.tournamentTypeId === 2
+              ? "CircleStage"
+              : "GroupStage"
+          }
+          tourDetailId={tourDetail.id}
+        />
+      );
     }
     if (
       activeTeamDetail ===
@@ -146,7 +156,6 @@ function HeaderTournamentDetail() {
           loadingAc={loadingAc}
           hideShow={hideShowDelete}
           setHideShow={setHideShowDelete}
-          
         />
       );
     }
@@ -159,7 +168,12 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/commentTournamentDetail`
     ) {
-      return <CommentTournamentDetail/>;
+      return <CommentTournamentDetail />;
+    }
+    if (
+      activeTeamDetail === `/tournamentDetail/${idTour}/newsTournamentDetail`
+    ) {
+      return <NewsTournamentDetail idTour={tourDetail.id}/>;
     }
   };
 
@@ -173,12 +187,12 @@ function HeaderTournamentDetail() {
     }
   }, [tourDetail.id, statusTeamInTour]);
 
-  const getInForManagerById = async(id) => {
-        const response = await getUserByIdAPI(id);
-        if(response.status === 200){
-          return response.data;
-        }
-  }
+  const getInForManagerById = async (id) => {
+    const response = await getUserByIdAPI(id);
+    if (response.status === 200) {
+      return response.data;
+    }
+  };
 
   useEffect(() => {
     if (user != undefined) {
@@ -209,28 +223,33 @@ function HeaderTournamentDetail() {
   // }
 
   const acceptTeamInTournament = (teamInTournament, status) => {
-    if(teamInTournament != null){
+    if (teamInTournament != null) {
       const data = {
         ...teamInTournament.teamInTournament,
         status: status ? "Tham gia" : "Từ chối",
       };
       setLoadingAc(true);
-  
+
       const response = updateStatusTeamInTournament(data);
       response
         .then((res) => {
           if (res.status === 201) {
             setHideShowDelete(false);
             getAllTeamInTournamentByTourId();
-            toast.success(status ? "Đội bóng đã được thêm vào giải" : "Từ chối đội bóng thành công", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
+            toast.success(
+              status
+                ? "Đội bóng đã được thêm vào giải"
+                : "Từ chối đội bóng thành công",
+              {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              }
+            );
           }
         })
         .catch((err) => {
@@ -269,7 +288,7 @@ function HeaderTournamentDetail() {
         teamResponse.user = user;
         return teamResponse;
       });
-      
+
       const teamData = await Promise.all(teams);
       teamData.countList = response.data.countList;
       setLoadingAc(false);
@@ -305,7 +324,9 @@ function HeaderTournamentDetail() {
                       alt={tourDetail.tournamentName}
                     />
                   </div>
-                  {user !== null && tourDetail != null && user.userVM.roleId !== 4 ? (
+                  {user !== null &&
+                  tourDetail != null &&
+                  user.userVM.roleId !== 4 ? (
                     <>
                       {user.userVM.id === tourDetail.userId ? (
                         <Link
@@ -336,11 +357,12 @@ function HeaderTournamentDetail() {
                           <i class="fa-solid fa-pen-to-square" />
                           Chỉnh sửa giải đấu
                         </Link>
-                      ) : 
-                      tourDetail.mode !== "PRIVATE" &&
-                       checkPaticipate === false ? (
+                      ) : tourDetail.mode !== "PRIVATE" &&
+                        checkPaticipate === false ? (
                         <div>
-                          <div className={hideShow?"overlay active":"overlay"} ></div>
+                          <div
+                            className={hideShow ? "overlay active" : "overlay"}
+                          ></div>
                           <button
                             className="btn_UpdateTournament"
                             style={{
@@ -372,49 +394,52 @@ function HeaderTournamentDetail() {
                             }
                           />
                         </div>
-                      ) : checkPaticipate === "Tham gia" ?  <button
-                      
-                      
-                      style={{
-                        padding: "20px 50px",
-                        marginLeft: 75,
-                        fontWeight: 600,
-                        fontFamily: "Mulish-Bold",
-                        borderRadius: 5,
-                        backgroundColor: "#D7FC6A",
-                        border: 1,
-                        borderColor: "#D7FC6A",
-                        transition: "0.5s",
-                        position: "absolute",
-                        top: 365,
-                        cursor: "default"
-                      }}
-                      // onClick={() => {
-                      //   updateClick(,)
-                      // }}
-                    >
-                      Đã tham gia giải đấu
-                    </button> : tourDetail.mode !== "PRIVATE" && checkPaticipate === "Chờ duyệt" ? <button
-                      style={{
-                        padding: "20px 50px",
-                        marginLeft: 75,
-                        fontWeight: 600,
-                        fontFamily: "Mulish-Bold",
-                        borderRadius: 5,
-                        backgroundColor: "#D7FC6A",
-                        border: 1,
-                        borderColor: "#D7FC6A",
-                        transition: "0.5s",
-                        position: "absolute",
-                        top: 365,
-                        cursor: "default"
-                      }}
-                      // onClick={() => {
-                      //   updateClick(,)
-                      // }}
-                    >
-                      Đang chờ xét duyệt
-                    </button> : null}
+                      ) : checkPaticipate === "Tham gia" ? (
+                        <button
+                          style={{
+                            padding: "20px 50px",
+                            marginLeft: 75,
+                            fontWeight: 600,
+                            fontFamily: "Mulish-Bold",
+                            borderRadius: 5,
+                            backgroundColor: "#D7FC6A",
+                            border: 1,
+                            borderColor: "#D7FC6A",
+                            transition: "0.5s",
+                            position: "absolute",
+                            top: 365,
+                            cursor: "default",
+                          }}
+                          // onClick={() => {
+                          //   updateClick(,)
+                          // }}
+                        >
+                          Đã tham gia giải đấu
+                        </button>
+                      ) : tourDetail.mode !== "PRIVATE" &&
+                        checkPaticipate === "Chờ duyệt" ? (
+                        <button
+                          style={{
+                            padding: "20px 50px",
+                            marginLeft: 75,
+                            fontWeight: 600,
+                            fontFamily: "Mulish-Bold",
+                            borderRadius: 5,
+                            backgroundColor: "#D7FC6A",
+                            border: 1,
+                            borderColor: "#D7FC6A",
+                            transition: "0.5s",
+                            position: "absolute",
+                            top: 365,
+                            cursor: "default",
+                          }}
+                          // onClick={() => {
+                          //   updateClick(,)
+                          // }}
+                        >
+                          Đang chờ xét duyệt
+                        </button>
+                      ) : null}
                     </>
                   ) : null}
                 </div>
@@ -500,16 +525,16 @@ function HeaderTournamentDetail() {
                   Thông tin
                 </Link>
                 <Link
-                  to={`/tournamentDetail/${idTour}/commentTournamentDetail`}
+                  to={`/tournamentDetail/${idTour}/newsTournamentDetail`}
                   className={
                     activeTeamDetail ===
-                    `/tournamentDetail/${idTour}/commentTournamentDetail`
+                    `/tournamentDetail/${idTour}/newsTournamentDetail`
                       ? "active"
                       : ""
                   }
                   onClick={() =>
                     setActiveTeamDetail(
-                      `/tournamentDetail/${idTour}/commentTournamentDetail`
+                      `/tournamentDetail/${idTour}/newsTournamentDetail`
                     )
                   }
                 >

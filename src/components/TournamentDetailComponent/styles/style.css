@@ -111,7 +111,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-    display: -webkit-box;
+  display: -webkit-box;
 }
 
 /* Rank Table Tournament */
@@ -460,68 +460,307 @@
   background-color: #000 !important;
 }
 
-.choicePlayerTable, .choicePlayerTable th, .choicePlayerTable td {
+.choicePlayerTable,
+.choicePlayerTable th,
+.choicePlayerTable td {
   border: 1px solid black;
 }
 
-.listFootballPlayerChoice tr{
+.listFootballPlayerChoice tr {
   transition: all 0.3s ease 0s;
   font-family: Mulish;
-
 }
 
-.listFootballPlayerChoice tr:hover{
+.listFootballPlayerChoice tr:hover {
   background-color: #f0f2f5;
 }
 
-.popup__player{
+.popup__player {
   display: none;
   position: fixed;
   top: 50%;
   z-index: 10;
   width: 100%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 
-.popup__player.active{
+.popup__player.active {
   display: block;
 }
 
-.btn_deleteTeam , .btn_acceptTeam{
-  background-color: #D7FC6A;
-  border: 1px solid #D7FC6A;
+.btn_deleteTeam,
+.btn_acceptTeam {
+  background-color: #d7fc6a;
+  border: 1px solid #d7fc6a;
   transition: all 0.5s ease 0s;
 }
 
-.btn_deleteTeam:hover , .btn_acceptTeam:hover{
+.btn_deleteTeam:hover,
+.btn_acceptTeam:hover {
   background-color: black;
   border: 1px solid black;
   color: white;
 }
 
-.btnLoadMore{
-    display: block;
-    width: max-content;
-    margin: 40px auto 0;
-    padding: 15px 40px;
-    font-size: 18px;
-    outline: none;
-    border: none;
-    background-color: var(--blue-black);
-    color: var(--white-text);
-    transition: 0.5s;
-    font-family: "Mulish-Bold";
+.btnLoadMore {
+  display: block;
+  width: max-content;
+  margin: 40px auto 0;
+  padding: 15px 40px;
+  font-size: 18px;
+  outline: none;
+  border: none;
+  background-color: var(--blue-black);
+  color: var(--white-text);
+  transition: 0.5s;
+  font-family: "Mulish-Bold";
 }
 
-.btnLoadMore:hover{
+.btnLoadMore:hover {
   background-color: var(--green-bold);
   color: var(--blue-black);
   transition: 0.5s;
 }
 
-.error{
+.error {
   color: red;
   margin-top: 10px;
   font-size: 15px;
+}
+
+.thongbao__item {
+  box-shadow: 0 1px 6px #ccc;
+  padding: 20px;
+  position: relative;
+}
+.thongbao__item:not(:last-child) {
+  margin-bottom: 40px;
+}
+
+.thongbao_top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.thongbao_top h1 {
+  margin-left: 50%;
+  transform: translate(-50%);
+  text-align: center;
+  font-family: "Mulish-Bold";
+  text-transform: uppercase;
+  font-size: 24px;
+}
+
+.thongbao_top .view__more i {
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.thongbao__content {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 30px;
+}
+
+.thongbao__img {
+  width: 400px;
+  height: auto;
+}
+
+.thongbao__img img {
+  border-radius: 5px;
+  min-height: 100%;
+  min-width: 100%;
+}
+.thongbao__content p {
+  width: calc(100% - 400px);
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.teamdetail .cmtTeam .cmtInput .thongbao__btn {
+  margin: 0 auto;
+  width: 400px;
+  text-align: center;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.popup__news {
+  border-radius: 5px;
+  height: auto;
+  width: 900px;
+  position: fixed;
+  z-index: 10;
+  background-color: #fff;
+  padding: 30px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+
+.popup__news.active{
+  display: block;
+}
+
+.popup__news h4 {
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.popup__news textarea {
+  display: block;
+  outline: none;
+  border: none;
+  height: 140px;
+  width: 100%;
+}
+.popup__news input {
+  display: none;
+}
+
+.popup__news input:focus,
+.popup__news textarea:focus {
+  border: none;
+}
+
+.popup__news button {
+  display: block;
+  background-color: var(--blue-black);
+  padding: 10px 20px;
+  width: 150px;
+  color: var(--white-text);
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%);
+  outline: none;
+  border: none;
+  transition: 0.5s;
+  border-radius: 5px;
+}
+.popup__news button:hover{
+  background-color: var(--green-bold);
+  color: var(--blue-black);
+}
+.popup__news label{
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.popup__news label i{
+  font-size: 28px;
+  color: var(--green-bold);
+}
+
+.popup__news img{
+  display: block;
+  height: 200px;
+}
+ .hihi{
+   margin-bottom: 40px;
+ }
+.popup__news .img{
+  margin-top: 20px;
+  position: relative;
+  width: max-content;
+}
+
+.popup__news .img i{
+  background-color: #fff;
+  padding: 5px;
+  position: absolute;
+  z-index: 9;
+  color: var(--blue-black);
+  right: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  top: 10px;
+}
+
+.popup__news .close{
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  font-family: "Mulish-Bold";
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* PagingTournament */
+
+.pagingTournament {
+  width: max-content;
+  margin: 0 auto;
+  margin-top: 20px;
+  /* margin-bottom: 30px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagelink {
+  color: var(--blue-black);
+  display: inline-block;
+  padding: 10px 15px;
+}
+
+.pageItem:hover .pagelink {
+  color: var(--blue-black);
+}
+.pageItem {
+  margin-top: 15px;
+  margin-left: 20px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: max-content;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.pageItem.active,
+.pageItem:hover {
+  background-color: var(--green-bold);
+  color: var(--black-text);
+  border: 1px solid transparent;
+}
+
+/* =========== */
+
+.thongbao .option__player.active{
+  display: block;
+}
+.thongbao .option__player{
+  display: none;
+   position: absolute;
+ background-color: #fff;
+  z-index: 2;
+  width: max-content;
+  border-radius: 5px;
+  right: 15px;
+  top: 45px;
+  box-shadow: 0 1px 6px #ccc;
+}
+
+.thongbao .option__player p{
+  cursor: pointer;
+  padding: 10px;
+}
+.thongbao .option__player p:hover{
+  background-color: #f0f2f5;
+  border-radius: 5px;
+}
+
+.thongbao .option__player p i{
+  margin-right: 10px;
+}
+
+.baivietnull{
+  font-size: 18px;
 }
