@@ -745,7 +745,7 @@ function Profile() {
           </div>
         </form>
         <h2 className={styles.profile__title2}>Nâng cấp tài khoản</h2>
-        {role !== 3 ? (
+        {role !== 2 ? (
           <>
             <span className={styles.note}>
               *Thông tin nếu bạn muốn trở thành người tạo giải
