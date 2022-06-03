@@ -14,7 +14,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
-import {createSchedule} from "../../api/MatchAPI"
+import { createSchedule } from "../../api/MatchAPI";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import { useNavigate } from "react-router-dom";
 
@@ -81,16 +81,16 @@ const CreateTournament = () => {
     value: "15",
     error: null,
   });
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
   const [provice, setProvice] = useState(null);
   const [districts, setDistricts] = useState(null);
   const [wards, setWards] = useState(null);
   const [addressField, setAddressField] = useState(null);
-  const [proviceSearch,setProviceSearch] = useState(null);
-  const [districSearch,setDistricSearch] = useState(null);
-  const [wardSearch,setWardSearch] = useState(null);
+  const [proviceSearch, setProviceSearch] = useState(null);
+  const [districSearch, setDistricSearch] = useState(null);
+  const [wardSearch, setWardSearch] = useState(null);
   AOS.init();
   const tour = gsap.timeline();
   useEffect(() => {
@@ -108,12 +108,27 @@ const CreateTournament = () => {
 
   const createGenerateTable = (id) => {
     const response = createSchedule(id);
-    response.then(res => {
-      console.log(res)
-      if(res.status === 200){
-        naviage(`/tournamentDetail/${id}/inforTournamentDetail`)
+    response
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          naviage(`/tournamentDetail/${id}/inforTournamentDetail`);
+          setLoading(false);
+          toast.success("Tạo lịch thi đấu thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
         setLoading(false);
-        toast.success("Tạo lịch thi đấu thành công", {
+        toast.error(err.response.data.message, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -122,21 +137,8 @@ const CreateTournament = () => {
           draggable: true,
           progress: undefined,
         });
-      }
-    }).catch(err => {
-      console.error(err);
-      setLoading(false);
-      toast.error(err.response.data.message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
       });
-    }) 
-  }
+  };
 
   const onSubmitHandler = async (e) => {
     setLoading(true);
@@ -158,8 +160,8 @@ const CreateTournament = () => {
         footballPlayerMaxNumber: minimunPlayerInTournament.value,
         status: true,
         userId: user.userVM.id,
-        TournamentTypeEnum:competitionFormat.value,
-        TournamentFootballFieldTypeEnum:typeFootballField.value,
+        TournamentTypeEnum: competitionFormat.value,
+        TournamentFootballFieldTypeEnum: typeFootballField.value,
       };
       //console.log(data);
       const response = await axios.post(
@@ -262,7 +264,7 @@ const CreateTournament = () => {
             flag: false,
             content: "Đội tham gia là số",
           };
-        }else if(value > 16 ){
+        } else if (value > 16) {
           return {
             flag: false,
             content: "Đội tham gia ít hơn bằng 16 đội",
@@ -302,15 +304,17 @@ const CreateTournament = () => {
 
       case "footballField":
         break;
+      default:
+        break;
     }
     return { flag: true, content: null };
   };
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const validate = validateForm(name, value);
-    if(validate.flag){
+    if (validate.flag) {
       setBtnActive(true);
-    }else{
+    } else {
       setBtnActive(false);
     }
     switch (name) {
@@ -330,7 +334,7 @@ const CreateTournament = () => {
         });
         break;
       case "teamPaticipate":
-        console.log(value)
+        console.log(value);
         setTeamPaticipate({
           ...teamPaticipate,
           value,
@@ -366,7 +370,6 @@ const CreateTournament = () => {
         });
         break;
       case "competitionFormat":
-       
         setCompetitionFormat({
           ...competitionFormat,
           value,
@@ -412,7 +415,7 @@ const CreateTournament = () => {
         let dataProvice = provice;
         const proviceFind = dataProvice.find((item) => item.name === value);
         setProviceSearch(value);
-        setDistricSearch("default")
+        setDistricSearch("default");
         setDistricts(proviceFind.districts);
         setWards(null);
         setAddressField(", " + value);
@@ -422,7 +425,7 @@ const CreateTournament = () => {
 
         const disFind = dataDis.find((item) => item.name === value);
         setDistricSearch(value);
-        setWardSearch("default")
+        setWardSearch("default");
         setWards(disFind.wards);
         const oldAddress = addressField;
         setAddressField(", " + value + oldAddress);
@@ -433,6 +436,8 @@ const CreateTournament = () => {
           const oldAddress = addressField;
           setAddressField(", " + value + oldAddress);
         }
+        break;
+      default:
         break;
     }
   };
@@ -473,35 +478,35 @@ const CreateTournament = () => {
                 onClick={() => {
                   setStartTime({
                     value: null,
-                    error:null
+                    error: null,
                   });
                   setEndTime({
                     value: null,
-                    error:null
-                  })
+                    error: null,
+                  });
                   if (status === 0) {
                     setCloseRegister({
-                      value:null,
-                      error: null
-                    })
+                      value: null,
+                      error: null,
+                    });
                     setStartTime({
                       value: null,
-                      error: null
-                    })
+                      error: null,
+                    });
                     setEndTime({
                       value: null,
-                      error: null
-                    })
+                      error: null,
+                    });
                     setStatus(-1);
                   } else {
                     setStartTime({
                       value: null,
-                      error: null
-                    })
+                      error: null,
+                    });
                     setEndTime({
                       value: null,
-                      error: null
-                    })
+                      error: null,
+                    });
                     setStatus(0);
                   }
                 }}
@@ -576,16 +581,19 @@ const CreateTournament = () => {
                     >
                       Tên giải đấu
                     </label>
-                    {nameTournament.error != null ? 
-                    <p
-                    style={{
-                      color: "red",
-                      fontWeight: 900,
-                      fontSize: 18,
-                    }}
-                  >
-                    {nameTournament.error}
-                  </p> : <p></p>}
+                    {nameTournament.error != null ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontWeight: 900,
+                          fontSize: 18,
+                        }}
+                      >
+                        {nameTournament.error}
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
                   </div>
 
                   <input
@@ -598,7 +606,7 @@ const CreateTournament = () => {
                   />
                 </div>
                 <div className={styles.contactPhone}>
-                <div
+                  <div
                     style={{
                       display: "flex",
                       alignItems: "baseline",
@@ -606,23 +614,26 @@ const CreateTournament = () => {
                     }}
                   >
                     <label
-                    htmlFor="phoneContact"
-                    className={styles.createTournament_img_title}
-                  >
-                    Số điện thoại liên lạc
-                  </label>
-                    {phoneContact.error != null ? 
-                    <p
-                    style={{
-                      color: "red",
-                      fontWeight: 900,
-                      fontSize: 18,
-                    }}
-                  >
-                    {phoneContact.error}
-                  </p> : <p></p>}
+                      htmlFor="phoneContact"
+                      className={styles.createTournament_img_title}
+                    >
+                      Số điện thoại liên lạc
+                    </label>
+                    {phoneContact.error != null ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontWeight: 900,
+                          fontSize: 18,
+                        }}
+                      >
+                        {phoneContact.error}
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
                   </div>
-                  
+
                   <input
                     type="text"
                     id="phoneContact"
@@ -655,9 +666,8 @@ const CreateTournament = () => {
               </div>
 
               <div className={styles.createTournament_row1_col3}>
-              
-                  <div className={styles.timeCloseRegister}>
-                    <div
+                <div className={styles.timeCloseRegister}>
+                  <div
                     style={{
                       display: "flex",
                       alignItems: "baseline",
@@ -670,98 +680,106 @@ const CreateTournament = () => {
                     >
                       Ngày đóng đăng ký tham gia
                     </label>
-                    {closeRegister.error != null ? 
-                    <p
-                    style={{
-                      color: "red",
-                      fontWeight: 900,
-                      fontSize: 18,
-                    }}
-                  >
-                    {closeRegister.error}
-                  </p> : <p></p>}
+                    {closeRegister.error != null ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontWeight: 900,
+                          fontSize: 18,
+                        }}
+                      >
+                        {closeRegister.error}
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
                   </div>
-                    <input
-                      className={styles.timeCloseRegister_input}
-                      id="timeCloseRegister"
-                      type="datetime-local"
-                      name="closeRegister"
-                      value={closeRegister.value}
-                      onChange={onChangeHandler}
-                      disabled={status === 0 ? "" : "disable"}
-                      required
-                    />
-                  </div>
+                  <input
+                    className={styles.timeCloseRegister_input}
+                    id="timeCloseRegister"
+                    type="datetime-local"
+                    name="closeRegister"
+                    value={closeRegister.value}
+                    onChange={onChangeHandler}
+                    disabled={status === 0 ? "" : "disable"}
+                    required
+                  />
+                </div>
 
-                
-                
                 <div className={styles.timeStart}>
-                <div
+                  <div
                     style={{
                       display: "flex",
                       alignItems: "baseline",
                       justifyContent: "space-between",
                     }}
                   >
-                     <label
-                    className={styles.createTournament_img_title}
-                    htmlFor="startTime"
-                  >
-                    Ngày bắt đầu
-                  </label>
-                  {startTime.error != null ? 
-                    <p
-                    style={{
-                      color: "red",
-                      fontWeight: 900,
-                      fontSize: 18,
-                    }}
-                  >
-                    {startTime.error}
-                  </p> : <p></p>}
+                    <label
+                      className={styles.createTournament_img_title}
+                      htmlFor="startTime"
+                    >
+                      Ngày bắt đầu
+                    </label>
+                    {startTime.error != null ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontWeight: 900,
+                          fontSize: 18,
+                        }}
+                      >
+                        {startTime.error}
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
                   </div>
                   <input
                     className={styles.timeStart_input}
                     id="startTime"
                     type="datetime-local"
-                    
                     name="startTime"
                     value={startTime.value}
-                    disabled={status === 0 && closeRegister.value != null  ? "" : status === -1 ? "" : "disable"}
+                    disabled={
+                      status === 0 && closeRegister.value != null
+                        ? ""
+                        : status === -1
+                        ? ""
+                        : "disable"
+                    }
                     onChange={onChangeHandler}
-                    
                   />
                 </div>
-                
-                
-                
-               
+
                 <div className={styles.timeEnd}>
-                <div
+                  <div
                     style={{
                       display: "flex",
                       alignItems: "baseline",
                       justifyContent: "space-between",
                     }}
                   >
-                     <label
-                    htmlFor="endTime"
-                    className={styles.createTournament_img_title}
-                  >
-                    Ngày kết thúc
-                  </label>
-                  {endTime.error != null ? 
-                    <p
-                    style={{
-                      color: "red",
-                      fontWeight: 900,
-                      fontSize: 18,
-                    }}
-                  >
-                    {endTime.error}
-                  </p> : <p></p>}
+                    <label
+                      htmlFor="endTime"
+                      className={styles.createTournament_img_title}
+                    >
+                      Ngày kết thúc
+                    </label>
+                    {endTime.error != null ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontWeight: 900,
+                          fontSize: 18,
+                        }}
+                      >
+                        {endTime.error}
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
                   </div>
-                 
+
                   <input
                     className={styles.timeEnd_input}
                     id="endTime"
@@ -770,15 +788,12 @@ const CreateTournament = () => {
                     value={endTime.value}
                     disabled={startTime.value != null ? "" : "disable"}
                     onChange={onChangeHandler}
-                   
                   />
-                </div> 
-                
-
+                </div>
               </div>
             </div>
             <CompetitionFormat
-            teamPaticipate={teamPaticipate}
+              teamPaticipate={teamPaticipate}
               competitionFormat={competitionFormat}
               onChangeHandler={onChangeHandler}
             />
@@ -786,29 +801,32 @@ const CreateTournament = () => {
             <div className={styles.createTournament_row4}>
               <div className={styles.createTournament_row4_col1}>
                 <div className={styles.mininum_member}>
-                <div
+                  <div
                     style={{
                       display: "flex",
                       alignItems: "baseline",
                       justifyContent: "space-between",
                     }}
                   >
-                                      <label
-                    htmlFor="mininum_member"
-                    className={styles.createTournament_img_title}
-                  >
-                    Số cầu thủ tối thiểu mỗi đội
-                  </label>
-                    {minimunPlayerInTournament.error != null ? 
-                    <p
-                    style={{
-                      color: "red",
-                      fontWeight: 900,
-                      fontSize: 18,
-                    }}
-                  >
-                    {minimunPlayerInTournament.error}
-                  </p> : <p></p>}
+                    <label
+                      htmlFor="mininum_member"
+                      className={styles.createTournament_img_title}
+                    >
+                      Số cầu thủ tối thiểu mỗi đội
+                    </label>
+                    {minimunPlayerInTournament.error != null ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontWeight: 900,
+                          fontSize: 18,
+                        }}
+                      >
+                        {minimunPlayerInTournament.error}
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
                   </div>
                   <input
                     id="mininum_member"
@@ -820,8 +838,6 @@ const CreateTournament = () => {
                     onChange={onChangeHandler}
                   />
                 </div>
-
-               
 
                 <div className={styles.description_tournament}>
                   <label
@@ -843,7 +859,7 @@ const CreateTournament = () => {
                 </div>
               </div>
               <div className={styles.createTournament_row4_col2}>
-              <div className={styles.typeFootballField}>
+                <div className={styles.typeFootballField}>
                   <label className={styles.createTournament_img_title}>
                     Loại sân thi đấu
                   </label>
@@ -990,31 +1006,34 @@ const CreateTournament = () => {
                   </div>
 
                   <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                     <label
-                      className={styles.createTournament_img_title}
-                      htmlFor="fieldSoccer"
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        justifyContent: "space-between",
+                      }}
                     >
-                      Địa điểm
-                    </label>
-                    {footballField.error != null ? 
-                    <p
-                    style={{
-                      color: "red",
-                      fontWeight: 900,
-                      fontSize: 18,
-                    }}
-                  >
-                    {footballField.error}
-                  </p> : <p></p>}
-                  </div>
-                   
+                      <label
+                        className={styles.createTournament_img_title}
+                        htmlFor="fieldSoccer"
+                      >
+                        Địa điểm
+                      </label>
+                      {footballField.error != null ? (
+                        <p
+                          style={{
+                            color: "red",
+                            fontWeight: 900,
+                            fontSize: 18,
+                          }}
+                        >
+                          {footballField.error}
+                        </p>
+                      ) : (
+                        <p></p>
+                      )}
+                    </div>
+
                     <input
                       id="fieldSoccer"
                       className={styles.fieldSoccer_input}
@@ -1028,11 +1047,13 @@ const CreateTournament = () => {
               </div>
             </div>
             <div className={styles.btn_nextPage}>
-              {btnActive ? <input
-                type="submit"
-                className={styles.btn_Next}
-                value="Tiếp theo"
-              /> : null}
+              {btnActive ? (
+                <input
+                  type="submit"
+                  className={styles.btn_Next}
+                  value="Tiếp theo"
+                />
+              ) : null}
             </div>
           </form>
         </div>

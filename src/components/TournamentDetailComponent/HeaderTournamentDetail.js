@@ -173,7 +173,7 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/newsTournamentDetail`
     ) {
-      return <NewsTournamentDetail idTour={tourDetail.id}/>;
+      return <NewsTournamentDetail idTour={tourDetail.userId}/>;
     }
   };
 

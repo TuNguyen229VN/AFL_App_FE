@@ -51,7 +51,7 @@ function NewsTournamentDetail(data) {
   const getNews = (currentPage) => {
     setLoading(true);
     let afterDefaultURL = null;
-    afterDefaultURL = `news?tournament-id=${idTour}&order-by=Id&order-type=${orderType}&page-offset=${currentPage}&limit=3`;
+    afterDefaultURL = `news?tournament-id=${idTour}&order-by=Id&order-type=${orderType}&status=true&page-offset=${currentPage}&limit=3`;
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
