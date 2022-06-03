@@ -114,7 +114,7 @@ const CreateTournament = () => {
         if (res.status === 200) {
           naviage(`/tournamentDetail/${id}/inforTournamentDetail`);
           setLoading(false);
-          toast.success("Tạo lịch thi đấu thành công", {
+          toast.success("Tạo giải đấu và lịch thi đấu thành công", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -173,16 +173,6 @@ const CreateTournament = () => {
       );
       if (response.status === 201) {
         createGenerateTable(response.data.id);
-        toast.success("Tạo giải đấu thành công", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-
         const intitalState = {
           value: "",
           error: "",

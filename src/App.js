@@ -21,6 +21,7 @@ import MyListTournamentComponent from "./components/MyListTournamentComponent/My
 import Match from "./components/MatchComponent/Match";
 import UpdateTeam from "./components/UpdateTeamComponent/UpdateTeam";
 import ResetPassword from "./components/ResetPasswordComponent/ResetPassword";
+import FootballPlayer from "./components/FootballPlayer/FootballPlayer"
 function App() {
   // get Locoal Storage
   const { user } = useAuthListener();
@@ -189,6 +190,13 @@ function App() {
             path="/playerDetail/:idPlayer/achivementInPlayer"
             element={
               user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
+            }
+          />
+          <Route
+            exact
+            path="/footballPlayer"
+            element={
+              <FootballPlayer />
             }
           />
         </Routes>

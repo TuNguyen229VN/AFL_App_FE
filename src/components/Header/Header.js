@@ -145,11 +145,11 @@ function Header(id) {
           </li>
           <li>
             <Link
-              to={"/login"}
+              to={"/footballPlayer"}
               className={activeMenu === "intro" ? "title active" : "title"}
               onClick={() => setactiveMenu("intro")}
             >
-              Giới thiệu
+              Cầu thủ
             </Link>
           </li>
         </ul>
