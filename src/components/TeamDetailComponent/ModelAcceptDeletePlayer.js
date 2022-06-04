@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 export default function ModelAcceptDeletePlayer(props) {
-    const {hideShowDelete,setHideShowDelete,deletePlayerInTeam,idDelete,setIdDelete} = props;
+    const {hideShowDelete,setHideShowDelete,deletePlayerInTeam,idDelete,setIdDelete,active} = props;
   return (
     <div
       id="exampleModal"
@@ -21,7 +21,7 @@ export default function ModelAcceptDeletePlayer(props) {
             }}
             ></button>
           </div>
-          <div class="modal-body">Bạn có chắc chắn muốn xóa cầu thủ này?</div>
+          <div class="modal-body">Bạn có chắc chắn muốn {active ? " xóa " : " từ chối "}  cầu thủ này?</div>
           <div class="modal-footer">
             <button
             style={{

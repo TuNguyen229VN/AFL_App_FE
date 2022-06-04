@@ -632,3 +632,30 @@ background-color: #f0f2f5;
   margin-top: 10px;
   font-size: 15px;
 }
+
+.teamdetail .schedule__tour .option__view {
+  display: flex;
+  align-items: center;
+}
+
+ .schedule__tour .option__view p {
+  border: 1px solid var(--blue-black);
+  padding: 15px;
+  width: 130px;
+  text-align: center;
+  font-family: "Mulish-Bold";
+  cursor: pointer;
+  transition: 0.5s;
+  user-select: none;
+}
+
+.schedule__tour .option__view p:hover {
+  background-color: var(--green-bold);
+}
+.schedule__tour .option__view p:nth-child(2) {
+  border-left: 0;
+}
+
+.schedule__tour .option__view p.active {
+  background-color: var(--green-bold);
+}

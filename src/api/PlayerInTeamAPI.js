@@ -17,7 +17,13 @@ export function addPlayerInTeamAPI(data) {
 }
 
 
-export function deletePlayerInTeamAPI(idPlayerInTeam, status){
+export function deletePlayerInTeamAPI(idPlayerInTeam){
+    const afterDefaultURL = `PlayerInTeam/${idPlayerInTeam}`;
+    return axios.delete(url+afterDefaultURL)
+}
+
+
+export function upDatePlayerInTeamAPI(idPlayerInTeam,status){
     const afterDefaultURL = `PlayerInTeam?Id=${idPlayerInTeam}&status=${status}`;
     return axios.put(url+afterDefaultURL)
 }
