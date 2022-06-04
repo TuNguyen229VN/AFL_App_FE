@@ -9,7 +9,7 @@ export function getAllPlayerByTeamIdAPI(id) {
     return axios.get(url + afterDefaultURL );
 }
 
-export function getAllPlayerByPlayerIdAPI(id,status) {
+export function getAllTeamByPlayerIdAPI(id,status) {
     const afterDefaultURL = `PlayerInTeam?footballPlayerId=${id}&status=${status}&orderType=DESC&pageIndex=1&limit=8`; 
     return axios.get(url + afterDefaultURL );
 }

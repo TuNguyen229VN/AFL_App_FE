@@ -9,15 +9,16 @@ import MyTournamentInPlayer from "./MyTournamentInPlayer";
 import ScheduleInPlayer from "./ScheduleInPlayer";
 import RequestInPlayer from "./RequestInPlayer";
 import AchivementInPlayer from "./AchivementInPlayer";
-import { getAllPlayerByPlayerIdAPI } from "../../api/PlayerInTeamAPI";
+import { getAllTeamByPlayerIdAPI } from "../../api/PlayerInTeamAPI";
 import { getFootballPlayerById } from "../../api/FootballPlayer";
 
 function HeaderPlayerDetail() {
   const { idPlayer } = useParams();
   const location = useLocation();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
   const [detailPlayer, setDetailPlayer] = useState(null);
+  const [allTeam,setAllTeam] = useState(null);
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
@@ -31,10 +32,14 @@ function HeaderPlayerDetail() {
   }, [idPlayer,active]);
 
   const getTeamByIdPlayer = (status) => {
-    const response = getAllPlayerByPlayerIdAPI(idPlayer,status);
+    setLoading(true);
+    const response = getAllTeamByPlayerIdAPI(idPlayer,status);
     response.then(res => {
+      setLoading(false);
+      setAllTeam(res.data.playerInTeamsFull)
       console.log(res.data.playerInTeamsFull);
     }).catch(err => {
+      setLoading(false);
       console.error(err);
     })
   }
@@ -59,16 +64,16 @@ function HeaderPlayerDetail() {
   // render by link
   const renderByLink = () => {
     if (activeTeamDetail === `/playerDetail/${idPlayer}/myTeamInPlayer`) {
-      return <MyTeamInPlayer />;
+      return <MyTeamInPlayer active={active} setactive={setActive} allTeam={allTeam} />;
     }
     if (activeTeamDetail === `/playerDetail/${idPlayer}/myTournamentInPlayer`) {
-      return <MyTournamentInPlayer />;
+      return <MyTournamentInPlayer  />;
     }
     if (activeTeamDetail === `/playerDetail/${idPlayer}/scheduleInPlayer`) {
       return <ScheduleInPlayer />;
     }
     if (activeTeamDetail === `/playerDetail/${idPlayer}/requestInPlayer`) {
-      return <RequestInPlayer />;
+      return <RequestInPlayer active={active} setactive={setActive} />;
     }
     if (activeTeamDetail === `/playerDetail/${idPlayer}/achivementInPlayer`) {
       return <AchivementInPlayer />;
