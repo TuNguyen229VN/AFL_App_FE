@@ -21,7 +21,7 @@ export default function ModelAcceptDeletePlayer(props) {
             }}
             ></button>
           </div>
-          <div class="modal-body">Bạn có chắc chắn muốn {active ? " xóa " : " từ chối "}  cầu thủ này?</div>
+          <div class="modal-body">Bạn có chắc chắn muốn {active === "Cầu thủ" ? " xóa " : active === "Chờ duyệt" ? " từ chối " : "hủy chiêu mộ "}  cầu thủ này?</div>
           <div class="modal-footer">
             <button
             style={{

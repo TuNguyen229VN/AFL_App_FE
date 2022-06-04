@@ -141,10 +141,10 @@ export default function FootballPlayer() {
                 <option value="" selected>
                   Vị trí
                 </option>
-                <option value="striker">Tiền đạo</option>
-                <option value="midfielder">Tiền vệ</option>
-                <option value="defender">Hậu vệ</option>
                 <option value="goalkeeper">Thủ môn</option>
+                <option value="defender">Hậu vệ</option>
+                <option value="midfielder">Tiền vệ</option>
+                <option value="striker">Tiền đạo</option>
               </select>
             </div>
           </form>

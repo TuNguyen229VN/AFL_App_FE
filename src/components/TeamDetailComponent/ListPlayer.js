@@ -21,7 +21,7 @@ function ListPlayer(props) {
   const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [hideShowDelete, setHideShowDelete] = useState(false);
-  const [active, setactive] = useState(true);
+  const [active, setactive] = useState("Cầu thủ");
   const [idDelete, setIdDelete] = useState(null);
   const [viewMoreOption, setViewMoreOption] = useState({
     index: "0",
@@ -33,7 +33,12 @@ function ListPlayer(props) {
 
   const getListPlayerInTeamByIdTeam = async () => {
     setLoading(true);
-    const statusData = active ? "true" : "Chờ xét duyệt từ đội bóng";
+    const statusData =
+      active === "Cầu thủ"
+        ? "true"
+        : active === "Chờ duyệt"
+        ? "Chờ xét duyệt từ đội bóng"
+        : "Chờ xét duyệt từ cầu thủ";
     const afterURL = `PlayerInTeam?teamId=${id}&name=${namePlayer}&status=${statusData}&pageIndex=${currentPage}&limit=8`;
     const response = await getAPI(afterURL);
     setCount(response.data.countList);
@@ -158,9 +163,9 @@ function ListPlayer(props) {
             >
               <div className="option__view">
                 <p
-                  className={active ? "active" : ""}
+                  className={active === "Cầu thủ" ? "active" : ""}
                   onClick={() => {
-                    setactive(true);
+                    setactive("Cầu thủ");
                     setNamePlayer("");
                   }}
                 >
@@ -168,13 +173,22 @@ function ListPlayer(props) {
                 </p>
 
                 <p
-                  className={!active ? "active" : ""}
+                  className={active === "Chờ duyệt" ? "active" : ""}
                   onClick={() => {
-                    setactive(false);
+                    setactive("Chờ duyệt");
                     setNamePlayer("");
                   }}
                 >
                   Chờ duyệt
+                </p>
+                <p
+                  className={active === "Chiêu mộ" ? "active" : ""}
+                  onClick={() => {
+                    setactive("Chiêu mộ");
+                    setNamePlayer("");
+                  }}
+                >
+                  Chiêu mộ
                 </p>
               </div>
             </div>
@@ -221,7 +235,7 @@ function ListPlayer(props) {
                           className="listPlayer__item"
                         >
                           <form onSubmit={onSubmitHandler}>
-                            {active ? (
+                            {active === "Cầu thủ" ? (
                               <div>
                                 <div
                                   className="view__more"
@@ -300,10 +314,10 @@ function ListPlayer(props) {
                                   "/" +
                                   item.userVM.dateOfBirth.split("-")[0]}
                               </p>
-                              {active === false && idHost === id ? (
+                              {active === "Chờ duyệt" && idHost === id ? (
                                 <div
                                   style={{
-                                    margin: "20px 0",
+                                    margin: "20px 0 10px 0",
                                     display: "flex",
                                     justifyContent: "space-evenly",
                                   }}
@@ -344,10 +358,42 @@ function ListPlayer(props) {
                                         item.idPlayerInTeam,
                                         "true"
                                       );
-                                    setDeleteSuccessFul(false);
+                                      setDeleteSuccessFul(false);
                                     }}
                                   >
                                     Đồng ý
+                                  </button>
+                                </div>
+                              ) : active === "Chiêu mộ" && idHost === id ? (
+                                <div
+                                  style={{
+                                    margin: "20px 0 10px 0",
+                                    display: "flex",
+                                    justifyContent: "space-evenly",
+                                  }}
+                                >
+                                  <div
+                                    className={
+                                      hideShowDelete
+                                        ? "overlay active"
+                                        : "overlay"
+                                    }
+                                  ></div>
+                                  <button
+                                    style={{
+                                      padding: "10px 20px",
+                                      backgroundColor: "#D7FC6A",
+                                      border: 1,
+                                      borderColor: "#D7FC6A",
+                                      fontWeight: 600,
+                                    }}
+                                    onClick={() => {
+                                      setIdDelete(item.idPlayerInTeam);
+                                      setHideShowDelete(true);
+                                      setDeleteSuccessFul(false);
+                                    }}
+                                  >
+                                    Hủy chiêu mộ
                                   </button>
                                 </div>
                               ) : null}
