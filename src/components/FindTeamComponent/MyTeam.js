@@ -10,7 +10,7 @@ import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import Loading from "../LoadingComponent/Loading";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
-import {getAPI} from "../../api/index"
+import { getAPI } from "../../api/index";
 const MyTournamemts = () => {
   AOS.init();
   const tour = gsap.timeline();
@@ -21,14 +21,13 @@ const MyTournamemts = () => {
   const [check, setCheck] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  
-  const [gender,setGender] = useState("");
+  const [gender, setGender] = useState("");
   const [orderBy, setOrderBy] = useState("Id");
-  const [orderType, setOrderType] = useState("DESC")
+  const [orderType, setOrderType] = useState("DESC");
   const [provice, setProvice] = useState(null);
-  const [districs, setDistrics] = useState(null)
-  const [proviceSearch, setProviceSearch] = useState("")
-  const [districSearch, setDistricSearch] = useState("")
+  const [districs, setDistrics] = useState(null);
+  const [proviceSearch, setProviceSearch] = useState("");
+  const [districSearch, setDistricSearch] = useState("");
   useEffect(() => {
     getAllCity();
   }, []);
@@ -43,29 +42,27 @@ const MyTournamemts = () => {
     }
   };
 
-
-
   const getTournament = async (nameFind, currentPage, anotherSearch, value) => {
     try {
       let afterURLDefault = null;
-      if(anotherSearch === "NAME"){
-        afterURLDefault = `teams?team-name=${value}&team-area=${proviceSearch}&team-gender=${gender}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`
-      }else if(anotherSearch === "GENDER") {
-        afterURLDefault = `teams?team-name=${nameFind}&team-area=${proviceSearch}&team-gender=${value}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`
-      }else{
+      if (anotherSearch === "NAME") {
+        afterURLDefault = `teams?team-name=${value}&team-area=${proviceSearch}&team-gender=${gender}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
+      } else if (anotherSearch === "GENDER") {
+        afterURLDefault = `teams?team-name=${nameFind}&team-area=${proviceSearch}&team-gender=${value}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
+      } else {
         console.log(value);
-        afterURLDefault = `teams?team-name=${nameFind}&team-area=${value}&team-gender=${gender}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`
+        afterURLDefault = `teams?team-name=${nameFind}&team-area=${value}&team-gender=${gender}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
       }
       setLoading(true);
       const res = await getAPI(afterURLDefault);
-     
+
       if (res.status === 200) {
         setTeams(res.data.teams);
         setLoading(false);
         setCount(res.data.countList);
       }
     } catch (error) {
-      console.log(loading)
+      console.log(loading);
       console.log(error);
     }
   };
@@ -83,54 +80,68 @@ const MyTournamemts = () => {
   //   }
   // };
   useEffect(() => {
-    getTournament(contentSearch, currentPage,"NAME",contentSearch);
+    getTournament(contentSearch, currentPage, "NAME", contentSearch);
     //getCount();
   }, [check, currentPage]);
 
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
-    getTournament(contentSearch, currentPage,"NAME",contentSearch);
+    getTournament(contentSearch, currentPage, "NAME", contentSearch);
     setCheck(!check);
   };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
     setCurrentPage(1);
-    getTournament(contentSearch, currentPage,"NAME",contentSearch);
+    getTournament(contentSearch, currentPage, "NAME", contentSearch);
     setCheck(!check);
   };
   const onChangeHandler = (e) => {
-    
-    const {name,value} = e.target;
-    
-    switch(name){
-      case 'contentSearch': 
-      setContentSearch(value);
-      break;
-      case 'provice':
-        setProviceSearch(value != "default" ? value : "");
-        const newDistrics = provice.find(item => item.name === value);
-        setDistrics(value != "default" ? newDistrics.districts : null);
-        getTournament(contentSearch,currentPage,"PROVICE",value != "default" ? value : "");
+    const { name, value } = e.target;
+
+    switch (name) {
+      case "contentSearch":
+        setContentSearch(value);
         break;
-      case 'districts': 
-        getTournament(contentSearch,currentPage, "PROVICE" ,value != "default" ? value : "");
-        setDistricSearch(value != "default" ? value : "");
-      break;
+      case "provice":
+        setProviceSearch(value !== "default" ? value : "");
+        const newDistrics = provice.find((item) => item.name === value);
+        setDistrics(value !== "default" ? newDistrics.districts : null);
+        getTournament(
+          contentSearch,
+          currentPage,
+          "PROVICE",
+          value !== "default" ? value : ""
+        );
+        break;
+      case "districts":
+        getTournament(
+          contentSearch,
+          currentPage,
+          "PROVICE",
+          value !== "default" ? value : ""
+        );
+        setDistricSearch(value !== "default" ? value : "");
+        break;
       default:
-        setGender(value != "default" ? value : "") 
-        getTournament(contentSearch,currentPage, "GENDER" ,value != "default" ? value : "")
-      break;
+        setGender(value !== "default" ? value : "");
+        getTournament(
+          contentSearch,
+          currentPage,
+          "GENDER",
+          value !== "default" ? value : ""
+        );
+        break;
     }
   };
 
-  const splitTeamArea=(teamArea)=>{
-    let myArray=teamArea.split(",");
-    return myArray[myArray.length-1];
-  }
+  const splitTeamArea = (teamArea) => {
+    let myArray = teamArea.split(",");
+    return myArray[myArray.length - 1];
+  };
   return (
     <div>
-       <ScrollToTop />
+      <ScrollToTop />
       <Transitions timeline={tour} />
       <Header />
       <div
@@ -167,39 +178,61 @@ const MyTournamemts = () => {
                 value="Tìm kiếm"
               />
             </div>
-            {loading ? 
-                  <Loading />
-                   : 
-            <div className={styles.selectOp}>
-              <select style={{
-                backgroundColor: "black"
-              }} onChange={onChangeHandler} name="provice" value={proviceSearch} className={styles.selectArea}>
-                <option value="default">Tỉnh/Thành phố</option>
-                {
-                  provice != null ? 
-                  provice.map((iteam,index)=>{
-                    return <option value={iteam.name}> 
-                        {iteam.name}
-                    </option>
-                 }) : null
-                }
-              </select>
-             <select style={{
-                backgroundColor: "black"
-              }} onChange={onChangeHandler} value={districSearch} name="districts"  className={styles.typeFootball}>
-                <option value="default">Quận/Huyện</option>
-                {proviceSearch != "" ? districs.map((item,index) => {
-                  return <option key={index} value={item.name}>{item.name}</option>
-                }) : null}
-              </select> 
-              <select style={{
-                backgroundColor: "black"
-              }} onChange={onChangeHandler} value={gender} name="gender" className={styles.sortTour}>
-                <option value="default">Giới tính</option>
-                <option value="Male">Nam</option>
-                <option value="Female">Nữ</option>
-              </select>
-            </div> }
+            {loading ? (
+              <Loading />
+            ) : (
+              <div className={styles.selectOp}>
+                <select
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  onChange={onChangeHandler}
+                  name="provice"
+                  value={proviceSearch}
+                  className={styles.selectArea}
+                >
+                  <option value="default">Tỉnh/Thành phố</option>
+                  {provice !== null
+                    ? provice.map((iteam, index) => {
+                        return <option value={iteam.name}>{iteam.name}</option>;
+                      })
+                    : null}
+                </select>
+                <select
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  onChange={onChangeHandler}
+                  value={districSearch}
+                  name="districts"
+                  className={styles.typeFootball}
+                >
+                  <option value="default">Quận/Huyện</option>
+                  {proviceSearch !== ""
+                    ? districs.map((item, index) => {
+                        return (
+                          <option key={index} value={item.name}>
+                            {item.name}
+                          </option>
+                        );
+                      })
+                    : null}
+                </select>
+                <select
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                  onChange={onChangeHandler}
+                  value={gender}
+                  name="gender"
+                  className={styles.sortTour}
+                >
+                  <option value="default">Giới tính</option>
+                  <option value="Male">Nam</option>
+                  <option value="Female">Nữ</option>
+                </select>
+              </div>
+            )}
           </form>
         </div>
         {/* listteam */}
@@ -207,84 +240,93 @@ const MyTournamemts = () => {
         <div className={styles.listTournament}>
           <h1 className={styles.titleListTour}>Các đội bóng</h1>
           <div className={styles.listTour}>
-            {
-              loading ? (
-                <Loading />
-                ) : 
-                teams.length != 0 ? 
-                teams.map((team) => {
-                  return (
-                    <div key={team.id}>
-                      
-                        <Link to={`/teamDetail/${team.id}/inforTeamDetail`} className={styles.team} key={team.id}>
-                          <div className={styles.tournamentImgAd}>
+            {loading ? (
+              <Loading />
+            ) : teams.length !== 0 ? (
+              teams.map((team) => {
+                return (
+                  <div key={team.id}>
+                    <Link
+                      to={`/teamDetail/${team.id}/inforTeamDetail`}
+                      className={styles.team}
+                      key={team.id}
+                    >
+                      <div className={styles.tournamentImgAd}>
+                        <img
+                          className={styles.teamImg}
+                          src={team.teamAvatar}
+                          alt="myItem"
+                        />
+                      </div>
+
+                      <div className={styles.tournamentInfor}>
+                        <h1 className={styles.tournamentName}>
+                          {team.teamName}
+                        </h1>
+                        <p className={styles.type}>
+                          Bóng Đá {team.teamGender === "Male" ? "Nam" : "Nữ"}{" "}
+                          {team.teamArea !== ""
+                            ? "| " + splitTeamArea(team.teamArea)
+                            : ""}
+                        </p>
+                        <div className={styles.line} />
+                        <div className={styles.tournamentFooter}>
+                          <div className={styles.teamPart}>
                             <img
-                              className={styles.teamImg}
-                              src={team.teamAvatar}
-                              alt="myItem"
+                              className={styles.teamPartImg}
+                              src="./assets/icons/join.png"
+                              alt="join"
                             />
+                            <p>{team.numberPlayerInTeam}</p>
                           </div>
-    
-                          <div className={styles.tournamentInfor}>
-                            <h1 className={styles.tournamentName}>
-                              {team.teamName}
-                            </h1>
-                            <p className={styles.type}>
-                              Bóng Đá {team.teamGender==="Male"?"Nam":"Nữ"}  {team.teamArea!==""?"| "+splitTeamArea(team.teamArea):""}
-                            </p>
-                            <div className={styles.line} />
-                            <div className={styles.tournamentFooter}>
-                              <div className={styles.teamPart}>
-                                <img
-                                  className={styles.teamPartImg}
-                                  src="./assets/icons/join.png"
-                                  alt="join"
-                                />
-                                <p>{team.numberPlayerInTeam}</p>
-                              </div>
-                              <div className={styles.heart__shape}></div>
-                            </div>
-                          </div>
-                        </Link>
-                      
-                    </div>
-                  );
-                }) : <h1 style={{
+                          <div className={styles.heart__shape}></div>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })
+            ) : (
+              <h1
+                style={{
                   color: "red",
                   fontSize: 24,
                   fontWeight: 700,
-                  marginBottom: 30
-                }}>Không tìm thấy đội bóng</h1>
-                }
+                  marginBottom: 30,
+                }}
+              >
+                Không tìm thấy đội bóng
+              </h1>
+            )}
           </div>
         </div>
         {/* paging */}
-        {teams.length != 0 ? 
-        <nav
-        aria-label="Page navigation example"
-        className={styles.pagingTournament}
-      >
-        <ReactPaginate
-          previousLabel={"Trang trước"}
-          nextLabel={"Trang sau"}
-          containerClassName="pagination"
-          activeClassName={styles.active}
-          pageClassName={styles.pageItem}
-          nextClassName={styles.pageItem}
-          previousClassName={styles.pageItem}
-          breakLabel={"..."}
-          pageCount={Math.ceil(count / 8)}
-          marginPagesDisplayed={3}
-          onPageChange={handlePageClick}
-          pageLinkClassName={styles.pagelink}
-          previousLinkClassName={styles.pagelink}
-          nextLinkClassName={styles.pagelink}
-          breakClassName={styles.pageItem}
-          breakLinkClassName={styles.pagelink}
-          pageRangeDisplayed={2}
-        />
-      </nav>
-      : null}
+        {teams.length !== 0 ? (
+          <nav
+            aria-label="Page navigation example"
+            className={styles.pagingTournament}
+          >
+            <ReactPaginate
+              previousLabel={"Trang trước"}
+              nextLabel={"Trang sau"}
+              containerClassName="pagination"
+              activeClassName={styles.active}
+              pageClassName={styles.pageItem}
+              nextClassName={styles.pageItem}
+              previousClassName={styles.pageItem}
+              breakLabel={"..."}
+              pageCount={Math.ceil(count / 8)}
+              marginPagesDisplayed={3}
+              onPageChange={handlePageClick}
+              pageLinkClassName={styles.pagelink}
+              previousLinkClassName={styles.pagelink}
+              nextLinkClassName={styles.pagelink}
+              breakClassName={styles.pageItem}
+              breakLinkClassName={styles.pagelink}
+              pageRangeDisplayed={2}
+            />
+          </nav>
+        ) : null}
       </div>
       <Footer />
     </div>
