@@ -16,6 +16,11 @@ export function getAllFootballPlayerAPI(dataSearch, currentPage) {
 //     return axios.get(url+afterDefaulURL,data,headers);
 // }
 
+export function getFootballPlayerById(id){
+  const afterDefaultURL = `football-players/${id}`;
+  return axios.get(url + afterDefaultURL);
+}
+
 export function editFootballPlayerAPI(data) {
   const afterDefaulURL = "football-players";
   return axios.put(url + afterDefaulURL, data, headers);

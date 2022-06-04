@@ -158,7 +158,7 @@ export default function FootballPlayer() {
               listFootballPlayer.map((item, index) => {
                 return (
                   <div key={item.id}>
-                    <Link to="/" className={styles.team} key={item.id}>
+                    <Link to={`/playerDetail/${item.id}/myTeamInPlayer`} className={styles.team} key={item.id}>
                       <div className={styles.tournamentImgAd}>
                         <img
                           className={styles.teamImg}

@@ -8,3 +8,26 @@
 .HeaderTeamDetail .player_detail .man .title{
     width: 160px;
 } 
+
+
+ .editTeam{
+    display: block;
+    margin-top: 60px;
+    margin-left: auto;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    margin-left: 45px;
+    background-color: var(--green-bold);
+    font-family: "Mulish-Bold";
+    transition: 0.5s;
+    border-radius: 5px;
+  }
+.editTeam:hover{
+    background-color: var(--blue-black);
+    color: var(--white-text);
+  }
+  
+.editTeam i{
+    margin-right: 5px;
+  }
