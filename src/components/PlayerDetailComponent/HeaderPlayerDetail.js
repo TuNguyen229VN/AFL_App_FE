@@ -9,6 +9,7 @@ import MyTournamentInPlayer from "./MyTournamentInPlayer";
 import ScheduleInPlayer from "./ScheduleInPlayer";
 import RequestInPlayer from "./RequestInPlayer";
 import AchivementInPlayer from "./AchivementInPlayer";
+import { getAllPlayerByPlayerIdAPI } from "../../api/PlayerInTeamAPI";
 import { getFootballPlayerById } from "../../api/FootballPlayer";
 
 function HeaderPlayerDetail() {
@@ -20,10 +21,23 @@ function HeaderPlayerDetail() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-
+  const [active,setActive] = useState("true");
   useEffect(() => {
     getInForPlayerByID();
   }, [idPlayer]);
+
+  useEffect(() => {
+    getTeamByIdPlayer(active);
+  }, [idPlayer,active]);
+
+  const getTeamByIdPlayer = (status) => {
+    const response = getAllPlayerByPlayerIdAPI(idPlayer,status);
+    response.then(res => {
+      console.log(res.data.playerInTeamsFull);
+    }).catch(err => {
+      console.error(err);
+    })
+  }
 
   const getInForPlayerByID = () => {
     setLoading(true);
@@ -32,7 +46,7 @@ function HeaderPlayerDetail() {
       .then((res) => {
         if (res.status === 200) {
           setLoading(false);
-          console.log(res.data);
+          
           setDetailPlayer(res.data);
         }
       })
@@ -73,7 +87,7 @@ function HeaderPlayerDetail() {
       <div className="teamdetail">
         {loading ? (
           <LoadingAction />
-        ) : detailPlayer != null ? (
+        ) : detailPlayer !== null ? (
           <div>
             <div className="HeaderTeamDetail">
               <div className="info__manager player_detail ">
@@ -81,7 +95,7 @@ function HeaderPlayerDetail() {
                   <div className="avt__Team">
                     <img src={detailPlayer.playerAvatar} alt="a" />
                     </div>
-                    {user.userVM.id != undefined && detailPlayer != null &&  user.userVM.id === detailPlayer.id ? (
+                    {user.userVM.id !== undefined && detailPlayer !== null &&  user.userVM.id === detailPlayer.id ? (
                           <Link
                             to={`/`}
                             //state={{ address: team.teamArea }}
@@ -89,7 +103,7 @@ function HeaderPlayerDetail() {
                           >
                             <i class="fa-solid fa-pen-to-square"></i>Chỉnh sửa thông tin
                           </Link>
-                        ) : user.userVM.id != undefined && detailPlayer != null &&  user.userVM.roleId === 3 ?
+                        ) : user.userVM.id !== undefined && detailPlayer !== null &&  user.userVM.roleId === 3 ?
                         <button
                             
                             className="editTeam"
@@ -132,7 +146,7 @@ function HeaderPlayerDetail() {
                     <i className="fa-solid fa-calendar-days"></i>
                     <span className="title">Ngày sinh: </span>
                     <span>
-                      {detailPlayer.userVM.dateOfBirth != null
+                      {detailPlayer.userVM.dateOfBirth !== null
                         ? detailPlayer.userVM.dateOfBirth
                             .split("-")[2]
                             .split("T")[0] +

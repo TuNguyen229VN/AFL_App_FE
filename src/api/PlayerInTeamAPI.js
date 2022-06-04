@@ -4,6 +4,13 @@ import {url , headers} from './index'
 
 export function getAllPlayerByTeamIdAPI(id) {
     const afterDefaultURL = `PlayerInTeam?teamId=${id}&pageIndex=1&limit=30`;
+ 
+ 
+    return axios.get(url + afterDefaultURL );
+}
+
+export function getAllPlayerByPlayerIdAPI(id,status) {
+    const afterDefaultURL = `PlayerInTeam?footballPlayerId=${id}&status=${status}&orderType=DESC&pageIndex=1&limit=8`; 
     return axios.get(url + afterDefaultURL );
 }
 
@@ -15,7 +22,6 @@ export function addPlayerInTeamAPI(data) {
         console.error(err)
     }
 }
-
 
 export function deletePlayerInTeamAPI(idPlayerInTeam){
     const afterDefaultURL = `PlayerInTeam/${idPlayerInTeam}`;

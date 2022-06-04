@@ -1,6 +1,6 @@
 import React from 'react'
 
-function RequestInPlayer() {
+function RequestInPlayer(props) {
   return (
     <div>RequestInPlayer</div>
   )
