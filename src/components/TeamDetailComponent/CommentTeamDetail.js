@@ -19,6 +19,7 @@ function CommentTeamDetail() {
   const [deletePop,setDeletePop] = useState(false);
   const [contentEditError,setContentEditError] = useState("");
   const [deleteId, setDeleteId] = useState(0);
+  const [sort, setSort] = useState("DESC");
    const getComment = async () => {
      try {
       console.log("page index" , pageIndex);
@@ -26,7 +27,7 @@ function CommentTeamDetail() {
       if(pageIndex== numPage){
         
       }
-      const response = await axios.get(`https://afootballleague.ddns.net/api/v1/Comment?teamID=${idTeam}&pageIndex=1&limit=${numOfContent}`);
+      const response = await axios.get(`https://afootballleague.ddns.net/api/v1/Comment?teamID=${idTeam}&orderType=${sort}&pageIndex=1&limit=${numOfContent}`);
       setNumPage(Math.ceil(response.data.countList/5));    
       setComment( response.data);       
      }
@@ -41,7 +42,7 @@ let navigate = useNavigate();
 
   useEffect(() => { 
       getComment();
-  },[limit])
+  },[limit,sort])
  
   const createComment = async () => {
     try {
@@ -126,11 +127,11 @@ let navigate = useNavigate();
           <h3 className="cmtTeam__title">Bình luận</h3>
           <div className="totalcmt">
             <p className="number">{comment&&comment.countList} bình luận</p>
-            <div className="sort">
+            <div className="sort"onChange={(e) =>{setSort(e.target.value)}}>
               Sắp xếp theo
               <select>
-                <option>Mới nhất</option>
-                <option>Cũ nhất</option>
+                <option value="DESC">Mới nhất</option>
+                <option value="ASC">Cũ nhất</option>
               </select>
             </div>
           </div>
