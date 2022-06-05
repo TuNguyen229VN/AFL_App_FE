@@ -22,6 +22,7 @@ import Match from "./components/MatchComponent/Match";
 import UpdateTeam from "./components/UpdateTeamComponent/UpdateTeam";
 import ResetPassword from "./components/ResetPasswordComponent/ResetPassword";
 import FootballPlayer from "./components/FootballPlayer/FootballPlayer"
+import CreatePlayer from "./components/CreatePlayerComponent/CreatePlayer";
 function App() {
   // get Locoal Storage
   const { user } = useAuthListener();
@@ -55,6 +56,11 @@ function App() {
             exact
             path="/createTournament"
             element={user ? <CreateTournament /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            exact
+            path="/createPlayer"
+            element={user ? <CreatePlayer /> : <Navigate to={"/login"} />}
           />
           <Route
             exact

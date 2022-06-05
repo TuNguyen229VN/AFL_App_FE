@@ -48,6 +48,12 @@ function Match() {
         }, []);
         setAllTeamA(teamA);
         setAllTeamB(teamB);
+        setScoreTeamA({value:res.data.teamsInMatch[0].teamScore})
+        setScoreTeamB({value:res.data.teamsInMatch[1].teamScore})
+        setRedTeamA({value:res.data.teamsInMatch[1].redCardNumber})
+        setRedTeamB({value:res.data.teamsInMatch[1].redCardNumber})
+        setYellowTeamA({value:res.data.teamsInMatch[1].yellowCardNumber})
+        setYellowTeamB({value:res.data.teamsInMatch[1].yellowCardNumber})
         setTournamentID(res.data.teamsInMatch[0].match.tournamentId);
         setTokenLivestream(res.data.teamsInMatch[0].match.tokenLivestream);
         getTourDetail(res.data.teamsInMatch[0].match.tournamentId);

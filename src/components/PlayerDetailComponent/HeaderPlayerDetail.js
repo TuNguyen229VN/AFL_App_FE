@@ -18,31 +18,33 @@ function HeaderPlayerDetail() {
   const [loading, setLoading] = useState(false);
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
   const [detailPlayer, setDetailPlayer] = useState(null);
-  const [allTeam,setAllTeam] = useState(null);
+  const [allTeam, setAllTeam] = useState(null);
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-  const [active,setActive] = useState("true");
+  const [active, setActive] = useState("true");
   useEffect(() => {
     getInForPlayerByID();
   }, [idPlayer]);
 
   useEffect(() => {
     getTeamByIdPlayer(active);
-  }, [idPlayer,active]);
+  }, [idPlayer, active]);
 
   const getTeamByIdPlayer = (status) => {
     setLoading(true);
-    const response = getAllTeamByPlayerIdAPI(idPlayer,status);
-    response.then(res => {
-      setLoading(false);
-      setAllTeam(res.data.playerInTeamsFull)
-      console.log(res.data.playerInTeamsFull);
-    }).catch(err => {
-      setLoading(false);
-      console.error(err);
-    })
-  }
+    const response = getAllTeamByPlayerIdAPI(idPlayer, status);
+    response
+      .then((res) => {
+        setLoading(false);
+        setAllTeam(res.data.playerInTeamsFull);
+        console.log(res.data.playerInTeamsFull);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.error(err);
+      });
+  };
 
   const getInForPlayerByID = () => {
     setLoading(true);
@@ -51,7 +53,7 @@ function HeaderPlayerDetail() {
       .then((res) => {
         if (res.status === 200) {
           setLoading(false);
-          
+
           setDetailPlayer(res.data);
         }
       })
@@ -64,10 +66,16 @@ function HeaderPlayerDetail() {
   // render by link
   const renderByLink = () => {
     if (activeTeamDetail === `/playerDetail/${idPlayer}/myTeamInPlayer`) {
-      return <MyTeamInPlayer active={active} setactive={setActive} allTeam={allTeam} />;
+      return (
+        <MyTeamInPlayer
+          active={active}
+          setactive={setActive}
+          allTeam={allTeam}
+        />
+      );
     }
     if (activeTeamDetail === `/playerDetail/${idPlayer}/myTournamentInPlayer`) {
-      return <MyTournamentInPlayer  />;
+      return <MyTournamentInPlayer />;
     }
     if (activeTeamDetail === `/playerDetail/${idPlayer}/scheduleInPlayer`) {
       return <ScheduleInPlayer />;
@@ -99,24 +107,23 @@ function HeaderPlayerDetail() {
                 <div>
                   <div className="avt__Team">
                     <img src={detailPlayer.playerAvatar} alt="a" />
-                    </div>
-                    {user.userVM.id !== undefined && detailPlayer !== null &&  user.userVM.id === detailPlayer.id ? (
-                          <Link
-                            to={`/`}
-                            //state={{ address: team.teamArea }}
-                            className="editTeam"
-                          >
-                            <i class="fa-solid fa-pen-to-square"></i>Chỉnh sửa thông tin
-                          </Link>
-                        ) : user.userVM.id !== undefined && detailPlayer !== null &&  user.userVM.roleId === 3 ?
-                        <button
-                            
-                            className="editTeam"
-                          >
-                            Chiêu mộ cầu thủ
-                          </button>
-                        :null}
-                  
+                  </div>
+                  {user.userVM.id !== undefined &&
+                  detailPlayer !== null &&
+                  user.userVM.id === detailPlayer.id ? (
+                    <Link
+                      to={`/`}
+                      //state={{ address: team.teamArea }}
+                      className="editTeam"
+                    >
+                      <i class="fa-solid fa-pen-to-square"></i>Chỉnh sửa thông
+                      tin
+                    </Link>
+                  ) : user.userVM.id !== undefined &&
+                    detailPlayer !== null &&
+                    user.userVM.roleId === 3 ? (
+                    <button className="editTeam">Chiêu mộ cầu thủ</button>
+                  ) : null}
                 </div>
 
                 <div className="headertext__team">
@@ -262,7 +269,13 @@ function HeaderPlayerDetail() {
             {renderByLink()}
           </div>
         ) : (
-          <p>Hãy tạo cầu thủ</p>
+          <p className="createPlayermore">
+            {" "}
+            Bạn chưa phải là cầu thủ
+            <Link to="/createPlayer" className="createnow">
+              {`-> `}Trở thành cầu thủ ngay
+            </Link>
+          </p>
         )}
       </div>
       <Footer />
