@@ -120,7 +120,7 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/galleryTournamentDetail`
     ) {
-      return <GalleryTournamentDetail />;
+      return <GalleryTournamentDetail idTour={tourDetail.userId}/>;
     }
     if (
       activeTeamDetail ===

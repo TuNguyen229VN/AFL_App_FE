@@ -34,6 +34,7 @@ function NewsTournamentDetail(data) {
   const [countList, setCountList] = useState(0);
   const [orderType, setOrderType] = useState("DESC");
   const [news, setNews] = useState([]);
+  const [sizePage, setSizePage] = useState(0);
   const [viewMoreOption, setViewMoreOption] = useState({
     index: "0",
     check: false,
@@ -58,6 +59,7 @@ function NewsTournamentDetail(data) {
         setNews(res.data.news);
         setCountList(res.data.countList);
         setCount(res.data.countList);
+        setSizePage(res.data.size);
         setLoading(false);
       })
       .catch((err) => {
@@ -217,7 +219,6 @@ function NewsTournamentDetail(data) {
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const flagValid = validateForm(name, value);
-    console.log(e.target);
     switch (name) {
       case "imageA":
         const valueImg = URL.createObjectURL(e.target.files[0]);
@@ -292,6 +293,7 @@ function NewsTournamentDetail(data) {
       );
       if (response.status === 200) {
         setLoading(false);
+        setCurrentPage(1);
         setCheck(!check);
         toast.success("Xóa bài viết thành công", {
           position: "top-right",
@@ -317,15 +319,20 @@ function NewsTournamentDetail(data) {
       console.log(error);
     }
   };
-  const formatDate = (date) => {
-    const myArr = date.split("T");
-    const day = myArr[0].split("-").reverse();
-    return day.join("/");
-  };
-  const formatTime = (date) => {
-    const myArr = date.split("T");
-    const day = myArr[1].split(".");
-    return day[0];
+
+  const formatDateTime = (date) => {
+    const day = new Date(date);
+    return (
+      String(day.getDate()).padStart(2, "0") +
+      "/" +
+      String(day.getMonth() + 1).padStart(2, "0") +
+      "/" +
+      day.getFullYear() +
+      " " +
+      String(day.getHours()).padStart(2, "0") +
+      ":" +
+      String(day.getMinutes()).padStart(2, "0")
+    );
   };
   return (
     <>
@@ -358,7 +365,7 @@ function NewsTournamentDetail(data) {
         <p className="error">{content.error}</p>
         <div className="hihi">
           <label htmlFor="image">
-            <i class="fa-solid fa-image"></i>
+            <i class="fa-solid fa-image"></i><span>Chọn hình</span>
           </label>
           {imgUpdate.value !== "" ? (
             <div className="img">
@@ -400,7 +407,7 @@ function NewsTournamentDetail(data) {
         <p className="error">{content.error}</p>
         <div className="hihi">
           <label htmlFor="imageA">
-            <i class="fa-solid fa-image"></i>
+            <i class="fa-solid fa-image"></i><span>Chọn hình</span>
           </label>
           {img.value !== "" ? (
             <div className="img">
@@ -455,7 +462,7 @@ function NewsTournamentDetail(data) {
               {news.map((item, index) => (
                 <div className="thongbao__item" key={item.id}>
                   <div className="thongbao_top">
-                    <h1>Thông báo lúc 12/02/2022</h1>
+                    <h1>Thông báo lúc {formatDateTime(item.dateCreate)}</h1>
                     {user !== null ? (
                       <>
                         {user.userVM.id === data.idTour ? (

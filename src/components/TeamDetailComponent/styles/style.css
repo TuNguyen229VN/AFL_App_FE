@@ -357,15 +357,16 @@
   font-size: 18px;
   outline: none;
   border: none;
-  background-color: var(--blue-black);
-  color: var(--white-text);
+  background-color: var(--green-bold);
+  color: var(--blue-black);
   transition: 0.5s;
   font-family: "Mulish-Bold";
+  border-radius: 5px;
 }
 
 .teamdetail .cmtTeam .cmtInput button:hover {
-  background-color: var(--green-bold);
-  color: var(--blue-black);
+  background-color: var(--blue-black);
+  color: var(--white-text);
 }
 
 .teamdetail .cmtTeam .another__content {

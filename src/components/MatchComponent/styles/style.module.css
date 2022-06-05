@@ -140,127 +140,260 @@
   text-align: center;
 }
 
-.match__detail .match__statics th img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+.match__detail .match__statics th img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 
-.match__detail .match__statics tr{
-    padding: 20px;
+.match__detail .match__statics tr {
+  padding: 20px;
 }
-.match__detail .match__statics th{
-    padding: 25px 10px;
-    margin: 0 auto;
-}
-
-.match__detail .match__statics  .btk{
-    font-family: "Mulish-Bold";
-   transform: translateY(-10px);
+.match__detail .match__statics th {
+  padding: 25px 10px;
+  margin: 0 auto;
 }
 
-.address{
-    margin-top: 20px;
-    font-size: 18px;
+.match__detail .match__statics .btk {
+  font-family: "Mulish-Bold";
+  transform: translateY(-10px);
 }
 
-.livestream{
-    margin-top: 30px;
-    display: flex;
-    justify-content: space-between;
-    height: 482px;
+.address {
+  margin-top: 20px;
+  font-size: 18px;
 }
 
-.video{
-    width: 855px;
-}
-.comment{
-    height:100%;
-    background-color: var(--blue-black);
-    border: 1px solid var(--blue-black);
-    border-radius: 10px;
-    position: relative;
-    overflow: hidden;
-}
-.commnet__content{
-    padding: 10px 20px;
-    width: 340px;
-    overflow-y: scroll;
-}
-.comment__input{
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-    right: 5px;
-    width: 330px;
+.livestream {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  height: 482px;
 }
 
-.comment__input input{
-    border: none;
-    outline: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    width: 100%;
-    display: block;
+.video {
+  width: 855px;
+}
+.comment {
+  height: 100%;
+  background-color: var(--blue-black);
+  border: 1px solid var(--blue-black);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.commnet__content {
+  padding: 10px 20px;
+  width: 340px;
+  overflow-y: scroll;
+}
+.comment__input {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+  width: 330px;
 }
 
-.comment__input button{
-    position: absolute;
-    width: max-content;
-    padding: 10px 20px;
-    border-radius: 5px;
-    /* bottom: 10px; */
-    bottom: 2px;
-    right: 2px;
-    outline: none;
-    border: none;
-    background-color: var(--green-bold);
+.comment__input input {
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  width: 100%;
+  display: block;
 }
 
-.one__comment{
-    width: 100%;
-    display: flex;
-    color: var(--white-text);
-    font-size: 16px;
-    margin-bottom: 20px;
-    column-gap: 10px;
+.comment__input button {
+  position: absolute;
+  width: max-content;
+  padding: 10px 20px;
+  border-radius: 5px;
+  /* bottom: 10px; */
+  bottom: 2px;
+  right: 2px;
+  outline: none;
+  border: none;
+  background-color: var(--green-bold);
 }
 
-.one__comment img{
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 1px solid var(--green-bold);
+.one__comment {
+  width: 100%;
+  display: flex;
+  color: var(--white-text);
+  font-size: 16px;
+  margin-bottom: 20px;
+  column-gap: 10px;
 }
 
-.one__comment .name{
-    width: max-content;
-    color: #70757a;
-    font-family: "Mulish-Bold";
-    margin-bottom: 10px;
+.one__comment img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--green-bold);
 }
 
-.linkBack{
+.one__comment .name {
+  width: max-content;
+  color: #70757a;
+  font-family: "Mulish-Bold";
+  margin-bottom: 10px;
+}
+
+.linkBack {
   margin-right: 10px;
   font-family: "Mulish-Bold";
 }
-.linkBack:hover{
+.linkBack:hover {
   color: var(--blue-black);
   text-decoration: underline;
 }
-.match .sw{
+.match .sw {
   margin-right: 10px;
   font-family: "Mulish-Bold";
 }
 
-.linkBack:nth-child(5){
+.linkBack:nth-child(5) {
   text-decoration: underline;
 }
 
-.error{
+.error {
   font-size: 24px;
   margin-bottom: 90px;
   cursor: pointer;
   text-align: center;
   margin-top: 60px;
+}
+
+.action::before {
+  display: block;
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 2px;
+  background-color: #ccc;
+  bottom: -20px;
+}
+
+.action {
+  position: relative;
+}
+.updateMatch {
+  padding: 20px;
+  cursor: pointer;
+  user-select: none;
+  width: max-content;
+  border-radius: 5px;
+  display: flex;
+  margin-right: 0;
+  margin-left: auto;
+  transition: 0.5s;
+  font-family: "Mulish-Bold";
+  background-color: var(--green-bold);
+  color: var(--blue-black);
+}
+
+.updateMatch:hover {
+  background-color: var(--blue-black);
+  color: var(--white-text);
+}
+
+.popup__news {
+  border-radius: 5px;
+  height: auto;
+  width: 900px;
+  position: fixed;
+  z-index: 10;
+  background-color: #fff;
+  padding: 30px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+.popup__news.active {
+  display: block;
+}
+
+.popup__news h4 {
+  text-transform: uppercase;
+  font-family: "Mulish-Bold";
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.popup__news input:focus {
+  border: 1px solid var(--blue-black);
+}
+
+.popup__news input::-webkit-outer-spin-button,
+.popup__news input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.popup__news input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+.popup__news input {
+  display: block;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+}
+
+.divFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 30px;
+  margin-bottom: 20px;
+}
+
+.divFlex .lineMin {
+  font-size: 24px;
+  font-family: "Mulish-Bold";
+}
+.wrapForm {
+  margin-bottom: 50px;
+}
+.popup__news button {
+  display: block;
+  background-color: var(--green-bold);
+  padding: 10px 20px;
+  width: 150px;
+  color: var(--blue-black);
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%);
+  outline: none;
+  border: none;
+  transition: 0.5s;
+  border-radius: 5px;
+}
+.popup__news button:hover {
+  background-color: var(--blue-black);
+  color: var(--white-text);
+}
+.popup__news label {
+  margin-top: 20px;
+  font-size: 18px;
+  display: block;
+  cursor: pointer;
+}
+
+.popup__news .close {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  font-family: "Mulish-Bold";
+  font-size: 24px;
+  cursor: pointer;
 }

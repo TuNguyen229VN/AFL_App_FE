@@ -64,11 +64,12 @@
 
 .gallery__tour ul.images {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, 233px);
   grid-gap: 15px;
   list-style: none;
   margin: 0;
   padding: 0;
+  position: relative;
 }
 .gallery__tour div.fullscreen-group.fullscreen-group--expanded::before {
   z-index: 8;
@@ -78,6 +79,15 @@
   padding-top: 66%;
 }
 
+.gallery__tour ul.images > li i{
+  z-index: 2;
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  background-color: var(--white-text);
+  padding: 5px;
+  cursor: pointer;
+}
 .gallery__tour ul.images > li img {
   position: absolute;
   top: 0;
@@ -210,7 +220,7 @@
   text-transform: uppercase;
   position: relative;
   width: max-content;
-  width: 120px;
+  width: 150px;
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(4) {
   width: 280px;
@@ -609,6 +619,8 @@
 }
 
 .popup__news h4 {
+  text-transform: uppercase;
+  font-family: "Mulish-Bold";
   font-size: 22px;
   text-align: center;
   margin-bottom: 20px;
@@ -632,10 +644,10 @@
 
 .popup__news button {
   display: block;
-  background-color: var(--blue-black);
+  background-color: var(--green-bold);
   padding: 10px 20px;
   width: 150px;
-  color: var(--white-text);
+  color: var(--blue-black);
   position: absolute;
   bottom: 20px;
   left: 50%;
@@ -646,8 +658,8 @@
   border-radius: 5px;
 }
 .popup__news button:hover{
-  background-color: var(--green-bold);
-  color: var(--blue-black);
+  background-color: var(--blue-black);
+  color: var(--white-text);
 }
 .popup__news label{
   margin-top: 20px;
@@ -662,9 +674,15 @@
 .popup__news img{
   display: block;
   height: 200px;
+  width: 200px;
 }
  .hihi{
    margin-bottom: 40px;
+ }
+
+ .hihi label span{
+   margin-left: 10px;
+   font-size: 18px;
  }
 .popup__news .img{
   margin-top: 20px;
@@ -824,4 +842,12 @@
 
 .deletePopup .btnLoadMore{
   padding:10px 20px;
+}
+
+
+.exo .img__list{
+  display: grid;
+  grid-template-columns: repeat(4,200px);
+  column-gap: 20px;
+  /* flex-wrap: wrap; */
 }
