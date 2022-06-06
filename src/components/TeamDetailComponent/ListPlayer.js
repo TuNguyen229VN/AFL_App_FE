@@ -268,6 +268,7 @@ function ListPlayer(props) {
                                       //deletePlayerInTeam(item.idPlayerInTeam);
                                       setHideShowDelete(true);
                                       setIdDelete(item.idPlayerInTeam);
+                                      setDeleteSuccessFul(false);
                                     }}
                                   >
                                     <i class="fa-solid fa-trash"></i>Xóa cầu thủ

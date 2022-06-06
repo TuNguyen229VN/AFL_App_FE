@@ -17,7 +17,7 @@ export default function RegisterInTournament(props) {
   useEffect(() => {
     getListPlayerInTeamByIdTeam();
   }, [idUser]);
-
+  
   const getListPlayerInTeamByIdTeam = async () => {
     setLoading(true);
     const afterURL = `PlayerInTeam?teamId=${idUser}&status=true&pageIndex=1&limit=50`;
@@ -33,7 +33,7 @@ export default function RegisterInTournament(props) {
     });
     const playersData = await Promise.all(players);
     playersData.countList = response.data.countList;
-
+    console.log(playersData)
     setPlayerInTeam(playersData);
     setLoading(false);
   };
@@ -319,7 +319,7 @@ export default function RegisterInTournament(props) {
                                   key={index}
                                 >
                                   <td>{index + 1}</td>
-                                  <td>{item.email}</td>
+                                  <td>{item.userVM.email}</td>
 
                                   <td
                                   // style={{
@@ -343,7 +343,7 @@ export default function RegisterInTournament(props) {
                                         alt="avatarPlayer"
                                       />
                                     </div>{" "} */}
-                                    {item.playername}
+                                    {item.playerName}
                                   </td>
 
                                   <td>
