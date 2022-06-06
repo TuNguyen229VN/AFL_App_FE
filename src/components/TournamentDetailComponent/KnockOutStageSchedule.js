@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Bracket, RoundProps } from "react-brackets";
 import { Link } from "react-router-dom";
 export default function KnockOutStageSchedule(props) {
-  const { allTeam, typeView } = props;
+  const { allTeam, typeView, hostTournamentId } = props;
   const [knockoutTeam, setKnoukoutTeam] = useState(null);
   useEffect(() => {
-    
     if (allTeam != null) {
       devideRound();
     }
@@ -16,6 +15,7 @@ export default function KnockOutStageSchedule(props) {
     let roundCurrent = null;
     let indexCurrent = 0;
     allTeam.map((item, index) => {
+      
       if (index % 2 === 0) {
         if (roundCurrent === null) {
           roundCurrent = item.match.round;
@@ -26,20 +26,31 @@ export default function KnockOutStageSchedule(props) {
                 id: item.id,
                 date: new Date().toDateString(),
                 teams: [
-                  { name: item.teamName },
-                  { name: allTeam[index + 1].teamName },
+                  {
+                    name: item.teamName,
+                    team: item.team,
+                    teamResult: item.result,
+                  },
+                  {
+                    name: allTeam[index + 1].teamName,
+                    team: allTeam[index + 1].team,
+                    teamResult: allTeam[index + 1].result,
+                  },
                 ],
               },
             ],
           });
         } else if (roundCurrent === item.match.round) {
-          
           data[indexCurrent].seeds.push({
             id: item.id,
             date: new Date().toDateString(),
             teams: [
-              { name: item.teamName },
-              { name: allTeam[index + 1].teamName },
+              { name: item.teamName, team: item.team, teamResult: item.result },
+              {
+                name: allTeam[index + 1].teamName,
+                team: allTeam[index + 1].team,
+                teamResult: allTeam[index + 1].result,
+              },
             ],
           });
         } else {
@@ -52,14 +63,23 @@ export default function KnockOutStageSchedule(props) {
                 id: item.id,
                 date: new Date().toDateString(),
                 teams: [
-                  { name: item.teamName },
-                  { name: allTeam[index + 1].teamName },
+                  {
+                    name: item.teamName,
+                    team: item.team,
+                    teamResult: item.result,
+                  },
+                  {
+                    name: allTeam[index + 1].teamName,
+                    team: allTeam[index + 1].team,
+                    teamResult: allTeam[index + 1].result,
+                  },
                 ],
               },
             ],
           });
         }
       }
+      //console.log(data);
     });
     if (typeView === "diagram") {
       const nullTeamRoundOne = calcAllTeamRoundOne() - data[0].seeds.length;
@@ -69,13 +89,16 @@ export default function KnockOutStageSchedule(props) {
           data[0].seeds.splice(countI, 0, {
             id: null,
             date: null,
-            teams: [{ name: null }, { name: null }],
+            teams: [
+              { name: null, team: null, teamResult: null },
+              { name: null, team: null, teamResult: null },
+            ],
           });
           countI += 2;
         }
       }
     }
-    console.log(data)
+    console.log(data);
     setKnoukoutTeam(data);
   };
 
@@ -94,43 +117,55 @@ export default function KnockOutStageSchedule(props) {
       <Bracket rounds={rounds} />
     ) : (
       knockoutTeam.map((item, index) => {
-       return <table style={{
-         marginBottom: 50
-       }} key={index} className="schedule__table">
-          <tr>
-            <th colSpan={5}>Bảng đấu trực tiếp - {item.title}</th>
-          </tr>
-          {item.seeds.map((itemSeeds,indexSeeds) => {
-            return <tr key={indexSeeds}>
-            <td>{itemSeeds.date}</td>
-            {/* <td>{index + 1}</td> */}
-            <td>
-              {itemSeeds.teams[0].name}
-              <img
-                src="/assets/img/homepage/banner1.jpg"
-                alt="gallery_item"
-              />
-            </td>
-            <td>
-              <span className="score">0</span>
-              <span className="score"> - </span>
-              <span className="score">0</span>
-            </td>
-            <td>
-              <img
-                src="/assets/img/homepage/banner1.jpg"
-                alt="gallery_item"
-              />
-              {itemSeeds.teams[1].name}
-            </td>
-            <td>
-              {" "}
-              <Link to={`/match/${itemSeeds.id}/matchDetail`}>Chi tiết</Link>
-            </td>
-          </tr>
-          })}
-        </table>;
-
+        return (
+          <table
+            style={{
+              marginBottom: 50,
+            }}
+            key={index}
+            className="schedule__table"
+          >
+            <tr>
+              <th colSpan={5}>Bảng đấu trực tiếp - {item.title}</th>
+            </tr>
+            {item.seeds.map((itemSeeds, indexSeeds) => {
+              return (
+                <tr key={indexSeeds}>
+                  <td>{itemSeeds.date}</td>
+                  {/* <td>{index + 1}</td> */}
+                  <td>
+                    {itemSeeds.teams[0].name}
+                    <img
+                      src="/assets/img/homepage/banner1.jpg"
+                      alt="gallery_item"
+                    />
+                  </td>
+                  <td>
+                    <span className="score">0</span>
+                    <span className="score"> - </span>
+                    <span className="score">0</span>
+                  </td>
+                  <td>
+                    <img
+                      src="/assets/img/homepage/banner1.jpg"
+                      alt="gallery_item"
+                    />
+                    {itemSeeds.teams[1].name}
+                  </td>
+                  {itemSeeds.teams[0].team !== null &&
+                  itemSeeds.teams[1].team !== null ? (
+                    <td>
+                      {" "}
+                      <Link to={`/match/${itemSeeds.id}/matchDetail`}>
+                        Chi tiết
+                      </Link>
+                    </td>
+                  ) : null}
+                </tr>
+              );
+            })}
+          </table>
+        );
       })
     )
   ) : null;

@@ -8,7 +8,7 @@ import CricleStageSchedule from "./CricleStageSchedule";
 
 
 function ScheduleTournamentDetail(props) {
-  const {tourDetailId,tournamentType} = props;
+  const {tourDetailId,tournamentType,hostTournamentId} = props;
   const [loading,setLoading] = useState(false);
   const [active, setactive] = useState(true);
   const [allTeam,setAllTeam] = useState(null);
@@ -60,7 +60,7 @@ function ScheduleTournamentDetail(props) {
         {active ? (
           <div className="wrap__table">
             {
-              tournamentType === "KnockoutStage" ? <KnockOutStageSchedule typeView="result" allTeam={allTeam}  /> : tournamentType === "CircleStage" ? <CricleStageSchedule loading={loading} allTeam={allTeam}  /> : null
+              tournamentType === "KnockoutStage" ? <KnockOutStageSchedule hostTournamentId={hostTournamentId} typeView="result" allTeam={allTeam}  /> : tournamentType === "CircleStage" ? <CricleStageSchedule hostTournamentId={hostTournamentId} loading={loading} allTeam={allTeam}  /> : null
             }
             
           </div>

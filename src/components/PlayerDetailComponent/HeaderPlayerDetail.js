@@ -9,9 +9,9 @@ import MyTournamentInPlayer from "./MyTournamentInPlayer";
 import ScheduleInPlayer from "./ScheduleInPlayer";
 import RequestInPlayer from "./RequestInPlayer";
 import AchivementInPlayer from "./AchivementInPlayer";
-import { getAllTeamByPlayerIdAPI } from "../../api/PlayerInTeamAPI";
+import { getAllTeamByPlayerIdAPI, upDatePlayerInTeamAPI , deletePlayerInTeamAPI } from "../../api/PlayerInTeamAPI";
 import { getFootballPlayerById } from "../../api/FootballPlayer";
-
+import { toast } from "react-toastify";
 function HeaderPlayerDetail() {
   const { idPlayer } = useParams();
   const location = useLocation();
@@ -22,14 +22,16 @@ function HeaderPlayerDetail() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [statusAdd, setStatusAdd] = useState(false);
   const [active, setActive] = useState("true");
+  const [hideShow,setHideShow] = useState(false);
   useEffect(() => {
     getInForPlayerByID();
   }, [idPlayer]);
 
   useEffect(() => {
     getTeamByIdPlayer(active);
-  }, [idPlayer, active]);
+  }, [idPlayer, active, statusAdd === true]);
 
   const getTeamByIdPlayer = (status) => {
     setLoading(true);
@@ -43,6 +45,76 @@ function HeaderPlayerDetail() {
       .catch((err) => {
         setLoading(false);
         console.error(err);
+      });
+  };
+  const deletePlayerInTeam = (id) => {
+    if (id !== null) {
+      setLoading(true);
+      const response = deletePlayerInTeamAPI(id);
+      response
+        .then((res) => {
+          if (res.status === 200) {
+            setLoading(false);
+            setHideShow(false);
+            setStatusAdd(true);
+            toast.success("Đã từ chối đội bóng thành công", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+        })
+        .catch((err) => {
+          setLoading(false);
+          setHideShow(false);
+          console.error(err);
+          toast.error(err.response.data.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    }
+  };
+  const updateStatusFootballPlayer = (id, status) => {
+    setLoading(true);
+    const response = upDatePlayerInTeamAPI(id, status);
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          setStatusAdd(true);
+          setLoading(false);
+          toast.success("Chấp nhận đội bóng thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .then((err) => {
+        console.error(err);
+        setLoading(false);
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
   };
 
@@ -81,7 +153,7 @@ function HeaderPlayerDetail() {
       return <ScheduleInPlayer />;
     }
     if (activeTeamDetail === `/playerDetail/${idPlayer}/requestInPlayer`) {
-      return <RequestInPlayer active={active} setactive={setActive} />;
+      return <RequestInPlayer deletePlayerInTeam={deletePlayerInTeam} updateStatusFootballPlayer={updateStatusFootballPlayer} hideShow={hideShow} setHideShow={setHideShow} setStatusAdd={setStatusAdd} user={user} allTeam={allTeam} active={active} setactive={setActive} />;
     }
     if (activeTeamDetail === `/playerDetail/${idPlayer}/achivementInPlayer`) {
       return <AchivementInPlayer />;
