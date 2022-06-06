@@ -156,7 +156,7 @@ export default function KnockOutStageSchedule(props) {
                   itemSeeds.teams[1].teamId !== 0 ? (
                     <td>
                       {" "}
-                      <Link to={`/match/${itemSeeds.id}/matchDetail`}>
+                      <Link to={`/match/${itemSeeds.id}/matchDetail`} state={{hostTournamentId}}>
                         Chi tiết
                       </Link>
                     </td>

@@ -11,6 +11,7 @@ function GalleryTournamentDetail(data) {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [popupConfirmDelete, setPopupConfirmDelete] = useState(false);
   const [popupCreateImage, setPopupCreateImage] = useState(false);
   const { idTour } = useParams();
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,9 @@ function GalleryTournamentDetail(data) {
   const [count, setCount] = useState(0);
   const [countList, setCountList] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [numberPage, setNumberPage] = useState(0);
   const [images, setimages] = useState([]);
+  const [idItem, setIdItem] = useState("");
   const getImages = (currentPage) => {
     setLoading(true);
     let afterDefaultURL = null;
@@ -41,6 +44,7 @@ function GalleryTournamentDetail(data) {
 
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
+    setNumberPage(data.selected);
     getImages(data.selected + 1);
     setCheck(!check);
   };
@@ -50,14 +54,19 @@ function GalleryTournamentDetail(data) {
   }, [check, currentPage]);
 
   const deleteImages = async (id) => {
+    console.log(numberPage);
     try {
       const response = await axios.delete(
         `https://afootballleague.ddns.net/api/v1/images/${id}`
       );
       if (response.status === 200) {
-        setLoading(false);
-        setCurrentPage(1);
+        setPopupConfirmDelete(false);
+        if (currentPage >= 2 && images.length === 1) {
+          setCurrentPage(currentPage - 1);
+          setNumberPage(numberPage - 1);
+        }
         setCheck(!check);
+        setLoading(false);
         toast.success("Xóa hình ảnh thành công", {
           position: "top-right",
           autoClose: 3000,
@@ -162,11 +171,38 @@ function GalleryTournamentDetail(data) {
     <>
       {loading ? <LoadingAction /> : null}
       <div
-        className={popupCreateImage ? `overlay active` : "active"}
+        className={
+          popupCreateImage || popupConfirmDelete ? `overlay active` : "active"
+        }
         onClick={() => {
           setPopupCreateImage(false);
+          setPopupConfirmDelete(false);
         }}
       ></div>
+      <div
+        className={
+          popupConfirmDelete ? "deleteConfirm active" : "deleteConfirm"
+        }
+      >
+        <h3>Xác nhận xóa hình ảnh này</h3>
+        <div className="buttonConfirm">
+          <button
+            className="cancel"
+            onClick={() => setPopupConfirmDelete(false)}
+          >
+            Hủy
+          </button>
+          <button
+            className="confirm"
+            onClick={(e) => {
+              e.preventDefault();
+              deleteImages(idItem);
+            }}
+          >
+            Xóa
+          </button>
+        </div>
+      </div>
       <form
         className={popupCreateImage ? "popup__news active" : "popup__news"}
         onSubmit={addImages}
@@ -229,10 +265,15 @@ function GalleryTournamentDetail(data) {
             <ul className="images">
               {images.map((i) => (
                 <li key={i}>
-                  <i className="fa-solid fa-x" onClick={(e)=>{
-                    e.preventDefault();
-                    deleteImages(i.id)
-                  }}></i>
+                  {user !== null && user.userVM.id === data.idTour ? (
+                    <i
+                      className="fa-solid fa-x"
+                      onClick={() => {
+                        setIdItem(i.id);
+                        setPopupConfirmDelete(true);
+                      }}
+                    ></i>
+                  ) : null}
                   <Image src={i.imageURL} alt="mountains" />
                 </li>
               ))}
@@ -260,6 +301,7 @@ function GalleryTournamentDetail(data) {
           breakLinkClassName="pagelink"
           pageRangeDisplayed={2}
           className="pagingTournament"
+          forcePage={numberPage}
         />
       </div>
     </>

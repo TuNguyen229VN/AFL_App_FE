@@ -21,8 +21,9 @@ import MyListTournamentComponent from "./components/MyListTournamentComponent/My
 import Match from "./components/MatchComponent/Match";
 import UpdateTeam from "./components/UpdateTeamComponent/UpdateTeam";
 import ResetPassword from "./components/ResetPasswordComponent/ResetPassword";
-import FootballPlayer from "./components/FootballPlayer/FootballPlayer"
+import FootballPlayer from "./components/FootballPlayer/FootballPlayer";
 import CreatePlayer from "./components/CreatePlayerComponent/CreatePlayer";
+import UpdatePlayer from "./components/UpdatePlayerComponent/UpdatePlayer";
 function App() {
   // get Locoal Storage
   const { user } = useAuthListener();
@@ -61,6 +62,11 @@ function App() {
             exact
             path="/createPlayer"
             element={user ? <CreatePlayer /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            exact
+            path="/updatePlayer/:idPlayer"
+            element={user ? <UpdatePlayer /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
@@ -152,59 +158,35 @@ function App() {
               user ? <MyListTournamentComponent /> : <Navigate to={"/login"} />
             }
           />
-          <Route
-            exact
-            path="/match/:idMatch/matchDetail"
-            element={user ? <Match /> : <Navigate to={"/login"} />}
-          />
-          <Route
-            exact
-            path="/match/:idMatch/livestream"
-            element={user ? <Match /> : <Navigate to={"/login"} />}
-          />
+          <Route exact path="/match/:idMatch/matchDetail" element={<Match />} />
+          <Route exact path="/match/:idMatch/livestream" element={<Match />} />
           <Route exact path="/resetPassword" element={<ResetPassword />} />
           <Route
             exact
             path="/playerDetail/:idPlayer/myTeamInPlayer"
-            element={
-              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
-            }
+            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/myTournamentInPlayer"
-            element={
-              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
-            }
+            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/requestInPlayer"
-            element={
-              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
-            }
+            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/scheduleInPlayer"
-            element={
-              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
-            }
+            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/achivementInPlayer"
-            element={
-              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
-            }
+            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
           />
-          <Route
-            exact
-            path="/footballPlayer"
-            element={
-              <FootballPlayer />
-            }
-          />
+          <Route exact path="/footballPlayer" element={<FootballPlayer />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -18,11 +18,16 @@
   padding: 20px;
   margin-left: 45px;
   background-color: var(--green-bold);
+  color: var(--blue-black);
   font-family: "Mulish-Bold";
   transition: 0.5s;
   border-radius: 5px;
 }
 
+.editTeamTest:hover {
+  background-color: var(--blue-black);
+  color: var(--white-text);
+}
 
 .editTeam i {
   margin-right: 5px;
@@ -176,3 +181,4 @@
   text-decoration: underline;
   color: var(--blue-black);
 }
+

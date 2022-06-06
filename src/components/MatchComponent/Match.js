@@ -12,6 +12,10 @@ import MatchDetail from "./MatchDetail";
 import styles from "./styles/style.module.css";
 function Match() {
   const location = useLocation();
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
+  // location.state.hostTournamentId
   const { idMatch } = useParams();
   const [allTeamA, setAllTeamA] = useState(null);
   const [allTeamB, setAllTeamB] = useState(null);
@@ -35,7 +39,6 @@ function Match() {
     let response = getAPI(afterURL);
     response
       .then((res) => {
-        console.log(res.data);
         const allMatch = res.data.teamsInMatch;
         const teamB = [];
         const teamA = allMatch.reduce((accumulator, currentValue) => {
@@ -48,12 +51,12 @@ function Match() {
         }, []);
         setAllTeamA(teamA);
         setAllTeamB(teamB);
-        setScoreTeamA({value:res.data.teamsInMatch[0].teamScore})
-        setScoreTeamB({value:res.data.teamsInMatch[1].teamScore})
-        setRedTeamA({value:res.data.teamsInMatch[1].redCardNumber})
-        setRedTeamB({value:res.data.teamsInMatch[1].redCardNumber})
-        setYellowTeamA({value:res.data.teamsInMatch[1].yellowCardNumber})
-        setYellowTeamB({value:res.data.teamsInMatch[1].yellowCardNumber})
+        setScoreTeamA({ value: res.data.teamsInMatch[0].teamScore });
+        setScoreTeamB({ value: res.data.teamsInMatch[1].teamScore });
+        setRedTeamA({ value: res.data.teamsInMatch[1].redCardNumber });
+        setRedTeamB({ value: res.data.teamsInMatch[1].redCardNumber });
+        setYellowTeamA({ value: res.data.teamsInMatch[1].yellowCardNumber });
+        setYellowTeamB({ value: res.data.teamsInMatch[1].yellowCardNumber });
         setTournamentID(res.data.teamsInMatch[0].match.tournamentId);
         setTokenLivestream(res.data.teamsInMatch[0].match.tokenLivestream);
         getTourDetail(res.data.teamsInMatch[0].match.tournamentId);
@@ -630,12 +633,16 @@ function Match() {
           <>
             <h2 className={styles.title}>Trận đấu</h2>
             <div className={styles.action}>
-              <p
-                className={styles.updateMatch}
-                onClick={() => setPopupUpdateMatch(true)}
-              >
-                Cập nhật tỉ số
-              </p>
+              {user !== null &&
+              location.state !== null &&
+              user.userVM.id === location.state.hostTournamentId ? (
+                <p
+                  className={styles.updateMatch}
+                  onClick={() => setPopupUpdateMatch(true)}
+                >
+                  Cập nhật tỉ số
+                </p>
+              ) : null}
             </div>
             <div className={styles.match__header}>
               {allTeamA.map((item, index) => (

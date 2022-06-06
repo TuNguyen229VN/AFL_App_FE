@@ -851,3 +851,55 @@
   column-gap: 20px;
   /* flex-wrap: wrap; */
 }
+
+
+.deleteConfirm{
+  position: fixed;
+  display: none;
+  z-index: 10;
+  background-color: var(--white-text);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  padding: 20px;
+  width: 400px;
+  height: 150px;
+  border-radius: 5px;
+}
+.deleteConfirm.active{
+  display: block;
+}
+.deleteConfirm h3{
+  text-align: center;
+  font-size: 22px;
+  text-transform: uppercase;
+  font-family: "Mulish-Bold";
+  margin-bottom: 40px;
+}
+.deleteConfirm .buttonConfirm{
+  display: flex;
+  justify-content: space-between;
+}
+
+.deleteConfirm .buttonConfirm button{
+  border: none;
+  outline: none;
+  padding: 15px 15px;
+  width: max-content;
+  color: var(--white-text);
+  width: 170px;
+  font-size: 18px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.deleteConfirm .buttonConfirm .cancel{
+  background-color: #dc3545;
+}
+.deleteConfirm .buttonConfirm .confirm{
+  background-color: #28a745;
+}
+
+.deleteConfirm .buttonConfirm button:hover{
+  filter: brightness(90%);
+}

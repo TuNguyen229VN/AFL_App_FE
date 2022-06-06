@@ -25,10 +25,13 @@ function NewsTournamentDetail(data) {
   });
 
   const [idNews, setIdNews] = useState("");
+  const [idItem, setIdItem] = useState("");
+  const [popupConfirmDelete, setPopupConfirmDelete] = useState(false);
   const [popupCreateNews, setPopupCreateNews] = useState(false);
   const [popupUpdateNews, setPopupUpdateNews] = useState(false);
   const [sort, setSort] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [numberPage, setNumberPage] = useState(0);
   const [count, setCount] = useState(0);
   const [check, setCheck] = useState(false);
   const [countList, setCountList] = useState(0);
@@ -41,6 +44,7 @@ function NewsTournamentDetail(data) {
   });
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
+    setNumberPage(data.selected);
     getNews(data.selected + 1);
     setCheck(!check);
   };
@@ -159,6 +163,9 @@ function NewsTournamentDetail(data) {
         }
       );
       if (response.status === 200) {
+        setViewMoreOption({
+          check: !viewMoreOption.check,
+        });
         setPopupUpdateNews(false);
         setLoading(false);
         setCheck(!check);
@@ -292,9 +299,16 @@ function NewsTournamentDetail(data) {
         `https://afootballleague.ddns.net/api/v1/news/${id}`
       );
       if (response.status === 200) {
-        setLoading(false);
-        setCurrentPage(1);
+        setPopupConfirmDelete(false);
+        setViewMoreOption({
+          check: !viewMoreOption.check,
+        });
+        if (currentPage >= 2 && news.length === 1) {
+          setCurrentPage(currentPage - 1);
+          setNumberPage(numberPage - 1);
+        }
         setCheck(!check);
+        setLoading(false);
         toast.success("Xóa bài viết thành công", {
           position: "top-right",
           autoClose: 3000,
@@ -339,13 +353,40 @@ function NewsTournamentDetail(data) {
       {loading ? <LoadingAction /> : null}
       <div
         className={
-          popupCreateNews || popupUpdateNews ? `overlay active` : "active"
+          popupCreateNews || popupUpdateNews || popupConfirmDelete
+            ? `overlay active`
+            : "active"
         }
         onClick={() => {
           setPopupCreateNews(false);
           setPopupUpdateNews(false);
+          setPopupConfirmDelete(false);
         }}
       ></div>
+      <div
+        className={
+          popupConfirmDelete ? "deleteConfirm active" : "deleteConfirm"
+        }
+      >
+        <h3>Xác nhận xóa hình ảnh này</h3>
+        <div className="buttonConfirm">
+          <button
+            className="cancel"
+            onClick={() => setPopupConfirmDelete(false)}
+          >
+            Hủy
+          </button>
+          <button
+            className="confirm"
+            onClick={(e) => {
+              e.preventDefault();
+              deleteNews(idItem);
+            }}
+          >
+            Xóa
+          </button>
+        </div>
+      </div>
       <form
         className={popupUpdateNews ? "popup__news active" : "popup__news"}
         onSubmit={updateNews}
@@ -365,7 +406,8 @@ function NewsTournamentDetail(data) {
         <p className="error">{content.error}</p>
         <div className="hihi">
           <label htmlFor="image">
-            <i class="fa-solid fa-image"></i><span>Chọn hình</span>
+            <i class="fa-solid fa-image"></i>
+            <span>Chọn hình</span>
           </label>
           {imgUpdate.value !== "" ? (
             <div className="img">
@@ -407,7 +449,8 @@ function NewsTournamentDetail(data) {
         <p className="error">{content.error}</p>
         <div className="hihi">
           <label htmlFor="imageA">
-            <i class="fa-solid fa-image"></i><span>Chọn hình</span>
+            <i class="fa-solid fa-image"></i>
+            <span>Chọn hình</span>
           </label>
           {img.value !== "" ? (
             <div className="img">
@@ -502,9 +545,9 @@ function NewsTournamentDetail(data) {
                               </p>
 
                               <p
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  deleteNews(item.id);
+                                onClick={() => {
+                                  setIdItem(item.id);
+                                  setPopupConfirmDelete(true);
                                 }}
                               >
                                 <i class="fa-solid fa-trash"></i>Xóa bài viết
@@ -548,6 +591,7 @@ function NewsTournamentDetail(data) {
           breakLinkClassName="pagelink"
           pageRangeDisplayed={2}
           className="pagingTournament"
+          forcePage={numberPage}
         />
       </div>
     </>

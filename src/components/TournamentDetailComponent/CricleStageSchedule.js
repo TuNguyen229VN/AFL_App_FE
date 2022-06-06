@@ -57,7 +57,7 @@ export default function CricleStageSchedule(props) {
               {(item.teamId !== 0) && (allTeamB[index].teamId !== 0) ? (
                 <td>
                   {" "}
-                  <Link to={`/match/${item.match.id}/matchDetail`}>
+                  <Link to={`/match/${item.match.id}/matchDetail`} state={{hostTournamentId}}>
                     Chi tiết
                   </Link>
                 </td>

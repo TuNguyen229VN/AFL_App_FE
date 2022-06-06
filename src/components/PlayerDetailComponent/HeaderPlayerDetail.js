@@ -23,15 +23,15 @@ function HeaderPlayerDetail() {
   const { idPlayer } = useParams();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
- 
+
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
   const [detailPlayer, setDetailPlayer] = useState(null);
   const [allTeam, setAllTeam] = useState(null);
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-  const [count,setCount] = useState(0);
-  const [currentPage,setCurrentPage] = useState(1);
+  const [count, setCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [statusAdd, setStatusAdd] = useState(false);
   const [active, setActive] = useState("true");
   const [hideShow, setHideShow] = useState(false);
@@ -42,8 +42,7 @@ function HeaderPlayerDetail() {
   useEffect(() => {
     getTeamByIdPlayer(active);
   }, [idPlayer, active, statusAdd === true, currentPage]);
-  
-  
+
   const getTeamByIdPlayer = (status) => {
     //setLoading(true);
     const response = getAllTeamByPlayerIdAPI(idPlayer, status, currentPage);
@@ -68,15 +67,20 @@ function HeaderPlayerDetail() {
             setLoading(false);
             setHideShow(false);
             setStatusAdd(true);
-            toast.success(`Đã ${active === "true" ? " rời khỏi " : " từ chối "} đội bóng thành công`, {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
+            toast.success(
+              `Đã ${
+                active === "true" ? " rời khỏi " : " từ chối "
+              } đội bóng thành công`,
+              {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              }
+            );
           }
         })
         .catch((err) => {
@@ -95,7 +99,7 @@ function HeaderPlayerDetail() {
         });
     }
   };
-  
+
   useEffect(() => {
     if (user != undefined && user.userVM.roleId === 3) {
       checkPaticipateTeam();
@@ -149,9 +153,8 @@ function HeaderPlayerDetail() {
         if (res.status === 200) {
           if (res.data.playerInTeamsFull.length > 0) {
             const playerInTeam = res.data.playerInTeamsFull[0];
-            
+
             if (playerInTeam.status === "true") {
-             
               setStatusPaticipate("Đã tham gia đội bóng");
             } else if (playerInTeam.status === "Chờ xét duyệt từ đội bóng") {
               setStatusPaticipate("Chờ xét duyệt từ đội bóng của bạn");
@@ -284,9 +287,9 @@ function HeaderPlayerDetail() {
                   detailPlayer !== null &&
                   user.userVM.id === detailPlayer.id ? (
                     <Link
-                      to={`/`}
+                      to={`/updatePlayer/${detailPlayer.id}`}
                       //state={{ address: team.teamArea }}
-                      className="editTeam"
+                      className="editTeamTest"
                     >
                       <i class="fa-solid fa-pen-to-square"></i>Chỉnh sửa thông
                       tin
@@ -296,7 +299,7 @@ function HeaderPlayerDetail() {
                     user.userVM.roleId === 3 ? (
                     <button
                       onClick={() => {
-                        if(statusPaticipate === "Chiêu mộ cầu thủ"){
+                        if (statusPaticipate === "Chiêu mộ cầu thủ") {
                           addResquestToTeam();
                         }
                       }}
