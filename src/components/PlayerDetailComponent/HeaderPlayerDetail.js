@@ -9,6 +9,7 @@ import MyTournamentInPlayer from "./MyTournamentInPlayer";
 import ScheduleInPlayer from "./ScheduleInPlayer";
 import RequestInPlayer from "./RequestInPlayer";
 import AchivementInPlayer from "./AchivementInPlayer";
+
 import {
   getAllTeamByPlayerIdAPI,
   upDatePlayerInTeamAPI,
@@ -22,6 +23,7 @@ function HeaderPlayerDetail() {
   const { idPlayer } = useParams();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+ 
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
   const [detailPlayer, setDetailPlayer] = useState(null);
   const [allTeam, setAllTeam] = useState(null);
@@ -43,16 +45,16 @@ function HeaderPlayerDetail() {
   
   
   const getTeamByIdPlayer = (status) => {
-    setLoading(true);
+    //setLoading(true);
     const response = getAllTeamByPlayerIdAPI(idPlayer, status, currentPage);
     response
       .then((res) => {
-        setLoading(false);
+        //setLoading(false);
         setAllTeam(res.data.playerInTeamsFull);
         setCount(res.data.countList);
       })
       .catch((err) => {
-        setLoading(false);
+        //setLoading(false);
         console.error(err);
       });
   };
@@ -66,7 +68,7 @@ function HeaderPlayerDetail() {
             setLoading(false);
             setHideShow(false);
             setStatusAdd(true);
-            toast.success("Đã từ chối đội bóng thành công", {
+            toast.success(`Đã ${active === "true" ? " rời khỏi " : " từ chối "} đội bóng thành công`, {
               position: "top-right",
               autoClose: 3000,
               hideProgressBar: false,
@@ -223,6 +225,10 @@ function HeaderPlayerDetail() {
           allTeam={allTeam}
           count={count}
           setCurrentPage={setCurrentPage}
+          hideShow={hideShow}
+          setHideShow={setHideShow}
+          deletePlayerInTeam={deletePlayerInTeam}
+          setStatusAdd={setStatusAdd}
         />
       );
     }
@@ -244,6 +250,8 @@ function HeaderPlayerDetail() {
           allTeam={allTeam}
           active={active}
           setactive={setActive}
+          count={count}
+          setCurrentPage={setCurrentPage}
         />
       );
     }

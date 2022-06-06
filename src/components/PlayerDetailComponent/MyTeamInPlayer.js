@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from "react";
-import styles from "../FindTeamComponent/TeamFind.module.css";
 import ReactPaginate from "react-paginate";
+import styles from "../FindTournamentComponent/TournamentFind.module.css";
+import ModelDeleteTeam from "./ModelDeleteTeam";
 function MyTeamInPlayer(props) {
-  const { allTeam, setactive, active, count, setCurrentPage } = props;
+  const {
+    allTeam,
+    setactive,
+    active,
+    count,
+    setCurrentPage,
+    setHideShow,
+    deletePlayerInTeam,
+    hideShow,
+    setStatusAdd,
+  } = props;
+  const [idDelete, setIdDelete] = useState(null);
   const [viewMoreOption, setViewMoreOption] = useState({
     index: "0",
     check: false,
@@ -62,11 +74,17 @@ function MyTeamInPlayer(props) {
                               hideShowDelete ? "overlay active" : "overlay"
                             }
                           ></div> */}
+                          <div
+                            className={hideShow ? "overlay active" : "overlay"}
+                          ></div>
                           <p
                             onClick={() => {
                               //deletePlayerInTeam(item.idPlayerInTeam);
                               //setHideShowDelete(true);
                               //setIdDelete(item.idPlayerInTeam);
+                              setIdDelete(item.id);
+                              setStatusAdd(false);
+                              setHideShow(true);
                             }}
                           >
                             <i class="fa-solid fa-trash"></i>Xóa cầu thủ
@@ -195,6 +213,14 @@ function MyTeamInPlayer(props) {
                               </div>
                             ) : null} */}
                   </form>
+                  <ModelDeleteTeam
+                    deletePlayerInTeam={deletePlayerInTeam}
+                    idDelete={idDelete}
+                    setIdDelete={setIdDelete}
+                    hideShow={hideShow}
+                    setHideShow={setHideShow}
+                    active={active}
+                  />
                 </div>
               );
             })

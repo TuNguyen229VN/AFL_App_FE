@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import ReactPaginate from "react-paginate";
+import styles from "../FindTournamentComponent/TournamentFind.module.css";
 import ModelDeleteTeam from "./ModelDeleteTeam";
 function RequestInPlayer(props) {
   const {
@@ -12,13 +14,21 @@ function RequestInPlayer(props) {
     setHideShow,
     updateStatusFootballPlayer,
     deletePlayerInTeam,
+    count,
+    setCurrentPage,
   } = props;
   const { idPlayer } = useParams();
   const [idDelete, setIdDelete] = useState(null);
 
   useEffect(() => {
-    if (active === "true") setactive("Chờ xét duyệt từ cầu thủ");
+    if (active === "true") {
+      setactive("Chờ xét duyệt từ cầu thủ");
+      setCurrentPage(1);
+    }
   }, []);
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected + 1);
+  };
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
@@ -37,6 +47,7 @@ function RequestInPlayer(props) {
             className={active === "Chờ xét duyệt từ cầu thủ" ? "active" : ""}
             onClick={() => {
               setactive("Chờ xét duyệt từ cầu thủ");
+              if (active !== "Chờ xét duyệt từ cầu thủ") setCurrentPage(1);
             }}
           >
             Chờ duyệt
@@ -45,6 +56,7 @@ function RequestInPlayer(props) {
             className={active === "Chờ xét duyệt từ đội bóng" ? "active" : ""}
             onClick={() => {
               setactive("Chờ xét duyệt từ đội bóng");
+              if (active !== "Chờ xét duyệt từ đội bóng") setCurrentPage(1);
             }}
           >
             Tham gia
@@ -209,7 +221,9 @@ function RequestInPlayer(props) {
                   fontWeight: 700,
                 }}
               >
-                {active === "Chờ xét duyệt từ đội bóng" ? "Bạn không gửi lời mời tới đội bóng nào" : "Không có đội bóng gửi lời mời" }
+                {active === "Chờ xét duyệt từ đội bóng"
+                  ? "Bạn không gửi lời mời tới đội bóng nào"
+                  : "Không có đội bóng gửi lời mời"}
               </p>
             )
           ) : null}
@@ -223,6 +237,32 @@ function RequestInPlayer(props) {
           />
         </div>
       </div>
+      {allTeam != null && allTeam.length > 0 ? (
+        <nav
+          aria-label="Page navigation example"
+          className={styles.pagingTournament}
+        >
+          <ReactPaginate
+            previousLabel={"Trang trước"}
+            nextLabel={"Trang sau"}
+            containerClassName="pagination"
+            activeClassName={styles.active}
+            pageClassName={styles.pageItem}
+            nextClassName={styles.pageItem}
+            previousClassName={styles.pageItem}
+            breakLabel={"..."}
+            pageCount={Math.ceil(count / 8)}
+            marginPagesDisplayed={3}
+            onPageChange={handlePageClick}
+            pageLinkClassName={styles.pagelink}
+            previousLinkClassName={styles.pagelink}
+            nextLinkClassName={styles.pagelink}
+            breakClassName={styles.pageItem}
+            breakLinkClassName={styles.pagelink}
+            pageRangeDisplayed={2}
+          />
+        </nav>
+      ) : null}
     </div>
   );
 }
