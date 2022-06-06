@@ -18,7 +18,7 @@ export default function CricleStageSchedule(props) {
       }, []);
       setAllTeamA(teamA);
       setAllTeamB(teamB);
-      
+      console.log(teamA)
     }
   }, [allTeam]);
   return (
@@ -54,14 +54,14 @@ export default function CricleStageSchedule(props) {
                 />
                 {allTeamB[index].teamName}
               </td>
-              {(item.team !== null) & (allTeamB[index].team != null) ? (
+              {(item.teamId !== 0) && (allTeamB[index].teamId !== 0) ? (
                 <td>
                   {" "}
                   <Link to={`/match/${item.match.id}/matchDetail`}>
                     Chi tiết
                   </Link>
                 </td>
-              ) : null}
+              ) :  <td></td>}
             </tr>
           );
         })

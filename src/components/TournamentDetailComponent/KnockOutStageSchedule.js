@@ -152,8 +152,8 @@ export default function KnockOutStageSchedule(props) {
                     />
                     {itemSeeds.teams[1].name}
                   </td>
-                  {itemSeeds.teams[0].team !== null &&
-                  itemSeeds.teams[1].team !== null ? (
+                  {itemSeeds.teams[0].teamId !== 0 &&
+                  itemSeeds.teams[1].teamId !== 0 ? (
                     <td>
                       {" "}
                       <Link to={`/match/${itemSeeds.id}/matchDetail`}>
