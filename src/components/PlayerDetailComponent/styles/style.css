@@ -9,7 +9,7 @@
   width: 160px;
 }
 
-.editTeam {
+.editTeamTest {
   display: block;
   margin-top: 60px;
   margin-left: auto;
@@ -22,10 +22,7 @@
   transition: 0.5s;
   border-radius: 5px;
 }
-.editTeam:hover {
-  background-color: var(--blue-black);
-  color: var(--white-text);
-}
+
 
 .editTeam i {
   margin-right: 5px;

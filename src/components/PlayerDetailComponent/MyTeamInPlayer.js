@@ -1,20 +1,23 @@
-import React,{useEffect,useState} from "react";
-
+import React, { useEffect, useState } from "react";
+import styles from "../FindTeamComponent/TeamFind.module.css";
+import ReactPaginate from "react-paginate";
 function MyTeamInPlayer(props) {
-  const { allTeam,setactive,active } = props;
+  const { allTeam, setactive, active, count, setCurrentPage } = props;
   const [viewMoreOption, setViewMoreOption] = useState({
     index: "0",
     check: false,
   });
   useEffect(() => {
     setactive("true");
-  })
-
+  });
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected + 1);
+  };
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
   return (
-    <div  className="teamdetail__content listPlayer">
+    <div className="teamdetail__content listPlayer">
       <h1
         style={{
           fontSize: 36,
@@ -27,10 +30,9 @@ function MyTeamInPlayer(props) {
         Đội bóng bạn đã tham gia
       </h1>
       <div className="listPlayer__list">
-        {allTeam != null 
-          ?
-          allTeam.length > 0 ? 
-          allTeam.map((item, index) => {
+        {allTeam != null ? (
+          allTeam.length > 0 ? (
+            allTeam.map((item, index) => {
               return (
                 <div key={index} className="listPlayer__item">
                   <form onSubmit={onSubmitHandler}>
@@ -85,10 +87,7 @@ function MyTeamInPlayer(props) {
                     <div className="des">
                       <p className="namePlayer">
                         <span>Tên:</span>
-                        <span >
-                        {item.team.teamName}
-                        </span>
-                        
+                        <span>{item.team.teamName}</span>
                       </p>
                       <p className="genderPlayer">
                         <span>Giới tính:</span>
@@ -96,9 +95,8 @@ function MyTeamInPlayer(props) {
                       </p>
                       <p className="mailPlayer">
                         <span>SĐT:</span>
-                        
-                          {item.team.teamPhone}
-                        
+
+                        {item.team.teamPhone}
                       </p>
                       <p className="phonePlayer">
                         <span>Địa chỉ:</span>
@@ -199,13 +197,46 @@ function MyTeamInPlayer(props) {
                   </form>
                 </div>
               );
-            }) : <p style={{
-              color: "red",
-              fontSize: 21,
-              fontWeight: 700
-            }}>Bạn chưa tham gia đội bóng</p>
-          : null}
+            })
+          ) : (
+            <p
+              style={{
+                color: "red",
+                fontSize: 21,
+                fontWeight: 700,
+              }}
+            >
+              Bạn chưa tham gia đội bóng
+            </p>
+          )
+        ) : null}
       </div>
+      {allTeam != null && allTeam.length > 0 ? (
+        <nav
+          aria-label="Page navigation example"
+          className={styles.pagingTournament}
+        >
+          <ReactPaginate
+            previousLabel={"Trang trước"}
+            nextLabel={"Trang sau"}
+            containerClassName="pagination"
+            activeClassName={styles.active}
+            pageClassName={styles.pageItem}
+            nextClassName={styles.pageItem}
+            previousClassName={styles.pageItem}
+            breakLabel={"..."}
+            pageCount={Math.ceil(count / 8)}
+            marginPagesDisplayed={3}
+            onPageChange={handlePageClick}
+            pageLinkClassName={styles.pagelink}
+            previousLinkClassName={styles.pagelink}
+            nextLinkClassName={styles.pagelink}
+            breakClassName={styles.pageItem}
+            breakLinkClassName={styles.pagelink}
+            pageRangeDisplayed={2}
+          />
+        </nav>
+      ) : null}
     </div>
   );
 }

@@ -190,7 +190,7 @@ function HeaderTeamDetail() {
                           <Link
                             to={`/updateTeam/${team.id}`}
                             state={{ address: team.teamArea }}
-                            className="editTeamTest"
+                            className="editTeam"
                           >
                             <i class="fa-solid fa-pen-to-square"></i>Chỉnh Sửa
                             Đội Bóng

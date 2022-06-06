@@ -9,7 +9,13 @@ import MyTournamentInPlayer from "./MyTournamentInPlayer";
 import ScheduleInPlayer from "./ScheduleInPlayer";
 import RequestInPlayer from "./RequestInPlayer";
 import AchivementInPlayer from "./AchivementInPlayer";
-import { getAllTeamByPlayerIdAPI, upDatePlayerInTeamAPI , deletePlayerInTeamAPI } from "../../api/PlayerInTeamAPI";
+import {
+  getAllTeamByPlayerIdAPI,
+  upDatePlayerInTeamAPI,
+  deletePlayerInTeamAPI,
+  checkPlayerInTeamAPI,
+  addPlayerInTeamAPI,
+} from "../../api/PlayerInTeamAPI";
 import { getFootballPlayerById } from "../../api/FootballPlayer";
 import { toast } from "react-toastify";
 function HeaderPlayerDetail() {
@@ -22,25 +28,28 @@ function HeaderPlayerDetail() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [count,setCount] = useState(0);
+  const [currentPage,setCurrentPage] = useState(1);
   const [statusAdd, setStatusAdd] = useState(false);
   const [active, setActive] = useState("true");
-  const [hideShow,setHideShow] = useState(false);
+  const [hideShow, setHideShow] = useState(false);
   useEffect(() => {
     getInForPlayerByID();
   }, [idPlayer]);
-
+  const [statusPaticipate, setStatusPaticipate] = useState("Chiêu mộ cầu thủ");
   useEffect(() => {
     getTeamByIdPlayer(active);
-  }, [idPlayer, active, statusAdd === true]);
-
+  }, [idPlayer, active, statusAdd === true, currentPage]);
+  
+  
   const getTeamByIdPlayer = (status) => {
     setLoading(true);
-    const response = getAllTeamByPlayerIdAPI(idPlayer, status);
+    const response = getAllTeamByPlayerIdAPI(idPlayer, status, currentPage);
     response
       .then((res) => {
         setLoading(false);
         setAllTeam(res.data.playerInTeamsFull);
-        console.log(res.data.playerInTeamsFull);
+        setCount(res.data.countList);
       })
       .catch((err) => {
         setLoading(false);
@@ -84,6 +93,75 @@ function HeaderPlayerDetail() {
         });
     }
   };
+  
+  useEffect(() => {
+    if (user != undefined && user.userVM.roleId === 3) {
+      checkPaticipateTeam();
+    }
+  }, []);
+  const addResquestToTeam = () => {
+    setLoading(true);
+    const data = {
+      status: "Chờ xét duyệt từ cầu thủ",
+      teamId: user.userVM.id,
+      footballPlayerId: idPlayer,
+    };
+    const respone = addPlayerInTeamAPI(data);
+    respone
+      .then((res) => {
+        if (res.status === 201) {
+          setStatusPaticipate("Chờ xét duyệt từ cầu thủ");
+          toast.success(
+            "Yêu cầu tham gia đội bóng thành công.Chờ phản hồi từ đội bóng nhé!",
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            }
+          );
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.error(err);
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+  const checkPaticipateTeam = () => {
+    const respone = checkPlayerInTeamAPI(user.userVM.id, idPlayer);
+    respone
+      .then((res) => {
+        if (res.status === 200) {
+          if (res.data.playerInTeamsFull.length > 0) {
+            const playerInTeam = res.data.playerInTeamsFull[0];
+            
+            if (playerInTeam.status === "true") {
+             
+              setStatusPaticipate("Đã tham gia đội bóng");
+            } else if (playerInTeam.status === "Chờ xét duyệt từ đội bóng") {
+              setStatusPaticipate("Chờ xét duyệt từ đội bóng của bạn");
+            } else setStatusPaticipate("Chờ xét duyệt từ cầu thủ");
+          }
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const updateStatusFootballPlayer = (id, status) => {
     setLoading(true);
     const response = upDatePlayerInTeamAPI(id, status);
@@ -143,6 +221,8 @@ function HeaderPlayerDetail() {
           active={active}
           setactive={setActive}
           allTeam={allTeam}
+          count={count}
+          setCurrentPage={setCurrentPage}
         />
       );
     }
@@ -153,7 +233,19 @@ function HeaderPlayerDetail() {
       return <ScheduleInPlayer />;
     }
     if (activeTeamDetail === `/playerDetail/${idPlayer}/requestInPlayer`) {
-      return <RequestInPlayer deletePlayerInTeam={deletePlayerInTeam} updateStatusFootballPlayer={updateStatusFootballPlayer} hideShow={hideShow} setHideShow={setHideShow} setStatusAdd={setStatusAdd} user={user} allTeam={allTeam} active={active} setactive={setActive} />;
+      return (
+        <RequestInPlayer
+          deletePlayerInTeam={deletePlayerInTeam}
+          updateStatusFootballPlayer={updateStatusFootballPlayer}
+          hideShow={hideShow}
+          setHideShow={setHideShow}
+          setStatusAdd={setStatusAdd}
+          user={user}
+          allTeam={allTeam}
+          active={active}
+          setactive={setActive}
+        />
+      );
     }
     if (activeTeamDetail === `/playerDetail/${idPlayer}/achivementInPlayer`) {
       return <AchivementInPlayer />;
@@ -194,7 +286,32 @@ function HeaderPlayerDetail() {
                   ) : user.userVM.id !== undefined &&
                     detailPlayer !== null &&
                     user.userVM.roleId === 3 ? (
-                    <button className="editTeam">Chiêu mộ cầu thủ</button>
+                    <button
+                      onClick={() => {
+                        if(statusPaticipate === "Chiêu mộ cầu thủ"){
+                          addResquestToTeam();
+                        }
+                      }}
+                      className="editTeamTest"
+                      style={{
+                        cursor:
+                          statusPaticipate === "Chiêu mộ cầu thủ"
+                            ? "pointer"
+                            : "default",
+                        hover: {
+                          backgroundColor:
+                            statusPaticipate === "Chiêu mộ cầu thủ"
+                              ? "#16192b"
+                              : "#d7fc6a",
+                          color:
+                            statusPaticipate === "Chiêu mộ cầu thủ"
+                              ? "#ffffff"
+                              : "black",
+                        },
+                      }}
+                    >
+                      {statusPaticipate}
+                    </button>
                   ) : null}
                 </div>
 
