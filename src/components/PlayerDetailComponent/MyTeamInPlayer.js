@@ -27,8 +27,10 @@ function MyTeamInPlayer(props) {
         Đội bóng bạn đã tham gia
       </h1>
       <div className="listPlayer__list">
-        {allTeam != null
-          ? allTeam.map((item, index) => {
+        {allTeam != null 
+          ?
+          allTeam.length > 0 ? 
+          allTeam.map((item, index) => {
               return (
                 <div key={index} className="listPlayer__item">
                   <form onSubmit={onSubmitHandler}>
@@ -197,7 +199,11 @@ function MyTeamInPlayer(props) {
                   </form>
                 </div>
               );
-            })
+            }) : <p style={{
+              color: "red",
+              fontSize: 21,
+              fontWeight: 700
+            }}>Bạn chưa tham gia đội bóng</p>
           : null}
       </div>
     </div>

@@ -530,7 +530,7 @@
   display: block;
 }
 
-.teamdetail .editTeam{
+.teamdetail .editTeamTest{
   display: block;
   margin-top: 60px;
   margin-left: auto;
@@ -543,10 +543,10 @@
   transition: 0.5s;
   border-radius: 5px;
 }
-.teamdetail .editTeam:hover{
+/* .teamdetail .editTeam:hover{
   background-color: var(--blue-black);
   color: var(--white-text);
-}
+} */
 
 .teamdetail .editTeam i{
   margin-right: 5px;

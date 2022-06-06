@@ -33,3 +33,9 @@ export function upDatePlayerInTeamAPI(idPlayerInTeam,status){
     const afterDefaultURL = `PlayerInTeam?Id=${idPlayerInTeam}&status=${status}`;
     return axios.put(url+afterDefaultURL)
 }
+
+
+export function checkPlayerInTeamAPI(idTeam,idPlayer){
+    const afterDefaultURL = `PlayerInTeam?teamId=${idTeam}&footballPlayerId=${idPlayer}&pageIndex=1&limit=5`;
+    return axios.get(url+afterDefaultURL)
+}
