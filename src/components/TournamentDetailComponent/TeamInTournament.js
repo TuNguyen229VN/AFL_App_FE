@@ -21,7 +21,7 @@ function TeamInTournament(props) {
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
-  //console.log(allTeam);
+  console.log(allTeam);
   return (
     <>
       <div className="tournamentdetail">
