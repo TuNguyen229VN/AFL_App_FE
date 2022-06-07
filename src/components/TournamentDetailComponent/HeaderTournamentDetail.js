@@ -137,6 +137,7 @@ function HeaderTournamentDetail() {
           }
           tourDetailId={tourDetail.id}
           hostTournamentId={tourDetail.userId}
+          groupNumber={tourDetail.groupNumber}
         />
       );
     }

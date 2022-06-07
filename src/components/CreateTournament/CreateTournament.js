@@ -147,6 +147,7 @@ const CreateTournament = () => {
   const onSubmitHandler = async (e) => {
     setLoading(true);
     e.preventDefault();
+    
     try {
       const data = {
         tournamentName: nameTournament.value,
@@ -164,11 +165,11 @@ const CreateTournament = () => {
         footballPlayerMaxNumber: minimunPlayerInTournament.value,
         status: true,
         userId: user.userVM.id,
-        groupNumber: +groupNumber.value,
+        groupNumber:+groupNumber.value,
         TournamentTypeEnum: competitionFormat.value,
         TournamentFootballFieldTypeEnum: typeFootballField.value,
       };
-      //console.log(data);
+      console.log(data);
       const response = await axios.post(
         "https://afootballleague.ddns.net/api/v1/tournaments",
         data,

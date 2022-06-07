@@ -1,37 +1,35 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles/style.css";
-
-import {getTeamInMatchByTourId} from "../../api/TeamInMatchAPI"
+import LoadingAction from "../LoadingComponent/LoadingAction";
+import { getTeamInMatchByTourId } from "../../api/TeamInMatchAPI";
 
 import KnockOutStageSchedule from "./KnockOutStageSchedule";
 import CricleStageSchedule from "./CricleStageSchedule";
 
-
 function ScheduleTournamentDetail(props) {
-  const {tourDetailId,tournamentType,hostTournamentId} = props;
-  const [loading,setLoading] = useState(false);
+  const { tourDetailId, tournamentType, hostTournamentId, groupNumber } = props;
+  const [loading, setLoading] = useState(false);
   const [active, setactive] = useState(true);
-  const [allTeam,setAllTeam] = useState(null);
+  const [allTeam, setAllTeam] = useState(null);
 
   useEffect(() => {
     getAllTeamInMatch();
-  },[tourDetailId])
+  }, [tourDetailId]);
   const getAllTeamInMatch = () => {
     setLoading(true);
     const response = getTeamInMatchByTourId(tourDetailId);
-    response.then(res =>{
-      if(res.status === 200){
-        console.log(res.data.teamsInMatch)
-        setAllTeam(res.data.teamsInMatch)
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          setAllTeam(res.data.teamsInMatch);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
         setLoading(false);
-      }
-    }).catch(err => {
-      console.error(err)
-      setLoading(false);
-    })
-      
-  
-  }
+      });
+  };
   return (
     <>
       <div className="teamdetail__content schedule__tour">
@@ -46,28 +44,45 @@ function ScheduleTournamentDetail(props) {
             >
               Danh sách
             </p>
-            {tournamentType !== "CircleStage" ? <p
-              className={!active ? "active" : ""}
-              onClick={() => {
-                setactive(false);
-              }}
-            >
-              Biểu đồ
-            </p> : null }
-            
+            {tournamentType !== "CircleStage" ? (
+              <p
+                className={!active ? "active" : ""}
+                onClick={() => {
+                  setactive(false);
+                }}
+              >
+                Biểu đồ
+              </p>
+            ) : null}
           </div>
         </div>
         {active ? (
           <div className="wrap__table">
-            {
-              tournamentType !== "CircleStage" ? <KnockOutStageSchedule tournamentType={tournamentType} hostTournamentId={hostTournamentId} typeView="result" allTeam={allTeam}  /> :  <CricleStageSchedule hostTournamentId={hostTournamentId} loading={loading} allTeam={allTeam}  /> 
-            }
-            
+            {tournamentType !== "CircleStage" ? (
+              <KnockOutStageSchedule
+                tournamentType={tournamentType}
+                hostTournamentId={hostTournamentId}
+                typeView="result"
+                allTeam={allTeam}
+              />
+            ) : (
+              <CricleStageSchedule
+                hostTournamentId={hostTournamentId}
+                loading={loading}
+                allTeam={allTeam}
+              />
+            )}
           </div>
         ) : (
-          <KnockOutStageSchedule tournamentType={tournamentType} allTeam={allTeam} typeView="diagram"  />
+          <KnockOutStageSchedule
+            groupNumber={groupNumber}
+            tournamentType={tournamentType}
+            allTeam={allTeam}
+            typeView="diagram"
+          />
         )}
       </div>
+      {loading ? <LoadingAction /> : null}
     </>
   );
 }

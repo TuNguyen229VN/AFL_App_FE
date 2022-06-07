@@ -257,7 +257,7 @@ const CompetitionFormat = (props) => {
                   marginBottom: 20,
                 }}
               >
-                <option value="2">2</option>
+                <option value="2" selected>2</option>
                 <option value="4">4</option>
               </select>
               {/* <input

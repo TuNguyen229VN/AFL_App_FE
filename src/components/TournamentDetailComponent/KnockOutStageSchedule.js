@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Bracket, RoundProps } from "react-brackets";
 import { Link } from "react-router-dom";
 export default function KnockOutStageSchedule(props) {
-  const { allTeam, typeView, hostTournamentId,tournamentType } = props;
+  const { allTeam, typeView, hostTournamentId,tournamentType,groupNumber } = props;
   const [knockoutTeam, setKnoukoutTeam] = useState(null);
   useEffect(() => {
     if (allTeam != null) {
       devideRound();
     }
   }, [allTeam]);
-
+  
   const devideRound = () => {
     const data = [];
     let roundCurrent = null;
@@ -30,11 +30,13 @@ export default function KnockOutStageSchedule(props) {
                     name: item.teamName,
                     team: item.team,
                     teamResult: item.result,
+                    teamId: item.teamId
                   },
                   {
                     name: allTeam[index + 1].teamName,
                     team: allTeam[index + 1].team,
                     teamResult: allTeam[index + 1].result,
+                    teamId: allTeam[index + 1].teamId
                   },
                 ],
               },
@@ -45,11 +47,13 @@ export default function KnockOutStageSchedule(props) {
             id: item.id,
             date: new Date().toDateString(),
             teams: [
-              { name: item.teamName, team: item.team, teamResult: item.result },
+              { name: item.teamName, team: item.team, teamResult: item.result,
+                teamId: item.teamId },
               {
                 name: allTeam[index + 1].teamName,
                 team: allTeam[index + 1].team,
                 teamResult: allTeam[index + 1].result,
+                teamId: allTeam[index + 1].teamId
               },
             ],
           });
@@ -67,11 +71,13 @@ export default function KnockOutStageSchedule(props) {
                     name: item.teamName,
                     team: item.team,
                     teamResult: item.result,
+                    teamId: item.teamId
                   },
                   {
                     name: allTeam[index + 1].teamName,
                     team: allTeam[index + 1].team,
                     teamResult: allTeam[index + 1].result,
+                    teamId: allTeam[index + 1].teamId
                   },
                 ],
               },
@@ -98,7 +104,7 @@ export default function KnockOutStageSchedule(props) {
         }
       }
     }else if(typeView === "diagram" && tournamentType == "GroupStage"){
-      data.splice(0,2)
+      data.splice(0,groupNumber)
     }
     setKnoukoutTeam(data);
   };
@@ -127,7 +133,7 @@ export default function KnockOutStageSchedule(props) {
             className="schedule__table"
           >
             <tr>
-              <th colSpan={5}>Bảng đấu trực tiếp - {item.title}</th>
+              <th colSpan={6}>Bảng đấu trực tiếp - {item.title}</th>
             </tr>
             {item.seeds.map((itemSeeds, indexSeeds) => {
               return (
@@ -153,6 +159,7 @@ export default function KnockOutStageSchedule(props) {
                     />
                     {itemSeeds.teams[1].name}
                   </td>
+                  <td><a>Chỉnh sửa</a></td>
                   {itemSeeds.teams[0].teamId !== 0 &&
                   itemSeeds.teams[1].teamId !== 0 ? (
                     <td>
@@ -161,7 +168,8 @@ export default function KnockOutStageSchedule(props) {
                         Chi tiết
                       </Link>
                     </td>
-                  ) : null}
+                  ) : <td></td>}
+                  
                 </tr>
               );
             })}
