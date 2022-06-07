@@ -3,6 +3,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import styles from "../FindTournamentComponent/TournamentFind.module.css";
 import ModelDeleteTeam from "./ModelDeleteTeam";
+
 function RequestInPlayer(props) {
   const {
     active,
@@ -83,6 +84,7 @@ function RequestInPlayer(props) {
                 return (
                   <div key={index} className="listPlayer__item">
                     <form onSubmit={onSubmitHandler}>
+                    <Link to={`/teamDetail/${item.teamId}/inforTeamDetail`}>
                       <div className="avt">
                         <img
                           style={{
@@ -92,7 +94,9 @@ function RequestInPlayer(props) {
                           alt="dev"
                         />
                       </div>
+                      </Link>
                       <div className="des">
+                      <Link to={`/teamDetail/${item.teamId}/inforTeamDetail`}>
                         <p className="namePlayer">
                           <span>Tên:</span>
                           <span>{item.team.teamName}</span>
@@ -110,7 +114,7 @@ function RequestInPlayer(props) {
                           <span>Địa chỉ:</span>
                           {item.team.teamArea}
                         </p>
-
+                        </Link>
                         {active === "Chờ xét duyệt từ cầu thủ" &&
                         user !== null &&
                         user.userVM.id == idPlayer ? (

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Bracket, RoundProps } from "react-brackets";
 import { Link } from "react-router-dom";
 export default function KnockOutStageSchedule(props) {
-  const { allTeam, typeView, hostTournamentId } = props;
+  const { allTeam, typeView, hostTournamentId,tournamentType } = props;
   const [knockoutTeam, setKnoukoutTeam] = useState(null);
   useEffect(() => {
     if (allTeam != null) {
@@ -15,12 +15,12 @@ export default function KnockOutStageSchedule(props) {
     let roundCurrent = null;
     let indexCurrent = 0;
     allTeam.map((item, index) => {
-      
+      //console.log(item)
       if (index % 2 === 0) {
         if (roundCurrent === null) {
-          roundCurrent = item.match.round;
+          roundCurrent = item.match.groupFight;
           data.push({
-            title: item.match.round,
+            title: item.match.groupFight,
             seeds: [
               {
                 id: item.id,
@@ -40,7 +40,7 @@ export default function KnockOutStageSchedule(props) {
               },
             ],
           });
-        } else if (roundCurrent === item.match.round) {
+        } else if (roundCurrent === item.match.groupFight) {
           data[indexCurrent].seeds.push({
             id: item.id,
             date: new Date().toDateString(),
@@ -55,9 +55,9 @@ export default function KnockOutStageSchedule(props) {
           });
         } else {
           indexCurrent += 1;
-          roundCurrent = item.match.round;
+          roundCurrent = item.match.groupFight;
           data.push({
-            title: item.match.round,
+            title: item.match.groupFight,
             seeds: [
               {
                 id: item.id,
@@ -79,9 +79,9 @@ export default function KnockOutStageSchedule(props) {
           });
         }
       }
-      //console.log(data);
+      console.log(data);
     });
-    if (typeView === "diagram") {
+    if (typeView === "diagram" && tournamentType != "GroupStage") {
       const nullTeamRoundOne = calcAllTeamRoundOne() - data[0].seeds.length;
       if (nullTeamRoundOne > 0) {
         let countI = 1;
@@ -97,8 +97,9 @@ export default function KnockOutStageSchedule(props) {
           countI += 2;
         }
       }
+    }else if(typeView === "diagram" && tournamentType == "GroupStage"){
+      data.splice(0,2)
     }
-    console.log(data);
     setKnoukoutTeam(data);
   };
 

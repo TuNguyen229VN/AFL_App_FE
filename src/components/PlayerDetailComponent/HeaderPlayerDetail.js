@@ -232,6 +232,7 @@ function HeaderPlayerDetail() {
           setHideShow={setHideShow}
           deletePlayerInTeam={deletePlayerInTeam}
           setStatusAdd={setStatusAdd}
+          currentPage={currentPage}
         />
       );
     }

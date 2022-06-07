@@ -60,12 +60,12 @@ function ScheduleTournamentDetail(props) {
         {active ? (
           <div className="wrap__table">
             {
-              tournamentType === "KnockoutStage" ? <KnockOutStageSchedule hostTournamentId={hostTournamentId} typeView="result" allTeam={allTeam}  /> : tournamentType === "CircleStage" ? <CricleStageSchedule hostTournamentId={hostTournamentId} loading={loading} allTeam={allTeam}  /> : null
+              tournamentType !== "CircleStage" ? <KnockOutStageSchedule tournamentType={tournamentType} hostTournamentId={hostTournamentId} typeView="result" allTeam={allTeam}  /> :  <CricleStageSchedule hostTournamentId={hostTournamentId} loading={loading} allTeam={allTeam}  /> 
             }
             
           </div>
         ) : (
-          <KnockOutStageSchedule allTeam={allTeam} typeView="diagram"  />
+          <KnockOutStageSchedule tournamentType={tournamentType} allTeam={allTeam} typeView="diagram"  />
         )}
       </div>
     </>

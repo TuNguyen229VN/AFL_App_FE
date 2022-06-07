@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import styles from "../FindTournamentComponent/TournamentFind.module.css";
 import ModelDeleteTeam from "./ModelDeleteTeam";
+import { Link } from "react-router-dom";
 function MyTeamInPlayer(props) {
   const {
     allTeam,
@@ -13,12 +14,14 @@ function MyTeamInPlayer(props) {
     deletePlayerInTeam,
     hideShow,
     setStatusAdd,
+    currentPage
   } = props;
   const [idDelete, setIdDelete] = useState(null);
   const [viewMoreOption, setViewMoreOption] = useState({
     index: "0",
     check: false,
   });
+  console.log(allTeam)
   useEffect(() => {
     setactive("true");
   });
@@ -87,41 +90,41 @@ function MyTeamInPlayer(props) {
                               setHideShow(true);
                             }}
                           >
-                            <i class="fa-solid fa-trash"></i>Xóa cầu thủ
+                            <i class="fa-solid fa-trash"></i>Hủy tham gia
                           </p>
                         </div>
                       </div>
                     ) : null}
+                    <Link to={`/teamDetail/${item.teamId}/inforTeamDetail`}>
+                      <div className="avt">
+                        <img
+                          style={{
+                            objectFit: "cover",
+                          }}
+                          src={item.team.teamAvatar}
+                          alt="dev"
+                        />
+                      </div>
+                      <div className="des">
+                        <p className="namePlayer">
+                          <span>Tên:</span>
+                          <span>{item.team.teamName}</span>
+                        </p>
+                        <p className="genderPlayer">
+                          <span>Giới tính:</span>
+                          {item.team.teamGender === "Male" ? "Nam" : "Nữ"}
+                        </p>
+                        <p className="mailPlayer">
+                          <span>SĐT:</span>
 
-                    <div className="avt">
-                      <img
-                        style={{
-                          objectFit: "cover",
-                        }}
-                        src={item.team.teamAvatar}
-                        alt="dev"
-                      />
-                    </div>
-                    <div className="des">
-                      <p className="namePlayer">
-                        <span>Tên:</span>
-                        <span>{item.team.teamName}</span>
-                      </p>
-                      <p className="genderPlayer">
-                        <span>Giới tính:</span>
-                        {item.team.teamGender === "Male" ? "Nam" : "Nữ"}
-                      </p>
-                      <p className="mailPlayer">
-                        <span>SĐT:</span>
+                          {item.team.teamPhone}
+                        </p>
+                        <p className="phonePlayer">
+                          <span>Địa chỉ:</span>
+                          {item.team.teamArea}
+                        </p>
 
-                        {item.team.teamPhone}
-                      </p>
-                      <p className="phonePlayer">
-                        <span>Địa chỉ:</span>
-                        {item.team.teamArea}
-                      </p>
-
-                      {/* {active === "Chờ duyệt" && idHost === id ? (
+                        {/* {active === "Chờ duyệt" && idHost === id ? (
                         <div
                           style={{
                             margin: "20px 0 10px 0",
@@ -200,7 +203,8 @@ function MyTeamInPlayer(props) {
                           </button>
                         </div>
                       ) : null} */}
-                    </div>
+                      </div>
+                    </Link>
                     {/* {idHost !== undefined && idHost === id ? (
                               <div>
                                 <div
@@ -243,6 +247,7 @@ function MyTeamInPlayer(props) {
           className={styles.pagingTournament}
         >
           <ReactPaginate
+            
             previousLabel={"Trang trước"}
             nextLabel={"Trang sau"}
             containerClassName="pagination"

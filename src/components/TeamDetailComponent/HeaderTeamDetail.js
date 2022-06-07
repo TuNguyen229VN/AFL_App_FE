@@ -49,6 +49,7 @@ function HeaderTeamDetail() {
     if (user != undefined && user.userVM.roleId === 5) {
       checkPaticipateTeam();
     }
+    
   }, []);
 
   const checkPaticipateTeam = () => {
@@ -73,11 +74,13 @@ function HeaderTeamDetail() {
   };
 
   const getInforTeam = () => {
+    
     setLoading(true);
     let afterDefaultURL = `teams/${idTeam}`;
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
+        
         setTeam(res.data);
         getUserById(idTeam);
         setLoading(false);
@@ -190,7 +193,7 @@ function HeaderTeamDetail() {
                           <Link
                             to={`/updateTeam/${team.id}`}
                             state={{ address: team.teamArea }}
-                            className="editTeam"
+                            className="editTeamTest"
                           >
                             <i class="fa-solid fa-pen-to-square"></i>Chỉnh Sửa
                             Đội Bóng

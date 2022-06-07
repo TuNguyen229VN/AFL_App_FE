@@ -14,7 +14,7 @@ import HeaderPlayerDetail from "./components/PlayerDetailComponent/HeaderPlayerD
 import ChangePassWorld from "./components/ChangePasswordComponent/ChangePassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import useAuthListener from "./hooks/user_auth";
 import Profile from "./components/ProfileComponent/Profile";
 import MyListTournamentComponent from "./components/MyListTournamentComponent/MyListTournamentComponent";
