@@ -81,6 +81,10 @@ const CreateTournament = () => {
     value: "15",
     error: null,
   });
+  const [groupNumber, setGroupNumber] = useState({
+    value: "2",
+    error: null,
+  });
   const [loading, setLoading] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
@@ -110,7 +114,6 @@ const CreateTournament = () => {
     const response = createSchedule(id);
     response
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           naviage(`/tournamentDetail/${id}/inforTournamentDetail`);
           setLoading(false);
@@ -143,6 +146,7 @@ const CreateTournament = () => {
   const onSubmitHandler = async (e) => {
     setLoading(true);
     e.preventDefault();
+
     try {
       const data = {
         tournamentName: nameTournament.value,
@@ -160,10 +164,11 @@ const CreateTournament = () => {
         footballPlayerMaxNumber: minimunPlayerInTournament.value,
         status: true,
         userId: user.userVM.id,
+        groupNumber: 4,
         TournamentTypeEnum: competitionFormat.value,
         TournamentFootballFieldTypeEnum: typeFootballField.value,
       };
-      //console.log(data);
+
       const response = await axios.post(
         "https://afootballleague.ddns.net/api/v1/tournaments",
         data,
@@ -211,6 +216,10 @@ const CreateTournament = () => {
         setDistricts(null);
         setWards(null);
         setResetProvice(0);
+        setGroupNumber({
+          value: "2",
+          error: null,
+        });
       }
     } catch (error) {
       setLoading(false);
@@ -243,6 +252,25 @@ const CreateTournament = () => {
           };
         }
         break;
+      case "groupNumber":
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "Không được để trống",
+          };
+        } else if (!/^[0-9]+$/.test(value)) {
+          return {
+            flag: false,
+            content: "Đội tham gia là số",
+          };
+        } else if (value === 2 || value === 4) {
+          return {
+            flag: false,
+            content: "Nhập 2 hoặc 4 bảng đấu",
+          };
+        }
+        break;
+
       case "teamPaticipate":
         if (value.length === 0) {
           return {
@@ -324,8 +352,14 @@ const CreateTournament = () => {
         });
         break;
       case "teamPaticipate":
-        console.log(value);
         setTeamPaticipate({
+          ...teamPaticipate,
+          value,
+          error: validate.content,
+        });
+        break;
+      case "groupNumber":
+        setGroupNumber({
           ...teamPaticipate,
           value,
           error: validate.content,
@@ -360,6 +394,14 @@ const CreateTournament = () => {
         });
         break;
       case "competitionFormat":
+        setTeamPaticipate({
+          value: "",
+          error: null,
+        });
+        setGroupNumber({
+          value: "2",
+          error: null,
+        });
         setCompetitionFormat({
           ...competitionFormat,
           value,
@@ -786,6 +828,7 @@ const CreateTournament = () => {
               teamPaticipate={teamPaticipate}
               competitionFormat={competitionFormat}
               onChangeHandler={onChangeHandler}
+              groupNumber={groupNumber}
             />
 
             <div className={styles.createTournament_row4}>

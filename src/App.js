@@ -14,14 +14,16 @@ import HeaderPlayerDetail from "./components/PlayerDetailComponent/HeaderPlayerD
 import ChangePassWorld from "./components/ChangePasswordComponent/ChangePassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import useAuthListener from "./hooks/user_auth";
 import Profile from "./components/ProfileComponent/Profile";
 import MyListTournamentComponent from "./components/MyListTournamentComponent/MyListTournamentComponent";
 import Match from "./components/MatchComponent/Match";
 import UpdateTeam from "./components/UpdateTeamComponent/UpdateTeam";
 import ResetPassword from "./components/ResetPasswordComponent/ResetPassword";
-import FootballPlayer from "./components/FootballPlayer/FootballPlayer"
+import FootballPlayer from "./components/FootballPlayer/FootballPlayer";
+import CreatePlayer from "./components/CreatePlayerComponent/CreatePlayer";
+import UpdatePlayer from "./components/UpdatePlayerComponent/UpdatePlayer";
 function App() {
   // get Locoal Storage
   const { user } = useAuthListener();
@@ -55,6 +57,16 @@ function App() {
             exact
             path="/createTournament"
             element={user ? <CreateTournament /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            exact
+            path="/createPlayer"
+            element={user ? <CreatePlayer /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            exact
+            path="/updatePlayer/:idPlayer"
+            element={user ? <UpdatePlayer /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
@@ -146,59 +158,35 @@ function App() {
               user ? <MyListTournamentComponent /> : <Navigate to={"/login"} />
             }
           />
-          <Route
-            exact
-            path="/match/:idMatch/matchDetail"
-            element={user ? <Match /> : <Navigate to={"/login"} />}
-          />
-          <Route
-            exact
-            path="/match/:idMatch/livestream"
-            element={user ? <Match /> : <Navigate to={"/login"} />}
-          />
+          <Route exact path="/match/:idMatch/matchDetail" element={<Match />} />
+          <Route exact path="/match/:idMatch/livestream" element={<Match />} />
           <Route exact path="/resetPassword" element={<ResetPassword />} />
           <Route
             exact
             path="/playerDetail/:idPlayer/myTeamInPlayer"
-            element={
-              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
-            }
+            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/myTournamentInPlayer"
-            element={
-              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
-            }
+            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/requestInPlayer"
-            element={
-              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
-            }
+            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/scheduleInPlayer"
-            element={
-              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
-            }
+            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/achivementInPlayer"
-            element={
-              user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />
-            }
+            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
           />
-          <Route
-            exact
-            path="/footballPlayer"
-            element={
-              <FootballPlayer />
-            }
-          />
+          <Route exact path="/footballPlayer" element={<FootballPlayer />} />
         </Routes>
       </BrowserRouter>
     </div>

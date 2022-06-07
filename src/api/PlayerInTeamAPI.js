@@ -9,8 +9,8 @@ export function getAllPlayerByTeamIdAPI(id) {
     return axios.get(url + afterDefaultURL );
 }
 
-export function getAllTeamByPlayerIdAPI(id,status) {
-    const afterDefaultURL = `PlayerInTeam?footballPlayerId=${id}&status=${status}&orderType=DESC&pageIndex=1&limit=8`; 
+export function getAllTeamByPlayerIdAPI(id,status,currentPage) {
+    const afterDefaultURL = `PlayerInTeam?footballPlayerId=${id}&status=${status}&orderType=DESC&pageIndex=${currentPage}&limit=8`; 
     return axios.get(url + afterDefaultURL );
 }
 
@@ -32,4 +32,10 @@ export function deletePlayerInTeamAPI(idPlayerInTeam){
 export function upDatePlayerInTeamAPI(idPlayerInTeam,status){
     const afterDefaultURL = `PlayerInTeam?Id=${idPlayerInTeam}&status=${status}`;
     return axios.put(url+afterDefaultURL)
+}
+
+
+export function checkPlayerInTeamAPI(idTeam,idPlayer){
+    const afterDefaultURL = `PlayerInTeam?teamId=${idTeam}&footballPlayerId=${idPlayer}&pageIndex=1&limit=5`;
+    return axios.get(url+afterDefaultURL)
 }

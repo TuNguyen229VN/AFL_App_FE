@@ -9,6 +9,11 @@ import CommentTeamDetail from "./CommentTeamDetail";
 import InforTeamDetail from "./InforTeamDetail";
 import ListPlayer from "./ListPlayer";
 import ReportTeamDetail from "./ReportTeamDetail";
+import {
+  checkPlayerInTeamAPI,
+  addPlayerInTeamAPI,
+} from "../../api/PlayerInTeamAPI";
+import { toast } from "react-toastify";
 import "./styles/style.css";
 
 function HeaderTeamDetail() {
@@ -21,6 +26,7 @@ function HeaderTeamDetail() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [statusPaticipate, setStatusPaticipate] = useState("Tham gia đội bóng");
   // format Date
   const formatDate = (date) => {
     const day = new Date(date);
@@ -39,12 +45,42 @@ function HeaderTeamDetail() {
     return myArray[myArray.length - 1];
   };
 
+  useEffect(() => {
+    if (user != undefined && user.userVM.roleId === 5) {
+      checkPaticipateTeam();
+    }
+    
+  }, []);
+
+  const checkPaticipateTeam = () => {
+    const respone = checkPlayerInTeamAPI(idTeam, user.userVM.id);
+    respone
+      .then((res) => {
+        if (res.status === 200) {
+          if (res.data.playerInTeamsFull.length > 0) {
+            const playerInTeam = res.data.playerInTeamsFull[0];
+
+            if (playerInTeam.status === "true") {
+              setStatusPaticipate("Đã tham gia đội bóng");
+            } else if (playerInTeam.status === "Chờ xét duyệt từ đội bóng") {
+              setStatusPaticipate("Chờ xét duyệt từ đội bóng");
+            } else setStatusPaticipate("Đội bóng đang chờ bạn xét duyệt");
+          }
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const getInforTeam = () => {
+    
     setLoading(true);
     let afterDefaultURL = `teams/${idTeam}`;
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
+        
         setTeam(res.data);
         getUserById(idTeam);
         setLoading(false);
@@ -72,7 +108,14 @@ function HeaderTeamDetail() {
       return <InforTeamDetail description={team.description} />;
     }
     if (activeTeamDetail === `/teamDetail/${idTeam}/listPlayer`) {
-      return <ListPlayer idHost={user != undefined ? user.userVM.id : undefined} id={team.id} gender={team.teamGender} numberPlayerInTeam={team.numberPlayerInTeam} />;
+      return (
+        <ListPlayer
+          idHost={user != undefined ? user.userVM.id : undefined}
+          id={team.id}
+          gender={team.teamGender}
+          numberPlayerInTeam={team.numberPlayerInTeam}
+        />
+      );
     }
     if (activeTeamDetail === `/teamDetail/${idTeam}/reportTeamDeatail`) {
       return <ReportTeamDetail />;
@@ -81,7 +124,47 @@ function HeaderTeamDetail() {
       return <CommentTeamDetail />;
     }
   };
-
+  const addResquestToTeam = () => {
+    setLoading(true);
+    const data = {
+      status: "Chờ xét duyệt từ đội bóng",
+      teamId: idTeam,
+      footballPlayerId: user.userVM.id,
+    };
+    const respone = addPlayerInTeamAPI(data);
+    respone
+      .then((res) => {
+        if (res.status === 201) {
+          setStatusPaticipate("Chờ xét duyệt từ đội bóng");
+          toast.success(
+            "Yêu cầu tham gia đội bóng thành công.Chờ phản hồi từ đội bóng nhé!",
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            }
+          );
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.error(err);
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
   useEffect(() => {
     getInforTeam();
   }, [idTeam]);
@@ -105,15 +188,44 @@ function HeaderTeamDetail() {
                     </div>
                     {user !== null ? (
                       <>
-                        {user.userVM.id != undefined &&  user.userVM.id === team.id ? (
+                        {user.userVM.id !== undefined &&
+                        user.userVM.id === team.id ? (
                           <Link
                             to={`/updateTeam/${team.id}`}
                             state={{ address: team.teamArea }}
-                            className="editTeam"
+                            className="editTeamTest"
                           >
                             <i class="fa-solid fa-pen-to-square"></i>Chỉnh Sửa
                             Đội Bóng
                           </Link>
+                        ) : user.userVM.id != undefined &&
+                          user.userVM.roleId === 5 ? (
+                          <button
+                            className="editTeamTest"
+                            style={{
+                              cursor:
+                                statusPaticipate === "Tham gia đội bóng"
+                                  ? "pointer"
+                                  : "default",
+                              hover: {
+                                backgroundColor:
+                                  statusPaticipate === "Tham gia đội bóng"
+                                    ? "#16192b"
+                                    : "#d7fc6a",
+                                color:
+                                  statusPaticipate === "Tham gia đội bóng"
+                                    ? "#ffffff"
+                                    : "black",
+                              },
+                            }}
+                            onClick={() => {
+                              if (statusPaticipate === "Tham gia đội bóng") {
+                                addResquestToTeam();
+                              }
+                            }}
+                          >
+                            {statusPaticipate}
+                          </button>
                         ) : null}
                       </>
                     ) : null}

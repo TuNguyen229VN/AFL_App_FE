@@ -25,21 +25,26 @@ function NewsTournamentDetail(data) {
   });
 
   const [idNews, setIdNews] = useState("");
+  const [idItem, setIdItem] = useState("");
+  const [popupConfirmDelete, setPopupConfirmDelete] = useState(false);
   const [popupCreateNews, setPopupCreateNews] = useState(false);
   const [popupUpdateNews, setPopupUpdateNews] = useState(false);
   const [sort, setSort] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [numberPage, setNumberPage] = useState(0);
   const [count, setCount] = useState(0);
   const [check, setCheck] = useState(false);
   const [countList, setCountList] = useState(0);
   const [orderType, setOrderType] = useState("DESC");
   const [news, setNews] = useState([]);
+  const [sizePage, setSizePage] = useState(0);
   const [viewMoreOption, setViewMoreOption] = useState({
     index: "0",
     check: false,
   });
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
+    setNumberPage(data.selected);
     getNews(data.selected + 1);
     setCheck(!check);
   };
@@ -58,6 +63,7 @@ function NewsTournamentDetail(data) {
         setNews(res.data.news);
         setCountList(res.data.countList);
         setCount(res.data.countList);
+        setSizePage(res.data.size);
         setLoading(false);
       })
       .catch((err) => {
@@ -157,6 +163,9 @@ function NewsTournamentDetail(data) {
         }
       );
       if (response.status === 200) {
+        setViewMoreOption({
+          check: !viewMoreOption.check,
+        });
         setPopupUpdateNews(false);
         setLoading(false);
         setCheck(!check);
@@ -217,7 +226,6 @@ function NewsTournamentDetail(data) {
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const flagValid = validateForm(name, value);
-    console.log(e.target);
     switch (name) {
       case "imageA":
         const valueImg = URL.createObjectURL(e.target.files[0]);
@@ -291,8 +299,16 @@ function NewsTournamentDetail(data) {
         `https://afootballleague.ddns.net/api/v1/news/${id}`
       );
       if (response.status === 200) {
-        setLoading(false);
+        setPopupConfirmDelete(false);
+        setViewMoreOption({
+          check: !viewMoreOption.check,
+        });
+        if (currentPage >= 2 && news.length === 1) {
+          setCurrentPage(currentPage - 1);
+          setNumberPage(numberPage - 1);
+        }
         setCheck(!check);
+        setLoading(false);
         toast.success("Xóa bài viết thành công", {
           position: "top-right",
           autoClose: 3000,
@@ -317,28 +333,60 @@ function NewsTournamentDetail(data) {
       console.log(error);
     }
   };
-  const formatDate = (date) => {
-    const myArr = date.split("T");
-    const day = myArr[0].split("-").reverse();
-    return day.join("/");
-  };
-  const formatTime = (date) => {
-    const myArr = date.split("T");
-    const day = myArr[1].split(".");
-    return day[0];
+
+  const formatDateTime = (date) => {
+    const day = new Date(date);
+    return (
+      String(day.getDate()).padStart(2, "0") +
+      "/" +
+      String(day.getMonth() + 1).padStart(2, "0") +
+      "/" +
+      day.getFullYear() +
+      " " +
+      String(day.getHours()).padStart(2, "0") +
+      ":" +
+      String(day.getMinutes()).padStart(2, "0")
+    );
   };
   return (
     <>
       {loading ? <LoadingAction /> : null}
       <div
         className={
-          popupCreateNews || popupUpdateNews ? `overlay active` : "active"
+          popupCreateNews || popupUpdateNews || popupConfirmDelete
+            ? `overlay active`
+            : "active"
         }
         onClick={() => {
           setPopupCreateNews(false);
           setPopupUpdateNews(false);
+          setPopupConfirmDelete(false);
         }}
       ></div>
+      <div
+        className={
+          popupConfirmDelete ? "deleteConfirm active" : "deleteConfirm"
+        }
+      >
+        <h3>Xác nhận xóa hình ảnh này</h3>
+        <div className="buttonConfirm">
+          <button
+            className="cancel"
+            onClick={() => setPopupConfirmDelete(false)}
+          >
+            Hủy
+          </button>
+          <button
+            className="confirm"
+            onClick={(e) => {
+              e.preventDefault();
+              deleteNews(idItem);
+            }}
+          >
+            Xóa
+          </button>
+        </div>
+      </div>
       <form
         className={popupUpdateNews ? "popup__news active" : "popup__news"}
         onSubmit={updateNews}
@@ -359,6 +407,7 @@ function NewsTournamentDetail(data) {
         <div className="hihi">
           <label htmlFor="image">
             <i class="fa-solid fa-image"></i>
+            <span>Chọn hình</span>
           </label>
           {imgUpdate.value !== "" ? (
             <div className="img">
@@ -401,6 +450,7 @@ function NewsTournamentDetail(data) {
         <div className="hihi">
           <label htmlFor="imageA">
             <i class="fa-solid fa-image"></i>
+            <span>Chọn hình</span>
           </label>
           {img.value !== "" ? (
             <div className="img">
@@ -455,7 +505,7 @@ function NewsTournamentDetail(data) {
               {news.map((item, index) => (
                 <div className="thongbao__item" key={item.id}>
                   <div className="thongbao_top">
-                    <h1>Thông báo lúc 12/02/2022</h1>
+                    <h1>Thông báo lúc {formatDateTime(item.dateCreate)}</h1>
                     {user !== null ? (
                       <>
                         {user.userVM.id === data.idTour ? (
@@ -495,9 +545,9 @@ function NewsTournamentDetail(data) {
                               </p>
 
                               <p
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  deleteNews(item.id);
+                                onClick={() => {
+                                  setIdItem(item.id);
+                                  setPopupConfirmDelete(true);
                                 }}
                               >
                                 <i class="fa-solid fa-trash"></i>Xóa bài viết
@@ -541,6 +591,7 @@ function NewsTournamentDetail(data) {
           breakLinkClassName="pagelink"
           pageRangeDisplayed={2}
           className="pagingTournament"
+          forcePage={numberPage}
         />
       </div>
     </>

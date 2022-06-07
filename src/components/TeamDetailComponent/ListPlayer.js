@@ -11,6 +11,7 @@ import ReactPaginate from "react-paginate";
 import styles from "../FindTeamComponent/TeamFind.module.css";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import ModelAcceptDeletePlayer from "./ModelAcceptDeletePlayer";
+import { Link } from "react-router-dom";
 function ListPlayer(props) {
   const { id, numberPlayerInTeam, idHost } = props;
   const [loading, setLoading] = useState(true);
@@ -268,6 +269,7 @@ function ListPlayer(props) {
                                       //deletePlayerInTeam(item.idPlayerInTeam);
                                       setHideShowDelete(true);
                                       setIdDelete(item.idPlayerInTeam);
+                                      setDeleteSuccessFul(false);
                                     }}
                                   >
                                     <i class="fa-solid fa-trash"></i>Xóa cầu thủ
@@ -275,7 +277,7 @@ function ListPlayer(props) {
                                 </div>
                               </div>
                             ) : null}
-
+                            <Link to={`/playerDetail/${item.id}/myTeamInPlayer`}>
                             <div className="avt">
                               <img
                                 style={{
@@ -285,7 +287,9 @@ function ListPlayer(props) {
                                 alt="dev"
                               />
                             </div>
+                            </Link>
                             <div className="des">
+                            <Link to={`/playerDetail/${item.id}/myTeamInPlayer`}>
                               <p className="namePlayer">
                                 <span>Tên:</span>
                                 {item.playerName}
@@ -314,6 +318,7 @@ function ListPlayer(props) {
                                   "/" +
                                   item.userVM.dateOfBirth.split("-")[0]}
                               </p>
+                              </Link>
                               {active === "Chờ duyệt" && idHost === id ? (
                                 <div
                                   style={{
@@ -439,30 +444,32 @@ function ListPlayer(props) {
           </div>
         </div>
 
+        {playerInTeam != null && playerInTeam.length > 0 ?
         <nav
-          aria-label="Page navigation example"
-          className={styles.pagingTournament}
-        >
-          <ReactPaginate
-            previousLabel={"Trang trước"}
-            nextLabel={"Trang sau"}
-            containerClassName="pagination"
-            activeClassName={styles.active}
-            pageClassName={styles.pageItem}
-            nextClassName={styles.pageItem}
-            previousClassName={styles.pageItem}
-            breakLabel={"..."}
-            pageCount={Math.ceil(count / 8)}
-            marginPagesDisplayed={3}
-            onPageChange={handlePageClick}
-            pageLinkClassName={styles.pagelink}
-            previousLinkClassName={styles.pagelink}
-            nextLinkClassName={styles.pagelink}
-            breakClassName={styles.pageItem}
-            breakLinkClassName={styles.pagelink}
-            pageRangeDisplayed={2}
-          />
-        </nav>
+        aria-label="Page navigation example"
+        className={styles.pagingTournament}
+      >
+        <ReactPaginate
+          previousLabel={"Trang trước"}
+          nextLabel={"Trang sau"}
+          containerClassName="pagination"
+          activeClassName={styles.active}
+          pageClassName={styles.pageItem}
+          nextClassName={styles.pageItem}
+          previousClassName={styles.pageItem}
+          breakLabel={"..."}
+          pageCount={Math.ceil(count / 8)}
+          marginPagesDisplayed={3}
+          onPageChange={handlePageClick}
+          pageLinkClassName={styles.pagelink}
+          previousLinkClassName={styles.pagelink}
+          nextLinkClassName={styles.pagelink}
+          breakClassName={styles.pageItem}
+          breakLinkClassName={styles.pagelink}
+          pageRangeDisplayed={2}
+        />
+      </nav>
+      : null}
 
         {loadingAdd === true ? <LoadingAction /> : null}
       </div>

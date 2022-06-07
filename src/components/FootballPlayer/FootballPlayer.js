@@ -154,7 +154,9 @@ export default function FootballPlayer() {
           <div className={styles.listTour}>
             {loading ? (
               <LoadingAction />
-            ) : listFootballPlayer != null ? (
+            ) : listFootballPlayer != null ? 
+              listFootballPlayer.length > 0 ?
+            (
               listFootballPlayer.map((item, index) => {
                 return (
                   <div key={item.id}>
@@ -185,10 +187,15 @@ export default function FootballPlayer() {
                   </div>
                 );
               })
-            ) : null}
+            ) : <p style={{
+              fontWeight: 700,
+              fontSize: 24,
+              color: "red",
+              marginBottom: 50
+            }}>Không tìm thấy cầu thủ</p> : null}
           </div>
         </div>
-        {listFootballPlayer != null ? (
+        {listFootballPlayer != null && listFootballPlayer.length > 0 ? (
           <nav
             aria-label="Page navigation example"
             className={styles.pagingTournament}

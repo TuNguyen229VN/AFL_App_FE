@@ -120,7 +120,7 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/galleryTournamentDetail`
     ) {
-      return <GalleryTournamentDetail />;
+      return <GalleryTournamentDetail idTour={tourDetail.userId}/>;
     }
     if (
       activeTeamDetail ===
@@ -136,6 +136,8 @@ function HeaderTournamentDetail() {
               : "GroupStage"
           }
           tourDetailId={tourDetail.id}
+          hostTournamentId={tourDetail.userId}
+          groupNumber={tourDetail.groupNumber}
         />
       );
     }
@@ -271,7 +273,7 @@ function HeaderTournamentDetail() {
 
   const getAllTeamInTournamentByTourId = async () => {
     setLoadingAc(true);
-    //console.log(idTour);
+    
     try {
       const response = await getTeamInTournamentByTourIdAPI(
         idTour,
@@ -292,6 +294,7 @@ function HeaderTournamentDetail() {
       const teamData = await Promise.all(teams);
       teamData.countList = response.data.countList;
       setLoadingAc(false);
+      console.log(teamData)
       setAllTeam(teamData);
     } catch (err) {
       setLoadingAc(false);
