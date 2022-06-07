@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import LoadingAction from "../LoadingComponent/LoadingAction";
+import ModalChangeDateInSchedule from "./ModelChangeDateInSchedule";
 export default function CricleStageSchedule(props) {
   const [allTeamA, setAllTeamA] = useState(null);
   const [allTeamB, setAllTeamB] = useState(null);
-  const { allTeam, loading, hostTournamentId } = props;
+  const [matchCurrent,setMatchCurrent] = useState(null);
+  
+  const { allTeam, loading, hostTournamentId,hideShow,
+    setHideShow } = props;
   useEffect(() => {
     if (allTeam !== null) {
       const teamB = [];
@@ -18,13 +22,13 @@ export default function CricleStageSchedule(props) {
       }, []);
       setAllTeamA(teamA);
       setAllTeamB(teamB);
-      console.log(teamA)
+      console.log(teamA);
     }
   }, [allTeam]);
   return (
     <table className="schedule__table">
       <tr>
-        <th colSpan={5}>Bảng đấu vòng tròn</th>
+        <th colSpan={7}>Bảng đấu vòng tròn</th>
       </tr>
 
       {loading ? (
@@ -33,7 +37,9 @@ export default function CricleStageSchedule(props) {
         allTeamA.map((item, index) => {
           return (
             <tr>
-              <td>20-11-2021 11h30</td>
+              <td style={{
+                
+              }}>{item.match.matchDate != null ? item.match.matchDate : "Chưa cập nhật"}</td>
               {/* <td>{index + 1}</td> */}
               <td>
                 {item.teamName}
@@ -54,14 +60,30 @@ export default function CricleStageSchedule(props) {
                 />
                 {allTeamB[index].teamName}
               </td>
-              {(item.teamId !== 0) && (allTeamB[index].teamId !== 0) ? (
+              <div
+                    className={hideShow ? "overlay active" : "overlay"}
+                  ></div>
+              <td
+                onClick={() => {
+                  setHideShow(true);
+                  setMatchCurrent(item.match);
+                }}
+              >
+                {item.match.matchDate !== null ? "Chỉnh sửa " : "Cập nhật "} ngày
+              </td>
+              {item.teamId !== 0 && allTeamB[index].teamId !== 0 ? (
                 <td>
                   {" "}
-                  <Link to={`/match/${item.match.id}/matchDetail`} state={{hostTournamentId}}>
+                  <Link
+                    to={`/match/${item.match.id}/matchDetail`}
+                    state={{ hostTournamentId }}
+                  >
                     Chi tiết
                   </Link>
                 </td>
-              ) :  <td></td>}
+              ) : (
+                <td></td>
+              )}
             </tr>
           );
         })
@@ -77,6 +99,12 @@ export default function CricleStageSchedule(props) {
           Hệ thống chưa xếp lịch thi đấu cho giải này
         </p>
       )}
+      <ModalChangeDateInSchedule
+        hideShow={hideShow}
+        setHideShow={setHideShow}
+        matchCurrent={matchCurrent}
+        setMatchCurrent={setMatchCurrent}
+      />
     </table>
   );
 }

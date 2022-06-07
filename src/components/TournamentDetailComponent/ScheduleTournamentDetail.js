@@ -11,7 +11,7 @@ function ScheduleTournamentDetail(props) {
   const [loading, setLoading] = useState(false);
   const [active, setactive] = useState(true);
   const [allTeam, setAllTeam] = useState(null);
-
+  const [hideShow,setHideShow] = useState(false);
   useEffect(() => {
     getAllTeamInMatch();
   }, [tourDetailId]);
@@ -33,7 +33,9 @@ function ScheduleTournamentDetail(props) {
   return (
     <>
       <div className="teamdetail__content schedule__tour">
-        <div className="wrap__title">
+        <div style={{
+        marginTop: 30
+      }} className="wrap__title">
           <h2 className="title">Lịch thi đấu</h2>
           <div className="option__view">
             <p
@@ -64,12 +66,16 @@ function ScheduleTournamentDetail(props) {
                 hostTournamentId={hostTournamentId}
                 typeView="result"
                 allTeam={allTeam}
+                hideShow={hideShow}
+                setHideShow={setHideShow}
               />
             ) : (
               <CricleStageSchedule
                 hostTournamentId={hostTournamentId}
                 loading={loading}
                 allTeam={allTeam}
+                hideShow={hideShow}
+                setHideShow={setHideShow}
               />
             )}
           </div>

@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Bracket, RoundProps } from "react-brackets";
 import { Link } from "react-router-dom";
+import ModalChangeDateInSchedule from "./ModelChangeDateInSchedule";
 export default function KnockOutStageSchedule(props) {
-  const { allTeam, typeView, hostTournamentId,tournamentType,groupNumber } = props;
+  const {
+    allTeam,
+    typeView,
+    hostTournamentId,
+    tournamentType,
+    groupNumber,
+    hideShow,
+    setHideShow,
+  } = props;
   const [knockoutTeam, setKnoukoutTeam] = useState(null);
+  const [matchCurrent,setMatchCurrent] = useState(null);
+ 
   useEffect(() => {
     if (allTeam != null) {
       devideRound();
     }
   }, [allTeam]);
-  
+
   const devideRound = () => {
     const data = [];
     let roundCurrent = null;
     let indexCurrent = 0;
     allTeam.map((item, index) => {
-      //console.log(item)
+      
       if (index % 2 === 0) {
         if (roundCurrent === null) {
           roundCurrent = item.match.groupFight;
@@ -25,18 +36,19 @@ export default function KnockOutStageSchedule(props) {
               {
                 id: item.id,
                 date: new Date().toDateString(),
+                match: item.match,
                 teams: [
                   {
                     name: item.teamName,
                     team: item.team,
                     teamResult: item.result,
-                    teamId: item.teamId
+                    teamId: item.teamId,
                   },
                   {
                     name: allTeam[index + 1].teamName,
                     team: allTeam[index + 1].team,
                     teamResult: allTeam[index + 1].result,
-                    teamId: allTeam[index + 1].teamId
+                    teamId: allTeam[index + 1].teamId,
                   },
                 ],
               },
@@ -46,14 +58,19 @@ export default function KnockOutStageSchedule(props) {
           data[indexCurrent].seeds.push({
             id: item.id,
             date: new Date().toDateString(),
+            match: item.match,
             teams: [
-              { name: item.teamName, team: item.team, teamResult: item.result,
-                teamId: item.teamId },
+              {
+                name: item.teamName,
+                team: item.team,
+                teamResult: item.result,
+                teamId: item.teamId,
+              },
               {
                 name: allTeam[index + 1].teamName,
                 team: allTeam[index + 1].team,
                 teamResult: allTeam[index + 1].result,
-                teamId: allTeam[index + 1].teamId
+                teamId: allTeam[index + 1].teamId,
               },
             ],
           });
@@ -65,19 +82,20 @@ export default function KnockOutStageSchedule(props) {
             seeds: [
               {
                 id: item.id,
+                match: item.match,
                 date: new Date().toDateString(),
                 teams: [
                   {
                     name: item.teamName,
                     team: item.team,
                     teamResult: item.result,
-                    teamId: item.teamId
+                    teamId: item.teamId,
                   },
                   {
                     name: allTeam[index + 1].teamName,
                     team: allTeam[index + 1].team,
                     teamResult: allTeam[index + 1].result,
-                    teamId: allTeam[index + 1].teamId
+                    teamId: allTeam[index + 1].teamId,
                   },
                 ],
               },
@@ -103,8 +121,8 @@ export default function KnockOutStageSchedule(props) {
           countI += 2;
         }
       }
-    }else if(typeView === "diagram" && tournamentType == "GroupStage"){
-      data.splice(0,groupNumber)
+    } else if (typeView === "diagram" && tournamentType == "GroupStage") {
+      data.splice(0, groupNumber);
     }
     setKnoukoutTeam(data);
   };
@@ -121,7 +139,13 @@ export default function KnockOutStageSchedule(props) {
 
   return knockoutTeam !== null ? (
     typeView === "diagram" ? (
-      <Bracket rounds={rounds} />
+      <div
+        style={{
+          marginTop: 50,
+        }}
+      >
+        <Bracket rounds={rounds} />
+      </div>
     ) : (
       knockoutTeam.map((item, index) => {
         return (
@@ -133,7 +157,7 @@ export default function KnockOutStageSchedule(props) {
             className="schedule__table"
           >
             <tr>
-              <th colSpan={6}>Bảng đấu trực tiếp - {item.title}</th>
+              <th colSpan={7}>Bảng đấu trực tiếp - {item.title}</th>
             </tr>
             {item.seeds.map((itemSeeds, indexSeeds) => {
               return (
@@ -159,20 +183,37 @@ export default function KnockOutStageSchedule(props) {
                     />
                     {itemSeeds.teams[1].name}
                   </td>
-                  <td><a>Chỉnh sửa</a></td>
+                  
+                  <div
+                    className={hideShow ? "overlay active" : "overlay"}
+                  ></div>
+                  <td
+                    onClick={() => {
+                      setHideShow(true);
+                      setMatchCurrent(itemSeeds.match);
+                    }}
+                  >
+                    Cập nhật ngày
+                  </td>
                   {itemSeeds.teams[0].teamId !== 0 &&
                   itemSeeds.teams[1].teamId !== 0 ? (
                     <td>
                       {" "}
-                      <Link to={`/match/${itemSeeds.id}/matchDetail`} state={{hostTournamentId}}>
+                      <Link
+                        to={`/match/${itemSeeds.id}/matchDetail`}
+                        state={{ hostTournamentId }}
+                      >
                         Chi tiết
                       </Link>
                     </td>
-                  ) : <td></td>}
-                  
+                  ) : (
+                    <td></td>
+                  )}
                 </tr>
               );
+              
             })}
+            <ModalChangeDateInSchedule hideShow={hideShow} setHideShow={setHideShow} />
           </table>
         );
       })

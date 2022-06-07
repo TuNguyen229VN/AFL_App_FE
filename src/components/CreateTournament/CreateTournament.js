@@ -114,7 +114,6 @@ const CreateTournament = () => {
     const response = createSchedule(id);
     response
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           naviage(`/tournamentDetail/${id}/inforTournamentDetail`);
           setLoading(false);
@@ -147,7 +146,7 @@ const CreateTournament = () => {
   const onSubmitHandler = async (e) => {
     setLoading(true);
     e.preventDefault();
-    
+
     try {
       const data = {
         tournamentName: nameTournament.value,
@@ -165,11 +164,11 @@ const CreateTournament = () => {
         footballPlayerMaxNumber: minimunPlayerInTournament.value,
         status: true,
         userId: user.userVM.id,
-        groupNumber:+groupNumber.value,
+        groupNumber: 4,
         TournamentTypeEnum: competitionFormat.value,
         TournamentFootballFieldTypeEnum: typeFootballField.value,
       };
-      console.log(data);
+
       const response = await axios.post(
         "https://afootballleague.ddns.net/api/v1/tournaments",
         data,
@@ -217,6 +216,10 @@ const CreateTournament = () => {
         setDistricts(null);
         setWards(null);
         setResetProvice(0);
+        setGroupNumber({
+          value: "2",
+          error: null,
+        });
       }
     } catch (error) {
       setLoading(false);
