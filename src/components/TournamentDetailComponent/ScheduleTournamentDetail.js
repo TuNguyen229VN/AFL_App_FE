@@ -7,14 +7,23 @@ import KnockOutStageSchedule from "./KnockOutStageSchedule";
 import CricleStageSchedule from "./CricleStageSchedule";
 
 function ScheduleTournamentDetail(props) {
-  const { tourDetailId, tournamentType, hostTournamentId, groupNumber } = props;
+  const {
+    tourDetailId,
+    tournamentType,
+    hostTournamentId,
+    groupNumber,
+    startDate,
+    endDate,
+    user
+  } = props;
   const [loading, setLoading] = useState(false);
   const [active, setactive] = useState(true);
   const [allTeam, setAllTeam] = useState(null);
-  const [hideShow,setHideShow] = useState(false);
+  const [hideShow, setHideShow] = useState(false);
+  const [statusUpdateDate,setStatusUpdateDate] = useState(false);
   useEffect(() => {
     getAllTeamInMatch();
-  }, [tourDetailId]);
+  }, [tourDetailId, statusUpdateDate === true]);
   const getAllTeamInMatch = () => {
     setLoading(true);
     const response = getTeamInMatchByTourId(tourDetailId);
@@ -33,9 +42,12 @@ function ScheduleTournamentDetail(props) {
   return (
     <>
       <div className="teamdetail__content schedule__tour">
-        <div style={{
-        marginTop: 30
-      }} className="wrap__title">
+        <div
+          style={{
+            marginTop: 30,
+          }}
+          className="wrap__title"
+        >
           <h2 className="title">Lịch thi đấu</h2>
           <div className="option__view">
             <p
@@ -68,6 +80,11 @@ function ScheduleTournamentDetail(props) {
                 allTeam={allTeam}
                 hideShow={hideShow}
                 setHideShow={setHideShow}
+                startDate={startDate}
+                endDate={endDate}
+                user={user}
+                setStatusUpdateDate={setStatusUpdateDate}
+                statusUpdateDate={statusUpdateDate}
               />
             ) : (
               <CricleStageSchedule
@@ -76,6 +93,11 @@ function ScheduleTournamentDetail(props) {
                 allTeam={allTeam}
                 hideShow={hideShow}
                 setHideShow={setHideShow}
+                startDate={startDate}
+                endDate={endDate}
+                user={user}
+                setStatusUpdateDate={setStatusUpdateDate}
+                statusUpdateDate={statusUpdateDate}
               />
             )}
           </div>

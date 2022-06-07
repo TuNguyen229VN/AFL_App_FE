@@ -1,8 +1,42 @@
 import React, { useState, useEffect } from "react";
 
 export default function ModalChangeDateInSchedule(props) {
-  const { hideShow, setHideShow, matchCurrent, setMatchCurrent } = props;
-
+  const {
+    hideShow,
+    setHideShow,
+    matchCurrent,
+    setMatchCurrent,
+    startDate,
+    endDate,
+    onChangHandle,
+    dateUpdate,
+    setDateUpdate,
+    updateDateInMatch,
+  } = props;
+  const [newStart, setNewStart] = useState(null);
+  useEffect(() => {
+    const time = startDate.split("T");
+    const date =
+      new Date().getDate() < 10
+        ? "0" + new Date().getDate()
+        : new Date().getDate();
+    const month =
+      new Date().getMonth() + 1 < 10
+        ? "0" + (new Date().getMonth() + 1)
+        : new Date().getMonth() + 1;
+    const conditon = time[0].split("-")[2] + "-" + time[0].split("-")[1] + "";
+    if (date + "-" + month > conditon) {
+      let newTime =
+        time[0].split("-")[0] + "-" + month + "-" + date + "T" + time[1];
+      //console.log(time);
+      setNewStart(newTime);
+      setDateUpdate(newTime);
+      //console.log(newTime);
+    } else {
+      setNewStart(startDate);
+      setDateUpdate(startDate);
+    }
+  }, [matchCurrent.id]);
   return (
     <div
       id="exampleModal"
@@ -35,11 +69,31 @@ export default function ModalChangeDateInSchedule(props) {
                 style={{
                   fontWeight: 700,
                   color: "red",
+                  display: "flex",
+                  flexDirection: "column",
                 }}
                 class="modal-body"
               >
-                Hiện tại trận đấu chưa có ngày giờ diễn ra hãy cập nhật nó{" "}
-                {matchCurrent.id}{" "}
+                <p
+                  style={{
+                    marginBottom: 20,
+                  }}
+                >
+                  Hiện tại trận đấu chưa có ngày giờ diễn ra hãy cập nhật nó
+                </p>
+
+                <input
+                  style={{
+                    width: "50%",
+                    padding: "10px",
+                  }}
+                  name="dateUpdate"
+                  value={dateUpdate}
+                  onChange={onChangHandle}
+                  type="datetime-local"
+                  min={newStart}
+                  max={endDate}
+                />
               </div>
             )
           ) : null}
@@ -65,6 +119,9 @@ export default function ModalChangeDateInSchedule(props) {
               }}
               type="button"
               class="btn btn-primary"
+              onClick={() => {
+                updateDateInMatch(matchCurrent);
+              }}
             >
               Thay đổi
             </button>

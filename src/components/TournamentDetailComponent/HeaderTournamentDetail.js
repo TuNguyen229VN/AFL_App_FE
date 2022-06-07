@@ -140,6 +140,9 @@ function HeaderTournamentDetail() {
           tourDetailId={tourDetail.id}
           hostTournamentId={tourDetail.userId}
           groupNumber={tourDetail.groupNumber}
+          startDate={tourDetail.tournamentStartDate}
+          endDate={tourDetail.tournamentEndDate}
+          user={user != undefined ? user : undefined}
         />
       );
     }
@@ -185,6 +188,9 @@ function HeaderTournamentDetail() {
     setActiveTeamDetail(location.pathname);
     getTourDetail();
   }, [location.pathname]);
+
+
+
   useEffect(() => {
     if (tourDetail.id != undefined) {
       getAllTeamInTournamentByTourId();
@@ -275,7 +281,6 @@ function HeaderTournamentDetail() {
 
   const getAllTeamInTournamentByTourId = async () => {
     setLoadingAc(true);
-
     try {
       const response = await getTeamInTournamentByTourIdAPI(
         idTour,
@@ -296,7 +301,7 @@ function HeaderTournamentDetail() {
       const teamData = await Promise.all(teams);
       teamData.countList = response.data.countList;
       setLoadingAc(false);
-      console.log(teamData);
+      
       setAllTeam(teamData);
     } catch (err) {
       setLoadingAc(false);

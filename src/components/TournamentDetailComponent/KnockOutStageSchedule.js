@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Bracket, RoundProps } from "react-brackets";
 import { Link } from "react-router-dom";
 import ModalChangeDateInSchedule from "./ModelChangeDateInSchedule";
+import { updateDateInMatchAPI } from "../../api/MatchAPI";
+import { toast } from "react-toastify";
 export default function KnockOutStageSchedule(props) {
   const {
     allTeam,
@@ -11,10 +13,16 @@ export default function KnockOutStageSchedule(props) {
     groupNumber,
     hideShow,
     setHideShow,
+    startDate,
+    endDate,
+    user,
+    setStatusUpdateDate,
+    statusUpdateDate,
   } = props;
+
+  const [matchCurrent, setMatchCurrent] = useState(null);
   const [knockoutTeam, setKnoukoutTeam] = useState(null);
-  const [matchCurrent,setMatchCurrent] = useState(null);
- 
+  const [dateUpdate, setDateUpdate] = useState(null);
   useEffect(() => {
     if (allTeam != null) {
       devideRound();
@@ -25,17 +33,23 @@ export default function KnockOutStageSchedule(props) {
     const data = [];
     let roundCurrent = null;
     let indexCurrent = 0;
+
     allTeam.map((item, index) => {
-      
       if (index % 2 === 0) {
         if (roundCurrent === null) {
-          roundCurrent = item.match.groupFight;
+          roundCurrent =
+            tournamentType == "GroupStage"
+              ? item.match.groupFight
+              : item.match.round;
           data.push({
-            title: item.match.groupFight,
+            title:
+              tournamentType == "GroupStage"
+                ? item.match.groupFight
+                : item.match.round,
             seeds: [
               {
                 id: item.id,
-                date: new Date().toDateString(),
+                date: item.match.matchDate,
                 match: item.match,
                 teams: [
                   {
@@ -54,10 +68,15 @@ export default function KnockOutStageSchedule(props) {
               },
             ],
           });
-        } else if (roundCurrent === item.match.groupFight) {
+        } else if (
+          roundCurrent ===
+          (tournamentType == "GroupStage"
+            ? item.match.groupFight
+            : item.match.round)
+        ) {
           data[indexCurrent].seeds.push({
             id: item.id,
-            date: new Date().toDateString(),
+            date: item.match.matchDate,
             match: item.match,
             teams: [
               {
@@ -76,14 +95,20 @@ export default function KnockOutStageSchedule(props) {
           });
         } else {
           indexCurrent += 1;
-          roundCurrent = item.match.groupFight;
+          roundCurrent =
+            tournamentType == "GroupStage"
+              ? item.match.groupFight
+              : item.match.round;
           data.push({
-            title: item.match.groupFight,
+            title:
+              tournamentType == "GroupStage"
+                ? item.match.groupFight
+                : item.match.round,
             seeds: [
               {
                 id: item.id,
                 match: item.match,
-                date: new Date().toDateString(),
+                date: item.match.matchDate,
                 teams: [
                   {
                     name: item.teamName,
@@ -103,7 +128,6 @@ export default function KnockOutStageSchedule(props) {
           });
         }
       }
-      console.log(data);
     });
     if (typeView === "diagram" && tournamentType != "GroupStage") {
       const nullTeamRoundOne = calcAllTeamRoundOne() - data[0].seeds.length;
@@ -135,6 +159,27 @@ export default function KnockOutStageSchedule(props) {
     } else return 2;
   };
 
+  const onChangHandle = (e) => {
+    setDateUpdate(e.target.value);
+  };
+
+  const updateDateInMatch = (dataMatch) => {
+    
+    const data = {
+      ...dataMatch,
+      matchDate: dateUpdate,
+    };
+    const response = updateDateInMatchAPI(data);
+    response.then(res => {
+      if(res.status === 201){
+        setStatusUpdateDate(true);
+      }
+      
+    }).catch(err =>{
+      console.error(err);
+    })
+  };
+
   const rounds = knockoutTeam != null ? [...knockoutTeam] : null;
 
   return knockoutTeam !== null ? (
@@ -147,76 +192,116 @@ export default function KnockOutStageSchedule(props) {
         <Bracket rounds={rounds} />
       </div>
     ) : (
-      knockoutTeam.map((item, index) => {
-        return (
-          <table
-            style={{
-              marginBottom: 50,
-            }}
-            key={index}
-            className="schedule__table"
-          >
-            <tr>
-              <th colSpan={7}>Bảng đấu trực tiếp - {item.title}</th>
-            </tr>
-            {item.seeds.map((itemSeeds, indexSeeds) => {
-              return (
-                <tr key={indexSeeds}>
-                  <td>{itemSeeds.date}</td>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    {itemSeeds.teams[0].name}
-                    <img
-                      src="/assets/img/homepage/banner1.jpg"
-                      alt="gallery_item"
-                    />
-                  </td>
-                  <td>
-                    <span className="score">0</span>
-                    <span className="score"> - </span>
-                    <span className="score">0</span>
-                  </td>
-                  <td>
-                    <img
-                      src="/assets/img/homepage/banner1.jpg"
-                      alt="gallery_item"
-                    />
-                    {itemSeeds.teams[1].name}
-                  </td>
-                  
-                  <div
-                    className={hideShow ? "overlay active" : "overlay"}
-                  ></div>
-                  <td
-                    onClick={() => {
-                      setHideShow(true);
-                      setMatchCurrent(itemSeeds.match);
-                    }}
-                  >
-                    Cập nhật ngày
-                  </td>
-                  {itemSeeds.teams[0].teamId !== 0 &&
-                  itemSeeds.teams[1].teamId !== 0 ? (
-                    <td>
-                      {" "}
-                      <Link
-                        to={`/match/${itemSeeds.id}/matchDetail`}
-                        state={{ hostTournamentId }}
-                      >
-                        Chi tiết
-                      </Link>
+      <div>
+        {knockoutTeam.map((item, index) => {
+          return (
+            <table
+              style={{
+                marginBottom: 50,
+              }}
+              key={index}
+              className="schedule__table"
+            >
+              <tr>
+                <th
+                  colSpan={
+                    user != undefined && user.userVM.id === hostTournamentId
+                      ? 7
+                      : 6
+                  }
+                >
+                  Bảng đấu trực tiếp - {item.title}
+                </th>
+              </tr>
+              {item.seeds.map((itemSeeds, indexSeeds) => {
+                return (
+                  <tr key={indexSeeds}>
+                    <td
+                      style={{
+                        color: indexSeeds.date != null ? "black" : "red",
+                      }}
+                    >
+                      {indexSeeds.date != null
+                        ? indexSeeds.date
+                        : "Chưa cập nhật"}
                     </td>
-                  ) : (
-                    <td></td>
-                  )}
-                </tr>
-              );
-              
-            })}
-            <ModalChangeDateInSchedule hideShow={hideShow} setHideShow={setHideShow} />
-          </table>
-        );
-      })
+                    {/* <td>{index + 1}</td> */}
+                    <td>
+                      {itemSeeds.teams[0].name}
+                      <img
+                        src="/assets/img/homepage/banner1.jpg"
+                        alt="gallery_item"
+                      />
+                    </td>
+                    <td>
+                      <span className="score">0</span>
+                      <span className="score"> - </span>
+                      <span className="score">0</span>
+                    </td>
+                    <td>
+                      <img
+                        src="/assets/img/homepage/banner1.jpg"
+                        alt="gallery_item"
+                      />
+                      {itemSeeds.teams[1].name}
+                    </td>
+
+                    <div
+                      className={hideShow ? "overlay active" : "overlay"}
+                    ></div>
+                    {user != undefined &&
+                    user.userVM.id === hostTournamentId ? (
+                      <td
+                        style={{
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                          fontWeight: 700,
+                          lineHeight: 1.6,
+                        }}
+                        onClick={() => {
+                          setHideShow(true);
+                          setMatchCurrent(itemSeeds.match);
+                          setStatusUpdateDate(false);
+                        }}
+                      >
+                        {indexSeeds.date != null ? "Chỉnh sửa " : "Cập nhật "}{" "}
+                        ngày
+                      </td>
+                    ) : null}
+                    {itemSeeds.teams[0].teamId !== 0 &&
+                    itemSeeds.teams[1].teamId !== 0 ? (
+                      <td>
+                        {" "}
+                        <Link
+                          to={`/match/${itemSeeds.id}/matchDetail`}
+                          state={{ hostTournamentId }}
+                        >
+                          Chi tiết
+                        </Link>
+                      </td>
+                    ) : (
+                      <td></td>
+                    )}
+                  </tr>
+                );
+              })}
+            </table>
+          );
+        })}
+        {matchCurrent != null ? (
+          <ModalChangeDateInSchedule
+            hideShow={hideShow}
+            setHideShow={setHideShow}
+            matchCurrent={matchCurrent}
+            startDate={startDate}
+            endDate={endDate}
+            dateUpdate={dateUpdate}
+            setDateUpdate={setDateUpdate}
+            onChangHandle={onChangHandle}
+            updateDateInMatch={updateDateInMatch}
+          />
+        ) : null}
+      </div>
     )
   ) : null;
 }
