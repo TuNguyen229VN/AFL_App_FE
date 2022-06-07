@@ -21,7 +21,6 @@ function MyTeamInPlayer(props) {
     index: "0",
     check: false,
   });
-  console.log(allTeam)
   useEffect(() => {
     setactive("true");
   });

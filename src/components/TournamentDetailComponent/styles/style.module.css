@@ -1,0 +1,31 @@
+.countdown{
+    margin-top: 20px;
+    background-color: var(--green-bold);
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.countdown .title{
+    font-size: 28px;
+    font-family: "Mulish-Bold";
+}
+
+.countdown_wrap{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 60px;
+}
+
+.time{
+    font-family: "Mulish-Bold";
+    font-size: 24px;
+    margin-bottom: 10px;
+    letter-spacing: 1.1px;
+}
+
+.text{
+    text-transform: uppercase;
+}

@@ -25,7 +25,9 @@ import {
 import { deletePlayerInTournamentById } from "../../api/PlayerInTournamentAPI";
 import { toast } from "react-toastify";
 import { getUserByIdAPI } from "../../api/User";
+import CountDown from "./CountDown";
 function HeaderTournamentDetail() {
+  const now = new Date().getTime();
   const { idTour } = useParams();
   const location = useLocation();
   const [user, setUser] = useState(
@@ -120,7 +122,7 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/galleryTournamentDetail`
     ) {
-      return <GalleryTournamentDetail idTour={tourDetail.userId}/>;
+      return <GalleryTournamentDetail idTour={tourDetail.userId} />;
     }
     if (
       activeTeamDetail ===
@@ -175,7 +177,7 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/newsTournamentDetail`
     ) {
-      return <NewsTournamentDetail idTour={tourDetail.userId}/>;
+      return <NewsTournamentDetail idTour={tourDetail.userId} />;
     }
   };
 
@@ -273,7 +275,7 @@ function HeaderTournamentDetail() {
 
   const getAllTeamInTournamentByTourId = async () => {
     setLoadingAc(true);
-    
+
     try {
       const response = await getTeamInTournamentByTourIdAPI(
         idTour,
@@ -294,7 +296,7 @@ function HeaderTournamentDetail() {
       const teamData = await Promise.all(teams);
       teamData.countList = response.data.countList;
       setLoadingAc(false);
-      console.log(teamData)
+      console.log(teamData);
       setAllTeam(teamData);
     } catch (err) {
       setLoadingAc(false);
@@ -510,6 +512,9 @@ function HeaderTournamentDetail() {
                   </div>
                 </div>
               </div>
+              {tourDetail.registerEndDate !== null ? (
+                <CountDown registerEndDate={tourDetail.registerEndDate} />
+              ) : null}
               <div className="headerteamdetail__tag headertour__tag">
                 <Link
                   to={`/tournamentDetail/${idTour}/inforTournamentDetail`}

@@ -264,7 +264,7 @@ transition: 0.5s;
 
 .type{
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 0px;
   line-height: 1.4;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -275,7 +275,9 @@ transition: 0.5s;
   margin-left: auto;
   margin-right: auto;
 }
+
 .tournamentFooter {
+  margin-top: 15px;
   display: flex;
   justify-content: space-between;
 }

@@ -64,6 +64,15 @@ function Header(id) {
     `/teamDetail/${id.id}/reportTeamDeatail`,
     `/teamDetail/${id.id}/commentTeamDetail`,
   ];
+
+  const playerHighlight=[
+    "/footballPlayer",
+    `/playerDetail/${id.id}/myTeamInPlayer`,
+    `/playerDetail/${id.id}/myTournamentInPlayer`,
+    `/playerDetail/${id.id}/requestInPlayer`,
+    `/playerDetail/${id.id}/scheduleInPlayer`,
+    `/playerDetail/${id.id}/achivementInPlayer`,
+  ]
   useEffect(()=>{
     getMyAccount();
   },[])
@@ -81,6 +90,15 @@ function Header(id) {
 
   const checkTeam = () => {
     if (teamHighlight.indexOf(window.location.pathname) < 0) {
+      return "title";
+    } else {
+      return "title active";
+    }
+  };
+
+  
+  const checkPlayer = () => {
+    if (playerHighlight.indexOf(window.location.pathname) < 0) {
       return "title";
     } else {
       return "title active";
@@ -146,8 +164,8 @@ function Header(id) {
           <li>
             <Link
               to={"/footballPlayer"}
-              className={activeMenu === "intro" ? "title active" : "title"}
-              onClick={() => setactiveMenu("intro")}
+              className={checkPlayer()}
+              onClick={() => setactiveMenu("/footballPlayer")}
             >
               Cầu thủ
             </Link>
