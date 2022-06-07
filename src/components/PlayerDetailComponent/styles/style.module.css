@@ -1,0 +1,109 @@
+.my__tournament {
+  margin-top: 80px;
+}
+
+.my__tournament .title {
+  font-size: 24px;
+  font-family: "Mulish-Bold";
+  text-transform: uppercase;
+}
+
+.my__tournament .title::after {
+  display: block;
+  content: "";
+  height: 4px;
+  background-color: var(--blue-black);
+  width: 150px;
+  margin-top: 10px;
+}
+
+.my__tournament .item__tournament {
+  position: relative;
+  display: flex;
+  color: var(--blue-black);
+  border-radius: 5px;
+  align-items: center;
+  user-select: none;
+  box-shadow: 0px 0px 5px 1px rgba(97, 87, 87, 0.83);
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(97, 87, 87, 0.83);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(97, 87, 87, 0.83);
+  transform: scale(1);
+  transition: all 0.3s;
+}
+
+.my__tournament .item__tournament:hover {
+  transform: scale(1.02);
+}
+
+.my__tournament .item__tournament:not(:last-child) {
+  margin-bottom: 50px;
+  border-bottom: 2px solid #ccc;
+}
+.item__tournament h2 {
+  font-size: 24px;
+  font-family: "Mulish-Bold";
+}
+.item__tournament .tournament__img {
+  margin-right: 50px;
+}
+.my__tournament .tournament__img img {
+  max-height: unset;
+  max-width: unset;
+  object-fit: cover;
+  width: 300px !important;
+  height: 100%;
+  border-radius: 5px;
+}
+.item__tournament .man {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.item__tournament .sub__title {
+  margin-right: 10px;
+  margin-left: 20px;
+  display: inline-block;
+}
+
+.item__tournament i {
+  width: 20px;
+}
+
+.item__tournament i img {
+  width: 20px;
+}
+
+.item__tournament .status {
+  background-color: var(--green-bold);
+  padding: 10px;
+  height: max-content;
+  width: 120px;
+  position: absolute;
+  right: 0;
+  top: 10px;
+  text-align: center;
+  font-family: "Mulish-Bold";
+  border-radius: 5px;
+}
+
+.titleNoContent {
+  margin-top: 50px;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.createnow {
+  display: block;
+  color: var(--blue-black);
+  margin-top: 20px;
+}
+
+.createnow:hover {
+  text-decoration: underline;
+  color: var(--blue-black);
+}
+
+.address {
+  line-height: 1.6;
+}
