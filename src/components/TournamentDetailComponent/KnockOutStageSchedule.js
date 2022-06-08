@@ -164,20 +164,42 @@ export default function KnockOutStageSchedule(props) {
   };
 
   const updateDateInMatch = (dataMatch) => {
-    
     const data = {
       ...dataMatch,
       matchDate: dateUpdate,
     };
     const response = updateDateInMatchAPI(data);
-    response.then(res => {
-      if(res.status === 201){
-        setStatusUpdateDate(true);
-      }
-      
-    }).catch(err =>{
-      console.error(err);
-    })
+    response
+      .then((res) => {
+        if (res.status === 201) {
+          setStatusUpdateDate(true);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const checkDate = (data) => {
+    const date =
+      new Date().getDate() < 10
+        ? "0" + new Date().getDate()
+        : new Date().getDate();
+    const month =
+      new Date().getMonth() + 1 < 10
+        ? "0" + (new Date().getMonth() + 1)
+        : new Date().getMonth() + 1;
+    const time = data.split("T");
+    const conditon =   time[0];
+    
+    let dateCurrent = new Date(time[0].split("-")[0] +  "-" + month + "-" + date);
+    let dateData = new Date(conditon);
+    
+    if (+dateCurrent > +dateData) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   const rounds = knockoutTeam != null ? [...knockoutTeam] : null;
@@ -250,7 +272,8 @@ export default function KnockOutStageSchedule(props) {
                       className={hideShow ? "overlay active" : "overlay"}
                     ></div>
                     {user != undefined &&
-                    user.userVM.id === hostTournamentId ? (
+                    user.userVM.id === hostTournamentId &&
+                    checkDate(endDate) ? (
                       <td
                         style={{
                           cursor: "pointer",

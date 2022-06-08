@@ -90,6 +90,10 @@ const UpdateTournamentInformation = (props) => {
     value: "15",
     error: null,
   });
+  const [groupNumber, setGroupNumber] = useState({
+    value: "2",
+    error: null,
+  });
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
   const [provice, setProvice] = useState(null);
@@ -124,6 +128,7 @@ const UpdateTournamentInformation = (props) => {
     const response = await getTournamentById(idTournament);
     if (response.status === 200) {
       const team = response.data
+      
       setTeam(response.data);
       setStatus(team.mode === "PUBLIC" ? 0 : -1);
       setImgTournament({
@@ -179,7 +184,10 @@ const UpdateTournamentInformation = (props) => {
         value: team.footballFieldAddress.split(",")[0],
         error:null
       })
-      
+      setGroupNumber({
+        value: team.groupNumber + "",
+        error:null
+      })
       // setProviceSearch({
       //   value: team.footballFieldAddress.split(", ")[3],
       //   error:null
@@ -217,6 +225,7 @@ const UpdateTournamentInformation = (props) => {
         footballTeamNumber: teamPaticipate.value,
         footballPlayerMaxNumber: minimunPlayerInTournament.value,
         status: true,
+        groupNumber: +groupNumber.value,
         userId: user.userVM.id,
         TournamentTypeEnum: competitionFormat.value,
         TournamentFootballFieldTypeEnum: typeFootballField.value,
@@ -273,6 +282,10 @@ const UpdateTournamentInformation = (props) => {
         setDistricts(null);
         setWards(null);
         setResetProvice(0);
+        setGroupNumber({
+          value: "2",
+          error: null,
+        });
         // navigate(`tournamentDetail/${idTournament}/inforTournamentDetail`);
         navigate(-1);
       }
@@ -307,6 +320,25 @@ const UpdateTournamentInformation = (props) => {
           };
         }
         break;
+      case "groupNumber":
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "Không được để trống",
+          };
+        } else if (!/^[0-9]+$/.test(value)) {
+          return {
+            flag: false,
+            content: "Đội tham gia là số",
+          };
+        } else if (value === 2 || value === 4) {
+          return {
+            flag: false,
+            content: "Nhập 2 hoặc 4 bảng đấu",
+          };
+        }
+        break;
+
       case "teamPaticipate":
         if (value.length === 0) {
           return {
@@ -358,7 +390,8 @@ const UpdateTournamentInformation = (props) => {
 
       case "footballField":
         break;
-      default: break;
+      default:
+        break;
     }
     return { flag: true, content: null };
   };
@@ -393,6 +426,13 @@ const UpdateTournamentInformation = (props) => {
           error: validate.content,
         });
         break;
+      case "groupNumber":
+        setGroupNumber({
+          ...teamPaticipate,
+          value,
+          error: validate.content,
+        });
+        break;
       case "typeFootballField":
         setTypeFootballField({
           ...typeFootballField,
@@ -422,6 +462,14 @@ const UpdateTournamentInformation = (props) => {
         });
         break;
       case "competitionFormat":
+        setTeamPaticipate({
+          value: "",
+          error: null,
+        });
+        setGroupNumber({
+          value: "2",
+          error: null,
+        });
         setCompetitionFormat({
           ...competitionFormat,
           value,
@@ -476,20 +524,21 @@ const UpdateTournamentInformation = (props) => {
         let dataDis = districts;
 
         const disFind = dataDis.find((item) => item.name === value);
-        setDistricSearch(value)
-        setWardSearch("default")
+        setDistricSearch(value);
+        setWardSearch("default");
         setWards(disFind.wards);
         const oldAddress = addressField;
         setAddressField(", " + value + oldAddress);
         break;
       case "wards":
-        setWardSearch(value)
+        setWardSearch(value);
         {
           const oldAddress = addressField;
           setAddressField(", " + value + oldAddress);
         }
         break;
-      default: break;
+      default:
+        break;
     }
   };
 
@@ -918,6 +967,8 @@ const UpdateTournamentInformation = (props) => {
           <CompetitionFormat
             competitionFormat={competitionFormat}
             onChangeHandler={onChangeHandler}
+            teamPaticipate={teamPaticipate}
+            groupNumber={groupNumber}
           />
 
           <div className={styles.createTournament_row4}>

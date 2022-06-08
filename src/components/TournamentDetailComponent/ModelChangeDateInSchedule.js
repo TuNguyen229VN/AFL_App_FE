@@ -24,8 +24,14 @@ export default function ModalChangeDateInSchedule(props) {
       new Date().getMonth() + 1 < 10
         ? "0" + (new Date().getMonth() + 1)
         : new Date().getMonth() + 1;
-    const conditon = time[0].split("-")[2] + "-" + time[0].split("-")[1] + "";
-    if (date + "-" + month > conditon) {
+    const conditon = time[0];
+
+    let dateCurrent = new Date(
+      time[0].split("-")[0] + "-" + month + "-" + date
+    );
+    let dateData = new Date(conditon);
+
+    if (+dateCurrent > +dateData) {
       let newTime =
         time[0].split("-")[0] + "-" + month + "-" + date + "T" + time[1];
       //console.log(time);
