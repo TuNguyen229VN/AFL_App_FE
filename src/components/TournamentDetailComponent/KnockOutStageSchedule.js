@@ -131,6 +131,7 @@ export default function KnockOutStageSchedule(props) {
     });
     if (typeView === "diagram" && tournamentType != "GroupStage") {
       const nullTeamRoundOne = calcAllTeamRoundOne() - data[0].seeds.length;
+      console.log(calcAllTeamRoundOne())
       if (nullTeamRoundOne > 0) {
         let countI = 1;
         for (let i = 0; i < nullTeamRoundOne; i++) {
@@ -148,13 +149,15 @@ export default function KnockOutStageSchedule(props) {
     } else if (typeView === "diagram" && tournamentType == "GroupStage") {
       data.splice(0, groupNumber);
     }
+    console.log(data)
     setKnoukoutTeam(data);
   };
 
   const calcAllTeamRoundOne = () => {
-    if (allTeam.length > 8) {
+    console.log(allTeam);
+    if ((allTeam.length % 2 === 0 ?  allTeam.length / 2 : (Math.floor(allTeam.length / 2) + 1))  > 8) {
       return 8;
-    } else if (allTeam.length > 4) {
+    } else if ((allTeam.length % 2 === 0 ?  allTeam.length / 2 : (Math.floor(allTeam.length / 2) + 1)) > 4) {
       return 4;
     } else return 2;
   };
@@ -171,11 +174,31 @@ export default function KnockOutStageSchedule(props) {
     const response = updateDateInMatchAPI(data);
     response
       .then((res) => {
-        if (res.status === 201) {
+        if (res.status === 200) {
+          console.log(res.data);
           setStatusUpdateDate(true);
+          setHideShow(false);
+          toast.success("Thay đổi ngày giờ trận đấu thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       })
       .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         console.error(err);
       });
   };
@@ -203,7 +226,10 @@ export default function KnockOutStageSchedule(props) {
   };
 
   const rounds = knockoutTeam != null ? [...knockoutTeam] : null;
-
+  const changeDate = data => {
+    const splitDateTime = data.split("T");
+    return splitDateTime[0].split("-")[2] + "-" + splitDateTime[0].split("-")[1] + "-" + splitDateTime[0].split("-")[0] + " " + splitDateTime[1].split(":")[0] + ":" + splitDateTime[1].split(":")[1];
+  }
   return knockoutTeam !== null ? (
     typeView === "diagram" ? (
       <div
@@ -240,11 +266,12 @@ export default function KnockOutStageSchedule(props) {
                   <tr key={indexSeeds}>
                     <td
                       style={{
-                        color: indexSeeds.date != null ? "black" : "red",
+                        color: itemSeeds.date != null ? "black" : "red",
                       }}
                     >
-                      {indexSeeds.date != null
-                        ? indexSeeds.date
+                     
+                      {itemSeeds.date != null
+                        ? changeDate(itemSeeds.date)
                         : "Chưa cập nhật"}
                     </td>
                     {/* <td>{index + 1}</td> */}
@@ -287,7 +314,7 @@ export default function KnockOutStageSchedule(props) {
                           setStatusUpdateDate(false);
                         }}
                       >
-                        {indexSeeds.date != null ? "Chỉnh sửa " : "Cập nhật "}{" "}
+                        {itemSeeds.date != null ? "Chỉnh sửa " : "Cập nhật "}{" "}
                         ngày
                       </td>
                     ) : null}

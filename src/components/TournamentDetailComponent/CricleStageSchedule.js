@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import { updateDateInMatchAPI } from "../../api/MatchAPI";
 import ModalChangeDateInSchedule from "./ModelChangeDateInSchedule";
+import { toast } from "react-toastify";
 export default function CricleStageSchedule(props) {
   const [allTeamA, setAllTeamA] = useState(null);
   const [allTeamB, setAllTeamB] = useState(null);
@@ -45,15 +46,34 @@ export default function CricleStageSchedule(props) {
       ...dataMatch,
       matchDate: dateUpdate,
     };
-
     const response = updateDateInMatchAPI(data);
     response
       .then((res) => {
-        if (res.status === 201) {
+        if (res.status === 200) {
+          console.log(res.data);
           setStatusUpdateDate(true);
+          setHideShow(false);
+          toast.success("Thay đổi ngày giờ trận đấu thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       })
       .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         console.error(err);
       });
   };
@@ -80,6 +100,10 @@ export default function CricleStageSchedule(props) {
       return true;
     }
   };
+  const changeDate = data => {
+    const splitDateTime = data.split("T");
+    return splitDateTime[0].split("-")[2] + "-" + splitDateTime[0].split("-")[1] + "-" + splitDateTime[0].split("-")[0] + " " + splitDateTime[1].split(":")[0] + ":" + splitDateTime[1].split(":")[1];
+  }
   return (
     <table className="schedule__table">
       <tr>
@@ -104,7 +128,7 @@ export default function CricleStageSchedule(props) {
                 }}
               >
                 {item.match.matchDate != null
-                  ? item.match.matchDate
+                  ? changeDate(item.match.matchDate)
                   : "Chưa cập nhật"}
               </td>
               {/* <td>{index + 1}</td> */}
@@ -128,8 +152,9 @@ export default function CricleStageSchedule(props) {
                 {allTeamB[index].teamName}
               </td>
               <div className={hideShow ? "overlay active" : "overlay"}></div>
-              {user != undefined && user.userVM.id === hostTournamentId &&
-                    checkDate(endDate) ? (
+              {user != undefined &&
+              user.userVM.id === hostTournamentId &&
+              checkDate(endDate) ? (
                 <td
                   onClick={() => {
                     setHideShow(true);

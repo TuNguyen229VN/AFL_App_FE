@@ -43,6 +43,20 @@ export default function ModalChangeDateInSchedule(props) {
       setDateUpdate(startDate);
     }
   }, [matchCurrent.id]);
+  const changeDate = (data) => {
+    const splitDateTime = data.split("T");
+    return (
+      splitDateTime[0].split("-")[2] +
+      "-" +
+      splitDateTime[0].split("-")[1] +
+      "-" +
+      splitDateTime[0].split("-")[0] +
+      " " +
+      splitDateTime[1].split(":")[0] +
+      ":" +
+      splitDateTime[1].split(":")[1]
+    );
+  };
   return (
     <div
       id="exampleModal"
@@ -68,7 +82,7 @@ export default function ModalChangeDateInSchedule(props) {
           {matchCurrent != null ? (
             matchCurrent.matchDate != null ? (
               <div class="modal-body">
-                Ngày giờ hiện tại: {matchCurrent.matchDate}{" "}
+                Ngày giờ hiện tại của trận đấu: {changeDate(matchCurrent.matchDate)}{" "}
               </div>
             ) : (
               <div
