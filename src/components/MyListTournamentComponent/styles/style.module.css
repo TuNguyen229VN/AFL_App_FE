@@ -122,3 +122,40 @@
     text-decoration: underline;
     color: var(--blue-black);
 }
+
+/* PagingTournament */
+
+.pagingTournament {
+  width: max-content;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagelink{
+  color: var(--black-text);
+  display: inline-block;
+  padding: 10px 15px;
+  user-select: none;
+}
+
+.pageItem:hover .pagelink{
+  color: var(--black-text);
+}
+.pageItem{
+  margin-top: 15px;
+  margin-left: 20px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: max-content;
+  transition: 0.5s;
+cursor: pointer;
+}
+
+.pageItem.active,.pageItem:hover{
+  background-color: var(--green-bold);
+  color: var(--black-text);
+  border: 1px solid transparent;
+}
+/* End PagingTournament */

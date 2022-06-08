@@ -7,29 +7,41 @@ import Header from "../Header/Header";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import styles from "./styles/style.module.css";
 import Loading from "../LoadingComponent/Loading";
+import ReactPaginate from "react-paginate";
 function MyListTournamentComponent() {
   // get Locoal Storage
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [count, setCount] = useState(0);
+  const [check, setCheck] = useState(false);
   const [loading, setLoading] = useState(false);
   const [tournament, setTournament] = useState([]);
-  const getTournament = () => {
+  const getTournament = (currentPage) => {
     setLoading(true);
-    const afterURL = `tournaments?userId=${user.userVM.id}`;
+    const afterURL = `tournaments?userId=${user.userVM.id}&order-by=DateCreate&order-type=DESC&page-offset=${currentPage}&limit=5`;
     const response = getAPI(afterURL);
     response
       .then((res) => {
         setTournament(res.data.tournaments);
+        setCount(res.data.countList);
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected + 1);
+    setCheck(!check);
+    getTournament(data.selected + 1);
+  };
+
   useEffect(() => {
-    getTournament();
-  }, []);
+    getTournament(currentPage);
+  }, [check, currentPage]);
 
   // Get Type
   const getType = (id) => {
@@ -100,12 +112,10 @@ function MyListTournamentComponent() {
                       <div className={styles.tournamnet__text}>
                         <h2>{tour.tournamentName}</h2>
                         <div className={styles.man}>
-                        <i class="fa-solid fa-bullhorn"></i>
-                          <span className={styles.sub__title}>
-                            Chế độ:{" "}
-                          </span>
+                          <i class="fa-solid fa-bullhorn"></i>
+                          <span className={styles.sub__title}>Chế độ: </span>
                           <span className={styles.text_field}>
-                           {tour.mode==="PRIVATE"?"Riêng tư":"Công khai"}
+                            {tour.mode === "PRIVATE" ? "Riêng tư" : "Công khai"}
                           </span>
                         </div>
                         <div className={styles.man}>
@@ -154,6 +164,27 @@ function MyListTournamentComponent() {
                     </Link>
                   ))
                 : null}
+              <div className={styles.pagingTournament}>
+                <ReactPaginate
+                  previousLabel={"Trang trước"}
+                  nextLabel={"Trang sau"}
+                  containerClassName="pagination"
+                  activeClassName={styles.active}
+                  pageClassName={styles.pageItem}
+                  nextClassName={styles.pageItem}
+                  previousClassName={styles.pageItem}
+                  breakLabel={"..."}
+                  pageCount={Math.ceil(count / 5)}
+                  marginPagesDisplayed={3}
+                  onPageChange={handlePageClick}
+                  pageLinkClassName={styles.pagelink}
+                  previousLinkClassName={styles.pagelink}
+                  nextLinkClassName={styles.pagelink}
+                  breakClassName={styles.pageItem}
+                  breakLinkClassName={styles.pagelink}
+                  pageRangeDisplayed={2}
+                />
+              </div>
             </div>
           )}
           {tournament.length <= 0 ? (

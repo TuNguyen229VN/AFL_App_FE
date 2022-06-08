@@ -79,7 +79,7 @@
   padding-top: 66%;
 }
 
-.gallery__tour ul.images > li i{
+.gallery__tour ul.images > li i {
   z-index: 2;
   top: 10px;
   right: 10px;
@@ -202,6 +202,11 @@
   text-align: center;
   padding: 15px;
 }
+
+.teamdetail .schedule__tour .schedule__table th {
+  transform: translateX(-50px);
+}
+
 .teamdetail .schedule__tour .schedule__table img {
   width: 35px;
   height: 35px;
@@ -220,15 +225,15 @@
   text-transform: uppercase;
   position: relative;
   width: max-content;
-  width: 150px;
+  width: 300px;
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(4) {
-  width: 280px;
+  width: 300px;
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(3) {
   font-family: "Mulish-Bold";
   font-size: 18px;
-  transform: translateX(10px);
+  /* transform: translateX(10px); */
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(5) {
   width: 85px;
@@ -245,14 +250,14 @@
   top: 50%;
   transform: translateY(-50%);
   position: absolute;
-  left: 200px;
+  left: 220px;
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(4) img {
   position: absolute;
   font-family: "Mulish-Bold";
   top: 50%;
   transform: translateY(-50%);
-  right: 290px;
+  right: 220px;
 }
 
 .teamdetail .schedule__tour .wrap__title {
@@ -613,8 +618,7 @@
   display: none;
 }
 
-
-.popup__news.active{
+.popup__news.active {
   display: block;
 }
 
@@ -657,40 +661,40 @@
   transition: 0.5s;
   border-radius: 5px;
 }
-.popup__news button:hover{
+.popup__news button:hover {
   background-color: var(--blue-black);
   color: var(--white-text);
 }
-.popup__news label{
+.popup__news label {
   margin-top: 20px;
   cursor: pointer;
 }
 
-.popup__news label i{
+.popup__news label i {
   font-size: 28px;
   color: var(--green-bold);
 }
 
-.popup__news img{
+.popup__news img {
   display: block;
   height: 200px;
   width: 200px;
 }
- .hihi{
-   margin-bottom: 40px;
- }
+.hihi {
+  margin-bottom: 40px;
+}
 
- .hihi label span{
-   margin-left: 10px;
-   font-size: 18px;
- }
-.popup__news .img{
+.hihi label span {
+  margin-left: 10px;
+  font-size: 18px;
+}
+.popup__news .img {
   margin-top: 20px;
   position: relative;
   width: max-content;
 }
 
-.popup__news .img i{
+.popup__news .img i {
   background-color: #fff;
   padding: 5px;
   position: absolute;
@@ -702,7 +706,7 @@
   top: 10px;
 }
 
-.popup__news .close{
+.popup__news .close {
   position: absolute;
   top: 10px;
   right: 30px;
@@ -751,13 +755,13 @@
 
 /* =========== */
 
-.thongbao .option__player.active{
+.thongbao .option__player.active {
   display: block;
 }
-.thongbao .option__player{
+.thongbao .option__player {
   display: none;
-   position: absolute;
- background-color: #fff;
+  position: absolute;
+  background-color: #fff;
   z-index: 2;
   width: max-content;
   border-radius: 5px;
@@ -766,122 +770,119 @@
   box-shadow: 0 1px 6px #ccc;
 }
 
-.thongbao .option__player p{
+.thongbao .option__player p {
   cursor: pointer;
   padding: 10px;
 }
-.thongbao .option__player p:hover{
+.thongbao .option__player p:hover {
   background-color: #f0f2f5;
   border-radius: 5px;
 }
 
-.thongbao .option__player p i{
+.thongbao .option__player p i {
   margin-right: 10px;
 }
 
-.baivietnull{
+.baivietnull {
   font-size: 18px;
 }
-.modifyIcon{
+.modifyIcon {
   position: absolute;
-  right:10px;
-  top:5px;
+  right: 10px;
+  top: 5px;
   width: max-content !important;
-  padding:0 !important;
+  padding: 0 !important;
 }
-.editIcon{
+.editIcon {
   border-radius: 0 !important;
   width: 20px !important;
   height: 20px !important;
   cursor: pointer;
   margin-left: 15px;
 }
-.editComment_form{
+.editComment_form {
   display: none;
 }
-.editComment_form.active{
+.editComment_form.active {
   display: block;
 }
 
-.editComment_form textarea{
-  border:none;
-  padding:10px !important;
- 
+.editComment_form textarea {
+  border: none;
+  padding: 10px !important;
 }
 
-.editComment_form button{
-  margin:0 10px;
-  border-radius:5px;
+.editComment_form button {
+  margin: 0 10px;
+  border-radius: 5px;
   font-size: 15px;
-  padding:10px;
+  padding: 10px;
 }
-.btnWrap{
+.btnWrap {
   display: flex;
   justify-content: flex-end;
 }
 
-.deletePopup{
+.deletePopup {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform:translate(-50%, -50%);
-  background:rgb(80 230 126);
+  transform: translate(-50%, -50%);
+  background: rgb(80 230 126);
   z-index: 10;
-  padding:20px 50px;
+  padding: 20px 50px;
   border-radius: 5px;
   width: max-content !important;
 }
-.deleteShadow{
+.deleteShadow {
   width: 100vw;
   height: 100vh;
   position: fixed;
   z-index: 10;
-  top:0;
+  top: 0;
   left: 0;
 }
 
-.deletePopup .btnLoadMore{
-  padding:10px 20px;
+.deletePopup .btnLoadMore {
+  padding: 10px 20px;
 }
 
-
-.exo .img__list{
+.exo .img__list {
   display: grid;
-  grid-template-columns: repeat(4,200px);
+  grid-template-columns: repeat(4, 200px);
   column-gap: 20px;
   /* flex-wrap: wrap; */
 }
 
-
-.deleteConfirm{
+.deleteConfirm {
   position: fixed;
   display: none;
   z-index: 10;
   background-color: var(--white-text);
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   padding: 20px;
   width: 400px;
   height: 150px;
   border-radius: 5px;
 }
-.deleteConfirm.active{
+.deleteConfirm.active {
   display: block;
 }
-.deleteConfirm h3{
+.deleteConfirm h3 {
   text-align: center;
   font-size: 22px;
   text-transform: uppercase;
   font-family: "Mulish-Bold";
   margin-bottom: 40px;
 }
-.deleteConfirm .buttonConfirm{
+.deleteConfirm .buttonConfirm {
   display: flex;
   justify-content: space-between;
 }
 
-.deleteConfirm .buttonConfirm button{
+.deleteConfirm .buttonConfirm button {
   border: none;
   outline: none;
   padding: 15px 15px;
@@ -893,13 +894,13 @@
   text-align: center;
 }
 
-.deleteConfirm .buttonConfirm .cancel{
+.deleteConfirm .buttonConfirm .cancel {
   background-color: #dc3545;
 }
-.deleteConfirm .buttonConfirm .confirm{
+.deleteConfirm .buttonConfirm .confirm {
   background-color: #28a745;
 }
 
-.deleteConfirm .buttonConfirm button:hover{
+.deleteConfirm .buttonConfirm button:hover {
   filter: brightness(90%);
 }
