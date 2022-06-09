@@ -4,9 +4,9 @@ export default function DenyTeamInTournament(props) {
   const {
     hideShow,
     setHideShow,
-    acceptTeamInTournament,
     teamDelete,
     setTeamDelete,
+    getAllPlayerInTournamentByIdTeam
   } = props;
   console.log(teamDelete)
   return (
@@ -56,7 +56,8 @@ export default function DenyTeamInTournament(props) {
               type="button"
               class="btn btn-primary"
               onClick={() => {
-                acceptTeamInTournament(teamDelete, false);
+                //acceptTeamInTournament(teamDelete, false);
+                getAllPlayerInTournamentByIdTeam(teamDelete.teamInTournament.id);
               }}
             >
               Xóa

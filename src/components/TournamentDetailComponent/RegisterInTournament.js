@@ -4,7 +4,7 @@ import LoadingAction from "../LoadingComponent/LoadingAction";
 import { toast } from "react-toastify";
 import { addTeamInTournamentAPI } from "../../api/TeamInTournamentAPI";
 import { addPlayerInTournamentAPI } from "../../api/PlayerInTournamentAPI";
-
+import {NotiFootballInTournamentAPI} from "../../api/System"
 export default function RegisterInTournament(props) {
   const { idUser, tourDetail, setCheckRegistertour, hideShow, setHideShow } =
     props;
@@ -82,6 +82,8 @@ export default function RegisterInTournament(props) {
     setPlayerInTeam(allPlayer);
   };
 
+  
+
   const addTeamInTournament = () => {
     setLoading(true);
     const data = {
@@ -114,6 +116,16 @@ export default function RegisterInTournament(props) {
         });
       });
   };
+  const sendMailNotiPlayer = (tourId, playerId, teamId) => {
+      const response = NotiFootballInTournamentAPI(tourId, playerId, teamId);
+      response.then(res => {
+        if(res.status === 201){
+
+        }
+      }).catch(err => {
+        console.error(err);
+      })
+  }
   const addPlayerInTournament = (id) => {
     const getPlayerChoice = playerInTeam.reduce((accumulator, currentValue) => {
       
@@ -124,7 +136,7 @@ export default function RegisterInTournament(props) {
     }, []);
     
     getPlayerChoice.map((iteam, index) => {
-      console.log(+iteam.clothesNumber)
+      
       const data = {
         teamInTournamentId: id,
         playerInTeamId: iteam.idPlayerInTeam,
@@ -134,7 +146,7 @@ export default function RegisterInTournament(props) {
       const response = addPlayerInTournamentAPI(data);
       response
         .then((res) => {
-          console.log(res.data);
+          sendMailNotiPlayer()
         })
         .catch((err) => {
           console.error(err);

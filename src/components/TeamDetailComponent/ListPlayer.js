@@ -140,7 +140,7 @@ function ListPlayer(props) {
   const sendMailTeamAccpet = (playerId, teamId) => {
     const respone = TeamAcceptAPI(playerId, teamId);
     respone.then(res => {
-      if(res.status === 201){
+      if(res.status === 200){
         setLoadingAdd(false);
         setDeleteSuccessFul(true);
         toast.success("Thêm cầu thủ vào đội bóng thành công", {

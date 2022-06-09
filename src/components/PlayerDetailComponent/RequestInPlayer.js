@@ -27,7 +27,7 @@ function RequestInPlayer(props) {
       setCurrentPage(1);
     }
   }, []);
-  console.log(allTeam);
+  
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
   };

@@ -16,10 +16,12 @@ import {
 import { toast } from "react-toastify";
 import "./styles/style.css";
 import { PlayerRegisterAPI, TeamAcceptAPI } from "../../api/System";
+import LoadingAction from "../LoadingComponent/LoadingAction";
 
 function HeaderTeamDetail() {
   const { idTeam } = useParams();
   const location = useLocation();
+  const [loadingAc,setLoadingAc] = useState(false);
   const [loading, setLoading] = useState(false);
   const [team, setTeam] = useState("");
   const [manager, setManager] = useState("");
@@ -123,12 +125,13 @@ function HeaderTeamDetail() {
     }
   };
 
-  const sendMailPlayerRequestInTeam = (iPdlayer,idTeam) => {
-    const respone = PlayerRegisterAPI(iPdlayer,+idTeam);
+  const sendMailPlayerRequestInTeam = (iPdlayer, idTeam) => {
+    const respone = PlayerRegisterAPI(iPdlayer, +idTeam);
     respone
       .then((res) => {
-        if (res.status === 201) {
-          setLoading(false);
+        if (res.status === 200) {
+          setLoadingAc(false);
+          setStatusPaticipate("Chờ xét duyệt từ đội bóng");
           toast.success(
             "Yêu cầu tham gia đội bóng thành công.Chờ phản hồi từ đội bóng nhé!",
             {
@@ -145,7 +148,7 @@ function HeaderTeamDetail() {
       })
       .catch((err) => {
         console.error(err);
-        setLoading(false);
+        setLoadingAc(false);
         console.error(err);
         toast.error(err.response.data.message, {
           position: "top-right",
@@ -160,7 +163,7 @@ function HeaderTeamDetail() {
   };
 
   const addResquestToTeam = () => {
-    setLoading(true);
+    setLoadingAc(true);
     const data = {
       status: "Chờ xét duyệt từ đội bóng",
       teamId: idTeam,
@@ -170,12 +173,11 @@ function HeaderTeamDetail() {
     respone
       .then((res) => {
         if (res.status === 201) {
-          setStatusPaticipate("Chờ xét duyệt từ đội bóng");
-          sendMailPlayerRequestInTeam(user.userVM.id,idTeam);
+          sendMailPlayerRequestInTeam(user.userVM.id, idTeam);
         }
       })
       .catch((err) => {
-        setLoading(false);
+        setLoadingAc(false);
         console.error(err);
         toast.error(err.response.data.message, {
           position: "top-right",
@@ -381,6 +383,7 @@ function HeaderTeamDetail() {
           </h1>
         ) : null}
       </div>
+      {loadingAc ? <LoadingAction /> : null}
       <Footer />
     </>
   );

@@ -13,7 +13,7 @@ function TeamInTournament(props) {
     user,
     hostTournamentId,
     hideShow,
-    setHideShow
+    setHideShow,getAllPlayerInTournamentByIdTeam
   } = props;
   const [active, setactive] = useState(true);
   const [viewList, setViewList] = useState(null);
@@ -21,7 +21,7 @@ function TeamInTournament(props) {
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
-  console.log(allTeam);
+  
   return (
     <>
       <div className="tournamentdetail">
@@ -213,7 +213,7 @@ function TeamInTournament(props) {
               )}
               <div className={hideShow ? "overlay active" : "overlay"}></div>
               <DenyTeamInTournament
-                acceptTeamInTournament={acceptTeamInTournament}
+                getAllPlayerInTournamentByIdTeam={getAllPlayerInTournamentByIdTeam}
                 teamDelete={teamDelete}
                 setTeamDelete={setTeamDelete}
                 setHideShow={setHideShow}

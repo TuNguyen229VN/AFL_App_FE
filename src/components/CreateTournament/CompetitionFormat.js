@@ -173,7 +173,7 @@ const CompetitionFormat = (props) => {
             value={teamPaticipate.value}
             placeholder="Nhập số đội tham gia"
             onChange={onChangeHandler}
-            required
+            
           />
         </div>
       </div>

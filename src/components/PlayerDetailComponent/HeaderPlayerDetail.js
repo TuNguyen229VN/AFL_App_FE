@@ -109,10 +109,11 @@ function HeaderPlayerDetail() {
     const response = TeamRegisterAPI(+playerId, teamId);
     response
       .then((res) => {
-        if (res.status === 201) {
+        if (res.status === 200) {
           setStatusPaticipate("Chờ xét duyệt từ cầu thủ");
+
           toast.success(
-            "Yêu cầu tham gia đội bóng thành công.Chờ phản hồi từ đội bóng nhé!",
+            "Yêu cầu chiêu mộ cầu thủ thành công.Chờ phản hồi từ cầu thủ nhé!",
             {
               position: "top-right",
               autoClose: 3000,
@@ -192,8 +193,9 @@ function HeaderPlayerDetail() {
     const response = PlayerAcceptAPI(+playerId, teamId);
     response
       .then((res) => {
-        if (res.status === 201) {
-          setStatusAdd(true);
+        if (res.status === 200) {
+          //setStatusAdd(true);
+          getTeamByIdPlayer(active);
           setLoading(false);
           toast.success("Chấp nhận đội bóng thành công", {
             position: "top-right",
@@ -226,8 +228,7 @@ function HeaderPlayerDetail() {
     response
       .then((res) => {
         if (res.status === 200) {
-          
-          sendMailPlayerAccept(idPlayer,idTeam)
+          sendMailPlayerAccept(idPlayer, idTeam);
         }
       })
       .then((err) => {
@@ -318,9 +319,7 @@ function HeaderPlayerDetail() {
     <>
       <Header id={idPlayer} />
       <div className="teamdetail">
-        {loading ? (
-          <LoadingAction />
-        ) : detailPlayer !== null ? (
+        {detailPlayer !== null ? (
           <div>
             <div className="HeaderTeamDetail">
               <div className="info__manager player_detail ">
@@ -523,6 +522,7 @@ function HeaderPlayerDetail() {
           </p>
         )}
       </div>
+      {loading ? <LoadingAction /> : null}
       <Footer />
     </>
   );

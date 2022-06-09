@@ -22,7 +22,10 @@ import {
   updateStatusTeamInTournament,
   deleteRegisterTeamAPI,
 } from "../../api/TeamInTournamentAPI";
-import { deletePlayerInTournamentById } from "../../api/PlayerInTournamentAPI";
+import {
+  deletePlayerInTournamentById,
+  getAllPlayerInTournamentByTeamInTournamentIdAPI,
+} from "../../api/PlayerInTournamentAPI";
 import { toast } from "react-toastify";
 import { getUserByIdAPI } from "../../api/User";
 import CountDown from "./CountDown";
@@ -163,6 +166,7 @@ function HeaderTournamentDetail() {
           loadingAc={loadingAc}
           hideShow={hideShowDelete}
           setHideShow={setHideShowDelete}
+          getAllPlayerInTournamentByIdTeam={getAllPlayerInTournamentByIdTeam}
         />
       );
     }
@@ -188,8 +192,6 @@ function HeaderTournamentDetail() {
     setActiveTeamDetail(location.pathname);
     getTourDetail();
   }, [location.pathname]);
-
-
 
   useEffect(() => {
     if (tourDetail.id != undefined) {
@@ -231,6 +233,81 @@ function HeaderTournamentDetail() {
   // const updateClick = (data,addressTour) => {
   //   navigate(`update-tournament-detail`,{state: {id: data,address:addressTour} })
   // }
+
+  const getAllPlayerInTournamentByIdTeam = (idTeam) => {
+    setLoadingAc(true);
+    const response = getAllPlayerInTournamentByTeamInTournamentIdAPI(idTeam);
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          for (let item of res.data.playerInTournaments) {
+            deletePlayerById(item.id);
+          }
+          setTimeout(() => {
+            deleteTeamInTournament(idTeam);
+          },2000)
+        }
+      })
+      .catch((err) => {
+        setLoadingAc(false);
+        setHideShowDelete(false);
+        console.error(err);
+      });
+  };
+  const deletePlayerById = async (id) => {
+    try {
+      const response = await deletePlayerInTournamentById(id);
+    } catch (err) {
+      setLoadingAc(false);
+      setHideShowDelete(false);
+      console.error(err);
+      toast.error(err.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
+  const deleteTeamInTournament = (id) => {
+    const response = deleteRegisterTeamAPI(id);
+    response
+      .then((res) => {
+        console.log(res)
+        if (res.status === 200) {
+          setHideShowDelete(false);
+          setLoadingAc(false);
+          getAllTeamInTournamentByTourId();
+          toast.success("Từ chối đội bóng thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .catch((err) => {
+        setHideShowDelete(false);
+        setLoadingAc(false);
+        console.error(err);
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
 
   const acceptTeamInTournament = (teamInTournament, status) => {
     if (teamInTournament != null) {
@@ -297,11 +374,9 @@ function HeaderTournamentDetail() {
         teamResponse.user = user;
         return teamResponse;
       });
-
       const teamData = await Promise.all(teams);
       teamData.countList = response.data.countList;
       setLoadingAc(false);
-      
       setAllTeam(teamData);
     } catch (err) {
       setLoadingAc(false);

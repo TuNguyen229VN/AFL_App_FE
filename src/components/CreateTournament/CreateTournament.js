@@ -33,6 +33,7 @@ const CreateTournament = () => {
     img: null,
     error: null,
   });
+
   const [nameTournament, setNameTournament] = useState({
     value: "",
     error: null,
@@ -146,84 +147,11 @@ const CreateTournament = () => {
   const onSubmitHandler = async (e) => {
     setLoading(true);
     e.preventDefault();
-
-    try {
-      const data = {
-        tournamentName: nameTournament.value,
-        mode: status === -1 ? "PRIVATE" : "PUBLIC",
-        tournamentPhone: phoneContact.value,
-        tournamentGender: gender.value,
-        registerEndDate: closeRegister.value,
-        tournamentStartDate: startTime.value,
-        tournamentEndDate: endTime.value,
-        footballFieldAddress: footballField.value + addressField,
-        tournamentAvatar: imgTournament.value,
-        description: descriptionText,
-        matchMinutes: +timeDuration.value,
-        footballTeamNumber: teamPaticipate.value,
-        footballPlayerMaxNumber: minimunPlayerInTournament.value,
-        status: true,
-        userId: user.userVM.id,
-        groupNumber: +groupNumber.value,
-        TournamentTypeEnum: competitionFormat.value,
-        TournamentFootballFieldTypeEnum: typeFootballField.value,
-      };
-
-      const response = await axios.post(
-        "https://afootballleague.ddns.net/api/v1/tournaments",
-        data,
-        {
-          headers: { "content-type": "multipart/form-data" },
-        }
-      );
-      if (response.status === 201) {
-        createGenerateTable(response.data.id);
-        const intitalState = {
-          value: "",
-          error: "",
-        };
-        setImgTournament(intitalState);
-        setNameTournament(intitalState);
-        setTeamPaticipate(intitalState);
-        setTypeFootballField({
-          value: 1,
-          error: "",
-        });
-
-        setCloseRegister({
-          value: null,
-          error: "",
-        });
-        setStartTime(intitalState);
-        setEndTime(intitalState);
-        setCompetitionFormat({
-          value: 1,
-          error: "",
-        });
-        setMinimunPlayerInTournament(intitalState);
-        setPhoneContact(intitalState);
-        setFootballField(intitalState);
-        setGender({
-          value: "Male",
-          error: "",
-        });
-        setTimeDuration({
-          value: 15,
-          error: "",
-        });
-        setEditorState(EditorState.createEmpty());
-        setProvice(null);
-        setDistricts(null);
-        setWards(null);
-        setResetProvice(0);
-        setGroupNumber({
-          value: "2",
-          error: null,
-        });
-      }
-    } catch (error) {
+    const flag = checkValidateAdd();
+    console.log(flag)
+    if (flag !== null) {
       setLoading(false);
-      toast.error(error.response.data.message, {
+      toast.error(flag, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -232,7 +160,94 @@ const CreateTournament = () => {
         draggable: true,
         progress: undefined,
       });
-      console.error(error.response);
+    } else {
+      try {
+        const data = {
+          tournamentName: nameTournament.value,
+          mode: status === -1 ? "PRIVATE" : "PUBLIC",
+          tournamentPhone: phoneContact.value,
+          tournamentGender: gender.value,
+          registerEndDate: closeRegister.value,
+          tournamentStartDate: startTime.value,
+          tournamentEndDate: endTime.value,
+          footballFieldAddress: footballField.value + addressField,
+          tournamentAvatar: imgTournament.value,
+          description: descriptionText,
+          matchMinutes: +timeDuration.value,
+          footballTeamNumber: teamPaticipate.value,
+          footballPlayerMaxNumber: minimunPlayerInTournament.value,
+          status: true,
+          userId: user.userVM.id,
+          groupNumber: +groupNumber.value,
+          TournamentTypeEnum: competitionFormat.value,
+          TournamentFootballFieldTypeEnum: typeFootballField.value,
+        };
+
+        const response = await axios.post(
+          "https://afootballleague.ddns.net/api/v1/tournaments",
+          data,
+          {
+            headers: { "content-type": "multipart/form-data" },
+          }
+        );
+        if (response.status === 201) {
+          createGenerateTable(response.data.id);
+          const intitalState = {
+            value: "",
+            error: "",
+          };
+          setImgTournament(intitalState);
+          setNameTournament(intitalState);
+          setTeamPaticipate(intitalState);
+          setTypeFootballField({
+            value: 1,
+            error: "",
+          });
+
+          setCloseRegister({
+            value: null,
+            error: "",
+          });
+          setStartTime(intitalState);
+          setEndTime(intitalState);
+          setCompetitionFormat({
+            value: 1,
+            error: "",
+          });
+          setMinimunPlayerInTournament(intitalState);
+          setPhoneContact(intitalState);
+          setFootballField(intitalState);
+          setGender({
+            value: "Male",
+            error: "",
+          });
+          setTimeDuration({
+            value: 15,
+            error: "",
+          });
+          setEditorState(EditorState.createEmpty());
+          setProvice(null);
+          setDistricts(null);
+          setWards(null);
+          setResetProvice(0);
+          setGroupNumber({
+            value: "2",
+            error: null,
+          });
+        }
+      } catch (error) {
+        setLoading(false);
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        console.error(error.response);
+      }
     }
   };
   const validateForm = (name, value) => {
@@ -240,12 +255,7 @@ const CreateTournament = () => {
       case "imgTournament":
         break;
       case "nameTournament":
-        if (value.length === 0) {
-          return {
-            flag: false,
-            content: "Không được để trống",
-          };
-        } else if (/\d+/.test(value)) {
+        if (/\d+/.test(value)) {
           return {
             flag: false,
             content: "Tên đội bóng là chữ",
@@ -272,20 +282,10 @@ const CreateTournament = () => {
         break;
 
       case "teamPaticipate":
-        if (value.length === 0) {
-          return {
-            flag: false,
-            content: "Không được để trống",
-          };
-        } else if (!/^[0-9]+$/.test(value)) {
+        if (!/^[0-9]+$/.test(value)) {
           return {
             flag: false,
             content: "Đội tham gia là số",
-          };
-        } else if (value > 16) {
-          return {
-            flag: false,
-            content: "Đội tham gia ít hơn bằng 16 đội",
           };
         }
         break;
@@ -300,22 +300,19 @@ const CreateTournament = () => {
       case "competitionFormat":
         break;
       case "minimunPlayerInTournament":
-        break;
-      case "phoneContact":
-        if (value.length === 0) {
+          if (!/^[0-9]+$/.test(value)) {
           return {
             flag: false,
-            content: "Không được để trống",
+            content: "Đội tham gia là số",
           };
-        } else if (!/^[0-9]+$/.test(value)) {
+        } 
+       
+        break;
+      case "phoneContact":
+        if (!/^[0-9]+$/.test(value)) {
           return {
             flag: false,
             content: "Số điện thoại không được là chữ hay kí tự khác",
-          };
-        } else if (!/(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(value)) {
-          return {
-            flag: false,
-            content: "Sai định dạng số điện thoại",
           };
         }
         break;
@@ -326,6 +323,29 @@ const CreateTournament = () => {
         break;
     }
     return { flag: true, content: null };
+  };
+  const checkValidateAdd = () => {
+    
+    //nameTournament phoneContact minimunPlayerInTournament  teamPaticipate  closeRegister startTime endTime
+    if (nameTournament.value === null || nameTournament.value.length === 0  ) {
+      return "Tên giải đấu không được để trống";
+    }
+    if (phoneContact.value === null || phoneContact.value.length === 0) {
+      return "Số điện thoại không được để trống";
+    } else if (!/(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(phoneContact.value)) {
+      return "Sai định dạng số điện thoại";
+    }
+    if (teamPaticipate.value === null || teamPaticipate.value.length === 0) {
+      return "Số đội tham gia không được để trống";
+    } else if (teamPaticipate.value > 16) {
+      return "Đội tham gia ít hơn bằng 16 đội";
+    }
+    if (minimunPlayerInTournament.value === null || minimunPlayerInTournament.value.length === 0) {
+      return "Số cầu thủ tối thiểu mỗi đội không được để trống";
+    }else if (minimunPlayerInTournament.value < (typeFootballField.value == 1 ? 5 : typeFootballField.value == 2 ? 11 : 7)) {
+      return "Số cầu thủ ít hơn quy định loại sân";
+    }
+    return null;
   };
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -634,7 +654,7 @@ const CreateTournament = () => {
                     onChange={onChangeHandler}
                     name="nameTournament"
                     value={nameTournament.value}
-                    required
+                    
                   />
                 </div>
                 <div className={styles.contactPhone}>
@@ -864,8 +884,6 @@ const CreateTournament = () => {
                   <input
                     id="mininum_member"
                     className={styles.mininum_member_input}
-                    type="number"
-                    min={5}
                     name="minimunPlayerInTournament"
                     value={minimunPlayerInTournament.value}
                     onChange={onChangeHandler}
