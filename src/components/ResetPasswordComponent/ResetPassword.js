@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { postAPI } from "../../api";
+import LoadingAction from "../LoadingComponent/LoadingAction";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import styles from "./styles/style.module.css";
 function ResetPassword() {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState({ value: "", error: "" });
   const [code, setCode] = useState({ value: "", error: "" });
   const [check, setCheck] = useState(false);
@@ -157,6 +159,7 @@ function ResetPassword() {
 
   const onSendVerify = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (
       email.value.trim() === "" ||
       !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email.value)
@@ -170,6 +173,7 @@ function ResetPassword() {
         draggable: true,
         progress: undefined,
       });
+      setLoading(false);
       return;
     }
     const data = {
@@ -181,6 +185,7 @@ function ResetPassword() {
     response
       .then((res) => {
         if (res.status === 200) {
+          setLoading(false);
           toast.success(
             "Gửi mã xác thực thành công vui lòng kiểm tra mail của bạn",
             {
@@ -197,6 +202,7 @@ function ResetPassword() {
         setCheck(true);
       })
       .catch((err) => {
+        setLoading(false);
         toast.error(err.response.data, {
           position: "top-right",
           autoClose: 3000,
@@ -211,6 +217,7 @@ function ResetPassword() {
 
   const confirmVerify = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (
       code.value.trim() === "" ||
       email.value.trim() === "" ||
@@ -225,6 +232,7 @@ function ResetPassword() {
         draggable: true,
         progress: undefined,
       });
+      setLoading(false);
       return;
     }
     const data = {
@@ -245,11 +253,13 @@ function ResetPassword() {
             draggable: true,
             progress: undefined,
           });
+          setLoading(false);
           setChangePassword(true);
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
+        setLoading(false);
         toast.error(err.response.data, {
           position: "top-right",
           autoClose: 3000,
@@ -263,6 +273,7 @@ function ResetPassword() {
   };
 
   const onSubmitHandler = (e) => {
+    setLoading(true);
     e.preventDefault();
     if (
       password.value.trim() === "" ||
@@ -278,6 +289,7 @@ function ResetPassword() {
         draggable: true,
         progress: undefined,
       });
+      setLoading(false);
       return;
     }
     const data = {
@@ -288,6 +300,7 @@ function ResetPassword() {
     const response = postAPI(afterDefaultURL, data, false);
     response
       .then((res) => {
+        setLoading(false);
         if (res.status === 200) {
           toast.success("Đổi mật khẩu thành công", {
             position: "top-right",
@@ -307,6 +320,7 @@ function ResetPassword() {
         }
       })
       .catch((err) => {
+        setLoading(false);
         toast.error(err.response.data, {
           position: "top-right",
           autoClose: 3000,
@@ -321,6 +335,7 @@ function ResetPassword() {
   return (
     <div className={styles.login}>
       <ScrollToTop />
+      {loading ? <LoadingAction /> : null}
       <div className={styles.container__wrap}>
         <div className={styles.login__sub}>
           <img
@@ -430,6 +445,19 @@ function ResetPassword() {
                   {code.error != null ? (
                     <p className={styles.error}>{code.error}</p>
                   ) : null}
+                  <div className={styles.buttonWrap}>
+                    <p className={styles.remind}>
+                      *Lưu ý mã xác minh tồn tại trong 2 phút
+                    </p>
+                    <p
+                      className={styles.remind1}
+                      onClick={(event) => {
+                        onSendVerify(event);
+                      }}
+                    >
+                      Gửi lại mã
+                    </p>
+                  </div>
                 </>
               ) : null}
               <button type="submit" className={styles.btn_login}>

@@ -274,3 +274,28 @@
   background-color: var(--green-bold);
   color: var(--blue-black);
 }
+
+.buttonWrap{
+  display: flex;
+}
+.remind{
+  color: var(--blue-black);
+  font-style: italic;
+}
+
+.verify{
+    padding:10px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.remind1{
+  margin-left: 135px;
+  user-select: none;
+  cursor: pointer;
+  color: rgb(132, 130, 130);
+}
+
+.remind1:hover{
+text-decoration: underline; 
+}
