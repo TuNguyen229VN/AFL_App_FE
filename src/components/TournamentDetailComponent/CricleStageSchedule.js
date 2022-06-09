@@ -9,6 +9,7 @@ export default function CricleStageSchedule(props) {
   const [allTeamB, setAllTeamB] = useState(null);
   const [matchCurrent, setMatchCurrent] = useState(null);
   const [dateUpdate, setDateUpdate] = useState(null);
+  const [teamInUpdate, setTeamInUpdate] = useState(null);
   const {
     allTeam,
     loading,
@@ -160,6 +161,7 @@ export default function CricleStageSchedule(props) {
                     setHideShow(true);
                     setMatchCurrent(item.match);
                     setStatusUpdateDate(false);
+                    setTeamInUpdate(item.teamName + " - " + allTeamB[index].teamName);
                   }}
                   style={{
                     cursor: "pointer",
@@ -213,6 +215,7 @@ export default function CricleStageSchedule(props) {
           onChangHandle={onChangHandle}
           setDateUpdate={setDateUpdate}
           updateDateInMatch={updateDateInMatch}
+          teamInUpdate={teamInUpdate}
         />
       ) : null}
     </table>

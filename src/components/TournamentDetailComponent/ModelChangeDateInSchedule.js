@@ -12,7 +12,9 @@ export default function ModalChangeDateInSchedule(props) {
     dateUpdate,
     setDateUpdate,
     updateDateInMatch,
+    teamInUpdate
   } = props;
+
   const [newStart, setNewStart] = useState(null);
   useEffect(() => {
     const time = startDate.split("T");
@@ -79,6 +81,11 @@ export default function ModalChangeDateInSchedule(props) {
               }}
             ></button>
           </div>
+          <p style={{
+            marginTop:20,
+            textAlign: "center",
+            fontWeight: 600
+          }}>{teamInUpdate}</p>
           {matchCurrent != null ? (
             matchCurrent.matchDate != null ? (
               <div

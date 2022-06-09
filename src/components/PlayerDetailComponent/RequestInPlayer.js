@@ -27,6 +27,7 @@ function RequestInPlayer(props) {
       setCurrentPage(1);
     }
   }, []);
+  console.log(allTeam);
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
   };
@@ -84,36 +85,36 @@ function RequestInPlayer(props) {
                 return (
                   <div key={index} className="listPlayer__item">
                     <form onSubmit={onSubmitHandler}>
-                    <Link to={`/teamDetail/${item.teamId}/inforTeamDetail`}>
-                      <div className="avt">
-                        <img
-                          style={{
-                            objectFit: "cover",
-                          }}
-                          src={item.team.teamAvatar}
-                          alt="dev"
-                        />
-                      </div>
+                      <Link to={`/teamDetail/${item.teamId}/inforTeamDetail`}>
+                        <div className="avt">
+                          <img
+                            style={{
+                              objectFit: "cover",
+                            }}
+                            src={item.team.teamAvatar}
+                            alt="dev"
+                          />
+                        </div>
                       </Link>
                       <div className="des">
-                      <Link to={`/teamDetail/${item.teamId}/inforTeamDetail`}>
-                        <p className="namePlayer">
-                          <span>Tên:</span>
-                          <span>{item.team.teamName}</span>
-                        </p>
-                        <p className="genderPlayer">
-                          <span>Giới tính:</span>
-                          {item.team.teamGender === "Male" ? "Nam" : "Nữ"}
-                        </p>
-                        <p className="mailPlayer">
-                          <span>SĐT:</span>
+                        <Link to={`/teamDetail/${item.teamId}/inforTeamDetail`}>
+                          <p className="namePlayer">
+                            <span>Tên:</span>
+                            <span>{item.team.teamName}</span>
+                          </p>
+                          <p className="genderPlayer">
+                            <span>Giới tính:</span>
+                            {item.team.teamGender === "Male" ? "Nam" : "Nữ"}
+                          </p>
+                          <p className="mailPlayer">
+                            <span>SĐT:</span>
 
-                          {item.team.teamPhone}
-                        </p>
-                        <p className="phonePlayer">
-                          <span>Địa chỉ:</span>
-                          {item.team.teamArea}
-                        </p>
+                            {item.team.teamPhone}
+                          </p>
+                          <p className="phonePlayer">
+                            <span>Địa chỉ:</span>
+                            {item.team.teamArea}
+                          </p>
                         </Link>
                         {active === "Chờ xét duyệt từ cầu thủ" &&
                         user !== null &&
@@ -158,7 +159,7 @@ function RequestInPlayer(props) {
                                 fontWeight: 600,
                               }}
                               onClick={() => {
-                                updateStatusFootballPlayer(item.id, "true");
+                                updateStatusFootballPlayer(item.id, "true", item.team.id);
                                 setStatusAdd(false);
                               }}
                             >
@@ -197,7 +198,7 @@ function RequestInPlayer(props) {
                                 setHideShow(true);
                               }}
                             >
-                              Hủy chiêu mộ
+                              Hủy tham gia
                             </button>
                           </div>
                         ) : null}

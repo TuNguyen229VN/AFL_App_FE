@@ -9,7 +9,7 @@ import MyTournamentInPlayer from "./MyTournamentInPlayer";
 import ScheduleInPlayer from "./ScheduleInPlayer";
 import RequestInPlayer from "./RequestInPlayer";
 import AchivementInPlayer from "./AchivementInPlayer";
-
+import { TeamRegisterAPI, PlayerAcceptAPI } from "../../api/System";
 import {
   getAllTeamByPlayerIdAPI,
   upDatePlayerInTeamAPI,
@@ -105,15 +105,9 @@ function HeaderPlayerDetail() {
       checkPaticipateTeam();
     }
   }, []);
-  const addResquestToTeam = () => {
-    setLoading(true);
-    const data = {
-      status: "Chờ xét duyệt từ cầu thủ",
-      teamId: user.userVM.id,
-      footballPlayerId: idPlayer,
-    };
-    const respone = addPlayerInTeamAPI(data);
-    respone
+  const sendMailTeamRequest = (playerId, teamId) => {
+    const response = TeamRegisterAPI(+playerId, teamId);
+    response
       .then((res) => {
         if (res.status === 201) {
           setStatusPaticipate("Chờ xét duyệt từ cầu thủ");
@@ -130,6 +124,34 @@ function HeaderPlayerDetail() {
             }
           );
           setLoading(false);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.error(err);
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+  const addResquestToTeam = () => {
+    setLoading(true);
+    const data = {
+      status: "Chờ xét duyệt từ cầu thủ",
+      teamId: user.userVM.id,
+      footballPlayerId: idPlayer,
+    };
+    const respone = addPlayerInTeamAPI(data);
+    respone
+      .then((res) => {
+        if (res.status === 201) {
+          sendMailTeamRequest(idPlayer, user.userVM.id);
         }
       })
       .catch((err) => {
@@ -166,13 +188,11 @@ function HeaderPlayerDetail() {
         console.error(err);
       });
   };
-
-  const updateStatusFootballPlayer = (id, status) => {
-    setLoading(true);
-    const response = upDatePlayerInTeamAPI(id, status);
+  const sendMailPlayerAccept = (playerId, teamId) => {
+    const response = PlayerAcceptAPI(+playerId, teamId);
     response
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 201) {
           setStatusAdd(true);
           setLoading(false);
           toast.success("Chấp nhận đội bóng thành công", {
@@ -184,6 +204,30 @@ function HeaderPlayerDetail() {
             draggable: true,
             progress: undefined,
           });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+  const updateStatusFootballPlayer = (id, status, idTeam) => {
+    setLoading(true);
+    const response = upDatePlayerInTeamAPI(id, status);
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          
+          sendMailPlayerAccept(idPlayer,idTeam)
         }
       })
       .then((err) => {

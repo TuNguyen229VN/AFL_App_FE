@@ -23,6 +23,7 @@ export default function KnockOutStageSchedule(props) {
   const [matchCurrent, setMatchCurrent] = useState(null);
   const [knockoutTeam, setKnoukoutTeam] = useState(null);
   const [dateUpdate, setDateUpdate] = useState(null);
+  const [teamInUpdate, setTeamInUpdate] = useState(null);
   useEffect(() => {
     if (allTeam != null) {
       devideRound();
@@ -312,6 +313,7 @@ export default function KnockOutStageSchedule(props) {
                           setHideShow(true);
                           setMatchCurrent(itemSeeds.match);
                           setStatusUpdateDate(false);
+                          setTeamInUpdate(itemSeeds.teams[0].name + " - " + itemSeeds.teams[1].name);
                         }}
                       >
                         {itemSeeds.date != null ? "Chỉnh sửa " : "Cập nhật "}{" "}
@@ -349,6 +351,7 @@ export default function KnockOutStageSchedule(props) {
             setDateUpdate={setDateUpdate}
             onChangHandle={onChangHandle}
             updateDateInMatch={updateDateInMatch}
+            teamInUpdate={teamInUpdate}
           />
         ) : null}
       </div>

@@ -12,6 +12,7 @@ import styles from "../FindTeamComponent/TeamFind.module.css";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import ModelAcceptDeletePlayer from "./ModelAcceptDeletePlayer";
 import { Link } from "react-router-dom";
+import { TeamAcceptAPI } from "../../api/System";
 function ListPlayer(props) {
   const { id, numberPlayerInTeam, idHost } = props;
   const [loading, setLoading] = useState(true);
@@ -113,26 +114,16 @@ function ListPlayer(props) {
     }
   };
 
-  const updateStatusFootballPlayer = (id, status) => {
+  const updateStatusFootballPlayer = (id, status,idPlayer) => {
     setLoadingAdd(true);
     const response = upDatePlayerInTeamAPI(id, status);
     response
       .then((res) => {
         if (res.status === 200) {
-          setDeleteSuccessFul(true);
-          setLoadingAdd(false);
-          toast.success("Thêm cầu thủ vào đội bóng thành công", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          sendMailTeamAccpet(idPlayer,idHost);
         }
       })
-      .then((err) => {
+      .catch((err) => {
         console.error(err);
         setLoadingAdd(false);
         toast.error(err.response.data.message, {
@@ -146,6 +137,27 @@ function ListPlayer(props) {
         });
       });
   };
+  const sendMailTeamAccpet = (playerId, teamId) => {
+    const respone = TeamAcceptAPI(playerId, teamId);
+    respone.then(res => {
+      if(res.status === 201){
+        setLoadingAdd(false);
+        setDeleteSuccessFul(true);
+        toast.success("Thêm cầu thủ vào đội bóng thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    }).catch(err => {
+      setLoadingAdd(false);
+      console.error(err);
+    }) 
+  }
   return (
     <>
       <div className="teamdetail__content listPlayer">
@@ -361,7 +373,7 @@ function ListPlayer(props) {
                                     onClick={() => {
                                       updateStatusFootballPlayer(
                                         item.idPlayerInTeam,
-                                        "true"
+                                        "true", item.id
                                       );
                                       setDeleteSuccessFul(false);
                                     }}

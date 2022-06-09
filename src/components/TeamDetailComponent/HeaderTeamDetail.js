@@ -15,6 +15,7 @@ import {
 } from "../../api/PlayerInTeamAPI";
 import { toast } from "react-toastify";
 import "./styles/style.css";
+import { PlayerRegisterAPI, TeamAcceptAPI } from "../../api/System";
 
 function HeaderTeamDetail() {
   const { idTeam } = useParams();
@@ -49,7 +50,6 @@ function HeaderTeamDetail() {
     if (user != undefined && user.userVM.roleId === 5) {
       checkPaticipateTeam();
     }
-    
   }, []);
 
   const checkPaticipateTeam = () => {
@@ -74,13 +74,11 @@ function HeaderTeamDetail() {
   };
 
   const getInforTeam = () => {
-    
     setLoading(true);
     let afterDefaultURL = `teams/${idTeam}`;
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
-        
         setTeam(res.data);
         getUserById(idTeam);
         setLoading(false);
@@ -124,18 +122,13 @@ function HeaderTeamDetail() {
       return <CommentTeamDetail />;
     }
   };
-  const addResquestToTeam = () => {
-    setLoading(true);
-    const data = {
-      status: "Chờ xét duyệt từ đội bóng",
-      teamId: idTeam,
-      footballPlayerId: user.userVM.id,
-    };
-    const respone = addPlayerInTeamAPI(data);
+
+  const sendMailPlayerRequestInTeam = (iPdlayer,idTeam) => {
+    const respone = PlayerRegisterAPI(iPdlayer,+idTeam);
     respone
       .then((res) => {
         if (res.status === 201) {
-          setStatusPaticipate("Chờ xét duyệt từ đội bóng");
+          setLoading(false);
           toast.success(
             "Yêu cầu tham gia đội bóng thành công.Chờ phản hồi từ đội bóng nhé!",
             {
@@ -148,7 +141,37 @@ function HeaderTeamDetail() {
               progress: undefined,
             }
           );
-          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+        console.error(err);
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+
+  const addResquestToTeam = () => {
+    setLoading(true);
+    const data = {
+      status: "Chờ xét duyệt từ đội bóng",
+      teamId: idTeam,
+      footballPlayerId: user.userVM.id,
+    };
+    const respone = addPlayerInTeamAPI(data);
+    respone
+      .then((res) => {
+        if (res.status === 201) {
+          setStatusPaticipate("Chờ xét duyệt từ đội bóng");
+          sendMailPlayerRequestInTeam(user.userVM.id,idTeam);
         }
       })
       .catch((err) => {
