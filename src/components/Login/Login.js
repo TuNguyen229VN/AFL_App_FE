@@ -8,6 +8,7 @@ import axios from "axios";
 import SignUpGoogle from "../SignUpGoogle/SignUpGoogle";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import LoadingAction from "../LoadingComponent/LoadingAction";
+import { getAPI } from "../../api";
 function Login() {
   const [checkLoading, setCheckLoading] = useState(false);
   const firebaseConfig = {
@@ -46,7 +47,7 @@ function Login() {
   const [passwordErr, setPasswordErr] = useState("");
 
   const loginWithPass = async () => {
-    setCheckLoading(true)
+    setCheckLoading(true);
     try {
       if (
         inputValues.username.trim() === "" ||
@@ -88,13 +89,15 @@ function Login() {
         }
       );
       localStorage.setItem("userInfo", JSON.stringify(response.data));
-      setCheckLoading(false)
+      await getPlayer(response.data.userVM.id);
+      await getTeam(response.data.userVM.id);
+      setCheckLoading(false);
       window.location.reload();
       navigate("../home", { replace: true });
     } catch (err) {
       console.log(err);
       console.log(err.response.data);
-      setCheckLoading(false)
+      setCheckLoading(false);
       if (err.response.data === "Tài khoản không tồn tại") {
         setUserNameErr(err.response.data);
         setPasswordErr("");
@@ -122,7 +125,7 @@ function Login() {
   }, []);
 
   const checkLoginGG = async (token) => {
-    setCheckLoading(true)
+    setCheckLoading(true);
     try {
       const response = await axios.post(
         "https://afootballleague.ddns.net/api/v1/auth/login-with-google",
@@ -136,14 +139,42 @@ function Login() {
         }
       );
       localStorage.setItem("userInfo", JSON.stringify(response.data));
-      setCheckLoading(false)
+      await getPlayer(response.data.userVM.id);
+      await getTeam(response.data.userVM.id);
+      setCheckLoading(false);
       window.location.reload();
       navigate("../home", { replace: true });
     } catch (err) {
-      setCheckLoading(false)
+      setCheckLoading(false);
       if (err.response.data === "Tài khoản không tồn tại") {
         setNewAcc(true);
       }
+    }
+  };
+
+  const getPlayer = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://afootballleague.ddns.net/api/v1/football-players/${id}`
+      );
+      if (response.status === 200) {
+        localStorage.setItem("playerInfo", JSON.stringify(response.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTeam = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://afootballleague.ddns.net/api/v1/teams/${id}`
+      );
+      if (response.status === 200) {
+        localStorage.setItem("teamInfo", JSON.stringify(response.data));
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -251,7 +282,6 @@ function Login() {
                     setUserInfo(user);
                     await checkLoginGG(token);
                     setToken(token);
-                    console.log(user);
                     // ...
                   })
                   .catch((error) => {

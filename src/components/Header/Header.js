@@ -22,10 +22,18 @@ function Header(id) {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [team, setTeam] = useState(
+    JSON.parse(localStorage.getItem("teamInfo"))
+  );
+  const [player, setPlayer] = useState(
+    JSON.parse(localStorage.getItem("playerInfo"))
+  );
   // signout
   const signout = () => {
     firebase.auth().signOut();
     localStorage.removeItem("userInfo");
+    localStorage.removeItem("teamInfo");
+    localStorage.removeItem("playerInfo");
     window.location.reload();
   };
   const [myAccount, setMyAccount] = useState([]);
@@ -74,6 +82,7 @@ function Header(id) {
     `/playerDetail/${id.id}/achivementInPlayer`,
   ]
   useEffect(()=>{
+    console.log(team+"-----"+player)
     getMyAccount();
   },[])
   useEffect(() => {

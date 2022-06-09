@@ -92,8 +92,36 @@ function SignUpGoogle(props) {
         }
       );
       localStorage.setItem("userInfo", JSON.stringify(response.data));
+      await getPlayer(response.data.userVM.id);
+      await getTeam(response.data.userVM.id);
       window.location.reload();
       navigate("../home", { replace: true });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getPlayer = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://afootballleague.ddns.net/api/v1/football-players/${id}`
+      );
+      if (response.status === 200) {
+        localStorage.setItem("playerInfo", JSON.stringify(response.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTeam = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://afootballleague.ddns.net/api/v1/teams/${id}`
+      );
+      if (response.status === 200) {
+        localStorage.setItem("teamInfo", JSON.stringify(response.data));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -148,8 +176,8 @@ function SignUpGoogle(props) {
                 onChange={handleOnChange}
               >
                 <option value=""></option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <option value="Male">Nam</option>
+                <option value="Female">Nữ</option>
               </select>
             </div>
             {isNull ? <p className="error">{genderErr}</p> : ""}

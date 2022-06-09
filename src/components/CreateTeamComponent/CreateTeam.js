@@ -180,6 +180,7 @@ const CreateTeam = () => {
         }
       );
       if (response.status === 201) {
+        await getTeam(response.data.id)
         setLoading(false);
         toast.success("Tạo đội bóng thành công", {
           position: "top-right",
@@ -222,6 +223,19 @@ const CreateTeam = () => {
       });
 
       console.error(error.response);
+    }
+  };
+
+  const getTeam = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://afootballleague.ddns.net/api/v1/teams/${id}`
+      );
+      if (response.status === 200) {
+        localStorage.setItem("teamInfo", JSON.stringify(response.data));
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

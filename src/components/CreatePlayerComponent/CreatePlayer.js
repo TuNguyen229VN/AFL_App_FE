@@ -38,19 +38,19 @@ function CreatePlayer() {
   const [loading, setLoading] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
 
-    useEffect(() => {
-      getUser();
-    }, []);
-    const getUser = () => {
-      let afterDefaultURL = `users/${user.userVM.id}`;
-      let response = getAPI(afterDefaultURL);
-      response
-        .then((res) => {
-          setNamePlayer({ value: res.data.username });
-          setAvt({value:res.data.avatar,img:res.data.avatar})
-        })
-        .catch((err) => console.error(err));
-    };
+  useEffect(() => {
+    getUser();
+  }, []);
+  const getUser = () => {
+    let afterDefaultURL = `users/${user.userVM.id}`;
+    let response = getAPI(afterDefaultURL);
+    response
+      .then((res) => {
+        setNamePlayer({ value: res.data.username });
+        setAvt({ value: res.data.avatar, img: res.data.avatar });
+      })
+      .catch((err) => console.error(err));
+  };
   const validateForm = (name, value) => {
     switch (name) {
       case "avt":
@@ -111,6 +111,7 @@ function CreatePlayer() {
         }
       );
       if (response.status === 200) {
+        await getPlayer(response.data.id);
         setLoading(false);
         toast.success("Tạo cầu thủ thành công", {
           position: "top-right",
@@ -148,6 +149,19 @@ function CreatePlayer() {
       });
 
       console.error(error.response);
+    }
+  };
+
+  const getPlayer = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://afootballleague.ddns.net/api/v1/football-players/${id}`
+      );
+      if (response.status === 200) {
+        localStorage.setItem("playerInfo", JSON.stringify(response.data));
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

@@ -86,7 +86,7 @@ function HeaderTeamDetail() {
         setLoading(false);
       })
       .catch((err) => {
-        if (err.response.data.status === 500) {
+        if (err.response.status === 404) {
           setLoading(false);
         }
       });
