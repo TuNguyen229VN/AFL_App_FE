@@ -88,9 +88,13 @@ function Login() {
           headers: { "Content-Type": "application/json" },
         }
       );
+
+      const playerUser = await getPlayer(response.data.userVM.id);
+      const teamUser = await getTeam(response.data.userVM.id);
+      const userData = response.data;
+      userData.teamInfo = teamUser === undefined ? null : teamUser;
+      userData.playerInfo = playerUser === undefined ? null : playerUser;
       localStorage.setItem("userInfo", JSON.stringify(response.data));
-      await getPlayer(response.data.userVM.id);
-      await getTeam(response.data.userVM.id);
       setCheckLoading(false);
       window.location.reload();
       navigate("../home", { replace: true });
@@ -138,9 +142,13 @@ function Login() {
           },
         }
       );
+      const playerUser = await getPlayer(response.data.userVM.id);
+      const teamUser = await getTeam(response.data.userVM.id);
+      const userData = response.data;
+      userData.teamInfo = teamUser === undefined ? null : teamUser;
+      userData.playerInfo = playerUser === undefined ? null : playerUser;
+
       localStorage.setItem("userInfo", JSON.stringify(response.data));
-      await getPlayer(response.data.userVM.id);
-      await getTeam(response.data.userVM.id);
       setCheckLoading(false);
       window.location.reload();
       navigate("../home", { replace: true });
@@ -158,7 +166,8 @@ function Login() {
         `https://afootballleague.ddns.net/api/v1/football-players/${id}`
       );
       if (response.status === 200) {
-        localStorage.setItem("playerInfo", JSON.stringify(response.data));
+        return response.data;
+        //localStorage.setItem("playerInfo", JSON.stringify(response.data));
       }
     } catch (error) {
       console.log(error);
@@ -171,7 +180,8 @@ function Login() {
         `https://afootballleague.ddns.net/api/v1/teams/${id}`
       );
       if (response.status === 200) {
-        localStorage.setItem("teamInfo", JSON.stringify(response.data));
+        return response.data;
+        //localStorage.setItem("teamInfo", JSON.stringify(response.data));
       }
     } catch (error) {
       console.log(error);

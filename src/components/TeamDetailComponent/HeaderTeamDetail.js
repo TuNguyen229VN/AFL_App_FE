@@ -42,6 +42,7 @@ function HeaderTeamDetail() {
     );
   };
 
+  console.log(user);
   // splitteam Area
   const splitTeamArea = (teamArea) => {
     let myArray = teamArea.split(",");
@@ -224,7 +225,7 @@ function HeaderTeamDetail() {
                             Đội Bóng
                           </Link>
                         ) : user.userVM.id != undefined &&
-                          user.userVM.roleId === 5 ? (
+                          user.playerInfo != null ? (
                           <button
                             className="editTeamTest"
                             style={{

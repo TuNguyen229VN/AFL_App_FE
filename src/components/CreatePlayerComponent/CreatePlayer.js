@@ -158,7 +158,11 @@ function CreatePlayer() {
         `https://afootballleague.ddns.net/api/v1/football-players/${id}`
       );
       if (response.status === 200) {
-        localStorage.setItem("playerInfo", JSON.stringify(response.data));
+        const userInFor = JSON.parse(localStorage.getItem("userInfo"));
+        userInFor.teamInfo = userInFor.teamInfo != null ? userInFor.teamInfo : null;
+        userInFor.playerInfo = response.data;
+        localStorage.setItem("userInfo", JSON.stringify(userInFor));
+       //localStorage.setItem("playerInfo", JSON.stringify(response.data));
       }
     } catch (error) {
       console.log(error);

@@ -339,8 +339,8 @@ function HeaderPlayerDetail() {
                       tin
                     </Link>
                   ) : user.userVM.id !== undefined &&
-                    detailPlayer !== null &&
-                    user.userVM.roleId === 3 ? (
+                    
+                    user.teamInFo !== null ? (
                     <button
                       onClick={() => {
                         if (statusPaticipate === "Chiêu mộ cầu thủ") {

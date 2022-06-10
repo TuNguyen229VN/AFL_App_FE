@@ -143,10 +143,11 @@ const CreateTeam = () => {
     return { flag: true, content: null };
   };
   const validateAdd = () => {
-    if (nameClub.value !== null || nameClub.value.length === 0) {
+    console.log(nameClub.value.length);
+    if (nameClub.value === null || nameClub.value.length === 0) {
       return "Tên đội bóng không được để trống";
     }
-    if (phoneContact.value !== null || phoneContact.value.length === 0) {
+    if (phoneContact.value === null || phoneContact.value.length === 0) {
       return {
         flag: false,
         content: "Số điện thoại không được để trống",
@@ -157,7 +158,6 @@ const CreateTeam = () => {
         content: "Sai định dạng số điện thoại",
       };
     }
-
     return null;
   };
   const onSubmitHandler = async (e) => {
@@ -248,7 +248,11 @@ const CreateTeam = () => {
         `https://afootballleague.ddns.net/api/v1/teams/${id}`
       );
       if (response.status === 200) {
-        localStorage.setItem("teamInfo", JSON.stringify(response.data));
+        const userInFor = JSON.parse(localStorage.getItem("userInfo"));
+        userInFor.teamInfo = response.data;
+        userInFor.playerInfo = userInFor.playerInfo != null ? userInFor.playerInfo : null;
+        localStorage.setItem("userInfo", JSON.stringify(userInFor));
+        //localStorage.setItem("teamInfo", JSON.stringify(response.data));
       }
     } catch (error) {
       console.log(error);
