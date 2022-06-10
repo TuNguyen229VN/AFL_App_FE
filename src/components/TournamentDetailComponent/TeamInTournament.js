@@ -18,6 +18,7 @@ function TeamInTournament(props) {
   const [active, setactive] = useState(true);
   const [viewList, setViewList] = useState(null);
   const [teamDelete, setTeamDelete] = useState(null);
+  const [hideShowView,setHideShowView] = useState(false);
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
@@ -93,9 +94,8 @@ function TeamInTournament(props) {
                           }}
                           onClick={() => {
                             setViewList(item.teamInTournament);
+                            setHideShowView(true);
                           }}
-                          data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
                         >
                           Danh sách cầu thủ đăng ký
                         </p>
@@ -221,9 +221,12 @@ function TeamInTournament(props) {
               />
             </div>
           )}
+          <div className={hideShowView ? "overlay active" : "overlay"}></div>
           <ViewListPlayerRegister
             teamInTournament={viewList}
             setViewList={setViewList}
+            setHideShow={setHideShowView}
+            hideShow={hideShowView}
           />
         </div>
         {loadingAc ? <LoadingAction /> : null}

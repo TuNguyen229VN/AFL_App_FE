@@ -51,12 +51,13 @@ function HeaderTournamentDetail() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allTeam, setAllTeam] = useState(null);
   // Get Tour Detail
+  
   const getTourDetail = async () => {
     let afterDefaultURL = `tournaments/${idTour}`;
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
-        console.log(res.data);
+        
         setTourDetail(res.data);
         getUserById(res.data.userId);
         setLoading(false);
@@ -221,7 +222,7 @@ function HeaderTournamentDetail() {
         currentPage,
         user.userVM.id
       );
-      //console.log(response.data)
+      //console.log(response.data); 
       if (response.data.teamInTournaments.length > 0) {
         setCheckPaticipate(response.data.teamInTournaments[0].status);
       }
@@ -424,7 +425,7 @@ function HeaderTournamentDetail() {
                   </div>
                   {user !== null &&
                   tourDetail != null &&
-                  user.userVM.roleId !== 4 ? (
+                  user.userVM.roleId !== 1 ? (
                     <>
                       {user.userVM.id === tourDetail.userId ? (
                         <Link
@@ -456,7 +457,7 @@ function HeaderTournamentDetail() {
                           Chỉnh sửa giải đấu
                         </Link>
                       ) : tourDetail.mode !== "PRIVATE" &&
-                        checkPaticipate === false ? (
+                        checkPaticipate === false && user.teamInfo !== null ? (
                         <div>
                           <div
                             className={hideShow ? "overlay active" : "overlay"}
