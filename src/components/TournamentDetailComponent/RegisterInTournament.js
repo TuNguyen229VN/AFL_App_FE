@@ -146,7 +146,7 @@ export default function RegisterInTournament(props) {
       const response = addPlayerInTournamentAPI(data);
       response
         .then((res) => {
-          sendMailNotiPlayer()
+          //sendMailNotiPlayer(tourId, playerId, teamId)
         })
         .catch((err) => {
           console.error(err);

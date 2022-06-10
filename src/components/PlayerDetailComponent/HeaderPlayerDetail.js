@@ -278,6 +278,7 @@ function HeaderPlayerDetail() {
           deletePlayerInTeam={deletePlayerInTeam}
           setStatusAdd={setStatusAdd}
           currentPage={currentPage}
+          user={user}
         />
       );
     }
@@ -327,7 +328,7 @@ function HeaderPlayerDetail() {
                   <div className="avt__Team">
                     <img src={detailPlayer.playerAvatar} alt="a" />
                   </div>
-                  {user.userVM.id !== undefined &&
+                  {user !== null &&
                   detailPlayer !== null &&
                   user.userVM.id === detailPlayer.id ? (
                     <Link
@@ -338,7 +339,7 @@ function HeaderPlayerDetail() {
                       <i class="fa-solid fa-pen-to-square"></i>Chỉnh sửa thông
                       tin
                     </Link>
-                  ) : user.userVM.id !== undefined &&
+                  ) : user !== null &&
                     
                     user.teamInFo !== null ? (
                     <button

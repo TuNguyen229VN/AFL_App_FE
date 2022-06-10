@@ -325,7 +325,7 @@ const CreateTournament = () => {
     return { flag: true, content: null };
   };
   const checkValidateAdd = () => {
-    
+      console.log(typeFootballField.value);
     //nameTournament phoneContact minimunPlayerInTournament  teamPaticipate  closeRegister startTime endTime
     if (nameTournament.value === null || nameTournament.value.length === 0  ) {
       return "Tên giải đấu không được để trống";
@@ -342,7 +342,7 @@ const CreateTournament = () => {
     }
     if (minimunPlayerInTournament.value === null || minimunPlayerInTournament.value.length === 0) {
       return "Số cầu thủ tối thiểu mỗi đội không được để trống";
-    }else if (minimunPlayerInTournament.value < (typeFootballField.value == 1 ? 5 : typeFootballField.value == 2 ? 11 : 7)) {
+    }else if (minimunPlayerInTournament.value < (typeFootballField.value == "Field5" ? 5 : typeFootballField.value == "Field7" ? 7 : 11)) {
       return "Số cầu thủ ít hơn quy định loại sân";
     }
     return null;

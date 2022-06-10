@@ -14,7 +14,8 @@ function MyTeamInPlayer(props) {
     deletePlayerInTeam,
     hideShow,
     setStatusAdd,
-    currentPage
+    currentPage,
+    user
   } = props;
   const [idDelete, setIdDelete] = useState(null);
   const [viewMoreOption, setViewMoreOption] = useState({
@@ -50,7 +51,7 @@ function MyTeamInPlayer(props) {
               return (
                 <div key={index} className="listPlayer__item">
                   <form onSubmit={onSubmitHandler}>
-                    {active === "true" ? (
+                    {user !== null && active === "true" ? (
                       <div>
                         <div
                           className="view__more"

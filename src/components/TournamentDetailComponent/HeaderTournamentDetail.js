@@ -345,7 +345,7 @@ function HeaderTournamentDetail() {
         status: status ? "Tham gia" : "Từ chối",
       };
       setLoadingAc(true);
-
+      console.log(teamInTournament);
       const response = updateStatusTeamInTournament(data);
       response
         .then((res) => {

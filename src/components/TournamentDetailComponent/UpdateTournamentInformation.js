@@ -428,9 +428,8 @@ const UpdateTournamentInformation = (props) => {
     ) {
       return "Số cầu thủ tối thiểu mỗi đội không được để trống";
     } else if (
-      minimunPlayerInTournament.value <
-      (typeFootballField.value == 1 ? 5 : typeFootballField.value == 2 ? 11 : 7)
-    ) {
+      minimunPlayerInTournament.value < (typeFootballField.value == "Field5" ? 5 : typeFootballField.value == "Field7" ? 7 : 11
+    )) {
       return "Số cầu thủ ít hơn quy định loại sân";
     }
     return null;

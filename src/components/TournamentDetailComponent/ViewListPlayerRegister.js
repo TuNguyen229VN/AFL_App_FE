@@ -117,7 +117,7 @@ export default function ViewListPlayerRegister(props) {
                             }}
                           >
                             <td>{index + 1}</td>
-                            <td>{item.footballPlayer.email}</td>
+                            <td>{item.footballPlayer.idNavigation.email}</td>
                             <td>
                               <img
                                 style={{
