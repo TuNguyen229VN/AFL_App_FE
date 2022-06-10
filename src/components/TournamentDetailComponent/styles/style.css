@@ -472,7 +472,7 @@
 
 .btn_UpdateTournament:hover {
   color: white;
-  background-color: #000 !important;
+  background-color: var(--blue-black) !important;
 }
 
 .choicePlayerTable,
@@ -825,14 +825,16 @@
 
 .deletePopup {
   position: fixed;
+  z-index: 10;
+  background-color: var(--white-text);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgb(80 230 126);
-  z-index: 10;
-  padding: 20px 50px;
+  padding: 20px;
+  width: 400px !important;
+  height: 150px !important;
   border-radius: 5px;
-  width: max-content !important;
+  text-align: center;
 }
 .deleteShadow {
   width: 100vw;
@@ -877,12 +879,17 @@
   font-family: "Mulish-Bold";
   margin-bottom: 40px;
 }
+.deletePopup .buttonConfirm{
+display: flex ;
+justify-content: space-between ;
+column-gap: 20px;
+}
 .deleteConfirm .buttonConfirm {
   display: flex;
   justify-content: space-between;
 }
 
-.deleteConfirm .buttonConfirm button {
+.deletePopup .buttonConfirm button,.deleteConfirm .buttonConfirm button {
   border: none;
   outline: none;
   padding: 15px 15px;
@@ -894,13 +901,37 @@
   text-align: center;
 }
 
-.deleteConfirm .buttonConfirm .cancel {
+.deletePopup .buttonConfirm .cancel,.deleteConfirm .buttonConfirm .cancel {
   background-color: #dc3545;
 }
-.deleteConfirm .buttonConfirm .confirm {
+.deletePopup .buttonConfirm .confirm,.deleteConfirm .buttonConfirm .confirm {
   background-color: #28a745;
 }
 
-.deleteConfirm .buttonConfirm button:hover {
+.deletePopup .buttonConfirm button:hover,.deleteConfirm .buttonConfirm button:hover {
   filter: brightness(90%);
+}
+
+
+.HeaderTeamDetail .report{
+  position: absolute;
+  display: flex;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  color: var(--white-text);
+  column-gap: 5px;
+  border: 1px solid var(--white-text);
+  padding: 10px;
+  font-family: "Mulish-Bold";
+  border-radius: 5px;
+  transition: 0.5s;
+}
+
+.HeaderTeamDetail .report:hover{
+  background-color: var(--blue-black);
+}
+
+.errRp{
+  margin-bottom: 10px;
 }

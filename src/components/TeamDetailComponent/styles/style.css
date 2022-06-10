@@ -542,6 +542,7 @@
   font-family: "Mulish-Bold";
   transition: 0.5s;
   border-radius: 5px;
+  border: none;
 }
 /* .teamdetail .editTeam:hover{
   background-color: var(--blue-black);

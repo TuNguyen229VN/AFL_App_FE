@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import "./styles/style.css";
 import { PlayerRegisterAPI, TeamAcceptAPI } from "../../api/System";
 import LoadingAction from "../LoadingComponent/LoadingAction";
+import axios from "axios";
 
 function HeaderTeamDetail() {
   const { idTeam } = useParams();
@@ -30,6 +31,8 @@ function HeaderTeamDetail() {
     JSON.parse(localStorage.getItem("userInfo"))
   );
   const [statusPaticipate, setStatusPaticipate] = useState("Tham gia đội bóng");
+  const [popupReport, setPopupReport] = useState(false);
+  const [contentReport, setContentReport] = useState({ value: "", error: "" });
   // format Date
   const formatDate = (date) => {
     const day = new Date(date);
@@ -197,6 +200,104 @@ function HeaderTeamDetail() {
   useEffect(() => {
     setActiveTeamDetail(location.pathname);
   }, [location.pathname]);
+
+  const validateForm = (name, value) => {
+    switch (name) {
+      case "contentU":
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "*Không được để trống",
+          };
+        }
+        break;
+      default:
+        break;
+    }
+
+    return { flag: true, content: null };
+  };
+
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+    const flagValid = validateForm(name, value);
+    switch (name) {
+      case "contentU":
+        let contentU = null;
+        if (flagValid.flag === false) {
+          contentU = {
+            value,
+            error: flagValid.content,
+          };
+        } else {
+          contentU = {
+            value,
+            error: null,
+          };
+        }
+        setContentReport({
+          ...contentU,
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
+  const sendReport = async (e) => {
+    setLoadingAc(true);
+    e.preventDefault();
+    if (contentReport.value === null || contentReport.value === "") {
+      toast.error("Không được để trống", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setLoadingAc(false);
+      return;
+    }
+    const data = {
+      reason: contentReport.value,
+      userId: user.userVM.id,
+      teamId: idTeam,
+    };
+    try {
+      const response = await axios.post(
+        "https://afootballleague.ddns.net/api/v1/reports",
+        data
+      );
+      if (response.status === 201) {
+        setPopupReport(false);
+        setContentReport({value:"",error:""})
+        setLoadingAc(false);
+        toast.success("Báo cáo thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      setLoadingAc(false);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.log(error);
+    }
+  };
   return (
     <>
       <Header id={idTeam} />
@@ -308,6 +409,47 @@ function HeaderTeamDetail() {
                       </span>
                     </div>
                   </div>
+                  {user !== null && user.userVM.id !== team.id ? (
+                  <>
+                    <div
+                      className="report"
+                      onClick={() => setPopupReport(true)}
+                    >
+                      <i class="fa-solid fa-exclamation"></i>
+                      <p>Báo cáo</p>
+                    </div>
+                    <div
+                      className={popupReport ? `overlay active` : "active"}
+                      onClick={() => {
+                        setPopupReport(false);
+                      }}
+                    ></div>
+                    <form
+                      className={
+                        popupReport ? "popup__news active" : "popup__news"
+                      }
+                      onSubmit={sendReport}
+                    >
+                      <div
+                        className="close"
+                        onClick={() => setPopupReport(false)}
+                      >
+                        X
+                      </div>
+                      <h4>Báo cáo đội bóng</h4>
+                      <p className="error errRp">{contentReport.error}</p>
+                      <textarea
+                        placeholder="Lý do báo cáo đội bóng này"
+                        className="content"
+                        name="contentU"
+                        autoComplete="off"
+                        value={contentReport.value}
+                        onChange={onChangeHandler}
+                      />
+                      <button>Báo cáo</button>
+                    </form>
+                  </>
+                ) : null}
                 </div>
                 <div className="headerteamdetail__tag">
                   <Link

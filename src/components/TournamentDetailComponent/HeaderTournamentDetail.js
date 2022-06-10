@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 import "./styles/style.css";
 import { useParams } from "react-router-dom";
 import Header from "../Header/Header";
@@ -12,6 +13,7 @@ import TeamInTournament from "./TeamInTournament";
 import PredictionTournamentDetail from "./PredictionTournamentDetail";
 import CommentTournamentDetail from "./CommentTournamentDetail";
 import Loading from "../LoadingComponent/Loading";
+import LoadingAction from "../LoadingComponent/LoadingAction";
 import NewsTournamentDetail from "./NewsTournamentDetail";
 import { getAPI } from "../../api";
 import { useNavigate } from "react-router-dom";
@@ -47,17 +49,18 @@ function HeaderTournamentDetail() {
   const [host, setHost] = useState("");
   const [loading, setLoading] = useState(true);
   const [loadingAc, setLoadingAc] = useState(false);
+  const [popupReport, setPopupReport] = useState(false);
+  const [contentReport, setContentReport] = useState({ value: "", error: "" });
   let navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [allTeam, setAllTeam] = useState(null);
   // Get Tour Detail
-  
+
   const getTourDetail = async () => {
     let afterDefaultURL = `tournaments/${idTour}`;
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
-        
         setTourDetail(res.data);
         getUserById(res.data.userId);
         setLoading(false);
@@ -222,7 +225,7 @@ function HeaderTournamentDetail() {
         currentPage,
         user.userVM.id
       );
-      //console.log(response.data); 
+      //console.log(response.data);
       if (response.data.teamInTournaments.length > 0) {
         setCheckPaticipate(response.data.teamInTournaments[0].status);
       }
@@ -320,18 +323,15 @@ function HeaderTournamentDetail() {
         if (res.status === 200) {
           setHideShowDelete(false);
           getAllTeamInTournamentByTourId();
-          toast.success(
-            "Đội bóng đã được thêm vào giải",
-            {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            }
-          );
+          toast.success("Đội bóng đã được thêm vào giải", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       })
       .catch((err) => {
@@ -405,10 +405,109 @@ function HeaderTournamentDetail() {
   const setStatusTeam = (data) => {
     setStatusInTour(data);
   };
+
+  const validateForm = (name, value) => {
+    switch (name) {
+      case "contentU":
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "*Không được để trống",
+          };
+        }
+        break;
+      default:
+        break;
+    }
+
+    return { flag: true, content: null };
+  };
+
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+    const flagValid = validateForm(name, value);
+    switch (name) {
+      case "contentU":
+        let contentU = null;
+        if (flagValid.flag === false) {
+          contentU = {
+            value,
+            error: flagValid.content,
+          };
+        } else {
+          contentU = {
+            value,
+            error: null,
+          };
+        }
+        setContentReport({
+          ...contentU,
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
+  const sendReport = async (e) => {
+    setLoadingAc(true);
+    e.preventDefault();
+    if (contentReport.value === null || contentReport.value === "") {
+      toast.error("Không được để trống", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setLoadingAc(false);
+      return;
+    }
+    const data = {
+      reason: contentReport.value,
+      userId: user.userVM.id,
+      tournamentId: idTour,
+    };
+    try {
+      const response = await axios.post(
+        "https://afootballleague.ddns.net/api/v1/reports",
+        data
+      );
+      if (response.status === 201) {
+        setPopupReport(false);
+        setContentReport({value:"",error:""})
+        setLoadingAc(false);
+        toast.success("Báo cáo thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      setLoadingAc(false);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Header id={idTour} />
-
+    {loadingAc?<LoadingAction/>:null}
       <div className="teamdetail">
         {loading ? (
           <Loading />
@@ -457,7 +556,8 @@ function HeaderTournamentDetail() {
                           Chỉnh sửa giải đấu
                         </Link>
                       ) : tourDetail.mode !== "PRIVATE" &&
-                        checkPaticipate === false && user.teamInfo !== null ? (
+                        checkPaticipate === false &&
+                        user.teamInfo !== null ? (
                         <div>
                           <div
                             className={hideShow ? "overlay active" : "overlay"}
@@ -605,6 +705,47 @@ function HeaderTournamentDetail() {
                     </span>
                   </div>
                 </div>
+                {user !== null && user.userVM.id !== tourDetail.userId ? (
+                  <>
+                    <div
+                      className="report"
+                      onClick={() => setPopupReport(true)}
+                    >
+                      <i class="fa-solid fa-exclamation"></i>
+                      <p>Báo cáo</p>
+                    </div>
+                    <div
+                      className={popupReport ? `overlay active` : "active"}
+                      onClick={() => {
+                        setPopupReport(false);
+                      }}
+                    ></div>
+                    <form
+                      className={
+                        popupReport ? "popup__news active" : "popup__news"
+                      }
+                      onSubmit={sendReport}
+                    >
+                      <div
+                        className="close"
+                        onClick={() => setPopupReport(false)}
+                      >
+                        X
+                      </div>
+                      <h4>Báo cáo giải đấu</h4>
+                      <p className="error errRp">{contentReport.error}</p>
+                      <textarea
+                        placeholder="Lý do báo cáo giải đấu này"
+                        className="content"
+                        name="contentU"
+                        autoComplete="off"
+                        value={contentReport.value}
+                        onChange={onChangeHandler}
+                      />
+                      <button>Báo cáo</button>
+                    </form>
+                  </>
+                ) : null}
               </div>
               {tourDetail.registerEndDate !== null ? (
                 <CountDown registerEndDate={tourDetail.registerEndDate} />
