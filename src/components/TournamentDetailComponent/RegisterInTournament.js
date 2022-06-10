@@ -4,7 +4,7 @@ import LoadingAction from "../LoadingComponent/LoadingAction";
 import { toast } from "react-toastify";
 import { addTeamInTournamentAPI } from "../../api/TeamInTournamentAPI";
 import { addPlayerInTournamentAPI } from "../../api/PlayerInTournamentAPI";
-import {NotiFootballInTournamentAPI} from "../../api/System"
+import { NotiFootballInTournamentAPI } from "../../api/System";
 export default function RegisterInTournament(props) {
   const { idUser, tourDetail, setCheckRegistertour, hideShow, setHideShow } =
     props;
@@ -17,7 +17,7 @@ export default function RegisterInTournament(props) {
   useEffect(() => {
     getListPlayerInTeamByIdTeam();
   }, [idUser]);
-  
+  console.log(tourDetail);
   const getListPlayerInTeamByIdTeam = async () => {
     setLoading(true);
     const afterURL = `PlayerInTeam?teamId=${idUser}&status=true&pageIndex=1&limit=50`;
@@ -33,7 +33,7 @@ export default function RegisterInTournament(props) {
     });
     const playersData = await Promise.all(players);
     playersData.countList = response.data.countList;
-    console.log(playersData)
+    console.log(playersData);
     setPlayerInTeam(playersData);
     setLoading(false);
   };
@@ -45,7 +45,6 @@ export default function RegisterInTournament(props) {
   };
   //console.log(tourDetail)
   const getNumberInField = () => {
-    
     if (tourDetail.footballFieldTypeId === 1) {
       return 5;
     } else if (tourDetail.footballFieldTypeId === 2) {
@@ -75,14 +74,12 @@ export default function RegisterInTournament(props) {
       }
     } else {
       const getIndex = name.split("t")[2];
-      console.log(getIndex)
+      console.log(getIndex);
       allPlayer[getIndex].clothesNumber = value;
     }
-    console.log(allPlayer)
+    console.log(allPlayer);
     setPlayerInTeam(allPlayer);
   };
-
-  
 
   const addTeamInTournament = () => {
     setLoading(true);
@@ -117,26 +114,25 @@ export default function RegisterInTournament(props) {
       });
   };
   const sendMailNotiPlayer = (tourId, playerId, teamId) => {
-      const response = NotiFootballInTournamentAPI(tourId, playerId, teamId);
-      response.then(res => {
-        if(res.status === 201){
-
+    const response = NotiFootballInTournamentAPI(tourId, playerId, teamId);
+    response
+      .then((res) => {
+        if (res.status === 201) {
         }
-      }).catch(err => {
-        console.error(err);
       })
-  }
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   const addPlayerInTournament = (id) => {
     const getPlayerChoice = playerInTeam.reduce((accumulator, currentValue) => {
-      
       if (currentValue.choice === true) {
         accumulator.push(currentValue);
       }
       return accumulator;
     }, []);
-    
+    console.log(getPlayerChoice);
     getPlayerChoice.map((iteam, index) => {
-      
       const data = {
         teamInTournamentId: id,
         playerInTeamId: iteam.idPlayerInTeam,
@@ -146,7 +142,11 @@ export default function RegisterInTournament(props) {
       const response = addPlayerInTournamentAPI(data);
       response
         .then((res) => {
-          //sendMailNotiPlayer(tourId, playerId, teamId)
+          sendMailNotiPlayer(
+            tourDetail.tournamentId,
+            iteam.userVM.id,
+            tourDetail.tourDetail
+          );
         })
         .catch((err) => {
           console.error(err);

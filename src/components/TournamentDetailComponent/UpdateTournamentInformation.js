@@ -51,7 +51,7 @@ const UpdateTournamentInformation = (props) => {
     error: null,
   });
   const [typeFootballField, setTypeFootballField] = useState({
-    value: 1,
+    value: "Field5",
     error: null,
   });
   const [closeRegister, setCloseRegister] = useState({

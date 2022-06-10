@@ -43,7 +43,7 @@ const CreateTournament = () => {
     error: null,
   });
   const [typeFootballField, setTypeFootballField] = useState({
-    value: 1,
+    value: "Field5",
     error: null,
   });
   const [closeRegister, setCloseRegister] = useState({
@@ -71,7 +71,7 @@ const CreateTournament = () => {
     error: null,
   });
   const [footballField, setFootballField] = useState({
-    value: null,
+    value: "",
     error: null,
   });
   const [gender, setGender] = useState({
@@ -456,7 +456,7 @@ const CreateTournament = () => {
         });
         break;
       case "timeDuration":
-        console.log(value);
+        
         setTimeDuration({
           ...timeDuration,
           value,
