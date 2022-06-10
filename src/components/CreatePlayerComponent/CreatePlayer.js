@@ -47,7 +47,7 @@ function CreatePlayer() {
     response
       .then((res) => {
         setNamePlayer({ value: res.data.username });
-        setAvt({ value: res.data.avatar, img: res.data.avatar });
+        // setAvt({ value: res.data.avatar, img: res.data.avatar });
       })
       .catch((err) => console.error(err));
   };
@@ -81,7 +81,7 @@ function CreatePlayer() {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(position.value)
+    console.log(avt.value)
     setLoading(true);
     if (namePlayer.value === null || namePlayer.value === "") {
       toast.error("Không được để trống", {

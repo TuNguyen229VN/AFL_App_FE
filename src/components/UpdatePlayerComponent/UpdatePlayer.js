@@ -44,7 +44,7 @@ function UpdatePlayer() {
     response
       .then((res) => {
         setNamePlayer({ value: res.data.playerName });
-        setAvt({ value: res.data.avatar, img: res.data.playerAvatar });
+        setAvt({ value: res.data.playerAvatar, img: res.data.playerAvatar });
         setDesc({ value: res.data.description });
         setPosition({ value: res.data.position });
       })
