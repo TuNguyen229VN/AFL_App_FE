@@ -144,6 +144,12 @@ function Profile() {
         }
         break;
       case "dob":
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "*Không được để trống",
+          };
+        }
         break;
       case "cmnd":
         if (value.length === 0) {
@@ -565,8 +571,6 @@ function Profile() {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    let splitdate = dob.value.split("-");
-    let day = parseInt(splitdate[2]) + 1;
     if (
       username.value.trim() === "" ||
       phone.value.trim() === "" ||
@@ -588,7 +592,7 @@ function Profile() {
       id: user.userVM.id,
       username: username.value,
       gender: gender.value,
-      dateOfBirth: splitdate[0] + "-" + splitdate[1] + "-" + day,
+      dateOfBirth: new Date(dob.value),
       address: address.value,
       phone: phone.value,
       avatar: avt.value,
@@ -634,7 +638,7 @@ function Profile() {
   return (
     <>
       <ScrollToTop />
-      {loading?<LoadingAction/>:null}
+      {loading ? <LoadingAction /> : null}
       <Header />
       <div className={styles.profile}>
         <h2 className={styles.profile__title}>Thông tin cá nhân</h2>
@@ -887,7 +891,9 @@ function Profile() {
             ) : null}
           </>
         ) : (
-          <p className={styles.acer}><i class="fa-solid fa-trophy"></i> Bạn đã là một người tạo giải </p>
+          <p className={styles.acer}>
+            <i class="fa-solid fa-trophy"></i> Bạn đã là một người tạo giải{" "}
+          </p>
         )}
 
         <div className={styles.profile__delete}>

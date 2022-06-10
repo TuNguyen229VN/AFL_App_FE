@@ -164,27 +164,27 @@ function App() {
           <Route
             exact
             path="/playerDetail/:idPlayer/myTeamInPlayer"
-            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
+            element={<HeaderPlayerDetail />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/myTournamentInPlayer"
-            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
+            element={<HeaderPlayerDetail />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/requestInPlayer"
-            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
+            element={<HeaderPlayerDetail />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/scheduleInPlayer"
-            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
+            element={<HeaderPlayerDetail />}
           />
           <Route
             exact
             path="/playerDetail/:idPlayer/achivementInPlayer"
-            element={user ? <HeaderPlayerDetail /> : <Navigate to={"/login"} />}
+            element={<HeaderPlayerDetail />}
           />
           <Route exact path="/footballPlayer" element={<FootballPlayer />} />
         </Routes>

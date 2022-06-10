@@ -203,9 +203,9 @@
   padding: 15px;
 }
 
-.teamdetail .schedule__tour .schedule__table th {
+/* .teamdetail .schedule__tour .schedule__table th {
   transform: translateX(-50px);
-}
+} */
 
 .teamdetail .schedule__tour .schedule__table img {
   width: 35px;
@@ -213,46 +213,46 @@
   border-radius: 50%;
 }
 
-.teamdetail .schedule__tour .schedule__table td:first-child {
+.teamdetail .schedule__tour .schedule__table td:nth-child(2) {
   width: 180px;
 }
 
-.teamdetail .schedule__tour .schedule__table td:nth-child(2) {
+.teamdetail .schedule__tour .schedule__table td:nth-child(3) {
   margin-left: 0px;
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(2),
-.teamdetail .schedule__tour .schedule__table td:nth-child(4) {
+.teamdetail .schedule__tour .schedule__table td:nth-child(3),
+.teamdetail .schedule__tour .schedule__table td:nth-child(5) {
   text-transform: uppercase;
   position: relative;
   width: max-content;
   width: 300px;
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(4) {
+.teamdetail .schedule__tour .schedule__table td:nth-child(5) {
   width: 300px;
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(3) {
+.teamdetail .schedule__tour .schedule__table td:nth-child(4) {
   font-family: "Mulish-Bold";
   font-size: 18px;
   /* transform: translateX(10px); */
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(5) {
+.teamdetail .schedule__tour .schedule__table td:nth-child(6) {
   width: 85px;
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(5) a {
+.teamdetail .schedule__tour .schedule__table td:nth-child(6) a {
   color: var(--blue-black);
   font-family: "Mulish-Bold";
 }
 
-.teamdetail .schedule__tour .schedule__table td:nth-child(5) a:hover {
+.teamdetail .schedule__tour .schedule__table td:nth-child(6) a:hover {
   text-decoration: underline;
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(2) img {
+.teamdetail .schedule__tour .schedule__table td:nth-child(3) img {
   top: 50%;
   transform: translateY(-50%);
   position: absolute;
   left: 220px;
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(4) img {
+.teamdetail .schedule__tour .schedule__table td:nth-child(5) img {
   position: absolute;
   font-family: "Mulish-Bold";
   top: 50%;

@@ -28,7 +28,7 @@ function CreatePlayer() {
   });
 
   const [position, setPosition] = useState({
-    value: "",
+    value: "striker",
     error: "",
   });
   const [desc, setDesc] = useState({
@@ -81,6 +81,7 @@ function CreatePlayer() {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    console.log(position.value)
     setLoading(true);
     if (namePlayer.value === null || namePlayer.value === "") {
       toast.error("Không được để trống", {
@@ -325,7 +326,7 @@ function CreatePlayer() {
                   id="genderteam"
                   required
                 >
-                  <option value="striker">Tiền đạo</option>
+                  <option value="striker" selected>Tiền đạo</option>
                   <option value="midfielder">Tiền vệ</option>
                   <option value="defender">Hậu vệ</option>
                   <option value="goalkeeper">Thủ môn</option>
