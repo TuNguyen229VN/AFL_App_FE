@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import { useNavigate } from "react-router-dom";
 import { getAPI } from "../../api";
-import LoadingAction from "../LoadingComponent/LoadingAction"
+import LoadingAction from "../LoadingComponent/LoadingAction";
 
 const CreateTeam = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -48,16 +48,16 @@ const CreateTeam = () => {
     value: "",
     error: "",
   });
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
   const [provice, setProvice] = useState(null);
   const [districts, setDistricts] = useState(null);
   const [wards, setWards] = useState(null);
   const [addressField, setAddressField] = useState(null);
-  const [proviceSearch,setProviceSearch] = useState(null);
-  const [districSearch,setDistricSearch] = useState(null);
-  const [wardSearch,setWardSearch] = useState(null);
+  const [proviceSearch, setProviceSearch] = useState(null);
+  const [districSearch, setDistricSearch] = useState(null);
+  const [wardSearch, setWardSearch] = useState(null);
   useEffect(() => {
     setResetProvice(-1);
     getAllCity();
@@ -89,12 +89,7 @@ const CreateTeam = () => {
       case "imgClub":
         break;
       case "nameClub":
-        if (value.length === 0) {
-          return {
-            flag: false,
-            content: "Không được để trống",
-          };
-        } else if (/\d+/.test(value)) {
+        if (/\d+/.test(value)) {
           return {
             flag: false,
             content: "Tên đội bóng là chữ",
@@ -102,20 +97,10 @@ const CreateTeam = () => {
         }
         break;
       case "phoneContact":
-        if (value.length === 0) {
-          return {
-            flag: false,
-            content: "Không được để trống",
-          };
-        } else if (!/^[0-9]+$/.test(value)) {
+        if (!/^[0-9]+$/.test(value)) {
           return {
             flag: false,
             content: "Số điện thoại không được là chữ hay kí tự khác",
-          };
-        } else if (!/(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(value)) {
-          return {
-            flag: false,
-            content: "Sai định dạng số điện thoại",
           };
         }
 
@@ -157,62 +142,31 @@ const CreateTeam = () => {
 
     return { flag: true, content: null };
   };
+  const validateAdd = () => {
+    if (nameClub.value !== null || nameClub.value.length === 0) {
+      return "Tên đội bóng không được để trống";
+    }
+    if (phoneContact.value !== null || phoneContact.value.length === 0) {
+      return {
+        flag: false,
+        content: "Số điện thoại không được để trống",
+      };
+    } else if (!/(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(phoneContact.value)) {
+      return {
+        flag: false,
+        content: "Sai định dạng số điện thoại",
+      };
+    }
 
+    return null;
+  };
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const data = {
-        id: user.userVM.id,
-        teamName: nameClub.value,
-        teamPhone: phoneContact.value,
-        teamAvatar: imgClub.value,
-        description: textDescription,
-        teamGender: gender.value,
-        teamArea: addressField,
-      };
-
-      const response = await axios.post(
-        "https://afootballleague.ddns.net/api/v1/teams",
-        data,
-        {
-          headers: { "content-type": "multipart/form-data" },
-        }
-      );
-      if (response.status === 201) {
-        await getTeam(response.data.id)
-        setLoading(false);
-        toast.success("Tạo đội bóng thành công", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        const intitalState = {
-          value: "",
-          error: "",
-        };
-        setImgClub(intitalState);
-        setNameClub(intitalState);
-        setPhoneContact(intitalState);
-        setGender({
-          value: "Male",
-          error: "",
-        });
-        setEditorState(EditorState.createEmpty());
-        setProvice(null);
-        setDistricts(null);
-        setWards(null);
-        setResetProvice(0);
-        setBtnActive(false);
-        navigate(`/teamDetail/${response.data.id}/inforTeamDetail`);
-      }
-    } catch (error) {
+    const flag = validateAdd();
+    if (flag !== null) {
       setLoading(false);
-      toast.error(error.response.data.message, {
+      toast.error(flag, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -221,8 +175,70 @@ const CreateTeam = () => {
         draggable: true,
         progress: undefined,
       });
+    } else {
+      try {
+        const data = {
+          id: user.userVM.id,
+          teamName: nameClub.value,
+          teamPhone: phoneContact.value,
+          teamAvatar: imgClub.value,
+          description: textDescription,
+          teamGender: gender.value,
+          teamArea: addressField,
+        };
 
-      console.error(error.response);
+        const response = await axios.post(
+          "https://afootballleague.ddns.net/api/v1/teams",
+          data,
+          {
+            headers: { "content-type": "multipart/form-data" },
+          }
+        );
+        if (response.status === 201) {
+          await getTeam(response.data.id);
+          setLoading(false);
+          toast.success("Tạo đội bóng thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          const intitalState = {
+            value: "",
+            error: "",
+          };
+          setImgClub(intitalState);
+          setNameClub(intitalState);
+          setPhoneContact(intitalState);
+          setGender({
+            value: "Male",
+            error: "",
+          });
+          setEditorState(EditorState.createEmpty());
+          setProvice(null);
+          setDistricts(null);
+          setWards(null);
+          setResetProvice(0);
+          setBtnActive(false);
+          navigate(`/teamDetail/${response.data.id}/inforTeamDetail`);
+        }
+      } catch (error) {
+        setLoading(false);
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
+        console.error(error.response);
+      }
     }
   };
 
@@ -363,7 +379,7 @@ const CreateTeam = () => {
         setAddressField(", " + value + oldAddress);
         break;
       case "wards":
-        setWardSearch(value)
+        setWardSearch(value);
         {
           const oldAddress = addressField;
           setAddressField(value + oldAddress);
@@ -397,7 +413,7 @@ const CreateTeam = () => {
                 name="imgClub"
                 id="file"
                 onChange={onChangeHandler}
-                required
+                
               />
               <img
                 src={
@@ -453,7 +469,7 @@ const CreateTeam = () => {
                   placeholder="Tên đội bóng *"
                   value={nameClub.value}
                   onChange={onChangeHandler}
-                  required
+                  
                 />
               </div>
               <div className={styles.text__field}>
@@ -488,7 +504,7 @@ const CreateTeam = () => {
                   id="phoneteam"
                   placeholder="Số điện thoại *"
                   onChange={onChangeHandler}
-                  required
+                  
                 />
               </div>
               <div className={styles.text__field}>
@@ -807,7 +823,7 @@ const CreateTeam = () => {
           ) : null}
         </div>
       </form>
-     {loading ? <LoadingAction /> : null } 
+      {loading ? <LoadingAction /> : null}
       <ToastContainer />
       <Footer />
     </>

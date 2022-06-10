@@ -34,9 +34,10 @@ export default function KnockOutStageSchedule(props) {
     const data = [];
     let roundCurrent = null;
     let indexCurrent = 0;
-
+    console.log(allTeam);
     allTeam.map((item, index) => {
       if (index % 2 === 0) {
+        
         if (roundCurrent === null) {
           roundCurrent =
             tournamentType == "GroupStage"
@@ -57,13 +58,13 @@ export default function KnockOutStageSchedule(props) {
                     name: item.teamName,
                     team: item.team,
                     teamResult: item.result,
-                    teamId: item.teamId,
+                    teamInTournamentId: item.teamInTournamentId,
                   },
                   {
                     name: allTeam[index + 1].teamName,
                     team: allTeam[index + 1].team,
                     teamResult: allTeam[index + 1].result,
-                    teamId: allTeam[index + 1].teamId,
+                    teamInTournamentId: allTeam[index + 1].teamInTournamentId,
                   },
                 ],
               },
@@ -84,13 +85,13 @@ export default function KnockOutStageSchedule(props) {
                 name: item.teamName,
                 team: item.team,
                 teamResult: item.result,
-                teamId: item.teamId,
+                teamInTournamentId: item.teamInTournamentId,
               },
               {
                 name: allTeam[index + 1].teamName,
                 team: allTeam[index + 1].team,
                 teamResult: allTeam[index + 1].result,
-                teamId: allTeam[index + 1].teamId,
+                teamInTournamentId: allTeam[index + 1].teamInTournamentId,
               },
             ],
           });
@@ -115,13 +116,13 @@ export default function KnockOutStageSchedule(props) {
                     name: item.teamName,
                     team: item.team,
                     teamResult: item.result,
-                    teamId: item.teamId,
+                    teamInTournamentId: item.teamInTournamentId,
                   },
                   {
                     name: allTeam[index + 1].teamName,
                     team: allTeam[index + 1].team,
                     teamResult: allTeam[index + 1].result,
-                    teamId: allTeam[index + 1].teamId,
+                    teamInTournamentId: allTeam[index + 1].teamInTournamentId,
                   },
                 ],
               },
@@ -255,8 +256,8 @@ export default function KnockOutStageSchedule(props) {
                 <th
                   colSpan={
                     user != undefined && user.userVM.id === hostTournamentId
-                      ? 7
-                      : 6
+                      ? 8
+                      : 7
                   }
                 >
                   Bảng đấu trực tiếp - {item.title}
@@ -265,6 +266,7 @@ export default function KnockOutStageSchedule(props) {
               {item.seeds.map((itemSeeds, indexSeeds) => {
                 return (
                   <tr key={indexSeeds}>
+                    <td>{indexSeeds + 1}</td>
                     <td
                       style={{
                         color: itemSeeds.date != null ? "black" : "red",
@@ -275,7 +277,7 @@ export default function KnockOutStageSchedule(props) {
                         ? changeDate(itemSeeds.date)
                         : "Chưa cập nhật"}
                     </td>
-                    {/* <td>{index + 1}</td> */}
+                    
                     <td>
                       {itemSeeds.teams[0].name}
                       <img
@@ -320,8 +322,8 @@ export default function KnockOutStageSchedule(props) {
                         ngày
                       </td>
                     ) : null}
-                    {itemSeeds.teams[0].teamId !== 0 &&
-                    itemSeeds.teams[1].teamId !== 0 ? (
+                    {itemSeeds.teams[0].teamInTournamentId !== 0 &&
+                    itemSeeds.teams[1].teamInTournamentId !== 0 ? (
                       <td>
                         {" "}
                         <Link

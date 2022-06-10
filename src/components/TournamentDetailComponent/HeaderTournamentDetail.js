@@ -21,6 +21,7 @@ import {
   getTeamInTournamentByTourIdAPI,
   updateStatusTeamInTournament,
   deleteRegisterTeamAPI,
+  updateTeamInScheduleAPI,
 } from "../../api/TeamInTournamentAPI";
 import {
   deletePlayerInTournamentById,
@@ -245,7 +246,7 @@ function HeaderTournamentDetail() {
           }
           setTimeout(() => {
             deleteTeamInTournament(idTeam);
-          },2000)
+          }, 2000);
         }
       })
       .catch((err) => {
@@ -277,7 +278,7 @@ function HeaderTournamentDetail() {
     const response = deleteRegisterTeamAPI(id);
     response
       .then((res) => {
-        console.log(res)
+        console.log(res);
         if (res.status === 200) {
           setHideShowDelete(false);
           setLoadingAc(false);
@@ -308,7 +309,34 @@ function HeaderTournamentDetail() {
         });
       });
   };
-
+  const addTeamInSchedule = (idTeamInTour) => {
+    const data = {
+      teamInTournamentId: idTeamInTour,
+    };
+    const response = updateTeamInScheduleAPI(data);
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          setHideShowDelete(false);
+          getAllTeamInTournamentByTourId();
+          toast.success(
+            "Đội bóng đã được thêm vào giải",
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            }
+          );
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   const acceptTeamInTournament = (teamInTournament, status) => {
     if (teamInTournament != null) {
       const data = {
@@ -321,22 +349,7 @@ function HeaderTournamentDetail() {
       response
         .then((res) => {
           if (res.status === 201) {
-            setHideShowDelete(false);
-            getAllTeamInTournamentByTourId();
-            toast.success(
-              status
-                ? "Đội bóng đã được thêm vào giải"
-                : "Từ chối đội bóng thành công",
-              {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              }
-            );
+            addTeamInSchedule(teamInTournament.teamInTournament.id);
           }
         })
         .catch((err) => {

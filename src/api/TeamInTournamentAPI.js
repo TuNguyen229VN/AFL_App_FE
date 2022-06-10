@@ -21,3 +21,8 @@ export function deleteRegisterTeamAPI(id){
     const afterDefaultURL = `team-in-tournaments/${id}`;
     return axios.delete(url+afterDefaultURL);
 }
+
+export function updateTeamInScheduleAPI(data){
+    const afterDefaultURL = `TeamInMatch/update-team-in-match-to-tournament`;
+    return axios.put(url+afterDefaultURL,data);
+}

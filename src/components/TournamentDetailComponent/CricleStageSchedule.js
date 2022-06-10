@@ -35,6 +35,7 @@ export default function CricleStageSchedule(props) {
       }, []);
       setAllTeamA(teamA);
       setAllTeamB(teamB);
+      console.log(teamA);
     }
   }, [allTeam]);
 
@@ -110,7 +111,7 @@ export default function CricleStageSchedule(props) {
       <tr>
         <th
           colSpan={
-            user != undefined && user.userVM.id === hostTournamentId ? 7 : 6
+            user != undefined && user.userVM.id === hostTournamentId ? 8 : 7
           }
         >
           Bảng đấu vòng tròn
@@ -122,7 +123,8 @@ export default function CricleStageSchedule(props) {
       ) : allTeamA != null && allTeamB != null ? (
         allTeamA.map((item, index) => {
           return (
-            <tr>
+            <tr key={index}>
+              <td>{index + 1}</td>
               <td
                 style={{
                   color: item.match.matchDate != null ? "black" : "red",
@@ -175,7 +177,7 @@ export default function CricleStageSchedule(props) {
                 </td>
               ) : null}
 
-              {item.teamId !== 0 && allTeamB[index].teamId !== 0 ? (
+              {item.teamInTournamentId !== 0 && allTeamB[index].teamInTournamentId !== 0 ? (
                 <td>
                   {" "}
                   <Link

@@ -12,10 +12,12 @@ import styles from "./styles/style.module.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { getAPI } from "../../api";
+import LoadingAction from "../LoadingComponent/LoadingAction";
 function UpdateTeam() {
-  const location=useLocation();
-  const address=location.state.address;
+  const location = useLocation();
+  const address = location.state.address;
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [loading,setLoading] = useState(false);
   const [manager, setManager] = useState("");
   const textDescription = draftToHtml(
     convertToRaw(editorState.getCurrentContent())
@@ -55,9 +57,9 @@ function UpdateTeam() {
   const [districts, setDistricts] = useState(null);
   const [wards, setWards] = useState(null);
   const [addressField, setAddressField] = useState(null);
-  const [proviceSearch,setProviceSearch] = useState(null);
-  const [districSearch,setDistricSearch] = useState(null);
-  const [wardSearch,setWardSearch] = useState(null);
+  const [proviceSearch, setProviceSearch] = useState(null);
+  const [districSearch, setDistricSearch] = useState(null);
+  const [wardSearch, setWardSearch] = useState(null);
   useEffect(() => {
     setResetProvice(-1);
     getAllCity();
@@ -94,20 +96,24 @@ function UpdateTeam() {
       });
   };
   const getAllCity = async () => {
-    console.log(address)
+    console.log(address);
     const response = await axios.get(
       "https://provinces.open-api.vn/api/?depth=3"
     );
     if (response.status === 200) {
       setProvice(response.data);
-        
-      const proviceCurrent =  address.split(", ")[2];
-      const findDistrictByNameProvice = response.data.find((item) => item.name === proviceCurrent)
-      console.log(findDistrictByNameProvice)
+
+      const proviceCurrent = address.split(", ")[2];
+      const findDistrictByNameProvice = response.data.find(
+        (item) => item.name === proviceCurrent
+      );
+      console.log(findDistrictByNameProvice);
       setDistricts(findDistrictByNameProvice.districts);
-      const districtCurrent =  address.split(", ")[1];
-      const findWardsByDistrictName = findDistrictByNameProvice.districts.find((item) => item.name === districtCurrent);
-      console.log(findWardsByDistrictName)
+      const districtCurrent = address.split(", ")[1];
+      const findWardsByDistrictName = findDistrictByNameProvice.districts.find(
+        (item) => item.name === districtCurrent
+      );
+      console.log(findWardsByDistrictName);
       setWards(findWardsByDistrictName.wards);
     }
   };
@@ -116,12 +122,7 @@ function UpdateTeam() {
       case "imgClub":
         break;
       case "nameClub":
-        if (value.length === 0) {
-          return {
-            flag: false,
-            content: "Không được để trống",
-          };
-        } else if (/\d+/.test(value)) {
+          if (/\d+/.test(value)) {
           return {
             flag: false,
             content: "Tên đội bóng là chữ",
@@ -129,22 +130,12 @@ function UpdateTeam() {
         }
         break;
       case "phoneContact":
-        if (value.length === 0) {
-          return {
-            flag: false,
-            content: "Không được để trống",
-          };
-        } else if (!/^[0-9]+$/.test(value)) {
+         if (!/^[0-9]+$/.test(value)) {
           return {
             flag: false,
             content: "Số điện thoại không được là chữ hay kí tự khác",
           };
-        } else if (!/(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(value)) {
-          return {
-            flag: false,
-            content: "Sai định dạng số điện thoại",
-          };
-        }
+        } 
 
         break;
       case "gender":
@@ -184,59 +175,31 @@ function UpdateTeam() {
 
     return { flag: true, content: null };
   };
+  const validateAdd = () => {
+    if (nameClub.value !== null || nameClub.value.length === 0) {
+      return "Tên đội bóng không được để trống";
+    }
+    if (phoneContact.value !== null || phoneContact.value.length === 0) {
+      return {
+        flag: false,
+        content: "Số điện thoại không được để trống",
+      };
+    } else if (!/(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(phoneContact.value)) {
+      return {
+        flag: false,
+        content: "Sai định dạng số điện thoại",
+      };
+    }
 
+    return null;
+  };
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    try {
-      const data = {
-        id: user.userVM.id,
-        teamName: nameClub.value,
-        teamPhone: phoneContact.value,
-        teamAvatar: imgClub.value,
-        description: textDescription,
-        teamGender: gender.value,
-        teamArea: addressField != null ?  addressField : address,
-      };
-
-      const response = await axios.put(
-        "https://afootballleague.ddns.net/api/v1/teams",
-        data,
-        {
-          headers: { "content-type": "multipart/form-data" },
-        }
-      );
-      if (response.status === 201) {
-        toast.success("Cập nhật đội bóng thành công", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        const intitalState = {
-          value: "",
-          error: "",
-        };
-        setImgClub(intitalState);
-        setNameClub(intitalState);
-        setPhoneContact(intitalState);
-        setGender({
-          value: "Male",
-          error: "",
-        });
-        setEditorState(EditorState.createEmpty());
-        setProvice(null);
-        setDistricts(null);
-        setWards(null);
-        setResetProvice(0);
-        setBtnActive(false);
-        // navigate(`/teamDetail/${response.data.id}/inforTeamDetail`);
-        navigate(-1);
-      }
-    } catch (error) {
-      toast.error(error.response.data.message, {
+    setLoading(true);
+    const flag = validateAdd();
+    if (flag !== null) {
+      setLoading(false);
+      toast.error(flag, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -245,8 +208,70 @@ function UpdateTeam() {
         draggable: true,
         progress: undefined,
       });
+    } else {
+      try {
+        const data = {
+          id: user.userVM.id,
+          teamName: nameClub.value,
+          teamPhone: phoneContact.value,
+          teamAvatar: imgClub.value,
+          description: textDescription,
+          teamGender: gender.value,
+          teamArea: addressField != null ? addressField : address,
+        };
 
-      console.error(error.response);
+        const response = await axios.put(
+          "https://afootballleague.ddns.net/api/v1/teams",
+          data,
+          {
+            headers: { "content-type": "multipart/form-data" },
+          }
+        );
+        if (response.status === 201) {
+          setLoading(false);
+          toast.success("Cập nhật đội bóng thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          const intitalState = {
+            value: "",
+            error: "",
+          };
+          setImgClub(intitalState);
+          setNameClub(intitalState);
+          setPhoneContact(intitalState);
+          setGender({
+            value: "Male",
+            error: "",
+          });
+          setEditorState(EditorState.createEmpty());
+          setProvice(null);
+          setDistricts(null);
+          setWards(null);
+          setResetProvice(0);
+          setBtnActive(false);
+          // navigate(`/teamDetail/${response.data.id}/inforTeamDetail`);
+          navigate(-1);
+        }
+      } catch (error) {
+        setLoading(false);
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
+        console.error(error.response);
+      }
     }
   };
 
@@ -357,24 +382,24 @@ function UpdateTeam() {
       case "provice":
         let dataProvice = provice;
         const proviceFind = dataProvice.find((item) => item.name === value);
-        setProviceSearch(value)
-        setDistricSearch("default")
+        setProviceSearch(value);
+        setDistricSearch("default");
         setDistricts(proviceFind.districts);
         setWards(null);
         setAddressField(", " + value);
         break;
       case "districts":
         let dataDis = districts;
-        setWardSearch("default")
+        setWardSearch("default");
         const disFind = dataDis.find((item) => item.name === value);
-        setDistricSearch(value)
+        setDistricSearch(value);
         setWards(disFind.wards);
         const oldAddress = addressField;
         setAddressField(", " + value + oldAddress);
         break;
       case "wards":
-        console.log(value)
-        setWardSearch(value)
+        console.log(value);
+        setWardSearch(value);
         {
           const oldAddress = addressField;
           setAddressField(value + oldAddress);
@@ -462,7 +487,7 @@ function UpdateTeam() {
                   placeholder="Tên đội bóng *"
                   value={nameClub.value}
                   onChange={onChangeHandler}
-                  required
+                  
                 />
               </div>
               <div className={styles.text__field}>
@@ -497,7 +522,7 @@ function UpdateTeam() {
                   id="phoneteam"
                   placeholder="Số điện thoại *"
                   onChange={onChangeHandler}
-                  required
+                  
                 />
               </div>
               <div className={styles.text__field}>
@@ -616,9 +641,13 @@ function UpdateTeam() {
                 name="provice"
                 required
                 onChange={onChangeHandler}
-                value={proviceSearch != null ? proviceSearch : address.split(", ")[2]}
+                value={
+                  proviceSearch != null ? proviceSearch : address.split(", ")[2]
+                }
               >
-                <option disabled selected>Chọn thành phố</option>
+                <option disabled selected>
+                  Chọn thành phố
+                </option>
                 {provice != null
                   ? provice.map((item, index) => {
                       return (
@@ -652,15 +681,18 @@ function UpdateTeam() {
                 }}
                 name="districts"
                 onChange={onChangeHandler}
-                value={districSearch != null ? districSearch : address.split(", ")[1]}
+                value={
+                  districSearch != null ? districSearch : address.split(", ")[1]
+                }
               >
-                
                 {districts != null
                   ? districts.map((item, index) => {
-                      if(index === 0) {
-                        return <option value="default" key={index} selected disabled>
-                        Chọn quận
-                      </option>
+                      if (index === 0) {
+                        return (
+                          <option value="default" key={index} selected disabled>
+                            Chọn quận
+                          </option>
+                        );
                       }
                       return (
                         <option value={item.name} key={index}>
@@ -695,14 +727,15 @@ function UpdateTeam() {
                 required
                 value={wardSearch != null ? wardSearch : address.split(", ")[0]}
               >
-                
                 {wards != null
                   ? wards.map((item, index) => {
-                    if(index === 0) {
-                      return <option value="default" key={index} selected disabled>
-                      Chọn phường
-                    </option>
-                    }
+                      if (index === 0) {
+                        return (
+                          <option value="default" key={index} selected disabled>
+                            Chọn phường
+                          </option>
+                        );
+                      }
                       return (
                         <option value={item.name} key={index}>
                           {item.name}
@@ -756,6 +789,7 @@ function UpdateTeam() {
           ) : null}
         </div>
       </form>
+      {loading ? <LoadingAction/> : null}
       <ToastContainer />
       <Footer />
     </>
