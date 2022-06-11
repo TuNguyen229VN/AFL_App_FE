@@ -121,7 +121,7 @@ export default function CricleStageSchedule(props) {
       <tr>
         <th
           colSpan={
-            user != undefined && user.userVM.id === hostTournamentId ? 9 : 8
+            user != undefined && user.userVM.id === hostTournamentId ? 8 : 7
           }
         >
           Bảng đấu vòng tròn
@@ -146,8 +146,10 @@ export default function CricleStageSchedule(props) {
               </td>
               {/* <td>{index + 1}</td> */}
               {item.teamInTournament.team != null ? (
-                <Link to={`/teamDetail/${item.teamInTournament.team.id}/inforTeamDetail`}>
-                  
+                <td>
+                  <Link
+                    to={`/teamDetail/${item.teamInTournament.team.id}/inforTeamDetail`}
+                  >
                     {item.teamName}
                     {item.teamInTournament.team != null ? (
                       <img
@@ -155,8 +157,8 @@ export default function CricleStageSchedule(props) {
                         alt="gallery_item"
                       />
                     ) : null}
-                  
-                </Link>
+                  </Link>
+                </td>
               ) : (
                 <td>
                   {item.teamName}
@@ -174,25 +176,33 @@ export default function CricleStageSchedule(props) {
                 <span className="score"> - </span>
                 <span className="score">{allTeamB[index].teamScore}</span>
               </td>
-              {allTeamB[index].teamInTournament.team ? <Link to={`/teamDetail/${allTeamB[index].teamInTournament.team.id}/inforTeamDetail`}><td>
-                {allTeamB[index].teamInTournament.team != null ? (
-                  <img
-                    src={allTeamB[index].teamInTournament.team.teamAvatar}
-                    alt="gallery_item"
-                  />
-                ) : null}
-                {allTeamB[index].teamName}
-              </td></Link> : <td>
-                {allTeamB[index].teamInTournament.team != null ? (
-                  <img
-                    src={allTeamB[index].teamInTournament.team.teamAvatar}
-                    alt="gallery_item"
-                  />
-                ) : null}
-                {allTeamB[index].teamName}
-              </td>}
-              
-              <div className={hideShow ? "overlay active" : "overlay"}></div>
+              {allTeamB[index].teamInTournament.team ? (
+                <td>
+                  {" "}
+                  <Link
+                    to={`/teamDetail/${allTeamB[index].teamInTournament.team.id}/inforTeamDetail`}
+                  >
+                    {allTeamB[index].teamInTournament.team != null ? (
+                      <img
+                        src={allTeamB[index].teamInTournament.team.teamAvatar}
+                        alt="gallery_item"
+                      />
+                    ) : null}
+                    {allTeamB[index].teamName}
+                  </Link>{" "}
+                </td>
+              ) : (
+                <td>
+                  {allTeamB[index].teamInTournament.team != null ? (
+                    <img
+                      src={allTeamB[index].teamInTournament.team.teamAvatar}
+                      alt="gallery_item"
+                    />
+                  ) : null}
+                  {allTeamB[index].teamName}
+                </td>
+              )}
+
               {user != undefined &&
               user.userVM.id === hostTournamentId &&
               checkDate(endDate) ? (
@@ -246,6 +256,7 @@ export default function CricleStageSchedule(props) {
           Hệ thống chưa xếp lịch thi đấu cho giải này
         </p>
       )}
+      <div className={hideShow ? "overlay active" : "overlay"}></div>
       {matchCurrent != null ? (
         <ModalChangeDateInSchedule
           hideShow={hideShow}

@@ -299,8 +299,8 @@ export default function KnockOutStageSchedule(props) {
                 <th
                   colSpan={
                     user != undefined && user.userVM.id === hostTournamentId
-                      ? 9
-                      : 8
+                      ? 8
+                      : 7
                   }
                 >
                   Bảng đấu trực tiếp - {item.title}
@@ -320,10 +320,10 @@ export default function KnockOutStageSchedule(props) {
                         : "Chưa cập nhật"}
                     </td>
                     {itemSeeds.teams[0].team !== null ? (
-                      <Link
-                        to={`/teamDetail/${itemSeeds.teams[0].team.id}/inforTeamDetail`}
-                      >
-                        <td>
+                      <td>
+                        <Link
+                          to={`/teamDetail/${itemSeeds.teams[0].team.id}/inforTeamDetail`}
+                        >
                           {itemSeeds.teams[0].name}
                           {itemSeeds.teams[0].team !== null ? (
                             <img
@@ -331,8 +331,8 @@ export default function KnockOutStageSchedule(props) {
                               alt="gallery_item"
                             />
                           ) : null}
-                        </td>
-                      </Link>
+                        </Link>
+                      </td>
                     ) : (
                       <td>
                         {itemSeeds.teams[0].name}
@@ -351,8 +351,10 @@ export default function KnockOutStageSchedule(props) {
                       <span className="score">{itemSeeds.teams[1].score}</span>
                     </td>
                     {itemSeeds.teams[1].team !== null ? (
-                      <Link to={`/teamDetail/${itemSeeds.teams[1].team.id}/inforTeamDetail`}>
-                        <td>
+                      <td>
+                        <Link
+                          to={`/teamDetail/${itemSeeds.teams[1].team.id}/inforTeamDetail`}
+                        >
                           {itemSeeds.teams[1].name}
                           {itemSeeds.teams[1].team !== null ? (
                             <img
@@ -360,8 +362,8 @@ export default function KnockOutStageSchedule(props) {
                               alt="gallery_item"
                             />
                           ) : null}
-                        </td>
-                      </Link>
+                        </Link>
+                      </td>
                     ) : (
                       <td>
                         {itemSeeds.teams[1].name}
@@ -373,10 +375,6 @@ export default function KnockOutStageSchedule(props) {
                         ) : null}
                       </td>
                     )}
-
-                    <div
-                      className={hideShow ? "overlay active" : "overlay"}
-                    ></div>
                     {user != undefined &&
                     user.userVM.id === hostTournamentId &&
                     checkDate(endDate) ? (
@@ -422,6 +420,7 @@ export default function KnockOutStageSchedule(props) {
             </table>
           );
         })}
+        <div className={hideShow ? "overlay active" : "overlay"}></div>
         {matchCurrent != null ? (
           <ModalChangeDateInSchedule
             hideShow={hideShow}

@@ -17,9 +17,25 @@ function Profile() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [check, setCheck] = useState(false);
   const [selectStep1, setSelectStep1] = useState(null);
   const [myAccount, setMyAccount] = useState([]);
+  const [statusPromote, setStatusPromote] = useState(null);
   const { userGG } = useAuthListener();
+  const getMyPromote = () => {
+    setLoading(true);
+    const afterURL = `PromoteRequest?user-id=${user.userVM.id}&order-by=Id&order-type=DESC&page-offset=1&limit=5`;
+    const response = getAPI(afterURL);
+    response
+      .then((res) => {
+        setStatusPromote(res.data.promoteRequests[0].status);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+      });
+  };
   const getMyAccount = () => {
     setLoading(true);
     const afterURL = `users/${user.userVM.id}`;
@@ -41,6 +57,7 @@ function Profile() {
         setIdentityCard({ value: res.data.identityCard });
         setNameBussiness({ value: res.data.nameBusiness });
         setPhoneBussiness({ value: res.data.phoneBusiness });
+        setDateIdentityCard({value:res.dateIssuance})
         setTinBussiness({ value: res.data.tinbusiness });
         setRole(res.data.roleId);
         setLoading(false);
@@ -52,8 +69,9 @@ function Profile() {
   };
 
   useEffect(() => {
+    getMyPromote();
     getMyAccount();
-  }, []);
+  }, [check]);
   const [role, setRole] = useState("");
   const [email, setEmail] = useState({ value: "", error: "" });
   const [username, setUsername] = useState({
@@ -431,10 +449,12 @@ function Profile() {
 
   const onPromoteHandler = async (e) => {
     e.preventDefault();
+    console.log(dateIdentityCard.value)
+    setLoading(true);
     if (
       identityCard.value === "" ||
       dateIdentityCard.value === "" ||
-      dateIdentityCard.value === null ||
+      dateIdentityCard.value === undefined ||
       identityCard.value === null
     ) {
       toast.error("Vui lòng kiểm tra lại thông tin", {
@@ -446,6 +466,7 @@ function Profile() {
         draggable: true,
         progress: undefined,
       });
+      setLoading(false);
       return;
     } else if (
       identityCard.value.length !== 9 &&
@@ -460,6 +481,7 @@ function Profile() {
         draggable: true,
         progress: undefined,
       });
+      setLoading(false);
       return;
     }
     const data = {
@@ -475,6 +497,8 @@ function Profile() {
         data
       );
       if (response.status === 201) {
+        setCheck(!check);
+        setLoading(false);
         toast.success(
           "Gửi yêu cầu thăng cấp thành công, vui lòng chờ xét duyệt",
           {
@@ -489,6 +513,7 @@ function Profile() {
         );
       }
     } catch (error) {
+      setLoading(false);
       toast.error(error.response.data.message, {
         position: "top-right",
         autoClose: 3000,
@@ -504,6 +529,7 @@ function Profile() {
 
   const onPromoteHandlerBusiness = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (
       nameBussiness.value === "" ||
       phoneBussiness.value === "" ||
@@ -521,6 +547,7 @@ function Profile() {
         draggable: true,
         progress: undefined,
       });
+      setLoading(false);
       return;
     }
     const data = {
@@ -542,6 +569,8 @@ function Profile() {
         data
       );
       if (response.status === 201) {
+        setLoading(false);
+        setCheck(!check);
         toast.success(
           "Gửi yêu cầu thăng cấp thành công, vui lòng chờ xét duyệt",
           {
@@ -556,6 +585,7 @@ function Profile() {
         );
       }
     } catch (error) {
+      setLoading(false);
       toast.error(error.response.data.message, {
         position: "top-right",
         autoClose: 3000,
@@ -574,7 +604,7 @@ function Profile() {
     if (
       username.value.trim() === "" ||
       phone.value.trim() === "" ||
-      dob.value === null ||
+      dob.value === undefined ||
       dob.value === ""
     ) {
       toast.error("Vui lòng kiểm tra lại thông tin", {
@@ -749,7 +779,7 @@ function Profile() {
           </div>
         </form>
         <h2 className={styles.profile__title2}>Nâng cấp tài khoản</h2>
-        {role !== 2 ? (
+        {statusPromote === null || statusPromote === "Từ chối" ? (
           <>
             <span className={styles.note}>
               *Thông tin nếu bạn muốn trở thành người tạo giải
@@ -890,12 +920,19 @@ function Profile() {
               </>
             ) : null}
           </>
-        ) : (
+        ) : null}
+        {statusPromote === "Đã duyệt" ? (
           <p className={styles.acer}>
             <i class="fa-solid fa-trophy"></i> Bạn đã là một người tạo giải{" "}
           </p>
-        )}
-
+        ) : null}
+        {statusPromote === "Chưa duyệt" ? (
+          <p className={styles.acer}>
+            {" "}
+            <i className="fa-solid fa-circle-check"></i> Yêu cầu đã gửi vui lòng
+            chờ duyệt
+          </p>
+        ) : null}
         <div className={styles.profile__delete}>
           {/* <div className={styles.delete__title}>Xóa tài khoản</div>
           <div className={styles.delete__wrap}>

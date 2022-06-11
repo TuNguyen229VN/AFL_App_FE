@@ -301,6 +301,8 @@
 .popup__news {
   border-radius: 5px;
   height: auto;
+  max-height: 900px;
+  overflow-y: scroll;
   width: 900px;
   position: fixed;
   z-index: 10;

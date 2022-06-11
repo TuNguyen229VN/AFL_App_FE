@@ -51,6 +51,7 @@ function Match() {
         }, []);
         setAllTeamA(teamA);
         setAllTeamB(teamB);
+        console.log(teamA)
         setScoreTeamA({ value: res.data.teamsInMatch[0].teamScore });
         setScoreTeamB({ value: res.data.teamsInMatch[1].teamScore });
         setRedTeamA({ value: res.data.teamsInMatch[1].redCardNumber });
@@ -633,16 +634,16 @@ function Match() {
           <>
             <h2 className={styles.title}>Trận đấu</h2>
             <div className={styles.action}>
-              {user !== null &&
+              {/* {user !== null &&
               location.state !== null &&
-              user.userVM.id === location.state.hostTournamentId ? (
+              user.userVM.id === location.state.hostTournamentId ? ( */}
                 <p
                   className={styles.updateMatch}
                   onClick={() => setPopupUpdateMatch(true)}
                 >
                   Cập nhật tỉ số
                 </p>
-              ) : null}
+              {/* ) : null} */}
             </div>
             <div className={styles.match__header}>
               {allTeamA.map((item, index) => (
@@ -663,7 +664,7 @@ function Match() {
               {allTeamA.map((item, index) => (
                 <div className={styles.match__team}>
                   <div className={styles.logo}>
-                    <img src={item.team.teamAvatar} alt={item.teamName} />
+                    {/* <img src={item.teamInTournament.team.teamAvatar} alt={item.teamName} /> */}
                     <h2>{item.teamName}</h2>
                   </div>
                   <div className={styles.score__A}>{item.teamScore}</div>
@@ -673,7 +674,7 @@ function Match() {
                   </div>
                   <div className={styles.logo}>
                     <img
-                      src={allTeamB[index].team.teamAvatar}
+                      // src={allTeamB[index].teamInTournament.team.teamAvatar}
                       alt={allTeamB[index].teamName}
                     />
                     <h2>{allTeamB[index].teamName}</h2>

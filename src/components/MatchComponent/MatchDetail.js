@@ -11,11 +11,11 @@ function MatchDetail(data) {
               <table className={styles.match__statics}>
                 <tr>
                   <th>
-                    <img src={item.team.teamAvatar} alt={item.teamName} />
+                    {/* <img src={item.teamInTournament.team.teamAvatar} alt={item.teamName} /> */}
                   </th>
                   <th className={styles.btk}>Bảng thống kê</th>
                   <th>
-                    <img src={data.allTeamB[index].team.teamAvatar} alt={data.allTeamB[index].teamName} />
+                    {/* <img src={data.allTeamB[index].team.teamAvatar} alt={data.allTeamB[index].teamName} /> */}
                   </th>
                 </tr>
                 <tr>

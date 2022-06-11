@@ -82,7 +82,6 @@ function Header(id) {
     `/playerDetail/${id.id}/achivementInPlayer`,
   ]
   useEffect(()=>{
-    console.log(team+"-----"+player)
     getMyAccount();
   },[])
   useEffect(() => {
