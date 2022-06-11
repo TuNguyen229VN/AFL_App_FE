@@ -30,7 +30,8 @@ function ScheduleTournamentDetail(props) {
     response
       .then((res) => {
         if (res.status === 200) {
-          setAllTeam(res.data.teamsInMatch);
+          
+          setAllTeam(res.data);
           setLoading(false);
         }
       })

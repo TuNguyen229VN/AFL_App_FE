@@ -37,7 +37,6 @@ export default function KnockOutStageSchedule(props) {
     console.log(allTeam);
     allTeam.map((item, index) => {
       if (index % 2 === 0) {
-        
         if (roundCurrent === null) {
           roundCurrent =
             tournamentType == "GroupStage"
@@ -56,13 +55,21 @@ export default function KnockOutStageSchedule(props) {
                 teams: [
                   {
                     name: item.teamName,
-                    team: item.team,
+                    team:
+                      item.teamInTournament.team !== null
+                        ? item.teamInTournament.team
+                        : null,
+                    score: item.teamScore,
                     teamResult: item.result,
                     teamInTournamentId: item.teamInTournamentId,
                   },
                   {
                     name: allTeam[index + 1].teamName,
-                    team: allTeam[index + 1].team,
+                    team:
+                      allTeam[index + 1].teamInTournament.team !== null
+                        ? allTeam[index + 1].teamInTournament.team
+                        : null,
+                    score: allTeam[index + 1].teamScore,
                     teamResult: allTeam[index + 1].result,
                     teamInTournamentId: allTeam[index + 1].teamInTournamentId,
                   },
@@ -83,13 +90,21 @@ export default function KnockOutStageSchedule(props) {
             teams: [
               {
                 name: item.teamName,
-                team: item.team,
+                team:
+                  item.teamInTournament.team !== null
+                    ? item.teamInTournament.team
+                    : null,
+                score: item.teamScore,
                 teamResult: item.result,
                 teamInTournamentId: item.teamInTournamentId,
               },
               {
                 name: allTeam[index + 1].teamName,
-                team: allTeam[index + 1].team,
+                team:
+                  allTeam[index + 1].teamInTournament.team !== null
+                    ? allTeam[index + 1].teamInTournament.team
+                    : null,
+                score: allTeam[index + 1].teamScore,
                 teamResult: allTeam[index + 1].result,
                 teamInTournamentId: allTeam[index + 1].teamInTournamentId,
               },
@@ -114,13 +129,21 @@ export default function KnockOutStageSchedule(props) {
                 teams: [
                   {
                     name: item.teamName,
-                    team: item.team,
+                    team:
+                      item.teamInTournament.team !== null
+                        ? item.teamInTournament.team
+                        : null,
+                    score: item.teamScore,
                     teamResult: item.result,
                     teamInTournamentId: item.teamInTournamentId,
                   },
                   {
                     name: allTeam[index + 1].teamName,
-                    team: allTeam[index + 1].team,
+                    team:
+                      allTeam[index + 1].teamInTournament.team !== null
+                        ? allTeam[index + 1].teamInTournament.team
+                        : null,
+                    score: allTeam[index + 1].teamScore,
                     teamResult: allTeam[index + 1].result,
                     teamInTournamentId: allTeam[index + 1].teamInTournamentId,
                   },
@@ -133,7 +156,7 @@ export default function KnockOutStageSchedule(props) {
     });
     if (typeView === "diagram" && tournamentType != "GroupStage") {
       const nullTeamRoundOne = calcAllTeamRoundOne() - data[0].seeds.length;
-      console.log(calcAllTeamRoundOne())
+      console.log(calcAllTeamRoundOne());
       if (nullTeamRoundOne > 0) {
         let countI = 1;
         for (let i = 0; i < nullTeamRoundOne; i++) {
@@ -151,15 +174,23 @@ export default function KnockOutStageSchedule(props) {
     } else if (typeView === "diagram" && tournamentType == "GroupStage") {
       data.splice(0, groupNumber);
     }
-    console.log(data)
+    console.log(data);
     setKnoukoutTeam(data);
   };
 
   const calcAllTeamRoundOne = () => {
     console.log(allTeam);
-    if ((allTeam.length % 2 === 0 ?  allTeam.length / 2 : (Math.floor(allTeam.length / 2) + 1))  > 8) {
+    if (
+      (allTeam.length % 2 === 0
+        ? allTeam.length / 2
+        : Math.floor(allTeam.length / 2) + 1) > 8
+    ) {
       return 8;
-    } else if ((allTeam.length % 2 === 0 ?  allTeam.length / 2 : (Math.floor(allTeam.length / 2) + 1)) > 4) {
+    } else if (
+      (allTeam.length % 2 === 0
+        ? allTeam.length / 2
+        : Math.floor(allTeam.length / 2) + 1) > 4
+    ) {
       return 4;
     } else return 2;
   };
@@ -215,11 +246,13 @@ export default function KnockOutStageSchedule(props) {
         ? "0" + (new Date().getMonth() + 1)
         : new Date().getMonth() + 1;
     const time = data.split("T");
-    const conditon =   time[0];
-    
-    let dateCurrent = new Date(time[0].split("-")[0] +  "-" + month + "-" + date);
+    const conditon = time[0];
+
+    let dateCurrent = new Date(
+      time[0].split("-")[0] + "-" + month + "-" + date
+    );
     let dateData = new Date(conditon);
-    
+
     if (+dateCurrent > +dateData) {
       return false;
     } else {
@@ -228,10 +261,20 @@ export default function KnockOutStageSchedule(props) {
   };
 
   const rounds = knockoutTeam != null ? [...knockoutTeam] : null;
-  const changeDate = data => {
+  const changeDate = (data) => {
     const splitDateTime = data.split("T");
-    return splitDateTime[0].split("-")[2] + "-" + splitDateTime[0].split("-")[1] + "-" + splitDateTime[0].split("-")[0] + " " + splitDateTime[1].split(":")[0] + ":" + splitDateTime[1].split(":")[1];
-  }
+    return (
+      splitDateTime[0].split("-")[2] +
+      "-" +
+      splitDateTime[0].split("-")[1] +
+      "-" +
+      splitDateTime[0].split("-")[0] +
+      " " +
+      splitDateTime[1].split(":")[0] +
+      ":" +
+      splitDateTime[1].split(":")[1]
+    );
+  };
   return knockoutTeam !== null ? (
     typeView === "diagram" ? (
       <div
@@ -272,31 +315,64 @@ export default function KnockOutStageSchedule(props) {
                         color: itemSeeds.date != null ? "black" : "red",
                       }}
                     >
-                     
                       {itemSeeds.date != null
                         ? changeDate(itemSeeds.date)
                         : "Chưa cập nhật"}
                     </td>
-                    
+                    {itemSeeds.teams[0].team !== null ? (
+                      <Link
+                        to={`/teamDetail/${itemSeeds.teams[0].team.id}/inforTeamDetail`}
+                      >
+                        <td>
+                          {itemSeeds.teams[0].name}
+                          {itemSeeds.teams[0].team !== null ? (
+                            <img
+                              src={itemSeeds.teams[0].team.teamAvatar}
+                              alt="gallery_item"
+                            />
+                          ) : null}
+                        </td>
+                      </Link>
+                    ) : (
+                      <td>
+                        {itemSeeds.teams[0].name}
+                        {itemSeeds.teams[0].team !== null ? (
+                          <img
+                            src={itemSeeds.teams[0].team.teamAvatar}
+                            alt="gallery_item"
+                          />
+                        ) : null}
+                      </td>
+                    )}
+
                     <td>
-                      {itemSeeds.teams[0].name}
-                      <img
-                        src="/assets/img/homepage/banner1.jpg"
-                        alt="gallery_item"
-                      />
-                    </td>
-                    <td>
-                      <span className="score">0</span>
+                      <span className="score">{itemSeeds.teams[0].score}</span>
                       <span className="score"> - </span>
-                      <span className="score">0</span>
+                      <span className="score">{itemSeeds.teams[1].score}</span>
                     </td>
-                    <td>
-                      <img
-                        src="/assets/img/homepage/banner1.jpg"
-                        alt="gallery_item"
-                      />
-                      {itemSeeds.teams[1].name}
-                    </td>
+                    {itemSeeds.teams[1].team !== null ? (
+                      <Link to={`/teamDetail/${itemSeeds.teams[1].team.id}/inforTeamDetail`}>
+                        <td>
+                          {itemSeeds.teams[1].name}
+                          {itemSeeds.teams[1].team !== null ? (
+                            <img
+                              src={itemSeeds.teams[1].team.teamAvatar}
+                              alt="gallery_item"
+                            />
+                          ) : null}
+                        </td>
+                      </Link>
+                    ) : (
+                      <td>
+                        {itemSeeds.teams[1].name}
+                        {itemSeeds.teams[1].team !== null ? (
+                          <img
+                            src={itemSeeds.teams[1].team.teamAvatar}
+                            alt="gallery_item"
+                          />
+                        ) : null}
+                      </td>
+                    )}
 
                     <div
                       className={hideShow ? "overlay active" : "overlay"}
@@ -315,15 +391,19 @@ export default function KnockOutStageSchedule(props) {
                           setHideShow(true);
                           setMatchCurrent(itemSeeds.match);
                           setStatusUpdateDate(false);
-                          setTeamInUpdate(itemSeeds.teams[0].name + " - " + itemSeeds.teams[1].name);
+                          setTeamInUpdate(
+                            itemSeeds.teams[0].name +
+                              " - " +
+                              itemSeeds.teams[1].name
+                          );
                         }}
                       >
                         {itemSeeds.date != null ? "Chỉnh sửa " : "Cập nhật "}{" "}
                         ngày
                       </td>
                     ) : null}
-                    {itemSeeds.teams[0].teamInTournamentId !== 0 &&
-                    itemSeeds.teams[1].teamInTournamentId !== 0 ? (
+                    {itemSeeds.teams[0].team !== null &&
+                    itemSeeds.teams[1].team !== null ? (
                       <td>
                         {" "}
                         <Link

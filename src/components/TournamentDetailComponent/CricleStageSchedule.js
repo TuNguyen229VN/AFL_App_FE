@@ -102,10 +102,20 @@ export default function CricleStageSchedule(props) {
       return true;
     }
   };
-  const changeDate = data => {
+  const changeDate = (data) => {
     const splitDateTime = data.split("T");
-    return splitDateTime[0].split("-")[2] + "-" + splitDateTime[0].split("-")[1] + "-" + splitDateTime[0].split("-")[0] + " " + splitDateTime[1].split(":")[0] + ":" + splitDateTime[1].split(":")[1];
-  }
+    return (
+      splitDateTime[0].split("-")[2] +
+      "-" +
+      splitDateTime[0].split("-")[1] +
+      "-" +
+      splitDateTime[0].split("-")[0] +
+      " " +
+      splitDateTime[1].split(":")[0] +
+      ":" +
+      splitDateTime[1].split(":")[1]
+    );
+  };
   return (
     <table className="schedule__table">
       <tr>
@@ -135,25 +145,53 @@ export default function CricleStageSchedule(props) {
                   : "Chưa cập nhật"}
               </td>
               {/* <td>{index + 1}</td> */}
-              <td>
-                {item.teamName}
-                <img
-                  src="/assets/img/homepage/banner1.jpg"
-                  alt="gallery_item"
-                />
-              </td>
+              {item.teamInTournament.team != null ? (
+                <Link to={`/teamDetail/${item.teamInTournament.team.id}/inforTeamDetail`}>
+                  
+                    {item.teamName}
+                    {item.teamInTournament.team != null ? (
+                      <img
+                        src={item.teamInTournament.team.teamAvatar}
+                        alt="gallery_item"
+                      />
+                    ) : null}
+                  
+                </Link>
+              ) : (
+                <td>
+                  {item.teamName}
+                  {item.teamInTournament.team != null ? (
+                    <img
+                      src={item.teamInTournament.team.teamAvatar}
+                      alt="gallery_item"
+                    />
+                  ) : null}
+                </td>
+              )}
+
               <td>
                 <span className="score">{item.teamScore}</span>
                 <span className="score"> - </span>
                 <span className="score">{allTeamB[index].teamScore}</span>
               </td>
-              <td>
-                <img
-                  src="/assets/img/homepage/banner1.jpg"
-                  alt="gallery_item"
-                />
+              {allTeamB[index].teamInTournament.team ? <Link to={`/teamDetail/${allTeamB[index].teamInTournament.team.id}/inforTeamDetail`}><td>
+                {allTeamB[index].teamInTournament.team != null ? (
+                  <img
+                    src={allTeamB[index].teamInTournament.team.teamAvatar}
+                    alt="gallery_item"
+                  />
+                ) : null}
                 {allTeamB[index].teamName}
-              </td>
+              </td></Link> : <td>
+                {allTeamB[index].teamInTournament.team != null ? (
+                  <img
+                    src={allTeamB[index].teamInTournament.team.teamAvatar}
+                    alt="gallery_item"
+                  />
+                ) : null}
+                {allTeamB[index].teamName}
+              </td>}
+              
               <div className={hideShow ? "overlay active" : "overlay"}></div>
               {user != undefined &&
               user.userVM.id === hostTournamentId &&
@@ -163,7 +201,9 @@ export default function CricleStageSchedule(props) {
                     setHideShow(true);
                     setMatchCurrent(item.match);
                     setStatusUpdateDate(false);
-                    setTeamInUpdate(item.teamName + " - " + allTeamB[index].teamName);
+                    setTeamInUpdate(
+                      item.teamName + " - " + allTeamB[index].teamName
+                    );
                   }}
                   style={{
                     cursor: "pointer",
@@ -177,7 +217,8 @@ export default function CricleStageSchedule(props) {
                 </td>
               ) : null}
 
-              {item.teamInTournamentId !== 0 && allTeamB[index].teamInTournamentId !== 0 ? (
+              {item.teamInTournament.team !== null &&
+              allTeamB[index].teamInTournament.team !== null ? (
                 <td>
                   {" "}
                   <Link
