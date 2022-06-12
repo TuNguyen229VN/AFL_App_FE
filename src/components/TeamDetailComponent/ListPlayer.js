@@ -14,7 +14,7 @@ import ModelAcceptDeletePlayer from "./ModelAcceptDeletePlayer";
 import { Link } from "react-router-dom";
 import { TeamAcceptAPI } from "../../api/System";
 function ListPlayer(props) {
-  const { id, numberPlayerInTeam, idHost } = props;
+  const { id, numberPlayerInTeam, idHost, getInforTeam } = props;
   const [loading, setLoading] = useState(true);
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [playerInTeam, setPlayerInTeam] = useState(null);
@@ -120,6 +120,7 @@ function ListPlayer(props) {
     response
       .then((res) => {
         if (res.status === 200) {
+          getInforTeam();
           sendMailTeamAccpet(idPlayer,idHost);
         }
       })
@@ -322,7 +323,7 @@ function ListPlayer(props) {
                               </p>
                               <p className="dobPlayer">
                                 <span>Ngày sinh:</span>
-                                {item.userVM.dateOfBirth.split(" ")[0]}
+                                {item.userVM.dateOfBirth != null ? item.userVM.dateOfBirth.split(" ")[0] : null}
                                 {/* {item.userVM.dateOfBirth != null ? item.userVM.dateOfBirth
                                   .split("-")[2]
                                   .split("T")[0] +

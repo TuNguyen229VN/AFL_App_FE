@@ -350,6 +350,7 @@ function HeaderTournamentDetail() {
       response
         .then((res) => {
           if (res.status === 201) {
+            getTourDetail();
             addTeamInSchedule(teamInTournament.teamInTournament.id);
           }
         })

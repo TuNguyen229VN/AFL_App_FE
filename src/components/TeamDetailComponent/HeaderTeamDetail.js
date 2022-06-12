@@ -118,6 +118,7 @@ function HeaderTeamDetail() {
           id={team.id}
           gender={team.teamGender}
           numberPlayerInTeam={team.numberPlayerInTeam}
+          getInforTeam={getInforTeam}
         />
       );
     }
