@@ -322,13 +322,14 @@ function ListPlayer(props) {
                               </p>
                               <p className="dobPlayer">
                                 <span>Ngày sinh:</span>
-                                {item.userVM.dateOfBirth
+                                {item.userVM.dateOfBirth.split(" ")[0]}
+                                {/* {item.userVM.dateOfBirth != null ? item.userVM.dateOfBirth
                                   .split("-")[2]
                                   .split("T")[0] +
                                   "/" +
                                   item.userVM.dateOfBirth.split("-")[1] +
                                   "/" +
-                                  item.userVM.dateOfBirth.split("-")[0]}
+                                  item.userVM.dateOfBirth.split("-")[0] : null} */}
                               </p>
                               </Link>
                               {active === "Chờ duyệt" && idHost === id ? (
