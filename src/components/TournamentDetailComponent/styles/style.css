@@ -214,7 +214,7 @@
 }
 
 .teamdetail .schedule__tour .schedule__table td:nth-child(2) {
-  width: 180px;
+  width: max-content;
 }
 
 .teamdetail .schedule__tour .schedule__table td:nth-child(3) {
@@ -227,6 +227,19 @@
   width: max-content;
   width: 300px;
 }
+.teamdetail .schedule__tour .schedule__table td:nth-child(3) p,
+.teamdetail .schedule__tour .schedule__table td:nth-child(5) p {
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 18px;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  width:200px;
+}
+.teamdetail .schedule__tour .schedule__table td:nth-child(5) p {
+  margin-left: 70px;
+}
 .teamdetail .schedule__tour .schedule__table td:nth-child(5) {
   width: 300px;
 }
@@ -235,9 +248,9 @@
   font-size: 18px;
   /* transform: translateX(10px); */
 }
-.teamdetail .schedule__tour .schedule__table td:nth-child(6) {
+/* .teamdetail .schedule__tour .schedule__table td:nth-child(6) {
   width: 85px;
-}
+} */
 .teamdetail .schedule__tour .schedule__table td:nth-child(6) a {
   color: var(--blue-black);
   font-family: "Mulish-Bold";
@@ -879,17 +892,18 @@
   font-family: "Mulish-Bold";
   margin-bottom: 40px;
 }
-.deletePopup .buttonConfirm{
-display: flex ;
-justify-content: space-between ;
-column-gap: 20px;
+.deletePopup .buttonConfirm {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 20px;
 }
 .deleteConfirm .buttonConfirm {
   display: flex;
   justify-content: space-between;
 }
 
-.deletePopup .buttonConfirm button,.deleteConfirm .buttonConfirm button {
+.deletePopup .buttonConfirm button,
+.deleteConfirm .buttonConfirm button {
   border: none;
   outline: none;
   padding: 15px 15px;
@@ -901,19 +915,21 @@ column-gap: 20px;
   text-align: center;
 }
 
-.deletePopup .buttonConfirm .cancel,.deleteConfirm .buttonConfirm .cancel {
+.deletePopup .buttonConfirm .cancel,
+.deleteConfirm .buttonConfirm .cancel {
   background-color: #dc3545;
 }
-.deletePopup .buttonConfirm .confirm,.deleteConfirm .buttonConfirm .confirm {
+.deletePopup .buttonConfirm .confirm,
+.deleteConfirm .buttonConfirm .confirm {
   background-color: #28a745;
 }
 
-.deletePopup .buttonConfirm button:hover,.deleteConfirm .buttonConfirm button:hover {
+.deletePopup .buttonConfirm button:hover,
+.deleteConfirm .buttonConfirm button:hover {
   filter: brightness(90%);
 }
 
-
-.HeaderTeamDetail .report{
+.HeaderTeamDetail .report {
   position: absolute;
   display: flex;
   right: 20px;
@@ -928,10 +944,10 @@ column-gap: 20px;
   transition: 0.5s;
 }
 
-.HeaderTeamDetail .report:hover{
+.HeaderTeamDetail .report:hover {
   background-color: var(--blue-black);
 }
 
-.errRp{
+.errRp {
   margin-bottom: 10px;
 }

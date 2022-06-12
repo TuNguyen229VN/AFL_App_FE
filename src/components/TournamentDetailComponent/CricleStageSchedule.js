@@ -150,7 +150,7 @@ export default function CricleStageSchedule(props) {
                   <Link
                     to={`/teamDetail/${item.teamInTournament.team.id}/inforTeamDetail`}
                   >
-                    {item.teamName}
+                    <p>{item.teamName}</p>
                     {item.teamInTournament.team != null ? (
                       <img
                         src={item.teamInTournament.team.teamAvatar}
@@ -161,7 +161,7 @@ export default function CricleStageSchedule(props) {
                 </td>
               ) : (
                 <td>
-                  {item.teamName}
+                  <p>{item.teamName}</p>
                   {item.teamInTournament.team != null ? (
                     <img
                       src={item.teamInTournament.team.teamAvatar}
@@ -188,7 +188,7 @@ export default function CricleStageSchedule(props) {
                         alt="gallery_item"
                       />
                     ) : null}
-                    {allTeamB[index].teamName}
+                    <p>{allTeamB[index].teamName}</p>
                   </Link>{" "}
                 </td>
               ) : (
@@ -199,7 +199,7 @@ export default function CricleStageSchedule(props) {
                       alt="gallery_item"
                     />
                   ) : null}
-                  {allTeamB[index].teamName}
+                  <p>{allTeamB[index].teamName}</p>
                 </td>
               )}
 

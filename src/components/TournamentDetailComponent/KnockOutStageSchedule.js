@@ -324,7 +324,7 @@ export default function KnockOutStageSchedule(props) {
                         <Link
                           to={`/teamDetail/${itemSeeds.teams[0].team.id}/inforTeamDetail`}
                         >
-                          {itemSeeds.teams[0].name}
+                           <p>{itemSeeds.teams[0].name}</p>
                           {itemSeeds.teams[0].team !== null ? (
                             <img
                               src={itemSeeds.teams[0].team.teamAvatar}
@@ -335,7 +335,7 @@ export default function KnockOutStageSchedule(props) {
                       </td>
                     ) : (
                       <td>
-                        {itemSeeds.teams[0].name}
+                        <p>{itemSeeds.teams[0].name}</p>
                         {itemSeeds.teams[0].team !== null ? (
                           <img
                             src={itemSeeds.teams[0].team.teamAvatar}
@@ -355,7 +355,7 @@ export default function KnockOutStageSchedule(props) {
                         <Link
                           to={`/teamDetail/${itemSeeds.teams[1].team.id}/inforTeamDetail`}
                         >
-                          {itemSeeds.teams[1].name}
+                          <p>{itemSeeds.teams[1].name}</p>
                           {itemSeeds.teams[1].team !== null ? (
                             <img
                               src={itemSeeds.teams[1].team.teamAvatar}
@@ -366,7 +366,7 @@ export default function KnockOutStageSchedule(props) {
                       </td>
                     ) : (
                       <td>
-                        {itemSeeds.teams[1].name}
+                        <p>{itemSeeds.teams[1].name}</p>
                         {itemSeeds.teams[1].team !== null ? (
                           <img
                             src={itemSeeds.teams[1].team.teamAvatar}
