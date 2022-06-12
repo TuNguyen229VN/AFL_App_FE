@@ -249,7 +249,7 @@ export default function KnockOutStageSchedule(props) {
     const conditon = time[0];
 
     let dateCurrent = new Date(
-      date + "/" + month + "/" + time[0].split("/")[2]
+      month + "/" + date   + "/" + time[0].split("/")[2]
     );
     let dateData = new Date(conditon);
     if (+dateCurrent > +dateData) {

@@ -116,13 +116,22 @@ const UpdateTournamentInformation = (props) => {
       const findDistrictByNameProvice = response.data.find(
         (item) => item.name === proviceCurrent
       );
+      setProviceSearch(findDistrictByNameProvice.name);
       const allDistrict = findDistrictByNameProvice.districts;
       setDistricts(allDistrict);
       const districtCurrent = addressTour.split(", ")[2];
       const findWardsByDistrictName = findDistrictByNameProvice.districts.find(
         (item) => item.name === districtCurrent
       );
+      setDistricSearch(findWardsByDistrictName.name);
+      const wardCurrent = addressTour.split(", ")[1];
+      
       const allWard = findWardsByDistrictName.wards;
+      const findWards = allWard.find(
+        (item) => item.name === wardCurrent
+      );
+      
+      setWardSearch(findWards.name);
       setWards(allWard);
     }
   };
@@ -130,7 +139,19 @@ const UpdateTournamentInformation = (props) => {
     const response = await getTournamentById(idTournament);
     if (response.status === 200) {
       const team = response.data;
-
+      console.log(team);
+      setCloseRegister({
+        value: team.registerEndDate,
+        error: null,
+      });
+      setStartTime({
+        value: team.tournamentStartDate,
+        error: null,
+      });
+      setEndTime({
+        value: team.tournamentEndDate,
+        error: null,
+      });
       setTeam(response.data);
       setStatus(team.mode === "PUBLIC" ? 0 : -1);
       setImgTournament({
@@ -428,8 +449,13 @@ const UpdateTournamentInformation = (props) => {
     ) {
       return "Số cầu thủ tối thiểu mỗi đội không được để trống";
     } else if (
-      minimunPlayerInTournament.value < (typeFootballField.value == "Field5" ? 5 : typeFootballField.value == "Field7" ? 7 : 11
-    )) {
+      minimunPlayerInTournament.value <
+      (typeFootballField.value == "Field5"
+        ? 5
+        : typeFootballField.value == "Field7"
+        ? 7
+        : 11)
+    ) {
       return "Số cầu thủ ít hơn quy định loại sân";
     }
     return null;
@@ -592,568 +618,269 @@ const UpdateTournamentInformation = (props) => {
 
   return (
     <>
-    <ScrollToTop />
-    <Transitions timeline={tour} />
-    <Header />
-    <div className={styles.createTournament}>
-      <div className={styles.createTournament_info}>
-        <div>
+      <ScrollToTop />
+      <Transitions timeline={tour} />
+      <Header />
+      <div className={styles.createTournament}>
+        <div className={styles.createTournament_info}>
           <div>
-            <h1 className={styles.createTournament_title}>Tạo giải đấu</h1>
-            <hr
-              width={100}
-              size={10}
+            <div>
+              <h1 className={styles.createTournament_title}>Tạo giải đấu</h1>
+              <hr
+                width={100}
+                size={10}
+                style={{
+                  backgroundColor: "black",
+                  opacity: 1,
+                }}
+              />
+            </div>
+            <div
               style={{
-                backgroundColor: "black",
-                opacity: 1,
-              }}
-            />
-          </div>
-          <div
-            style={{
-              marginTop: 30,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <input
-              type="checkbox"
-              id="switch"
-              className={styles.switch__input}
-            />
-            <label
-              htmlFor="switch"
-              className={styles.switch}
-              onClick={() => {
-                setStartTime({
-                  value: null,
-                  error: null,
-                });
-                setEndTime({
-                  value: null,
-                  error: null,
-                });
-                if (status === 0) {
-                  setCloseRegister({
-                    value: null,
-                    error: null,
-                  });
-                  setStartTime({
-                    value: null,
-                    error: null,
-                  });
-                  setEndTime({
-                    value: null,
-                    error: null,
-                  });
-                  setStatus(-1);
-                } else {
-                  setStartTime({
-                    value: null,
-                    error: null,
-                  });
-                  setEndTime({
-                    value: null,
-                    error: null,
-                  });
-                  setStatus(0);
-                }
-              }}
-            />
-            <p
-              style={{
-                marginLeft: 10,
+                marginTop: 30,
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              Chế độ {status === 0 ? "công khai" : "riêng tư"}
-            </p>
-          </div>
-        </div>
-        <form onSubmit={onSubmitHandler}>
-          <div className={styles.createTournament_row1}>
-            <div className={styles.createTournament_img}>
-              <h1 className={styles.createTournament_img_title}>
-                Hình giải đấu
-              </h1>
-              <div>
-                <input
-                  type="file"
-                  id="file_imgCreateTournament"
-                  accept="image/*"
-                  name="imgTournament"
-                  onChange={onChangeHandler}
-                  className={styles.file_imgCreateTournament}
-                />
-                <label
-                  htmlFor="file_imgCreateTournament"
-                  className={styles.createTournament_img_detail}
-                >
-                  <img
-                    style={{
-                      width: 120,
-                      margin: "auto",
-                    }}
-                    src={
-                      imgTournament.value === ""
-                        ? "assets/img/createteam/camera.png"
-                        : imgTournament.img
-                    }
-                    alt="camera"
-                  />
-
-                  <p className={styles.btnUploadImg_createTournament}>
-                    Tải ảnh lên{" "}
-                    <i
-                      style={{
-                        marginLeft: 10,
-                      }}
-                      className="fa-solid fa-upload"
-                    ></i>
-                  </p>
-                </label>
-
-                {/* <input type="file" /> */}
-              </div>
-            </div>
-            <div className={styles.createTournament_row1_col2}>
-              <div className={styles.nameTournament}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <label
-                    htmlFor="createTour"
-                    className={styles.createTournament_img_title}
-                  >
-                    Tên giải đấu
-                  </label>
-                  {nameTournament.error != null ? (
-                    <p
-                      style={{
-                        color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
-                      }}
-                    >
-                      {nameTournament.error}
-                    </p>
-                  ) : (
-                    <p></p>
-                  )}
-                </div>
-
-                <input
-                  id="createTour"
-                  placeholder="Tên giải đấu"
-                  onChange={onChangeHandler}
-                  name="nameTournament"
-                  value={nameTournament.value}
-                  
-                />
-              </div>
-              <div className={styles.contactPhone}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <label
-                    htmlFor="phoneContact"
-                    className={styles.createTournament_img_title}
-                  >
-                    Số điện thoại liên lạc
-                  </label>
-                  {phoneContact.error != null ? (
-                    <p
-                      style={{
-                        color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
-                      }}
-                    >
-                      {phoneContact.error}
-                    </p>
-                  ) : (
-                    <p></p>
-                  )}
-                </div>
-
-                <input
-                  type="text"
-                  id="phoneContact"
-                  className={styles.phoneContact}
-                  placeholder="Số điện thoại"
-                  name="phoneContact"
-                  value={phoneContact.value}
-                  onChange={onChangeHandler}
-                />
-              </div>
-              <div>
-                <label
-                  className={styles.createTournament_img_title}
-                  htmlFor="genderteam"
-                >
-                  Giới tính đội
-                </label>
-                <select
-                  name="gender"
-                  value={gender.value}
-                  onChange={onChangeHandler}
-                  id="genderteam"
-                  className={styles.timeCloseRegister_input}
-                  required
-                >
-                  <option value="Male">Nam</option>
-                  <option value="Female">Nữ</option>
-                </select>
-              </div>
-            </div>
-
-            <div className={styles.createTournament_row1_col3}>
-              <div className={styles.timeCloseRegister}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <label
-                    htmlFor="timeCloseRegister"
-                    className={styles.createTournament_img_title}
-                  >
-                    Ngày đóng đăng ký tham gia
-                  </label>
-                  {closeRegister.error != null ? (
-                    <p
-                      style={{
-                        color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
-                      }}
-                    >
-                      {closeRegister.error}
-                    </p>
-                  ) : (
-                    <p></p>
-                  )}
-                </div>
-                <input
-                  className={styles.timeCloseRegister_input}
-                  id="timeCloseRegister"
-                  type="datetime-local"
-                  name="closeRegister"
-                  value={closeRegister.value}
-                  onChange={onChangeHandler}
-                  disabled={status === 0 ? "" : "disable"}
-                  required
-                />
-              </div>
-
-              <div className={styles.timeStart}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <label
-                    className={styles.createTournament_img_title}
-                    htmlFor="startTime"
-                  >
-                    Ngày bắt đầu
-                  </label>
-                  {startTime.error != null ? (
-                    <p
-                      style={{
-                        color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
-                      }}
-                    >
-                      {startTime.error}
-                    </p>
-                  ) : (
-                    <p></p>
-                  )}
-                </div>
-                <input
-                  className={styles.timeStart_input}
-                  id="startTime"
-                  type="datetime-local"
-                  name="startTime"
-                  value={startTime.value}
-                  disabled={
-                    status === 0 && closeRegister.value != null
-                      ? ""
-                      : status === -1
-                      ? ""
-                      : "disable"
+              <input
+                type="checkbox"
+                id="switch"
+                className={styles.switch__input}
+              />
+              <label
+                htmlFor="switch"
+                className={styles.switch}
+                onClick={() => {
+                  setStartTime({
+                    value: null,
+                    error: null,
+                  });
+                  setEndTime({
+                    value: null,
+                    error: null,
+                  });
+                  if (status === 0) {
+                    setCloseRegister({
+                      value: null,
+                      error: null,
+                    });
+                    setStartTime({
+                      value: null,
+                      error: null,
+                    });
+                    setEndTime({
+                      value: null,
+                      error: null,
+                    });
+                    setStatus(-1);
+                  } else {
+                    setStartTime({
+                      value: null,
+                      error: null,
+                    });
+                    setEndTime({
+                      value: null,
+                      error: null,
+                    });
+                    setStatus(0);
                   }
-                  onChange={onChangeHandler}
-                />
-              </div>
-
-              <div className={styles.timeEnd}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <label
-                    htmlFor="endTime"
-                    className={styles.createTournament_img_title}
-                  >
-                    Ngày kết thúc
-                  </label>
-                  {endTime.error != null ? (
-                    <p
-                      style={{
-                        color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
-                      }}
-                    >
-                      {endTime.error}
-                    </p>
-                  ) : (
-                    <p></p>
-                  )}
-                </div>
-
-                <input
-                  className={styles.timeEnd_input}
-                  id="endTime"
-                  type="datetime-local"
-                  name="endTime"
-                  value={endTime.value}
-                  disabled={startTime.value != null ? "" : "disable"}
-                  onChange={onChangeHandler}
-                />
-              </div>
+                }}
+              />
+              <p
+                style={{
+                  marginLeft: 10,
+                }}
+              >
+                Chế độ {status === 0 ? "công khai" : "riêng tư"}
+              </p>
             </div>
           </div>
-          <CompetitionFormat
-            teamPaticipate={teamPaticipate}
-            competitionFormat={competitionFormat}
-            onChangeHandler={onChangeHandler}
-            groupNumber={groupNumber}
-          />
-
-          <div className={styles.createTournament_row4}>
-            <div className={styles.createTournament_row4_col1}>
-              <div className={styles.mininum_member}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    justifyContent: "space-between",
-                  }}
-                >
+          <form onSubmit={onSubmitHandler}>
+            <div className={styles.createTournament_row1}>
+              <div className={styles.createTournament_img}>
+                <h1 className={styles.createTournament_img_title}>
+                  Hình giải đấu
+                </h1>
+                <div>
+                  <input
+                    type="file"
+                    id="file_imgCreateTournament"
+                    accept="image/*"
+                    name="imgTournament"
+                    onChange={onChangeHandler}
+                    className={styles.file_imgCreateTournament}
+                  />
                   <label
-                    htmlFor="mininum_member"
-                    className={styles.createTournament_img_title}
+                    htmlFor="file_imgCreateTournament"
+                    className={styles.createTournament_img_detail}
                   >
-                    Số cầu thủ tối thiểu mỗi đội
-                  </label>
-                  {minimunPlayerInTournament.error != null ? (
-                    <p
+                    <img
                       style={{
-                        color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
+                        width: 120,
+                        margin: "auto",
                       }}
-                    >
-                      {minimunPlayerInTournament.error}
-                    </p>
-                  ) : (
-                    <p></p>
-                  )}
-                </div>
-                <input
-                  id="mininum_member"
-                  className={styles.mininum_member_input}
-                  name="minimunPlayerInTournament"
-                  value={minimunPlayerInTournament.value}
-                  onChange={onChangeHandler}
-                />
-              </div>
+                      src={
+                        imgTournament.value === ""
+                          ? "assets/img/createteam/camera.png"
+                          : imgTournament.img
+                      }
+                      alt="camera"
+                    />
 
-              <div className={styles.description_tournament}>
-                <label
-                  htmlFor="description"
-                  className={styles.createTournament_img_title}
-                >
-                  Mô tả
-                </label>
-                {/* <textarea
-                placeholder="Mô tả về giải đấu"
-                
-              /> */}
-                <div className={styles.descTeam}>
-                  <Description
-                    editorState={editorState}
-                    setEditorState={setEditorState}
+                    <p className={styles.btnUploadImg_createTournament}>
+                      Tải ảnh lên{" "}
+                      <i
+                        style={{
+                          marginLeft: 10,
+                        }}
+                        className="fa-solid fa-upload"
+                      ></i>
+                    </p>
+                  </label>
+
+                  {/* <input type="file" /> */}
+                </div>
+              </div>
+              <div className={styles.createTournament_row1_col2}>
+                <div className={styles.nameTournament}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <label
+                      htmlFor="createTour"
+                      className={styles.createTournament_img_title}
+                    >
+                      Tên giải đấu
+                    </label>
+                    {nameTournament.error != null ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontWeight: 900,
+                          fontSize: 18,
+                        }}
+                      >
+                        {nameTournament.error}
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
+                  </div>
+
+                  <input
+                    id="createTour"
+                    placeholder="Tên giải đấu"
+                    onChange={onChangeHandler}
+                    name="nameTournament"
+                    value={nameTournament.value}
                   />
                 </div>
-              </div>
-            </div>
-            <div className={styles.createTournament_row4_col2}>
-              <div className={styles.typeFootballField}>
-                <label className={styles.createTournament_img_title}>
-                  Loại sân thi đấu
-                </label>
-                <select
-                  className={styles.select_typeFootballField}
-                  onChange={onChangeHandler}
-                  value={typeFootballField.value}
-                  name="typeFootballField"
-                >
-                  <option value="Field5">Sân thi đấu bóng đá 5</option>
-                  <option value="Field7">Sân thi đấu bóng đá 7</option>
-                  <option value="Field11">Sân thi đấu bóng đá 11</option>
-                </select>
-              </div>
-              <div className={styles.timeDuration}>
-                <label
-                  className={styles.createTournament_img_title}
-                  htmlFor="timeDuration"
-                >
-                  Thời gian thi đấu mỗi trận
-                </label>
-                <select
-                  className={styles.select_typeFootballField}
-                  id="timeDuration"
-                  onChange={onChangeHandler}
-                  value={timeDuration.value}
-                  name="timeDuration"
-                >
-                  <option value="15">15p</option>
-                  <option value="30">30p</option>
-                  <option value="45">45p</option>
-                </select>
-              </div>
-              <div className={styles.fieldSoccer}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    marginBottom: 65,
-                    width: "100%",
-                  }}
-                >
-                  <label
-                    className={styles.createTournament_img_title}
-                    htmlFor="provice"
-                  >
-                    Thành phố/Tỉnh{" "}
-                  </label>
-                  <select
+                <div className={styles.contactPhone}>
+                  <div
                     style={{
-                      padding: "10px 5px",
+                      display: "flex",
+                      alignItems: "baseline",
+                      justifyContent: "space-between",
                     }}
-                    name="provice"
-                    onChange={onChangeHandler}
-                    value={proviceSearch}
                   >
-                    <option selected disabled>
-                      Chọn thành phố
-                    </option>
-                    {provice != null
-                      ? provice.map((item, index) => {
-                          return (
-                            <option value={item.name} key={index}>
-                              {item.name}
-                            </option>
-                          );
-                        })
-                      : null}
-                  </select>
-                </div>
+                    <label
+                      htmlFor="phoneContact"
+                      className={styles.createTournament_img_title}
+                    >
+                      Số điện thoại liên lạc
+                    </label>
+                    {phoneContact.error != null ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontWeight: 900,
+                          fontSize: 18,
+                        }}
+                      >
+                        {phoneContact.error}
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
+                  </div>
 
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    marginBottom: 65,
-                    width: "100%",
-                  }}
-                >
-                  <label
-                    className={styles.createTournament_img_title}
-                    htmlFor="districts"
-                  >
-                    Quận/Huyện
-                  </label>
-                  <select
-                    style={{
-                      padding: "10px 5px",
-                    }}
-                    name="districts"
+                  <input
+                    type="text"
+                    id="phoneContact"
+                    className={styles.phoneContact}
+                    placeholder="Số điện thoại"
+                    name="phoneContact"
+                    value={phoneContact.value}
                     onChange={onChangeHandler}
-                    value={districSearch}
-                  >
-                    <option value="default" selected disabled>
-                      Chọn quận
-                    </option>
-                    {districts != null
-                      ? districts.map((item, index) => {
-                          return (
-                            <option value={item.name} key={index}>
-                              {item.name}
-                            </option>
-                          );
-                        })
-                      : null}
-                  </select>
+                  />
                 </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    marginBottom: 65,
-                    width: "100%",
-                  }}
-                >
-                  <label
-                    className={styles.createTournament_img_title}
-                    htmlFor="wards"
-                  >
-                    Phường/Xã
-                  </label>
-                  <select
-                    style={{
-                      padding: "10px 5px",
-                    }}
-                    name="wards"
-                    onChange={onChangeHandler}
-                    value={wardSearch}
-                  >
-                    <option value="default" selected disabled>
-                      Chọn phường
-                    </option>
-                    {wards != null
-                      ? wards.map((item, index) => {
-                          return (
-                            <option value={item.name} key={index}>
-                              {item.name}
-                            </option>
-                          );
-                        })
-                      : null}
-                  </select>
-                </div>
-
                 <div>
+                  <label
+                    className={styles.createTournament_img_title}
+                    htmlFor="genderteam"
+                  >
+                    Giới tính đội
+                  </label>
+                  <select
+                    name="gender"
+                    value={gender.value}
+                    onChange={onChangeHandler}
+                    id="genderteam"
+                    className={styles.timeCloseRegister_input}
+                    required
+                  >
+                    <option value="Male">Nam</option>
+                    <option value="Female">Nữ</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className={styles.createTournament_row1_col3}>
+                <div className={styles.timeCloseRegister}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <label
+                      htmlFor="timeCloseRegister"
+                      className={styles.createTournament_img_title}
+                    >
+                      Ngày đóng đăng ký tham gia
+                    </label>
+                    {closeRegister.error != null ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontWeight: 900,
+                          fontSize: 18,
+                        }}
+                      >
+                        {closeRegister.error}
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
+                  </div>
+                  <input
+                    className={styles.timeCloseRegister_input}
+                    id="timeCloseRegister"
+                    type="datetime-local"
+                    name="closeRegister"
+                    value={closeRegister.value}
+                    onChange={onChangeHandler}
+                    disabled={status === 0 ? "" : "disable"}
+                    required
+                  />
+                </div>
+
+                <div className={styles.timeStart}>
                   <div
                     style={{
                       display: "flex",
@@ -1163,11 +890,11 @@ const UpdateTournamentInformation = (props) => {
                   >
                     <label
                       className={styles.createTournament_img_title}
-                      htmlFor="fieldSoccer"
+                      htmlFor="startTime"
                     >
-                      Địa điểm
+                      Ngày bắt đầu
                     </label>
-                    {footballField.error != null ? (
+                    {startTime.error != null ? (
                       <p
                         style={{
                           color: "red",
@@ -1175,7 +902,52 @@ const UpdateTournamentInformation = (props) => {
                           fontSize: 18,
                         }}
                       >
-                        {footballField.error}
+                        {startTime.error}
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
+                  </div>
+                  <input
+                    className={styles.timeStart_input}
+                    id="startTime"
+                    type="datetime-local"
+                    name="startTime"
+                    value={startTime.value}
+                    disabled={
+                      status === 0 && closeRegister.value != null
+                        ? ""
+                        : status === -1
+                        ? ""
+                        : "disable"
+                    }
+                    onChange={onChangeHandler}
+                  />
+                </div>
+
+                <div className={styles.timeEnd}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <label
+                      htmlFor="endTime"
+                      className={styles.createTournament_img_title}
+                    >
+                      Ngày kết thúc
+                    </label>
+                    {endTime.error != null ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontWeight: 900,
+                          fontSize: 18,
+                        }}
+                      >
+                        {endTime.error}
                       </p>
                     ) : (
                       <p></p>
@@ -1183,33 +955,286 @@ const UpdateTournamentInformation = (props) => {
                   </div>
 
                   <input
-                    id="fieldSoccer"
-                    className={styles.fieldSoccer_input}
-                    placeholder="Nhập địa chỉ"
-                    name="footballField"
-                    value={footballField.value}
+                    className={styles.timeEnd_input}
+                    id="endTime"
+                    type="datetime-local"
+                    name="endTime"
+                    value={endTime.value}
+                    disabled={startTime.value != null ? "" : "disable"}
                     onChange={onChangeHandler}
                   />
                 </div>
               </div>
             </div>
-          </div>
-          <div className={styles.btn_nextPage}>
-            {btnActive ? (
-              <input
-                type="submit"
-                className={styles.btn_Next}
-                value="Tiếp theo"
-              />
-            ) : null}
-          </div>
-        </form>
+            <CompetitionFormat
+              teamPaticipate={teamPaticipate}
+              competitionFormat={competitionFormat}
+              onChangeHandler={onChangeHandler}
+              groupNumber={groupNumber}
+            />
+
+            <div className={styles.createTournament_row4}>
+              <div className={styles.createTournament_row4_col1}>
+                <div className={styles.mininum_member}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <label
+                      htmlFor="mininum_member"
+                      className={styles.createTournament_img_title}
+                    >
+                      Số cầu thủ tối thiểu mỗi đội
+                    </label>
+                    {minimunPlayerInTournament.error != null ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontWeight: 900,
+                          fontSize: 18,
+                        }}
+                      >
+                        {minimunPlayerInTournament.error}
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
+                  </div>
+                  <input
+                    id="mininum_member"
+                    className={styles.mininum_member_input}
+                    name="minimunPlayerInTournament"
+                    value={minimunPlayerInTournament.value}
+                    onChange={onChangeHandler}
+                  />
+                </div>
+
+                <div className={styles.description_tournament}>
+                  <label
+                    htmlFor="description"
+                    className={styles.createTournament_img_title}
+                  >
+                    Mô tả
+                  </label>
+                  {/* <textarea
+                placeholder="Mô tả về giải đấu"
+                
+              /> */}
+                  <div className={styles.descTeam}>
+                    <Description
+                      editorState={editorState}
+                      setEditorState={setEditorState}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className={styles.createTournament_row4_col2}>
+                <div className={styles.typeFootballField}>
+                  <label className={styles.createTournament_img_title}>
+                    Loại sân thi đấu
+                  </label>
+                  <select
+                    className={styles.select_typeFootballField}
+                    onChange={onChangeHandler}
+                    value={typeFootballField.value}
+                    name="typeFootballField"
+                  >
+                    <option value="Field5">Sân thi đấu bóng đá 5</option>
+                    <option value="Field7">Sân thi đấu bóng đá 7</option>
+                    <option value="Field11">Sân thi đấu bóng đá 11</option>
+                  </select>
+                </div>
+                <div className={styles.timeDuration}>
+                  <label
+                    className={styles.createTournament_img_title}
+                    htmlFor="timeDuration"
+                  >
+                    Thời gian thi đấu mỗi trận
+                  </label>
+                  <select
+                    className={styles.select_typeFootballField}
+                    id="timeDuration"
+                    onChange={onChangeHandler}
+                    value={timeDuration.value}
+                    name="timeDuration"
+                  >
+                    <option value="15">15p</option>
+                    <option value="30">30p</option>
+                    <option value="45">45p</option>
+                  </select>
+                </div>
+                <div className={styles.fieldSoccer}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginBottom: 65,
+                      width: "100%",
+                    }}
+                  >
+                    <label
+                      className={styles.createTournament_img_title}
+                      htmlFor="provice"
+                    >
+                      Thành phố/Tỉnh{" "}
+                    </label>
+                    <select
+                      style={{
+                        padding: "10px 5px",
+                      }}
+                      name="provice"
+                      onChange={onChangeHandler}
+                      value={proviceSearch}
+                    >
+                      <option selected disabled>
+                        Chọn thành phố
+                      </option>
+                      {provice != null
+                        ? provice.map((item, index) => {
+                            return (
+                              <option value={item.name} key={index}>
+                                {item.name}
+                              </option>
+                            );
+                          })
+                        : null}
+                    </select>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginBottom: 65,
+                      width: "100%",
+                    }}
+                  >
+                    <label
+                      className={styles.createTournament_img_title}
+                      htmlFor="districts"
+                    >
+                      Quận/Huyện
+                    </label>
+                    <select
+                      style={{
+                        padding: "10px 5px",
+                      }}
+                      name="districts"
+                      onChange={onChangeHandler}
+                      value={districSearch}
+                    >
+                      <option value="default" selected disabled>
+                        Chọn quận
+                      </option>
+                      {districts != null
+                        ? districts.map((item, index) => {
+                            return (
+                              <option value={item.name} key={index}>
+                                {item.name}
+                              </option>
+                            );
+                          })
+                        : null}
+                    </select>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginBottom: 65,
+                      width: "100%",
+                    }}
+                  >
+                    <label
+                      className={styles.createTournament_img_title}
+                      htmlFor="wards"
+                    >
+                      Phường/Xã
+                    </label>
+                    <select
+                      style={{
+                        padding: "10px 5px",
+                      }}
+                      name="wards"
+                      onChange={onChangeHandler}
+                      value={wardSearch}
+                    >
+                      <option value="default" selected disabled>
+                        Chọn phường
+                      </option>
+                      {wards != null
+                        ? wards.map((item, index) => {
+                            return (
+                              <option value={item.name} key={index}>
+                                {item.name}
+                              </option>
+                            );
+                          })
+                        : null}
+                    </select>
+                  </div>
+
+                  <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <label
+                        className={styles.createTournament_img_title}
+                        htmlFor="fieldSoccer"
+                      >
+                        Địa điểm
+                      </label>
+                      {footballField.error != null ? (
+                        <p
+                          style={{
+                            color: "red",
+                            fontWeight: 900,
+                            fontSize: 18,
+                          }}
+                        >
+                          {footballField.error}
+                        </p>
+                      ) : (
+                        <p></p>
+                      )}
+                    </div>
+
+                    <input
+                      id="fieldSoccer"
+                      className={styles.fieldSoccer_input}
+                      placeholder="Nhập địa chỉ"
+                      name="footballField"
+                      value={footballField.value}
+                      onChange={onChangeHandler}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.btn_nextPage}>
+              {btnActive ? (
+                <input
+                  type="submit"
+                  className={styles.btn_Next}
+                  value="Tiếp theo"
+                />
+              ) : null}
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-    {loading ? <LoadingAction /> : null}
-    <ToastContainer />
-    <Footer />
-  </>
+      {loading ? <LoadingAction /> : null}
+      <ToastContainer />
+      <Footer />
+    </>
   );
 };
 
