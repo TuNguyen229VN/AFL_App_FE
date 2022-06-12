@@ -3,6 +3,7 @@ import "./styles/style.css";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import ViewListPlayerRegister from "./ViewListPlayerRegister";
 import DenyTeamInTournament from "./DenyTeamInTournament";
+import { Link } from "react-router-dom";
 
 function TeamInTournament(props) {
   const {
@@ -22,7 +23,7 @@ function TeamInTournament(props) {
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
-  
+  console.log(allTeam);
   return (
     <>
       <div className="tournamentdetail">
@@ -65,6 +66,7 @@ function TeamInTournament(props) {
                 allTeam.map((item, index) => {
                   return (
                     <div key={index} className="listPlayer__item">
+                      <Link to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}>
                       <div className="avt">
                         <img src={item.teamAvatar} alt="team" />
                       </div>
@@ -100,6 +102,8 @@ function TeamInTournament(props) {
                           Danh sách cầu thủ đăng ký
                         </p>
                       </div>
+                      </Link>
+                      
                     </div>
                   );
                 })
@@ -122,11 +126,16 @@ function TeamInTournament(props) {
                   return (
                     <form onSubmit={onSubmitHandler}>
                       <div key={index} className="listPlayer__item">
+                        <Link to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}>
                         <div className="avt">
                           <img src={item.teamAvatar} alt="team" />
                         </div>
+                        </Link>
+                        
                         <div className="des">
-                          <p className="namePlayer">
+                        <Link style={{
+                          color: "white"
+                        }} to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}><p className="namePlayer">
                             <span>Tên đội:</span>
                             {item.teamName}
                           </p>
@@ -141,7 +150,9 @@ function TeamInTournament(props) {
                           <p className="phonePlayer">
                             <span>Khu vực:</span>
                             {item.teamArea}
-                          </p>
+                          </p></Link>
+                          
+
                           <p
                             className="list_regis"
                             style={{
