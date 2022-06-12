@@ -121,7 +121,7 @@ export default function CricleStageSchedule(props) {
       <tr>
         <th
           colSpan={
-            user != undefined && user.userVM.id === hostTournamentId ? 9 : 8
+            user != undefined && user.userVM.id === hostTournamentId ? 8 : 7
           }
         >
           Bảng đấu vòng tròn

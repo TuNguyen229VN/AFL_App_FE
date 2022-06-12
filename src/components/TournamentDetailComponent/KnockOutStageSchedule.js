@@ -299,8 +299,8 @@ export default function KnockOutStageSchedule(props) {
                 <th
                   colSpan={
                     user != undefined && user.userVM.id === hostTournamentId
-                      ? 9
-                      : 8
+                      ? 8
+                      : 7
                   }
                 >
                   Bảng đấu trực tiếp - {item.title}
