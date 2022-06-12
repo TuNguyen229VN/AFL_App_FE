@@ -403,7 +403,8 @@ function HeaderPlayerDetail() {
                     <i className="fa-solid fa-calendar-days"></i>
                     <span className="title">Ngày sinh: </span>
                     <span>
-                      {detailPlayer.userVM.dateOfBirth !== null
+                      {detailPlayer.userVM.dateOfBirth.split(" ")[0]}
+                      {/* {detailPlayer.userVM.dateOfBirth !== null
                         ? detailPlayer.userVM.dateOfBirth
                             .split("-")[2]
                             .split("T")[0] +
@@ -411,7 +412,7 @@ function HeaderPlayerDetail() {
                           detailPlayer.userVM.dateOfBirth.split("-")[1] +
                           "/" +
                           detailPlayer.userVM.dateOfBirth.split("-")[0]
-                        : null}
+                        : null} */}
                     </span>
                   </div>
                   <div className="man gender__manager location">
