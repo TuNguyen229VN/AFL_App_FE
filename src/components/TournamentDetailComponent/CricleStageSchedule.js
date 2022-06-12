@@ -88,14 +88,13 @@ export default function CricleStageSchedule(props) {
       new Date().getMonth() + 1 < 10
         ? "0" + (new Date().getMonth() + 1)
         : new Date().getMonth() + 1;
-    const time = data.split("T");
+    const time = data.split(" ");
     const conditon = time[0];
 
     let dateCurrent = new Date(
-      time[0].split("-")[0] + "-" + month + "-" + date
+      date + "/" + month + "/" + time[0].split("/")[2]
     );
     let dateData = new Date(conditon);
-
     if (+dateCurrent > +dateData) {
       return false;
     } else {

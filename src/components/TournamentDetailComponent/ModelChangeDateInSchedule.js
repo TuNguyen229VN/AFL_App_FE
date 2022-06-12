@@ -17,7 +17,7 @@ export default function ModalChangeDateInSchedule(props) {
 
   const [newStart, setNewStart] = useState(null);
   useEffect(() => {
-    const time = startDate.split("T");
+    const time = startDate.split(" ");
     const date =
       new Date().getDate() < 10
         ? "0" + new Date().getDate()
@@ -26,12 +26,11 @@ export default function ModalChangeDateInSchedule(props) {
       new Date().getMonth() + 1 < 10
         ? "0" + (new Date().getMonth() + 1)
         : new Date().getMonth() + 1;
-    const conditon = time[0];
-
-    let dateCurrent = new Date(
-      time[0].split("-")[0] + "-" + month + "-" + date
-    );
-    let dateData = new Date(conditon);
+        const conditon = time[0];
+        let dateData = new Date(conditon);
+        let dateCurrent = new Date(
+          date + "/" + month + "/" + time[0].split("/")[2]
+        );
 
     if (+dateCurrent > +dateData) {
       let newTime =
