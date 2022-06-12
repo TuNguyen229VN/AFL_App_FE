@@ -403,7 +403,7 @@ function HeaderPlayerDetail() {
                     <i className="fa-solid fa-calendar-days"></i>
                     <span className="title">Ngày sinh: </span>
                     <span>
-                      {detailPlayer.userVM.dateOfBirth.split(" ")[0]}
+                      {detailPlayer.userVM.dateOfBirth !== null ? detailPlayer.userVM.dateOfBirth.split(" ")[0] : null}
                       {/* {detailPlayer.userVM.dateOfBirth !== null
                         ? detailPlayer.userVM.dateOfBirth
                             .split("-")[2]
