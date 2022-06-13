@@ -49,12 +49,12 @@ a {
 }
 
 .createTournament_img_detail {
-  width: 300px;
-  height: 300px;
-  border: 1px solid black;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
 }
 
 .createTournament_row1_col2,
@@ -132,6 +132,9 @@ input:focus {
   align-items: center;
 }
 
+.img_type_footballField input{
+display: none;
+}
 /* createTournament_row3 */
 
 .createTournament_row3 {
@@ -288,19 +291,47 @@ input:focus {
 }
 
 .btnUploadImg_createTournament {
-  width: 60%;
-  border: 1px solid black;
-  margin-bottom: 30px;
-  margin: auto;
-  padding: 20px;
-  padding-left: 30px;
-  background-color: black;
-  color: white;
+  background: var(--blue-black);
+  color: var(--white-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  z-index: 2;
   cursor: pointer;
+  padding: 10px 15px;
+  width: max-content;
+  bottom: 20px;
+  transform: translateX(-50%);
 }
 
 /* Map */
 
 .mapboxgl-canvas {
   height: 600px;
+}
+ .cmrb {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+}
+
+ .cmr {
+  width: 80px;
+  position: absolute;
+  left: 50%;
+  top: 50px;
+  transform: translateX(-50%);
+}
+
+.wrapAvt{
+  position: relative;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  border: 1px solid var(--blue-black);
 }

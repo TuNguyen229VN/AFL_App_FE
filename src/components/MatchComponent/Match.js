@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAPI } from "../../api";
+import { getAllPlayerByTeamIdAPI } from "../../api/PlayerInTeamAPI";
+import { getAllPlayerInTournamentByTeamInTournamentIdAPI } from "../../api/PlayerInTournamentAPI";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import LoadingAction from "../LoadingComponent/LoadingAction";
@@ -19,6 +21,8 @@ function Match() {
   const { idMatch } = useParams();
   const [allTeamA, setAllTeamA] = useState(null);
   const [allTeamB, setAllTeamB] = useState(null);
+  const [playerRegisterA, setPlayerRegisterA] = useState(null);
+  const [playerRegisterB, setPlayerRegisterB] = useState(null);
   const [tournamentID, setTournamentID] = useState(0);
   const [footballFeild, setFootballFeild] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,7 +30,11 @@ function Match() {
   const [check, setCheck] = useState(false);
 
   const [popupUpdateMatch, setPopupUpdateMatch] = useState(false);
+  // update Player
+  const [playerScoreA, setplayerScoreA] = useState([]);
+  const [playerScoreB, setPlayerScoreB] = useState([]);
 
+  //
   const [scoreTeamA, setScoreTeamA] = useState({ value: 0, error: "" });
   const [scoreTeamB, setScoreTeamB] = useState({ value: 0, error: "" });
   const [redTeamA, setRedTeamA] = useState({ value: 0, error: "" });
@@ -51,7 +59,6 @@ function Match() {
         }, []);
         setAllTeamA(teamA);
         setAllTeamB(teamB);
-        console.log(teamA)
         setScoreTeamA({ value: res.data.teamsInMatch[0].teamScore });
         setScoreTeamB({ value: res.data.teamsInMatch[1].teamScore });
         setRedTeamA({ value: res.data.teamsInMatch[1].redCardNumber });
@@ -61,6 +68,15 @@ function Match() {
         setTournamentID(res.data.teamsInMatch[0].match.tournamentId);
         setTokenLivestream(res.data.teamsInMatch[0].match.tokenLivestream);
         getTourDetail(res.data.teamsInMatch[0].match.tournamentId);
+        setLoading(false);
+        // getAllPlayerByTeamIdA(
+        //   res.data.teamsInMatch[0].teamInTournament.team.id,
+        //   res.data.teamsInMatch[0].teamInTournament.id
+        // );
+        // getAllPlayerByTeamIdB(
+        //   res.data.teamsInMatch[1].teamInTournament.team.id,
+        //   res.data.teamsInMatch[1].teamInTournament.id
+        // );
       })
       .catch((err) => {
         setLoading(false);
@@ -68,6 +84,80 @@ function Match() {
       });
   };
 
+  // const getAllPlayerByTeamIdA = (teamId, teamInTournamentId) => {
+  //   setLoading(true);
+  //   const response = getAllPlayerByTeamIdAPI(teamId);
+  //   response
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       getAllPlayerInTournamentByTeamInTournamentIdA(
+  //         res.data.playerInTeamsFull,
+  //         teamInTournamentId
+  //       );
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setLoading(false);
+  //       console.error(err);
+  //     });
+  // };
+  // const getAllPlayerByTeamIdB = (teamId, teamInTournamentId) => {
+  //   setLoading(true);
+  //   const response = getAllPlayerByTeamIdAPI(teamId);
+  //   response
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       getAllPlayerInTournamentByTeamInTournamentIdB(
+  //         res.data.playerInTeamsFull,
+  //         teamInTournamentId
+  //       );
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setLoading(false);
+  //       console.error(err);
+  //     });
+  // };
+  // const getAllPlayerInTournamentByTeamInTournamentIdA = async (
+  //   data,
+  //   teamInTournamentId
+  // ) => {
+  //   const newPlayerRegister = [];
+  //   // Sửa API lai jum
+  //   const response = await getAllPlayerInTournamentByTeamInTournamentIdAPI(50);
+
+  //   if (response.status === 200) {
+  //     for (const item of response.data.playerInTournaments) {
+  //       const findNewPlayer = data.find(
+  //         (itemData) => itemData.id === item.playerInTeamId
+  //       );
+  //       findNewPlayer.clothesNumber = item.clothesNumber;
+  //       newPlayerRegister.push(findNewPlayer);
+  //     }
+  //     setPlayerRegisterA(newPlayerRegister);
+  //     setLoading(false);
+  //   }
+  // };
+  // const getAllPlayerInTournamentByTeamInTournamentIdB = async (
+  //   data,
+  //   teamInTournamentId
+  // ) => {
+  //   const newPlayerRegisterB = [];
+  //   // Sửa API lai jum
+  //   const response = await getAllPlayerInTournamentByTeamInTournamentIdAPI(49);
+
+  //   if (response.status === 200) {
+  //     for (const item of response.data.playerInTournaments) {
+  //       const findNewPlayer = data.find(
+  //         (itemData) => itemData.id === item.playerInTeamId
+  //       );
+  //       findNewPlayer.clothesNumber = item.clothesNumber;
+  //       newPlayerRegisterB.push(findNewPlayer);
+  //     }
+  //     setPlayerRegisterB(newPlayerRegisterB);
+  //     setLoading(false);
+  //   }
+  // };
   const getTourDetail = async (id) => {
     let afterDefaultURL = `tournaments/${id}`;
     let response = getAPI(afterDefaultURL);
@@ -183,7 +273,6 @@ function Match() {
       nextTeam: "",
       teamName: teamName,
     };
-    console.log(id);
     try {
       const response = await axios.put(
         "https://afootballleague.ddns.net/api/v1/TeamInMatch",
@@ -569,6 +658,29 @@ function Match() {
                   Bàn thắng đội {allTeamB[index].teamName}
                 </label>
               </div>
+              {/* {scoreTeamA.value > 0 || scoreTeamB.value > 0 ? (
+                <div className={styles.divFlex}>
+                  <label id="scoreTeamA">Bàn thắng đội {item.teamName} </label>
+                  <select>
+                    <option value={""}></option>
+                    {playerRegisterA !== null &&
+                      playerRegisterA.map((item) => (
+                        <option>{item.footballPlayer.playerName}</option>
+                      ))}
+                  </select>
+                  <p className={styles.lineMin}>-</p>
+                  <select>
+                    <option value={""}></option>
+                    {playerRegisterB !== null &&
+                      playerRegisterB.map((item) => (
+                        <option>{item.footballPlayer.playerName}</option>
+                      ))}
+                  </select>
+                  <label id="scoreTeamB">
+                    Bàn thắng đội {allTeamB[index].teamName}
+                  </label>
+                </div>
+              ) : null} */}
               <div className={styles.divFlex}>
                 <label id="redTeamA">Thẻ đỏ đội {item.teamName} </label>
                 <input
@@ -637,12 +749,12 @@ function Match() {
               {/* {user !== null &&
               location.state !== null &&
               user.userVM.id === location.state.hostTournamentId ? ( */}
-                <p
-                  className={styles.updateMatch}
-                  onClick={() => setPopupUpdateMatch(true)}
-                >
-                  Cập nhật tỉ số
-                </p>
+              <p
+                className={styles.updateMatch}
+                onClick={() => setPopupUpdateMatch(true)}
+              >
+                Cập nhật tỉ số
+              </p>
               {/* ) : null} */}
             </div>
             <div className={styles.match__header}>
@@ -664,7 +776,10 @@ function Match() {
               {allTeamA.map((item, index) => (
                 <div className={styles.match__team}>
                   <div className={styles.logo}>
-                    {/* <img src={item.teamInTournament.team.teamAvatar} alt={item.teamName} /> */}
+                    <img
+                      src={item.teamInTournament.team.teamAvatar}
+                      alt={item.teamName}
+                    />
                     <h2>{item.teamName}</h2>
                   </div>
                   <div className={styles.score__A}>{item.teamScore}</div>
@@ -674,7 +789,7 @@ function Match() {
                   </div>
                   <div className={styles.logo}>
                     <img
-                      // src={allTeamB[index].teamInTournament.team.teamAvatar}
+                      src={allTeamB[index].teamInTournament.team.teamAvatar}
                       alt={allTeamB[index].teamName}
                     />
                     <h2>{allTeamB[index].teamName}</h2>

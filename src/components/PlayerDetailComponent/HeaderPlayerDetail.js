@@ -19,6 +19,7 @@ import {
 } from "../../api/PlayerInTeamAPI";
 import { getFootballPlayerById } from "../../api/FootballPlayer";
 import { toast } from "react-toastify";
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 function HeaderPlayerDetail() {
   const { idPlayer } = useParams();
   const location = useLocation();
@@ -318,6 +319,7 @@ function HeaderPlayerDetail() {
   };
   return (
     <>
+      <ScrollToTop />
       <Header id={idPlayer} />
       <div className="teamdetail">
         {detailPlayer !== null ? (
@@ -339,9 +341,7 @@ function HeaderPlayerDetail() {
                       <i class="fa-solid fa-pen-to-square"></i>Chỉnh sửa thông
                       tin
                     </Link>
-                  ) : user !== null &&
-                    
-                    user.teamInFo !== null ? (
+                  ) : user !== null && user.teamInFo !== null ? (
                     <button
                       onClick={() => {
                         if (statusPaticipate === "Chiêu mộ cầu thủ") {
@@ -403,7 +403,9 @@ function HeaderPlayerDetail() {
                     <i className="fa-solid fa-calendar-days"></i>
                     <span className="title">Ngày sinh: </span>
                     <span>
-                      {detailPlayer.userVM.dateOfBirth !== null ? detailPlayer.userVM.dateOfBirth.split(" ")[0] : null}
+                      {detailPlayer.userVM.dateOfBirth !== null
+                        ? detailPlayer.userVM.dateOfBirth.split(" ")[0]
+                        : null}
                       {/* {detailPlayer.userVM.dateOfBirth !== null
                         ? detailPlayer.userVM.dateOfBirth
                             .split("-")[2]

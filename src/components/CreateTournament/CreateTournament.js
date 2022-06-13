@@ -148,7 +148,7 @@ const CreateTournament = () => {
     setLoading(true);
     e.preventDefault();
     const flag = checkValidateAdd();
-    console.log(flag)
+    console.log(flag);
     if (flag !== null) {
       setLoading(false);
       toast.error(flag, {
@@ -300,13 +300,13 @@ const CreateTournament = () => {
       case "competitionFormat":
         break;
       case "minimunPlayerInTournament":
-          if (!/^[0-9]+$/.test(value)) {
+        if (!/^[0-9]+$/.test(value)) {
           return {
             flag: false,
             content: "Đội tham gia là số",
           };
-        } 
-       
+        }
+
         break;
       case "phoneContact":
         if (!/^[0-9]+$/.test(value)) {
@@ -325,9 +325,9 @@ const CreateTournament = () => {
     return { flag: true, content: null };
   };
   const checkValidateAdd = () => {
-      console.log(typeFootballField.value);
+    console.log(typeFootballField.value);
     //nameTournament phoneContact minimunPlayerInTournament  teamPaticipate  closeRegister startTime endTime
-    if (nameTournament.value === null || nameTournament.value.length === 0  ) {
+    if (nameTournament.value === null || nameTournament.value.length === 0) {
       return "Tên giải đấu không được để trống";
     }
     if (phoneContact.value === null || phoneContact.value.length === 0) {
@@ -340,9 +340,19 @@ const CreateTournament = () => {
     } else if (teamPaticipate.value > 16) {
       return "Đội tham gia ít hơn bằng 16 đội";
     }
-    if (minimunPlayerInTournament.value === null || minimunPlayerInTournament.value.length === 0) {
+    if (
+      minimunPlayerInTournament.value === null ||
+      minimunPlayerInTournament.value.length === 0
+    ) {
       return "Số cầu thủ tối thiểu mỗi đội không được để trống";
-    }else if (minimunPlayerInTournament.value < (typeFootballField.value == "Field5" ? 5 : typeFootballField.value == "Field7" ? 7 : 11)) {
+    } else if (
+      minimunPlayerInTournament.value <
+      (typeFootballField.value == "Field5"
+        ? 5
+        : typeFootballField.value == "Field7"
+        ? 7
+        : 11)
+    ) {
       return "Số cầu thủ ít hơn quy định loại sân";
     }
     return null;
@@ -456,7 +466,6 @@ const CreateTournament = () => {
         });
         break;
       case "timeDuration":
-        
         setTimeDuration({
           ...timeDuration,
           value,
@@ -578,7 +587,7 @@ const CreateTournament = () => {
                 <h1 className={styles.createTournament_img_title}>
                   Hình giải đấu
                 </h1>
-                <div>
+                <div className={styles.wrapAvt}>
                   <input
                     type="file"
                     id="file_imgCreateTournament"
@@ -592,16 +601,15 @@ const CreateTournament = () => {
                     className={styles.createTournament_img_detail}
                   >
                     <img
-                      style={{
-                        width: 120,
-                        margin: "auto",
-                      }}
                       src={
                         imgTournament.value === ""
                           ? "assets/img/createteam/camera.png"
                           : imgTournament.img
                       }
                       alt="camera"
+                      className={
+                        imgTournament.value === "" ? styles.cmr : styles.cmrb
+                      }
                     />
 
                     <p className={styles.btnUploadImg_createTournament}>
@@ -654,7 +662,6 @@ const CreateTournament = () => {
                     onChange={onChangeHandler}
                     name="nameTournament"
                     value={nameTournament.value}
-                    
                   />
                 </div>
                 <div className={styles.contactPhone}>

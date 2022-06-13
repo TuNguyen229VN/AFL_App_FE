@@ -701,7 +701,7 @@ const UpdateTournamentInformation = (props) => {
                 <h1 className={styles.createTournament_img_title}>
                   Hình giải đấu
                 </h1>
-                <div>
+                <div className={styles.wrapAvt}>
                   <input
                     type="file"
                     id="file_imgCreateTournament"
@@ -725,6 +725,9 @@ const UpdateTournamentInformation = (props) => {
                           : imgTournament.img
                       }
                       alt="camera"
+                      className={
+                        imgTournament.value === "" ? styles.cmr : styles.cmrb
+                      }
                     />
 
                     <p className={styles.btnUploadImg_createTournament}>

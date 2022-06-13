@@ -14,12 +14,13 @@ function TeamInTournament(props) {
     user,
     hostTournamentId,
     hideShow,
-    setHideShow,getAllPlayerInTournamentByIdTeam
+    setHideShow,
+    getAllPlayerInTournamentByIdTeam,
   } = props;
   const [active, setactive] = useState(true);
   const [viewList, setViewList] = useState(null);
   const [teamDelete, setTeamDelete] = useState(null);
-  const [hideShowView,setHideShowView] = useState(false);
+  const [hideShowView, setHideShowView] = useState(false);
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
@@ -66,44 +67,45 @@ function TeamInTournament(props) {
                 allTeam.map((item, index) => {
                   return (
                     <div key={index} className="listPlayer__item">
-                      <Link to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}>
-                      <div className="avt">
-                        <img src={item.teamAvatar} alt="team" />
-                      </div>
-                      <div className="des">
-                        <p className="namePlayer">
-                          <span>Tên đội:</span>
-                          {item.teamName}
-                        </p>
-                        <p className="mailPlayer">
-                          <span>Người quản lý:</span>
-                          {item.user.username}
-                        </p>
-                        <p className="genderPlayer">
-                          <span>Số cầu thủ:</span>
-                          {item.numberPlayerInTeam}
-                        </p>
-                        <p className="phonePlayer">
-                          <span>Khu vực:</span>
-                          {item.teamArea}
-                        </p>
-                        <p
-                          className="list_regis"
-                          style={{
-                            color: "#D7FC6A",
-                            textDecoration: "underline",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            setViewList(item.teamInTournament);
-                            setHideShowView(true);
-                          }}
-                        >
-                          Danh sách cầu thủ đăng ký
-                        </p>
-                      </div>
-                      </Link>
-                      
+                    {/* <Link
+                        to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
+                      >   */}
+                        <div className="avt">
+                          <img src={item.teamAvatar} alt="team" />
+                        </div>
+                        <div className="des">
+                          <p className="namePlayer">
+                            <span>Tên đội:</span>
+                            {item.teamName}
+                          </p>
+                          <p className="mailPlayer">
+                            <span>Người quản lý:</span>
+                            {item.user.username}
+                          </p>
+                          <p className="genderPlayer">
+                            <span>Số cầu thủ:</span>
+                            {item.numberPlayerInTeam}
+                          </p>
+                          <p className="phonePlayer">
+                            <span>Khu vực:</span>
+                            {item.teamArea}
+                          </p>
+                          <p
+                            className="list_regis"
+                            style={{
+                              color: "#D7FC6A",
+                              textDecoration: "underline",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              setViewList(item.teamInTournament);
+                              setHideShowView(true);
+                            }}
+                          >
+                            Danh sách cầu thủ đăng ký
+                          </p>
+                        </div>
+                      {/* </Link> */}
                     </div>
                   );
                 })
@@ -126,32 +128,38 @@ function TeamInTournament(props) {
                   return (
                     <form onSubmit={onSubmitHandler}>
                       <div key={index} className="listPlayer__item">
-                        <Link to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}>
-                        <div className="avt">
-                          <img src={item.teamAvatar} alt="team" />
-                        </div>
+                        <Link
+                          to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
+                        >
+                          <div className="avt">
+                            <img src={item.teamAvatar} alt="team" />
+                          </div>
                         </Link>
-                        
+
                         <div className="des">
-                        <Link style={{
-                          color: "white"
-                        }} to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}><p className="namePlayer">
-                            <span>Tên đội:</span>
-                            {item.teamName}
-                          </p>
-                          <p className="mailPlayer">
-                            <span>Người quản lý:</span>
-                            {item.user.username}
-                          </p>
-                          <p className="genderPlayer">
-                            <span>Số cầu thủ:</span>
-                            {item.numberPlayerInTeam}
-                          </p>
-                          <p className="phonePlayer">
-                            <span>Khu vực:</span>
-                            {item.teamArea}
-                          </p></Link>
-                          
+                          <Link
+                            style={{
+                              color: "white",
+                            }}
+                            to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
+                          >
+                            <p className="namePlayer">
+                              <span>Tên đội:</span>
+                              {item.teamName}
+                            </p>
+                            <p className="mailPlayer">
+                              <span>Người quản lý:</span>
+                              {item.user.username}
+                            </p>
+                            <p className="genderPlayer">
+                              <span>Số cầu thủ:</span>
+                              {item.numberPlayerInTeam}
+                            </p>
+                            <p className="phonePlayer">
+                              <span>Khu vực:</span>
+                              {item.teamArea}
+                            </p>
+                          </Link>
 
                           <p
                             className="list_regis"
@@ -224,7 +232,9 @@ function TeamInTournament(props) {
               )}
               <div className={hideShow ? "overlay active" : "overlay"}></div>
               <DenyTeamInTournament
-                getAllPlayerInTournamentByIdTeam={getAllPlayerInTournamentByIdTeam}
+                getAllPlayerInTournamentByIdTeam={
+                  getAllPlayerInTournamentByIdTeam
+                }
                 teamDelete={teamDelete}
                 setTeamDelete={setTeamDelete}
                 setHideShow={setHideShow}
