@@ -8,10 +8,12 @@ import Header from "../Header/Header";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import styles from "./styles/style.module.css";
 import firebase from "firebase/compat/app";
+import DateTimePicker from "react-datetime-picker";
 import useAuthListener from "../../hooks/user_auth";
 import "firebase/compat/auth";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 function Profile() {
+  const [value, onChange] = useState(new Date());
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [user, setUser] = useState(
@@ -57,7 +59,7 @@ function Profile() {
         setIdentityCard({ value: res.data.identityCard });
         setNameBussiness({ value: res.data.nameBusiness });
         setPhoneBussiness({ value: res.data.phoneBusiness });
-        setDateIdentityCard({value:res.dateIssuance})
+        setDateIdentityCard({ value: res.dateIssuance });
         setTinBussiness({ value: res.data.tinbusiness });
         setRole(res.data.roleId);
         setLoading(false);
@@ -449,7 +451,7 @@ function Profile() {
 
   const onPromoteHandler = async (e) => {
     e.preventDefault();
-    console.log(dateIdentityCard.value)
+    console.log(dateIdentityCard.value);
     setLoading(true);
     if (
       identityCard.value === "" ||
@@ -754,8 +756,8 @@ function Profile() {
             <div className={styles.text}>
               <label htmlFor="dob" autoComplete="off">
                 Ngày sinh
-              </label>
-              <input
+              </label> 
+               {/* <input
                 type="date"
                 id="dob"
                 value={dob.value}
@@ -764,7 +766,9 @@ function Profile() {
                 placeholder="dd-mm-yyyy"
                 max={date}
                 name="dob"
-              />
+                
+              /> */}
+                {/* <DateTimePicker onChange={onChange} value={value} className={styles.datetimepicker} calendarClassName={styles.calendar}/> */}
             </div>
             <div className={styles.text}>
               <label htmlFor="bio">Mô tả </label>

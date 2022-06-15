@@ -51,7 +51,7 @@ const CreateTournament = () => {
     error: null,
   });
   const [startTime, setStartTime] = useState({
-    value: null,
+    value: new Date().toISOString().split(".")[0],
     error: null,
   });
   const [endTime, setEndTime] = useState({
@@ -86,6 +86,7 @@ const CreateTournament = () => {
     value: "2",
     error: null,
   });
+  const [minDate, setMinDate] = useState(new Date().toISOString().split(".")[0])
   const [loading, setLoading] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
@@ -797,6 +798,7 @@ const CreateTournament = () => {
                     className={styles.timeStart_input}
                     id="startTime"
                     type="datetime-local"
+                    min={minDate}
                     name="startTime"
                     value={startTime.value}
                     disabled={
@@ -807,6 +809,7 @@ const CreateTournament = () => {
                         : "disable"
                     }
                     onChange={onChangeHandler}
+                    required
                   />
                 </div>
 

@@ -21,6 +21,7 @@
     "react": "^16.13.0",
     "react-agora": "^0.7.3",
     "react-brackets": "^0.4.6",
+    "react-datetime-picker": "^3.5.0",
     "react-dom": "^16.13.0",
     "react-draft-wysiwyg": "^1.14.7",
     "react-flickity": "^1.0.8",

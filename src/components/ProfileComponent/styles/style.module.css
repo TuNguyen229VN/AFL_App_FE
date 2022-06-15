@@ -91,7 +91,12 @@
   font-family: "Mulish-Bold";
   margin-bottom: 20px;
 }
-
+.calendar{
+  /* width: 100%;
+ height: 10px; */
+ padding: 10px 5px;
+}
+.profile__text .text .datetimepicker,
 .profile__text .text input,
 .profile__text .text select,
 .profile__text .text textarea {
