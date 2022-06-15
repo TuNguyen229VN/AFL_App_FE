@@ -326,7 +326,7 @@ const CreateTournament = () => {
     return { flag: true, content: null };
   };
   const checkValidateAdd = () => {
-    console.log(typeFootballField.value);
+    console.log(competitionFormat.value);
     //nameTournament phoneContact minimunPlayerInTournament  teamPaticipate  closeRegister startTime endTime
     if (nameTournament.value === null || nameTournament.value.length === 0) {
       return "Tên giải đấu không được để trống";
@@ -338,8 +338,21 @@ const CreateTournament = () => {
     }
     if (teamPaticipate.value === null || teamPaticipate.value.length === 0) {
       return "Số đội tham gia không được để trống";
-    } else if (teamPaticipate.value > 16) {
-      return "Đội tham gia ít hơn bằng 16 đội";
+    } else if (
+      competitionFormat.value === "CircleStage" &&
+      (teamPaticipate.value < 3 || teamPaticipate.value > 8)
+    ) {
+      return "Số đội tham gia hình thức thi đấu vòng tròn nằm trong khoảng từ 3-8 đội";
+    } else if (
+      competitionFormat.value === "KnockoutStage" &&
+      (teamPaticipate.value < 3 || teamPaticipate.value > 16)
+    ) {
+      return "Số đội tham gia hình thức thi đấu trực tiếp nằm trong khoảng từ 3-16 đội";
+    } else if (
+      competitionFormat.value === "GroupStage" &&
+      (teamPaticipate.value < 6 || teamPaticipate.value > 16)
+    ) {
+      return "Số đội tham gia hình thức thi đấu chia bảng nằm trong khoảng từ 6-16 đội";
     }
     if (
       minimunPlayerInTournament.value === null ||
@@ -360,6 +373,7 @@ const CreateTournament = () => {
   };
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
+    //console.log(name,value);
     const validate = validateForm(name, value);
     if (validate.flag) {
       setBtnActive(true);
@@ -433,6 +447,7 @@ const CreateTournament = () => {
           value: "2",
           error: null,
         });
+        console.log(value);
         setCompetitionFormat({
           ...competitionFormat,
           value,
