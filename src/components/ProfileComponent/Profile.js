@@ -757,7 +757,7 @@ function Profile() {
               <label htmlFor="dob" autoComplete="off">
                 Ngày sinh
               </label> 
-               {/* <input
+               <input
                 type="date"
                 id="dob"
                 value={dob.value}
@@ -767,7 +767,7 @@ function Profile() {
                 max={date}
                 name="dob"
                 
-              /> */}
+              />
                 {/* <DateTimePicker onChange={onChange} value={value} className={styles.datetimepicker} calendarClassName={styles.calendar}/> */}
             </div>
             <div className={styles.text}>

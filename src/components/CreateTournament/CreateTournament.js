@@ -51,7 +51,7 @@ const CreateTournament = () => {
     error: null,
   });
   const [startTime, setStartTime] = useState({
-    value: new Date().toISOString().split(".")[0],
+    value: null,
     error: null,
   });
   const [endTime, setEndTime] = useState({
@@ -86,7 +86,9 @@ const CreateTournament = () => {
     value: "2",
     error: null,
   });
-  const [minDate, setMinDate] = useState(new Date().toISOString().split(".")[0])
+  const [minDate, setMinDate] = useState(
+    new Date().toISOString().split(".")[0]
+  );
   const [loading, setLoading] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
@@ -326,7 +328,14 @@ const CreateTournament = () => {
     return { flag: true, content: null };
   };
   const checkValidateAdd = () => {
-    console.log(competitionFormat.value);
+    console.log(closeRegister.value);
+    if (
+      closeRegister.value !== null &&
+      new Date(closeRegister.value).getTime() >=
+        new Date(startTime.value).getTime()
+    ) {
+      return "Ngày đăng ký phải trước ngày bắt đầu";
+    }
     //nameTournament phoneContact minimunPlayerInTournament  teamPaticipate  closeRegister startTime endTime
     if (nameTournament.value === null || nameTournament.value.length === 0) {
       return "Tên giải đấu không được để trống";
@@ -661,8 +670,6 @@ const CreateTournament = () => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {nameTournament.error}
@@ -698,8 +705,6 @@ const CreateTournament = () => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {phoneContact.error}
@@ -759,8 +764,6 @@ const CreateTournament = () => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {closeRegister.error}
@@ -799,8 +802,6 @@ const CreateTournament = () => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {startTime.error}
@@ -846,8 +847,6 @@ const CreateTournament = () => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {endTime.error}
@@ -896,8 +895,6 @@ const CreateTournament = () => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {minimunPlayerInTournament.error}
@@ -1099,8 +1096,6 @@ const CreateTournament = () => {
                         <p
                           style={{
                             color: "red",
-                            fontWeight: 900,
-                            fontSize: 18,
                           }}
                         >
                           {footballField.error}

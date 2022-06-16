@@ -125,12 +125,10 @@ const UpdateTournamentInformation = (props) => {
       );
       setDistricSearch(findWardsByDistrictName.name);
       const wardCurrent = addressTour.split(", ")[1];
-      
+
       const allWard = findWardsByDistrictName.wards;
-      const findWards = allWard.find(
-        (item) => item.name === wardCurrent
-      );
-      
+      const findWards = allWard.find((item) => item.name === wardCurrent);
+
       setWardSearch(findWards.name);
       setWards(allWard);
     }
@@ -139,7 +137,7 @@ const UpdateTournamentInformation = (props) => {
     const response = await getTournamentById(idTournament);
     if (response.status === 200) {
       const team = response.data;
-      console.log(team);
+      console.log(new Date(team.registerEndDate).toISOString());
       setCloseRegister({
         value: team.registerEndDate,
         error: null,
@@ -181,15 +179,15 @@ const UpdateTournamentInformation = (props) => {
         error: null,
       });
       setCloseRegister({
-        value: team.registerEndDate,
+        value: new Date(team.registerEndDate).toISOString().slice(0, 16),
         error: null,
       });
       setStartTime({
-        value: team.tournamentStartDate,
+        value: new Date(team.tournamentStartDate).toISOString().slice(0, 16),
         error: null,
       });
       setEndTime({
-        value: team.tournamentEndDate,
+        value: new Date(team.tournamentEndDate).toISOString().slice(0, 16),
         error: null,
       });
       setTimeDuration({
@@ -359,7 +357,12 @@ const UpdateTournamentInformation = (props) => {
       case "imgTournament":
         break;
       case "nameTournament":
-        if (/\d+/.test(value)) {
+        if (value.length === 0) {
+          return {
+            flag: false,
+            content: "Không được để trống",
+          };
+        } else if (/\d+/.test(value)) {
           return {
             flag: false,
             content: "Tên đội bóng là chữ",
@@ -430,6 +433,13 @@ const UpdateTournamentInformation = (props) => {
   };
   const checkValidateAdd = () => {
     //nameTournament phoneContact minimunPlayerInTournament  teamPaticipate  closeRegister startTime endTime
+    if (
+      closeRegister.value !== null &&
+      new Date(closeRegister.value).getTime() >=
+        new Date(startTime.value).getTime()
+    ) {
+      return "Ngày đăng ký phải trước ngày bắt đầu";
+    }
     if (nameTournament.value === null || nameTournament.value.length === 0) {
       return "Tên giải đấu không được để trống";
     }
@@ -463,6 +473,7 @@ const UpdateTournamentInformation = (props) => {
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const validate = validateForm(name, value);
+    console.log(value);
     if (validate.flag) {
       setBtnActive(true);
     } else {
@@ -763,8 +774,6 @@ const UpdateTournamentInformation = (props) => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {nameTournament.error}
@@ -800,8 +809,6 @@ const UpdateTournamentInformation = (props) => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {phoneContact.error}
@@ -861,8 +868,6 @@ const UpdateTournamentInformation = (props) => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {closeRegister.error}
@@ -901,8 +906,6 @@ const UpdateTournamentInformation = (props) => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {startTime.error}
@@ -946,8 +949,6 @@ const UpdateTournamentInformation = (props) => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {endTime.error}
@@ -996,8 +997,6 @@ const UpdateTournamentInformation = (props) => {
                       <p
                         style={{
                           color: "red",
-                          fontWeight: 900,
-                          fontSize: 18,
                         }}
                       >
                         {minimunPlayerInTournament.error}
@@ -1199,8 +1198,6 @@ const UpdateTournamentInformation = (props) => {
                         <p
                           style={{
                             color: "red",
-                            fontWeight: 900,
-                            fontSize: 18,
                           }}
                         >
                           {footballField.error}
@@ -1223,13 +1220,13 @@ const UpdateTournamentInformation = (props) => {
               </div>
             </div>
             <div className={styles.btn_nextPage}>
-              {btnActive ? (
-                <input
-                  type="submit"
-                  className={styles.btn_Next}
-                  value="Tiếp theo"
-                />
-              ) : null}
+              {/* {btnActive ? ( */}
+              <input
+                type="submit"
+                className={styles.btn_Next}
+                value="Tiếp theo"
+              />
+              {/* ) : null} */}
             </div>
           </form>
         </div>

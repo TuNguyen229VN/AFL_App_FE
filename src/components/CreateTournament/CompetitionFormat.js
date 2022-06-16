@@ -149,8 +149,6 @@ const CompetitionFormat = (props) => {
               <p
                 style={{
                   color: "red",
-                  fontWeight: 900,
-                  fontSize: 18,
                 }}
               >
                 {teamPaticipate.error}
@@ -235,8 +233,6 @@ const CompetitionFormat = (props) => {
                   <p
                     style={{
                       color: "red",
-                      fontWeight: 900,
-                      fontSize: 18,
                     }}
                   >
                     {teamPaticipate.error}

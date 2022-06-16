@@ -478,7 +478,7 @@ function HeaderTournamentDetail() {
       );
       if (response.status === 201) {
         setPopupReport(false);
-        setContentReport({value:"",error:""})
+        setContentReport({ value: "", error: "" });
         setLoadingAc(false);
         toast.success("Báo cáo thành công", {
           position: "top-right",
@@ -508,7 +508,7 @@ function HeaderTournamentDetail() {
   return (
     <>
       <Header id={idTour} />
-    {loadingAc?<LoadingAction/>:null}
+      {loadingAc ? <LoadingAction /> : null}
       <div className="teamdetail">
         {loading ? (
           <Loading />
@@ -557,6 +557,8 @@ function HeaderTournamentDetail() {
                           Chỉnh sửa giải đấu
                         </Link>
                       ) : tourDetail.mode !== "PRIVATE" &&
+                        new Date().getTime() <=
+                          new Date(tourDetail.registerEndDate).getTime() &&
                         checkPaticipate === false &&
                         user.teamInfo !== null ? (
                         <div>

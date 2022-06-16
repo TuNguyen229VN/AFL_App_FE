@@ -164,9 +164,9 @@ const CreateTeam = () => {
     e.preventDefault();
     setLoading(true);
     const flag = validateAdd();
-    if (flag !== null) {
+    if (flag && flag.content !== null) {
       setLoading(false);
-      toast.error(flag, {
+      toast.error(flag.content, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -454,8 +454,6 @@ const CreateTeam = () => {
                     <p
                       style={{
                         color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
                       }}
                     >
                       {nameClub.error}
@@ -489,8 +487,6 @@ const CreateTeam = () => {
                     <p
                       style={{
                         color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
                       }}
                     >
                       {phoneContact.error}
@@ -547,8 +543,6 @@ const CreateTeam = () => {
                     <p
                       style={{
                         color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
                       }}
                     >
                       {nameManager.error}
@@ -581,8 +575,6 @@ const CreateTeam = () => {
                     <p
                       style={{
                         color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
                       }}
                     >
                       {email.error}
