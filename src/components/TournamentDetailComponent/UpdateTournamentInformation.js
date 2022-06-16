@@ -434,6 +434,13 @@ const UpdateTournamentInformation = (props) => {
   };
   const checkValidateAdd = () => {
     //nameTournament phoneContact minimunPlayerInTournament  teamPaticipate  closeRegister startTime endTime
+    if (
+      closeRegister.value !== null &&
+      new Date(closeRegister.value).getTime() >=
+        new Date(startTime.value).getTime()
+    ) {
+      return "Ngày đăng ký phải trước ngày bắt đầu";
+    }
     if (nameTournament.value === null || nameTournament.value.length === 0) {
       return "Tên giải đấu không được để trống";
     }
