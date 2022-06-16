@@ -25,6 +25,7 @@ const UpdateTournamentInformation = (props) => {
   let navigate = useNavigate();
   const location = useLocation();
   const addressTour = location.state.address;
+  const lengthTeamPaticipate = location.state.lengthTeamPaticipate;
   const idTournament = location.state.id;
   const [loadingAction, setLoadingAction] = useState(false);
   const [team, setTeam] = useState(null);
@@ -433,13 +434,6 @@ const UpdateTournamentInformation = (props) => {
   };
   const checkValidateAdd = () => {
     //nameTournament phoneContact minimunPlayerInTournament  teamPaticipate  closeRegister startTime endTime
-    if (
-      closeRegister.value !== null &&
-      new Date(closeRegister.value).getTime() >=
-        new Date(startTime.value).getTime()
-    ) {
-      return "Ngày đăng ký phải trước ngày bắt đầu";
-    }
     if (nameTournament.value === null || nameTournament.value.length === 0) {
       return "Tên giải đấu không được để trống";
     }
@@ -450,8 +444,42 @@ const UpdateTournamentInformation = (props) => {
     }
     if (teamPaticipate.value === null || teamPaticipate.value.length === 0) {
       return "Số đội tham gia không được để trống";
-    } else if (teamPaticipate.value > 16) {
-      return "Đội tham gia ít hơn bằng 16 đội";
+    } else if (
+      competitionFormat.value === "CircleStage" &&
+      lengthTeamPaticipate <= teamPaticipate.value &&
+      (teamPaticipate.value < 3 || teamPaticipate.value > 8)
+    ) {
+      return "Số đội tham gia hình thức thi đấu vòng tròn nằm trong khoảng từ 3-8 đội";
+    } else if (
+      competitionFormat.value === "CircleStage" &&
+      lengthTeamPaticipate > teamPaticipate.value &&
+      (teamPaticipate.value < teamPaticipate.value || teamPaticipate.value > 8)
+    ) {
+      return `Số đội tham gia hình thức thi đấu vòng tròn nằm trong khoảng từ ${teamPaticipate.value}-8 đội`;
+    } else if (
+      competitionFormat.value === "KnockoutStage" &&
+      lengthTeamPaticipate <= teamPaticipate.value &&
+      (teamPaticipate.value < 3 || teamPaticipate.value > 16)
+    ) {
+      return "Số đội tham gia hình thức thi đấu trực tiếp nằm trong khoảng từ 3-16 đội";
+    } else if (
+      competitionFormat.value === "KnockoutStage" &&
+      lengthTeamPaticipate > teamPaticipate.value &&
+      (teamPaticipate.value < lengthTeamPaticipate || teamPaticipate.value > 16)
+    ) {
+      return `Số đội tham gia hình thức thi đấu trực tiếp nằm trong khoảng từ ${lengthTeamPaticipate}-16 đội`;
+    } else if (
+      competitionFormat.value === "GroupStage" &&
+      lengthTeamPaticipate <= teamPaticipate.value &&
+      (teamPaticipate.value < 6 || teamPaticipate.value > 16)
+    ) {
+      return "Số đội tham gia hình thức thi đấu chia bảng nằm trong khoảng từ 6-16 đội";
+    } else if (
+      competitionFormat.value === "GroupStage" &&
+      lengthTeamPaticipate > teamPaticipate.value &&
+      (teamPaticipate.value < lengthTeamPaticipate || teamPaticipate.value > 16)
+    ) {
+      return `Số đội tham gia hình thức thi đấu chia bảng nằm trong khoảng từ ${lengthTeamPaticipate}-16 đội`;
     }
     if (
       minimunPlayerInTournament.value === null ||

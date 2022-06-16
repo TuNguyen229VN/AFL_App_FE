@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./styles/style.module.css";
 
 const CompetitionFormat = (props) => {
-  const { onChangeHandler, competitionFormat, teamPaticipate, groupNumber } =
+  const { onChangeHandler, competitionFormat, teamPaticipate, groupNumber, lengthTeamPaticipate } =
     props;
   return (
     <div className={styles.createTournament_row2}>
@@ -39,6 +39,7 @@ const CompetitionFormat = (props) => {
             id="circle"
             name="competitionFormat"
             value="CircleStage"
+            disabled={lengthTeamPaticipate === 0 ? "" : "disabled"}
             onChange={onChangeHandler}
             checked={competitionFormat.value === "CircleStage" ? true : false}
           ></input>
@@ -74,6 +75,7 @@ const CompetitionFormat = (props) => {
             id="knockout"
             name="competitionFormat"
             value="KnockoutStage"
+            disabled={lengthTeamPaticipate === 0 ? "" : "disabled"}
             onChange={onChangeHandler}
             checked={competitionFormat.value === "KnockoutStage" ? true : false}
           ></input>
@@ -111,6 +113,7 @@ const CompetitionFormat = (props) => {
             name="competitionFormat"
             value="GroupStage"
             onChange={onChangeHandler}
+            disabled={lengthTeamPaticipate === 0 ? "" : "disabled"}
             checked={competitionFormat.value === "GroupStage" ? true : false}
           ></input>
         </div>

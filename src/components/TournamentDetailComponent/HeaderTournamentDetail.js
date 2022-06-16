@@ -533,6 +533,7 @@ function HeaderTournamentDetail() {
                           state={{
                             id: tourDetail.id,
                             address: tourDetail.footballFieldAddress,
+                            lengthTeamPaticipate: tourDetail.numberTeamInTournament
                           }}
                           className="btn_UpdateTournament"
                           style={{
@@ -557,8 +558,8 @@ function HeaderTournamentDetail() {
                           Chỉnh sửa giải đấu
                         </Link>
                       ) : tourDetail.mode !== "PRIVATE" &&
-                        new Date().getTime() <=
-                          new Date(tourDetail.registerEndDate).getTime() &&
+                      new Date().getTime() <=
+                      new Date(tourDetail.registerEndDate).getTime() &&
                         checkPaticipate === false &&
                         user.teamInfo !== null ? (
                         <div>

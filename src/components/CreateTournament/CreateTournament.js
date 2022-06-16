@@ -434,6 +434,7 @@ const CreateTournament = () => {
         });
         break;
       case "startTime":
+        
         setStartTime({
           ...startTime,
           value,
@@ -873,6 +874,7 @@ const CreateTournament = () => {
               competitionFormat={competitionFormat}
               onChangeHandler={onChangeHandler}
               groupNumber={groupNumber}
+              lengthTeamPaticipate={0}
             />
 
             <div className={styles.createTournament_row4}>
