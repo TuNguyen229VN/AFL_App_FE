@@ -288,16 +288,22 @@ function HeaderTournamentDetail() {
         if (res.status === 200) {
           setHideShowDelete(false);
           setLoadingAc(false);
+          setTypeReport('report');
           getAllTeamInTournamentByTourId();
-          toast.success("Từ chối đội bóng thành công", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          toast.success(
+            typeReport !== "outtournament"
+              ? "Từ chối đội bóng thành công"
+              : "Đội bóng đã hủy tham gia giải thành công",
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            }
+          );
         }
       })
       .catch((err) => {
@@ -469,7 +475,7 @@ function HeaderTournamentDetail() {
       setLoadingAc(false);
       return;
     }
-    if(typeReport === 'report'){
+    if (typeReport === "report") {
       const data = {
         reason: contentReport.value,
         userId: user.userVM.id,
@@ -507,7 +513,7 @@ function HeaderTournamentDetail() {
         });
         console.log(error);
       }
-    }else{
+    } else {
       getAllPlayerInTournamentByIdTeam(user.userVM.id);
     }
   };
@@ -784,7 +790,10 @@ function HeaderTournamentDetail() {
                     >
                       <div
                         className="close"
-                        onClick={() => setPopupReport(false)}
+                        onClick={() => {
+                          setPopupReport(false);
+                          typeReport === "outtournament" ? setTypeReport("report") : null;
+                        }}
                       >
                         X
                       </div>
@@ -807,8 +816,9 @@ function HeaderTournamentDetail() {
                         value={contentReport.value}
                         onChange={onChangeHandler}
                       />
-                      <button>{typeReport === "report"
-                            ? "Báo cáo" : "Rời giải"}</button>
+                      <button>
+                        {typeReport === "report" ? "Báo cáo" : "Rời giải"}
+                      </button>
                     </form>
                   </>
                 ) : null}
