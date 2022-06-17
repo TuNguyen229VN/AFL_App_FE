@@ -792,7 +792,10 @@ function HeaderTournamentDetail() {
                         className="close"
                         onClick={() => {
                           setPopupReport(false);
-                          typeReport === "outtournament" ? setTypeReport("report") : null;
+                          if(typeReport === "outtournament"){
+                            setTypeReport("report")
+                          }
+
                         }}
                       >
                         X
