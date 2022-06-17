@@ -198,12 +198,14 @@ function HeaderTournamentDetail() {
   useEffect(() => {
     setActiveTeamDetail(location.pathname);
     getTourDetail();
+    
   }, [location.pathname]);
 
   useEffect(() => {
     if (tourDetail.id != undefined) {
       getAllTeamInTournamentByTourId();
     }
+    checkTeamInTour();
   }, [tourDetail.id, statusTeamInTour]);
 
   const getInForManagerById = async (id) => {
@@ -213,6 +215,8 @@ function HeaderTournamentDetail() {
     }
   };
 
+
+  
   useEffect(() => {
     if (user != undefined) {
       checkTeamPaticipate();
@@ -288,7 +292,7 @@ function HeaderTournamentDetail() {
         if (res.status === 200) {
           setHideShowDelete(false);
           setLoadingAc(false);
-          setTypeReport('report');
+          setTypeReport("report");
           getAllTeamInTournamentByTourId();
           toast.success(
             typeReport !== "outtournament"
@@ -321,9 +325,10 @@ function HeaderTournamentDetail() {
         });
       });
   };
-  const addTeamInSchedule = (idTeamInTour) => {
+  const addTeamInSchedule = (idTeamInTour, status) => {
     const data = {
       teamInTournamentId: idTeamInTour,
+      typeUpdate: status,
     };
     const response = updateTeamInScheduleAPI(data);
     response
@@ -359,7 +364,7 @@ function HeaderTournamentDetail() {
         .then((res) => {
           if (res.status === 201) {
             getTourDetail();
-            addTeamInSchedule(teamInTournament.teamInTournament.id);
+            addTeamInSchedule(teamInTournament.teamInTournament.id, true);
           }
         })
         .catch((err) => {
@@ -400,7 +405,6 @@ function HeaderTournamentDetail() {
       const teamData = await Promise.all(teams);
       teamData.countList = response.data.countList;
       setLoadingAc(false);
-      console.log(teamData);
       setAllTeam(teamData);
     } catch (err) {
       setLoadingAc(false);
@@ -518,6 +522,8 @@ function HeaderTournamentDetail() {
     }
   };
 
+  const [checkTeam,setCheckTeam] = useState(null);
+  
   const checkTeamInTour = () => {
     if (user !== undefined && tourDetail.id !== undefined) {
       const response = getTeamPaticaipateInTourByTourIDAPI(tourDetail.id);
@@ -525,21 +531,25 @@ function HeaderTournamentDetail() {
         .then((res) => {
           if (res.status === 200) {
             const teamPaticipate = res.data.teamInTournaments;
-            const findTeam = teamPaticipate.find(
-              (item) => item.teamId === user.userVM.id
-            );
-            if (findTeam.id !== undefined) {
-              return true;
-            } else {
-              return false;
-            }
+            if(teamPaticipate.length > 0){
+              const findTeam = teamPaticipate.find(
+                (item) => item.teamId === user.userVM.id
+              );
+              console.log(findTeam)
+              if (findTeam.id !== undefined) {
+                setCheckTeam(true) ;
+              } else {
+                 setCheckTeam(false);
+              }
+            }else  setCheckTeam(false);
+            
           }
         })
         .catch((err) => {
           console.error(err);
         });
     } else {
-      return false;
+       setCheckTeam(false);
     }
   };
   return (
@@ -748,7 +758,7 @@ function HeaderTournamentDetail() {
                   </div>
                 </div>
 
-                {user !== null && checkTeamInTour ? (
+                {checkTeam === true ? (
                   <div
                     className="report"
                     onClick={() => {
@@ -764,7 +774,7 @@ function HeaderTournamentDetail() {
                   <>
                     <div
                       style={{
-                        top: checkTeamInTour ? 70 : 40,
+                        top:checkTeam === true ? 70 : 40,
                       }}
                       className="report"
                       onClick={() => {
@@ -792,10 +802,9 @@ function HeaderTournamentDetail() {
                         className="close"
                         onClick={() => {
                           setPopupReport(false);
-                          if(typeReport === "outtournament"){
-                            setTypeReport("report")
+                          if (typeReport === "outtournament") {
+                            setTypeReport("report");
                           }
-
                         }}
                       >
                         X
@@ -807,21 +816,36 @@ function HeaderTournamentDetail() {
                           : "Rời khỏi giải đấu"}
                       </h4>
                       <p className="error errRp">{contentReport.error}</p>
-                      <textarea
-                        placeholder={
-                          typeReport === "report"
-                            ? "Lý do báo cáo giải đấu này"
-                            : "Lý do rời khỏi giải đấu này"
-                        }
-                        className="content"
-                        name="contentU"
-                        autoComplete="off"
-                        value={contentReport.value}
-                        onChange={onChangeHandler}
-                      />
-                      <button>
-                        {typeReport === "report" ? "Báo cáo" : "Rời giải"}
-                      </button>
+                      {new Date().getTime() <=
+                      new Date(tourDetail.tournamentStartDate).getTime() ? (
+                        <div>
+                          <textarea
+                            placeholder={
+                              typeReport === "report"
+                                ? "Lý do báo cáo giải đấu này"
+                                : "Lý do rời khỏi giải đấu này"
+                            }
+                            className="content"
+                            name="contentU"
+                            autoComplete="off"
+                            value={contentReport.value}
+                            onChange={onChangeHandler}
+                          />
+                          <button>
+                            {typeReport === "report" ? "Báo cáo" : "Rời giải"}
+                          </button>
+                        </div>
+                      ) : (
+                        <p style={{
+                          color:"red",
+                          fontSize: 20,
+                          lineHeight: 1.6
+                        }}>
+                          Hiện tại giải đang diễn ra bạn không thể rời khỏi
+                          giải. Nếu có vấn đề liên quan tới giải đấu xin vui
+                          lòng báo cáo giải đấu và chờ người xét duyệt
+                        </p>
+                      )}
                     </form>
                   </>
                 ) : null}

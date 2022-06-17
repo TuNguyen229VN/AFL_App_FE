@@ -227,7 +227,7 @@ function UpdateTeam() {
             headers: { "content-type": "multipart/form-data" },
           }
         );
-        if (response.status === 201) {
+        if (response.status === 200) {
           setLoading(false);
           toast.success("Cập nhật đội bóng thành công", {
             position: "top-right",

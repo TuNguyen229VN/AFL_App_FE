@@ -281,7 +281,7 @@ const UpdateTournamentInformation = (props) => {
         };
 
         const response = await updateTournamentInfoAPI(data);
-        if (response.status === 201) {
+        if (response.status === 200) {
           setLoadingAction(false);
           toast.success("Thay đổi thông tin giải đấu thành công", {
             position: "top-right",
