@@ -153,6 +153,7 @@ function HeaderTournamentDetail() {
           startDate={tourDetail.tournamentStartDate}
           endDate={tourDetail.tournamentEndDate}
           user={user != undefined ? user : undefined}
+          teamCreate = {tourDetail.footballTeamNumber}
         />
       );
     }
