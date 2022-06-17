@@ -40,6 +40,49 @@ function ScheduleTournamentDetail(props) {
         setLoading(false);
       });
   };
+  const calcKnockOutStage = () => {
+    let startWith = null;
+    let teamPaticipateOutside = null;
+    let nextRound = null;
+    if (teamCreate >= 8) {
+      const calc = teamCreate - Math.pow(2, 3);
+      console.log(calc);
+      if (calc > 0) {
+        startWith = "1";
+        teamPaticipateOutside = calc * 2;
+        nextRound = teamCreate - calc * 2;
+      } else {
+        startWith = "tứ kết";
+        teamPaticipateOutside = teamCreate;
+        nextRound = 0;
+      }
+    } else {
+      if (teamCreate >= 4) {
+        const calc = teamCreate - Math.pow(2, 2);
+        if (calc > 0) {
+          startWith = "tứ kết";
+          teamPaticipateOutside = calc * 2;
+          nextRound = teamCreate - calc * 2;
+        } else {
+          startWith = "bán kết";
+          teamPaticipateOutside = teamCreate;
+          nextRound = 0;
+        }
+      } else {
+        const calc = teamCreate - Math.pow(2, 1);
+        startWith = "tứ kết";
+        teamPaticipateOutside = calc * 2;
+        nextRound = teamCreate - calc * 2;
+      }
+    }
+    return `sẽ bắt đầu từ vòng ${startWith} với ${teamPaticipateOutside} đội chia thành ${
+      teamPaticipateOutside / 2
+    } trận và ${
+      nextRound > 0
+        ? `${nextRound} đội được đặc cách vào vòng trong`
+        : `không có đội nào được đặt cách vào vòng trong`
+    } . Lưu ý đối với các đội được đặt cách thì hệ thống sẽ tự động chọn ngẫu nhiên.`;
+  };
   return (
     <>
       <div className="teamdetail__content schedule__tour">
@@ -65,49 +108,47 @@ function ScheduleTournamentDetail(props) {
               : "vòng tròn"}{" "}
             và số đội là {teamCreate}
           </p>
-          {tournamentType !== "GroupStage" ?
-          <p
-            style={{
-              fontSize: 20,
-            }}
-          >
-            Ở hình thức này thì{" "}
-            {tournamentType === "KnockoutStage"
-              ? ""
-              : "sẽ có 1 bảng và các đội sẽ thi đấu lần lượt với nhau"}{" "}
-          </p> : null }
-          {tournamentType === "GroupStage" ? <p
-            style={{
-              fontSize: 20,
-            }}
-          >
-            Đối với số bảng đấu bằng {groupNumber}, thì hệ thống chúng tôi
-            sẽ chia làm{" "}
-            {groupNumber == 2 ? "2 bảng A-B" : "4 bảng A-B-C-D"},{" "}
-            {groupNumber == 2
-              ? teamCreate % 2 === 0
-                ? ` mỗi bảng sẽ có ${teamCreate / 2} đội `
-                : `bảng A sẽ có ${Math.ceil(
-                  teamCreate / 2
-                  )} đội, bảng B có ${Math.floor(
-                    teamCreate / 2
-                  )} đội `
-              : groupNumber == 4
-              ? teamCreate == 14
-                ? ` bảng A-B có 4 đội và C-D sẽ có 3 đội `
-                : teamCreate == 15
-                ? ` bảng A-B-C có 4 đội và D sẽ có 3 đội `
-                : teamCreate % 4 === 0
-                ? ` mỗi bảng sẽ có ${teamCreate / 4} đội `
-                : ` bảng A có ${Math.ceil(
-                  teamCreate / 4
-                  )} đội và mỗi bảng sẽ có ${Math.floor(
-                    teamCreate / 4
-                  )} đội `
-              : null}
-            và sẽ mặc định lấy 2 đội mạnh nhất mỗi bảng vào vòng loại trực tiếp{" "}
-          </p> : null}
-          
+          {tournamentType !== "GroupStage" ? (
+            <p
+              style={{
+                fontSize: 20,
+              }}
+            >
+              Ở hình thức này thì{" "}
+              {tournamentType === "KnockoutStage"
+                ? calcKnockOutStage()
+                : "sẽ có 1 bảng và các đội sẽ thi đấu lần lượt với nhau"}{" "}
+            </p>
+          ) : null}
+          {tournamentType === "GroupStage" ? (
+            <p
+              style={{
+                fontSize: 20,
+              }}
+            >
+              Đối với số bảng đấu bằng {groupNumber}, thì hệ thống chúng tôi sẽ
+              chia làm {groupNumber == 2 ? "2 bảng A-B" : "4 bảng A-B-C-D"},{" "}
+              {groupNumber == 2
+                ? teamCreate % 2 === 0
+                  ? ` mỗi bảng sẽ có ${teamCreate / 2} đội `
+                  : `bảng A sẽ có ${Math.ceil(
+                      teamCreate / 2
+                    )} đội, bảng B có ${Math.floor(teamCreate / 2)} đội `
+                : groupNumber == 4
+                ? teamCreate == 14
+                  ? ` bảng A-B có 4 đội và C-D sẽ có 3 đội `
+                  : teamCreate == 15
+                  ? ` bảng A-B-C có 4 đội và D sẽ có 3 đội `
+                  : teamCreate % 4 === 0
+                  ? ` mỗi bảng sẽ có ${teamCreate / 4} đội `
+                  : ` bảng A có ${Math.ceil(
+                      teamCreate / 4
+                    )} đội và mỗi bảng sẽ có ${Math.floor(teamCreate / 4)} đội `
+                : null}
+              và sẽ mặc định lấy 2 đội mạnh nhất mỗi bảng vào vòng loại trực
+              tiếp{" "}
+            </p>
+          ) : null}
         </div>
 
         <div

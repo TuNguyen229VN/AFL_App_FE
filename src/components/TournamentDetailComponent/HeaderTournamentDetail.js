@@ -232,7 +232,9 @@ function HeaderTournamentDetail() {
         currentPage,
         user.userVM.id
       );
-      //console.log(response.data);
+      console.log(tourDetail.registerEndDate)
+      console.log(new Date().getTime() <=
+      new Date(tourDetail.registerEndDate).getTime());
       if (response.data.teamInTournaments.length > 0) {
         setCheckPaticipate(response.data.teamInTournaments[0].status);
       }
@@ -537,7 +539,7 @@ function HeaderTournamentDetail() {
                 (item) => item.teamId === user.userVM.id
               );
               console.log(findTeam)
-              if (findTeam.id !== undefined) {
+              if (findTeam !== undefined) {
                 setCheckTeam(true) ;
               } else {
                  setCheckTeam(false);
@@ -691,9 +693,9 @@ function HeaderTournamentDetail() {
                         >
                           Đang chờ xét duyệt
                         </button>
-                      ) : null}
+                      ) : <p>Khoa ngu</p>}
                     </>
-                  ) : null}
+                  ) : <p>Khoa ngu1</p>}
                 </div>
 
                 <div className="headertext__team">

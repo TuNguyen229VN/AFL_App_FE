@@ -24,6 +24,7 @@ function TeamInTournament(props) {
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
+  
   return (
     <>
       <div className="tournamentdetail">
