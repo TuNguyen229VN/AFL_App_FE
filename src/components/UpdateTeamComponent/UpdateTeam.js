@@ -787,6 +787,25 @@ function UpdateTeam() {
               // disabled = {buttonFlag === true ? false : false}
             />
           ) : null}
+           <input
+            type="button"
+            
+            style={{
+              backgroundColor: "white",
+              border: 1,
+              borderColor: "white",
+              textDecoration: "underline",
+              color: "#9693ED",
+              float: "right",
+              marginTop:42,
+              marginRight:25,
+              fontWeight:600
+            }}
+            onClick={() => {
+              navigate(-1);
+            }}
+            value="Hủy tạo"
+          />
         </div>
       </form>
       {loading ? <LoadingAction/> : null}
