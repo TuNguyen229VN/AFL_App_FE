@@ -24,6 +24,7 @@ import {
   updateStatusTeamInTournament,
   deleteRegisterTeamAPI,
   updateTeamInScheduleAPI,
+  getTeamPaticaipateInTourByTourIDAPI,
 } from "../../api/TeamInTournamentAPI";
 import {
   deletePlayerInTournamentById,
@@ -54,6 +55,7 @@ function HeaderTournamentDetail() {
   let navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [allTeam, setAllTeam] = useState(null);
+  const [typeReport, setTypeReport] = useState("report");
   // Get Tour Detail
 
   const getTourDetail = async () => {
@@ -392,6 +394,7 @@ function HeaderTournamentDetail() {
       const teamData = await Promise.all(teams);
       teamData.countList = response.data.countList;
       setLoadingAc(false);
+      console.log(teamData);
       setAllTeam(teamData);
     } catch (err) {
       setLoadingAc(false);
@@ -466,21 +469,34 @@ function HeaderTournamentDetail() {
       setLoadingAc(false);
       return;
     }
-    const data = {
-      reason: contentReport.value,
-      userId: user.userVM.id,
-      tournamentId: idTour,
-    };
-    try {
-      const response = await axios.post(
-        "https://afootballleague.ddns.net/api/v1/reports",
-        data
-      );
-      if (response.status === 201) {
-        setPopupReport(false);
-        setContentReport({ value: "", error: "" });
+    if(typeReport === 'report'){
+      const data = {
+        reason: contentReport.value,
+        userId: user.userVM.id,
+        tournamentId: idTour,
+      };
+      try {
+        const response = await axios.post(
+          "https://afootballleague.ddns.net/api/v1/reports",
+          data
+        );
+        if (response.status === 201) {
+          setPopupReport(false);
+          setContentReport({ value: "", error: "" });
+          setLoadingAc(false);
+          toast.success("Báo cáo thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      } catch (error) {
         setLoadingAc(false);
-        toast.success("Báo cáo thành công", {
+        toast.error(error.response.data.message, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -489,22 +505,37 @@ function HeaderTournamentDetail() {
           draggable: true,
           progress: undefined,
         });
+        console.log(error);
       }
-    } catch (error) {
-      setLoadingAc(false);
-      toast.error(error.response.data.message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      console.log(error);
+    }else{
+      getAllPlayerInTournamentByIdTeam(user.userVM.id);
     }
   };
 
+  const checkTeamInTour = () => {
+    if (user !== undefined && tourDetail.id !== undefined) {
+      const response = getTeamPaticaipateInTourByTourIDAPI(tourDetail.id);
+      response
+        .then((res) => {
+          if (res.status === 200) {
+            const teamPaticipate = res.data.teamInTournaments;
+            const findTeam = teamPaticipate.find(
+              (item) => item.teamId === user.userVM.id
+            );
+            if (findTeam.id !== undefined) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      return false;
+    }
+  };
   return (
     <>
       <Header id={idTour} />
@@ -533,7 +564,8 @@ function HeaderTournamentDetail() {
                           state={{
                             id: tourDetail.id,
                             address: tourDetail.footballFieldAddress,
-                            lengthTeamPaticipate: tourDetail.numberTeamInTournament
+                            lengthTeamPaticipate:
+                              tourDetail.numberTeamInTournament,
                           }}
                           className="btn_UpdateTournament"
                           style={{
@@ -558,8 +590,8 @@ function HeaderTournamentDetail() {
                           Chỉnh sửa giải đấu
                         </Link>
                       ) : tourDetail.mode !== "PRIVATE" &&
-                      new Date().getTime() <=
-                      new Date(tourDetail.registerEndDate).getTime() &&
+                        new Date().getTime() <=
+                          new Date(tourDetail.registerEndDate).getTime() &&
                         checkPaticipate === false &&
                         user.teamInfo !== null ? (
                         <div>
@@ -709,15 +741,35 @@ function HeaderTournamentDetail() {
                     </span>
                   </div>
                 </div>
+
+                {user !== null && checkTeamInTour ? (
+                  <div
+                    className="report"
+                    onClick={() => {
+                      setPopupReport(true);
+                      setTypeReport("outtournament");
+                    }}
+                  >
+                    <p>Rời giải đấu</p>
+                  </div>
+                ) : null}
+
                 {user !== null && user.userVM.id !== tourDetail.userId ? (
                   <>
                     <div
+                      style={{
+                        top: checkTeamInTour ? 70 : 40,
+                      }}
                       className="report"
-                      onClick={() => setPopupReport(true)}
+                      onClick={() => {
+                        setPopupReport(true);
+                        setTypeReport("report");
+                      }}
                     >
                       <i class="fa-solid fa-exclamation"></i>
                       <p>Báo cáo</p>
                     </div>
+
                     <div
                       className={popupReport ? `overlay active` : "active"}
                       onClick={() => {
@@ -736,17 +788,27 @@ function HeaderTournamentDetail() {
                       >
                         X
                       </div>
-                      <h4>Báo cáo giải đấu</h4>
+                      <h4>
+                        {" "}
+                        {typeReport === "report"
+                          ? "Báo cáo giải đấu"
+                          : "Rời khỏi giải đấu"}
+                      </h4>
                       <p className="error errRp">{contentReport.error}</p>
                       <textarea
-                        placeholder="Lý do báo cáo giải đấu này"
+                        placeholder={
+                          typeReport === "report"
+                            ? "Lý do báo cáo giải đấu này"
+                            : "Lý do rời khỏi giải đấu này"
+                        }
                         className="content"
                         name="contentU"
                         autoComplete="off"
                         value={contentReport.value}
                         onChange={onChangeHandler}
                       />
-                      <button>Báo cáo</button>
+                      <button>{typeReport === "report"
+                            ? "Báo cáo" : "Rời giải"}</button>
                     </form>
                   </>
                 ) : null}
