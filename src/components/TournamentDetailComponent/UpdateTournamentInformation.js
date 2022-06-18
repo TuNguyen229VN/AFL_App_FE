@@ -106,7 +106,6 @@ const UpdateTournamentInformation = (props) => {
   const [wardSearch, setWardSearch] = useState(null);
   AOS.init();
   const tour = gsap.timeline();
-
   const getAllCity = async () => {
     const response = await axios.get(
       "https://provinces.open-api.vn/api/?depth=3"
@@ -1259,7 +1258,22 @@ const UpdateTournamentInformation = (props) => {
               <input
                 type="submit"
                 className={styles.btn_Next}
-                value="Tiếp theo"
+                value="Thay đổi"
+              />
+              <input
+                type="button"
+                className={styles.btn_Next}
+                style={{
+                  backgroundColor: "white",
+                  border:1,
+                  borderColor: "white",
+                  textDecoration: "underline",
+                  color: "#9693ED"
+                }}
+                onClick={() => {
+                  navigate(-1);
+                }}
+                value="Hủy tạo"
               />
               {/* ) : null} */}
             </div>

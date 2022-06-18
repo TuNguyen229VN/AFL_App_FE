@@ -227,7 +227,7 @@ function UpdateTeam() {
             headers: { "content-type": "multipart/form-data" },
           }
         );
-        if (response.status === 201) {
+        if (response.status === 200) {
           setLoading(false);
           toast.success("Cập nhật đội bóng thành công", {
             position: "top-right",
@@ -787,6 +787,25 @@ function UpdateTeam() {
               // disabled = {buttonFlag === true ? false : false}
             />
           ) : null}
+           <input
+            type="button"
+            
+            style={{
+              backgroundColor: "white",
+              border: 1,
+              borderColor: "white",
+              textDecoration: "underline",
+              color: "#9693ED",
+              float: "right",
+              marginTop:42,
+              marginRight:25,
+              fontWeight:600
+            }}
+            onClick={() => {
+              navigate(-1);
+            }}
+            value="Hủy tạo"
+          />
         </div>
       </form>
       {loading ? <LoadingAction/> : null}

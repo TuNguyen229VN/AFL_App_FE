@@ -250,7 +250,8 @@ const CreateTeam = () => {
       if (response.status === 200) {
         const userInFor = JSON.parse(localStorage.getItem("userInfo"));
         userInFor.teamInfo = response.data;
-        userInFor.playerInfo = userInFor.playerInfo != null ? userInFor.playerInfo : null;
+        userInFor.playerInfo =
+          userInFor.playerInfo != null ? userInFor.playerInfo : null;
         localStorage.setItem("userInfo", JSON.stringify(userInFor));
         //localStorage.setItem("teamInfo", JSON.stringify(response.data));
       }
@@ -417,7 +418,6 @@ const CreateTeam = () => {
                 name="imgClub"
                 id="file"
                 onChange={onChangeHandler}
-                
               />
               <img
                 src={
@@ -471,7 +471,6 @@ const CreateTeam = () => {
                   placeholder="Tên đội bóng *"
                   value={nameClub.value}
                   onChange={onChangeHandler}
-                  
                 />
               </div>
               <div className={styles.text__field}>
@@ -504,7 +503,6 @@ const CreateTeam = () => {
                   id="phoneteam"
                   placeholder="Số điện thoại *"
                   onChange={onChangeHandler}
-                  
                 />
               </div>
               <div className={styles.text__field}>
@@ -817,6 +815,25 @@ const CreateTeam = () => {
               // disabled = {buttonFlag === true ? false : false}
             />
           ) : null}
+          <input
+            type="button"
+            
+            style={{
+              backgroundColor: "white",
+              border: 1,
+              borderColor: "white",
+              textDecoration: "underline",
+              color: "#9693ED",
+              float: "right",
+              marginTop:42,
+              marginRight:25,
+              fontWeight:600
+            }}
+            onClick={() => {
+              navigate(-1);
+            }}
+            value="Hủy tạo"
+          />
         </div>
       </form>
       {loading ? <LoadingAction /> : null}

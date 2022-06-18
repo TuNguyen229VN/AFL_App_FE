@@ -19,7 +19,7 @@ import LoadingAction from "../LoadingComponent/LoadingAction";
 import { useNavigate } from "react-router-dom";
 
 const CreateTournament = () => {
-  const naviage = useNavigate();
+  const navigate = useNavigate();
   const [status, setStatus] = useState(-1);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const descriptionText = draftToHtml(
@@ -119,7 +119,7 @@ const CreateTournament = () => {
     response
       .then((res) => {
         if (res.status === 200) {
-          naviage(`/tournamentDetail/${id}/inforTournamentDetail`);
+          navigate(`/tournamentDetail/${id}/inforTournamentDetail`);
           setLoading(false);
           toast.success("Tạo giải đấu và lịch thi đấu thành công", {
             position: "top-right",
@@ -1127,6 +1127,22 @@ const CreateTournament = () => {
                   value="Tiếp theo"
                 />
               ) : null}
+
+              <input
+                type="button"
+                className={styles.btn_Next}
+                style={{
+                  backgroundColor: "white",
+                  border:1,
+                  borderColor: "white",
+                  textDecoration: "underline",
+                  color: "#9693ED"
+                }}
+                onClick={() => {
+                  navigate(-1);
+                }}
+                value="Hủy tạo"
+              />
             </div>
           </form>
         </div>
