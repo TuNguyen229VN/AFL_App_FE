@@ -37,6 +37,7 @@ const Description = (props) => {
         ],
       }}
     />
+    // <Editor className={styles.description_text} placeholder="Mô tả về giải đấu" onEditorStateChange={setEditorState} editorState={editorState} />
   );
 };
 

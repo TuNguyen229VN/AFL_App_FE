@@ -57,7 +57,7 @@ function HeaderTournamentDetail() {
   const [allTeam, setAllTeam] = useState(null);
   const [typeReport, setTypeReport] = useState("report");
   // Get Tour Detail
-
+  const [hideShowDeleteTeamOut,setHideShowDeleteTeamOut] = useState(false);
   const getTourDetail = async () => {
     let afterDefaultURL = `tournaments/${idTour}`;
     let response = getAPI(afterDefaultURL);
@@ -172,10 +172,15 @@ function HeaderTournamentDetail() {
           setStatusTeam={setStatusTeam}
           hostTournamentId={tourDetail.userId}
           allTeam={allTeam}
+          setTypeReport={setTypeReport}
+          setPopupReport={setPopupReport}
           loadingAc={loadingAc}
           hideShow={hideShowDelete}
           setHideShow={setHideShowDelete}
           getAllPlayerInTournamentByIdTeam={getAllPlayerInTournamentByIdTeam}
+          deleteTeamInTour={deleteTeamInTour}
+          hideShowDeleteTeamOut={hideShowDeleteTeamOut}
+          setHideShowDeleteTeamOut={setHideShowDeleteTeamOut}
         />
       );
     }
@@ -238,6 +243,8 @@ function HeaderTournamentDetail() {
       new Date(tourDetail.registerEndDate).getTime());
       if (response.data.teamInTournaments.length > 0) {
         setCheckPaticipate(response.data.teamInTournaments[0].status);
+      }else{
+        setCheckPaticipate(false);
       }
       setLoadingAc(false);
     } catch (err) {
@@ -292,11 +299,14 @@ function HeaderTournamentDetail() {
     const response = deleteRegisterTeamAPI(id);
     response
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
+          checkTeamPaticipate();
           setHideShowDelete(false);
+          setPopupReport(false);
           setLoadingAc(false);
           setTypeReport("report");
+          setHideShowDeleteTeamOut(false);
+          getTourDetail();
           getAllTeamInTournamentByTourId();
           toast.success(
             typeReport !== "outtournament"
@@ -312,6 +322,7 @@ function HeaderTournamentDetail() {
               progress: undefined,
             }
           );
+          checkTeamInTour();
         }
       })
       .catch((err) => {
@@ -522,10 +533,45 @@ function HeaderTournamentDetail() {
         console.log(error);
       }
     } else {
-      getAllPlayerInTournamentByIdTeam(user.userVM.id);
+      await deleteTeamInTour(null);
     }
   };
-
+  const deleteTeamInTour = async (id) => {
+    try {
+      let teamInTourId = null;
+      if(id === null){
+        teamInTourId = await getTeamInTourIDByTeamId(user.userVM.id);
+      }else{
+        teamInTourId = id;
+      }
+      
+      const data = {
+        teamInTournamentId: teamInTourId,
+        typeUpdate: false,
+      };
+      const response = await updateTeamInScheduleAPI(data);
+      if (response.status === 200) {
+        await getAllPlayerInTournamentByIdTeam(teamInTourId);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  const getTeamInTourIDByTeamId = async (teamID) => {
+    try {
+      const response = await getTeamInTournamentByTourIdAPI(
+        tourDetail.id,
+        "Tham gia",
+        1,
+        teamID
+      );
+      if (response.status === 200) {
+        return response.data.teamInTournaments[0].id;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const [checkTeam,setCheckTeam] = useState(null);
   
   const checkTeamInTour = () => {
