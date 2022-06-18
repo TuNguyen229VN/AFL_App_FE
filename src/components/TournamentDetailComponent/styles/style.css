@@ -951,3 +951,18 @@
 .errRp {
   margin-bottom: 10px;
 }
+
+.teamdetail .listPlayer .listPlayer__item .des .buttonChieumoGiai{
+  margin-top: 15px;
+  padding: 10px;
+  background-color: var(--green-bold);
+  text-align: center;
+  color: var(--blue-black);
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.teamdetail .listPlayer .listPlayer__item .des .buttonChieumoGiai:hover{
+  filter: brightness(90%);
+}

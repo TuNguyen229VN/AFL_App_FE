@@ -360,6 +360,14 @@ transition: 0.5s;
   justify-content: center;
 }
 
+.pagingTournament1{
+  width: max-content;
+  margin: 0 auto;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .pagelink{
   color: var(--blue-black);
   display: inline-block;

@@ -47,15 +47,15 @@ const CreateTournament = () => {
     error: null,
   });
   const [closeRegister, setCloseRegister] = useState({
-    value: null,
+    value: "",
     error: null,
   });
   const [startTime, setStartTime] = useState({
-    value: null,
+    value: new Date().toISOString().split(".")[0],
     error: null,
   });
   const [endTime, setEndTime] = useState({
-    value: null,
+    value: new Date().toISOString().split(".")[0],
     error: null,
   });
   const [competitionFormat, setCompetitionFormat] = useState({
@@ -434,7 +434,6 @@ const CreateTournament = () => {
         });
         break;
       case "startTime":
-        
         setStartTime({
           ...startTime,
           value,
@@ -860,6 +859,7 @@ const CreateTournament = () => {
                   <input
                     className={styles.timeEnd_input}
                     id="endTime"
+                    min={minDate}
                     type="datetime-local"
                     name="endTime"
                     value={endTime.value}

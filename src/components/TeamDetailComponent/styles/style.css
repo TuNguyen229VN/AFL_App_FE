@@ -654,7 +654,7 @@ background-color: #f0f2f5;
 .schedule__tour .option__view p:hover {
   background-color: var(--green-bold);
 }
-.schedule__tour .option__view p:nth-child(2) {
+.schedule__tour .option__view p:not(:first-child) {
   border-left: 0;
 }
 

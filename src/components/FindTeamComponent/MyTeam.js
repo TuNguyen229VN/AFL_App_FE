@@ -62,6 +62,7 @@ const MyTournamemts = () => {
         setCount(res.data.countList);
       }
     } catch (error) {
+      setLoading(false);
       console.log(loading);
       console.log(error);
     }

@@ -18,6 +18,7 @@ import "./styles/style.css";
 import { PlayerRegisterAPI, TeamAcceptAPI } from "../../api/System";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import axios from "axios";
+import TournamentTeamDetail from "./TournamentTeamDetail";
 
 function HeaderTeamDetail() {
   const { idTeam } = useParams();
@@ -45,7 +46,6 @@ function HeaderTeamDetail() {
     );
   };
 
-  console.log(user);
   // splitteam Area
   const splitTeamArea = (teamArea) => {
     let myArray = teamArea.split(",");
@@ -127,6 +127,9 @@ function HeaderTeamDetail() {
     }
     if (activeTeamDetail === `/teamDetail/${idTeam}/commentTeamDetail`) {
       return <CommentTeamDetail />;
+    }
+    if (activeTeamDetail === `/teamDetail/${idTeam}/tournamentTeamDetail`) {
+      return <TournamentTeamDetail user={user} team={team} />;
     }
   };
 
@@ -481,6 +484,22 @@ function HeaderTeamDetail() {
                     }
                   >
                     Thành viên
+                  </Link>
+                  <Link
+                    to={`/teamDetail/${idTeam}/tournamentTeamDetail`}
+                    className={
+                      activeTeamDetail ===
+                      `/teamDetail/${idTeam}/tournamentTeamDetail`
+                        ? "active"
+                        : ""
+                    }
+                    onClick={() =>
+                      setActiveTeamDetail(
+                        `/teamDetail/${idTeam}/tournamentTeamDetail`
+                      )
+                    }
+                  >
+                    Giải đấu
                   </Link>
                   <Link
                     to={`/teamDetail/${idTeam}/reportTeamDeatail`}

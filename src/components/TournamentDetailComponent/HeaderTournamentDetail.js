@@ -165,6 +165,7 @@ function HeaderTournamentDetail() {
     if (activeTeamDetail === `/tournamentDetail/${idTour}/teamInTournament`) {
       return (
         <TeamInTournament
+          tourDetail={tourDetail}
           user={user != undefined ? user : undefined}
           acceptTeamInTournament={acceptTeamInTournament}
           setStatusTeam={setStatusTeam}
@@ -288,7 +289,7 @@ function HeaderTournamentDetail() {
         if (res.status === 200) {
           setHideShowDelete(false);
           setLoadingAc(false);
-          setTypeReport('report');
+          setTypeReport("report");
           getAllTeamInTournamentByTourId();
           toast.success(
             typeReport !== "outtournament"
@@ -792,10 +793,9 @@ function HeaderTournamentDetail() {
                         className="close"
                         onClick={() => {
                           setPopupReport(false);
-                          if(typeReport === "outtournament"){
-                            setTypeReport("report")
+                          if (typeReport === "outtournament") {
+                            setTypeReport("report");
                           }
-
                         }}
                       >
                         X

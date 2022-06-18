@@ -71,6 +71,7 @@ function Header(id) {
     `/teamDetail/${id.id}/listPlayer`,
     `/teamDetail/${id.id}/reportTeamDeatail`,
     `/teamDetail/${id.id}/commentTeamDetail`,
+    `/teamDetail/${id.id}/tournamentTeamDetail`,
   ];
 
   const playerHighlight=[

@@ -101,6 +101,11 @@ function App() {
           />
           <Route
             exact
+            path="/teamDetail/:idTeam/tournamentTeamDetail"
+            element={<HeaderTeamDetail />}
+          />
+          <Route
+            exact
             path="/tournamentDetail/:idTour/inforTournamentDetail"
             element={<HeaderTournamentDetail />}
           />
@@ -144,7 +149,13 @@ function App() {
           <Route
             exact
             path="/tournamentDetail/:idTour/inforTournamentDetail/update-tournament-detail"
-            element={<UpdateInformationTournament />}
+            element={
+              user ? (
+                <UpdateInformationTournament />
+              ) : (
+                <Navigate to={"/login"} />
+              )
+            }
           />
           <Route
             exact
