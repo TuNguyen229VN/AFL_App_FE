@@ -9,6 +9,7 @@ import { getAPI } from "../../api";
 import ReactPaginate from "react-paginate";
 import { addTeamInTournamentAPI } from "../../api/TeamInTournamentAPI";
 import { toast } from "react-toastify";
+import ModalDeleteTeamOutTournament from "./ModalDeleteTeamOutTournament";
 
 function TeamInTournament(props) {
   const {
@@ -22,7 +23,9 @@ function TeamInTournament(props) {
     hideShow,
     setHideShow,
     getAllPlayerInTournamentByIdTeam,
+    deleteTeamInTour,hideShowDeleteTeamOut,setHideShowDeleteTeamOut
   } = props;
+  
   const [active, setactive] = useState(1);
   const [viewList, setViewList] = useState(null);
   const [teamDelete, setTeamDelete] = useState(null);
@@ -36,46 +39,36 @@ function TeamInTournament(props) {
   const [orderType, setOrderType] = useState("DESC");
   const [contentSearch, setContentSearch] = useState("");
   const [check, setCheck] = useState(false);
-
+  const [viewMoreOption, setViewMoreOption] = useState({
+    index: "0",
+    check: false,
+  });
+  const [idTeamDelete,setIdTeamDelete] = useState(null);
+  
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
     getTeam(contentSearch, data.selected + 1, "NAME", contentSearch);
     setCheck(!check);
   };
-  
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
 
   const addTeamInTournament = (idTeam) => {
     setLoading(true);
-      const data = {
-        point: 0,
-        differentPoint: 0,
-        status: "Chờ duyệt",
-        tournamentId: tourDetail.id,
-        teamId: idTeam,
-      };
-      const response = addTeamInTournamentAPI(data);
-      response
-        .then((res) => {
-          if (res.status === 201) {
-            toast.success("Chiêu mộ đội bóng thành công", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-            setLoading(false);
-            //console.log(res.data);
-          }
-        })
-        .catch((err) => {
-          setLoading(false);
-          toast.error(err.response.data.message, {
+    const data = {
+      point: 0,
+      differentPoint: 0,
+      status: "Chờ duyệt private",
+      tournamentId: tourDetail.id,
+      teamId: idTeam,
+    };
+    const response = addTeamInTournamentAPI(data);
+    response
+      .then((res) => {
+        if (res.status === 201) {
+          toast.success("Chiêu mộ đội bóng thành công", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -84,8 +77,22 @@ function TeamInTournament(props) {
             draggable: true,
             progress: undefined,
           });
+          setLoading(false);
+          //console.log(res.data);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
         });
-    
+      });
   };
   const getTeam = async (nameFind, currentPage, anotherSearch, value) => {
     try {
@@ -176,6 +183,46 @@ function TeamInTournament(props) {
                 allTeam.map((item, index) => {
                   return (
                     <div key={index} className="listPlayer__item">
+                     {user !== undefined && tourDetail != null && user.userVM.id === tourDetail.userId ?  <div>
+                        <div
+                          className="view__more"
+                          onClick={() => {
+                            setViewMoreOption({
+                              index: index,
+                              check: !viewMoreOption.check,
+                            });
+                          }}
+                        >
+                          <i className="fa-solid fa-ellipsis"></i>
+                        </div>
+                        <div
+                          className={
+                            viewMoreOption.index === index &&
+                            viewMoreOption.check
+                              ? "option__player active"
+                              : "option__player"
+                          }
+                        >
+                          <div
+                            className={
+                              hideShowDeleteTeamOut ? "overlay active" : "overlay"
+                            }
+                          ></div>
+                          <p
+                            onClick={() => {
+                              //deletePlayerInTeam(item.idPlayerInTeam);
+                              // setHideShowDelete(true);
+                              // setIdDelete(item.idPlayerInTeam);
+                              // setDeleteSuccessFul(false);
+                              setHideShowDeleteTeamOut(true);
+                              setIdTeamDelete(item.teamInTournament.id)
+                            }}
+                          >
+                            <i class="fa-solid fa-trash"></i>Xóa đội bóng khỏi giải
+                          </p>
+                        </div>
+                      </div> : null}
+                      
                       {/* <Link
                         to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
                       >   */}
@@ -229,6 +276,7 @@ function TeamInTournament(props) {
                   Chưa có đội bóng tham gia
                 </h1>
               )}
+              <ModalDeleteTeamOutTournament deleteTeamInTour={deleteTeamInTour} tourDetail={tourDetail !== null ? tourDetail : null} idTeamDelete={idTeamDelete} setIdTeamDelete={setIdTeamDelete} hideShow={hideShowDeleteTeamOut} setHideShow={setHideShowDeleteTeamOut} />
             </div>
           ) : null}
 
@@ -412,7 +460,10 @@ function TeamInTournament(props) {
                               <span>Khu vực:</span>
                               {item.teamArea}
                             </p>
-                            <p className="buttonChieumoGiai" onClick={()=>addTeamInTournament(item.id)}>
+                            <p
+                              className="buttonChieumoGiai"
+                              onClick={() => addTeamInTournament(item.id)}
+                            >
                               Chiêu mộ vào giải
                             </p>
                           </div>

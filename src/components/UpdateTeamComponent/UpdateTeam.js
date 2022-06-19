@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Editor } from "react-draft-wysiwyg";
-import { convertToRaw, EditorState } from "draft-js";
+import { EditorState, convertToRaw,ContentState, convertFromHTML } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -16,12 +16,19 @@ import LoadingAction from "../LoadingComponent/LoadingAction";
 function UpdateTeam() {
   const location = useLocation();
   const address = location.state.address;
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [loading, setLoading] = useState(false);
-  const [manager, setManager] = useState("");
-  const textDescription = draftToHtml(
+  const [editorState, setEditorState] = useState(
+    EditorState.createWithContent(
+      ContentState.createFromBlockArray(
+        convertFromHTML("<p>My initial content.</p>")
+      )
+    )
+  );
+  const descriptionText = draftToHtml(
     convertToRaw(editorState.getCurrentContent())
   );
+  const [loading,setLoading] = useState(false);
+  const [manager, setManager] = useState("");
+
   let navigate = useNavigate();
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
@@ -90,6 +97,11 @@ function UpdateTeam() {
         setPhoneContact({ value: res.data.teamPhone });
         setGender({ value: res.data.teamGender });
         setArea(res.data.teamArea);
+        setEditorState(EditorState.createWithContent(
+          ContentState.createFromBlockArray(
+            convertFromHTML(res.data.description)
+          )
+        ))
       })
       .catch((err) => {
         console.log(err);
@@ -176,10 +188,10 @@ function UpdateTeam() {
     return { flag: true, content: null };
   };
   const validateAdd = () => {
-    if (nameClub.value !== null || nameClub.value.length === 0) {
+    if (nameClub.value === null || nameClub.value.length === 0) {
       return "Tên đội bóng không được để trống";
     }
-    if (phoneContact.value !== null || phoneContact.value.length === 0) {
+    if (phoneContact.value === null || phoneContact.value.length === 0) {
       return {
         flag: false,
         content: "Số điện thoại không được để trống",
@@ -194,12 +206,14 @@ function UpdateTeam() {
     return null;
   };
   const onSubmitHandler = async (e) => {
+    
     e.preventDefault();
     setLoading(true);
     const flag = validateAdd();
+    
     if (flag !== null) {
       setLoading(false);
-      toast.error(flag, {
+      toast.error(flag.content, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -209,13 +223,14 @@ function UpdateTeam() {
         progress: undefined,
       });
     } else {
+      console.log(descriptionText)
       try {
         const data = {
           id: user.userVM.id,
           teamName: nameClub.value,
           teamPhone: phoneContact.value,
           teamAvatar: imgClub.value,
-          description: textDescription,
+          description: descriptionText,
           teamGender: gender.value,
           teamArea: addressField != null ? addressField : address,
         };

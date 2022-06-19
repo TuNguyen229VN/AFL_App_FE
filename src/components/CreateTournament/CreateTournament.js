@@ -185,7 +185,6 @@ const CreateTournament = () => {
           TournamentTypeEnum: competitionFormat.value,
           TournamentFootballFieldTypeEnum: typeFootballField.value,
         };
-
         const response = await axios.post(
           "https://afootballleague.ddns.net/api/v1/tournaments",
           data,

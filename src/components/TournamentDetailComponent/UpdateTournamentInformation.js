@@ -7,7 +7,7 @@ import Footer from "../Footer/Footer";
 import gsap from "gsap";
 import AOS from "aos";
 import Transitions from "../Transitions/Transitions";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw,ContentState, convertFromHTML } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import CompetitionFormat from "../CreateTournament/CompetitionFormat";
@@ -31,7 +31,13 @@ const UpdateTournamentInformation = (props) => {
   const [team, setTeam] = useState(null);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(-1);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [editorState, setEditorState] = useState(
+    EditorState.createWithContent(
+      ContentState.createFromBlockArray(
+        convertFromHTML("<p>My initial content.</p>")
+      )
+    )
+  );
   const descriptionText = draftToHtml(
     convertToRaw(editorState.getCurrentContent())
   );
@@ -194,6 +200,11 @@ const UpdateTournamentInformation = (props) => {
         value: team.matchMinutes,
         error: null,
       });
+      setEditorState(EditorState.createWithContent(
+        ContentState.createFromBlockArray(
+          convertFromHTML(team.description)
+        )
+      ))
       setCompetitionFormat({
         value:
           team.tournamentTypeId === 1
@@ -253,6 +264,7 @@ const UpdateTournamentInformation = (props) => {
         progress: undefined,
       });
     } else {
+      
       try {
         const data = {
           Id: idTournament,
@@ -278,7 +290,7 @@ const UpdateTournamentInformation = (props) => {
           TournamentTypeEnum: competitionFormat.value,
           TournamentFootballFieldTypeEnum: typeFootballField.value,
         };
-
+        console.log(data);
         const response = await updateTournamentInfoAPI(data);
         if (response.status === 200) {
           setLoadingAction(false);

@@ -84,6 +84,7 @@ export default function RegisterInTournament(props) {
     setLoading(true);
     const getPlayerChoice = getPlayerChoiceRegister();
     const mininumPlayer = getNumberInField();
+    console.log(getPlayerChoice.length)
     if (getPlayerChoice.length < mininumPlayer) {
       setLoading(false);
       toast.error(`Bạn phải đăng ký tối thiểu ${mininumPlayer} cầu thủ`, {
@@ -146,7 +147,8 @@ export default function RegisterInTournament(props) {
       }
       return accumulator;
     }, []);
-    console.log(getPlayerChoice);
+    console.log(getPlayerChoice)
+    return getPlayerChoice;
   };
   const addPlayerInTournament = (id, getPlayerChoice) => {
     getPlayerChoice.map((iteam, index) => {
@@ -171,6 +173,7 @@ export default function RegisterInTournament(props) {
     });
     setCheckRegistertour(true);
     setLoading(false);
+    setHideShow(false);
     toast.success("Đăng ký tham gia giải đấu thành công ", {
       position: "top-right",
       autoClose: 3000,
@@ -195,7 +198,7 @@ export default function RegisterInTournament(props) {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     addTeamInTournament();
-    setHideShow(false);
+    
   };
   const onRowClick = () => {
     rowRef.current.focus();
