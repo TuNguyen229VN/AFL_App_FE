@@ -52,7 +52,6 @@ function ListPlayer(props) {
     });
 
     const playersData = await Promise.all(players);
-    console.log(playersData);
     setPlayerInTeam(playersData);
     setLoading(false);
   };
@@ -166,7 +165,7 @@ function ListPlayer(props) {
 
         <div>
           <div className="listPlayer__total">
-            <h2>Có {numberPlayerInTeam} thành viên</h2>
+           {active === "Cầu thủ"? <h2>Có {numberPlayerInTeam} thành viên</h2>:<h2></h2>}
 
             <div
               className="schedule__tour"

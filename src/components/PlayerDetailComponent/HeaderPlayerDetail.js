@@ -44,6 +44,17 @@ function HeaderPlayerDetail() {
     getTeamByIdPlayer(active);
   }, [idPlayer, active, statusAdd === true, currentPage]);
 
+  const formatDate = (date) => {
+    const day = new Date(date);
+    return (
+      String(day.getDate()).padStart(2, "0") +
+      "/" +
+      String(day.getMonth() + 1).padStart(2, "0") +
+      "/" +
+      day.getFullYear()
+    );
+  };
+
   const getTeamByIdPlayer = (status) => {
     //setLoading(true);
     const response = getAllTeamByPlayerIdAPI(idPlayer, status, currentPage);
@@ -404,7 +415,9 @@ function HeaderPlayerDetail() {
                     <span className="title">Ngày sinh: </span>
                     <span>
                       {detailPlayer.userVM.dateOfBirth !== null
-                        ? detailPlayer.userVM.dateOfBirth.split(" ")[0]
+                        ? formatDate(
+                            detailPlayer.userVM.dateOfBirth.split(" ")[0]
+                          )
                         : null}
                       {/* {detailPlayer.userVM.dateOfBirth !== null
                         ? detailPlayer.userVM.dateOfBirth

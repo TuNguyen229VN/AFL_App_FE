@@ -8,7 +8,7 @@ import { NotiFootballInTournamentAPI } from "../../api/System";
 export default function RegisterInTournament(props) {
   const { idUser, tourDetail, setCheckRegistertour, hideShow, setHideShow } =
     props;
-  const [playerInTeam, setPlayerInTeam] = useState(null);
+  const [playerInTeam, setPlayerInTeam] = useState([]);
   const [loading, setLoading] = useState(false);
   const [countChoice, setCountChoice] = useState(0);
   const [listClothes, setListClothes] = useState([]);
@@ -17,7 +17,7 @@ export default function RegisterInTournament(props) {
   useEffect(() => {
     getListPlayerInTeamByIdTeam();
   }, [idUser]);
-  console.log(tourDetail);
+  // console.log(tourDetail);
   const getListPlayerInTeamByIdTeam = async () => {
     setLoading(true);
     const afterURL = `PlayerInTeam?teamId=${idUser}&status=true&pageIndex=1&limit=50`;
@@ -77,7 +77,6 @@ export default function RegisterInTournament(props) {
       console.log(getIndex);
       allPlayer[getIndex].clothesNumber = value;
     }
-    console.log(allPlayer);
     setPlayerInTeam(allPlayer);
   };
 
@@ -140,6 +139,7 @@ export default function RegisterInTournament(props) {
       });
   };
   const getPlayerChoiceRegister = () => {
+    console.log(playerInTeam)
     const getPlayerChoice = playerInTeam.reduce((accumulator, currentValue) => {
       if (currentValue.choice === true) {
         accumulator.push(currentValue);

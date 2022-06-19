@@ -7,13 +7,22 @@ import DenyTeamInTournament from "../TournamentDetailComponent/DenyTeamInTournam
 import { Link } from "react-router-dom";
 import ViewListPlayerRegister from "../TournamentDetailComponent/ViewListPlayerRegister";
 import { toast } from "react-toastify";
-import { deleteRegisterTeamAPI, updateStatusTeamInTournament, updateTeamInScheduleAPI } from "../../api/TeamInTournamentAPI";
-import { deletePlayerInTournamentById, getAllPlayerInTournamentByTeamInTournamentIdAPI } from "../../api/PlayerInTournamentAPI";
+import {
+  deleteRegisterTeamAPI,
+  updateStatusTeamInTournament,
+  updateTeamInScheduleAPI,
+} from "../../api/TeamInTournamentAPI";
+import {
+  deletePlayerInTournamentById,
+  getAllPlayerInTournamentByTeamInTournamentIdAPI,
+} from "../../api/PlayerInTournamentAPI";
 import RegisterInTournament from "../TournamentDetailComponent/RegisterInTournament";
 function TournamentTeamDetail(props) {
   const { user, team } = props;
   const [checkRegisterTour, setCheckRegistertour] = useState(false);
+  const [teamInTour, setTeamInTour] = useState([]);
   const [hideShow, setHideShow] = useState(false);
+  const [hideShowDelete, setHideShowDelete] = useState(false);
   const [viewList, setViewList] = useState(null);
   const [tourTeam, setTourTeam] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,7 +34,7 @@ function TournamentTeamDetail(props) {
   const [typeReport, setTypeReport] = useState("report");
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
-    getTournament();
+    getTeamInTournament();
     setCheck(!check);
   };
 
@@ -41,6 +50,7 @@ function TournamentTeamDetail(props) {
     response
       .then((res) => {
         if (res.status === 200) {
+          console.log(res);
           for (let item of res.data.playerInTournaments) {
             deletePlayerById(item.id);
           }
@@ -51,7 +61,7 @@ function TournamentTeamDetail(props) {
       })
       .catch((err) => {
         setLoading(false);
-        setHideShow(false);
+        setHideShowDelete(false);
         console.error(err);
       });
   };
@@ -61,7 +71,7 @@ function TournamentTeamDetail(props) {
       const response = await deletePlayerInTournamentById(id);
     } catch (err) {
       setLoading(false);
-      setHideShow(false);
+      setHideShowDelete(false);
       console.error(err);
       toast.error(err.response.data.message, {
         position: "top-right",
@@ -75,20 +85,56 @@ function TournamentTeamDetail(props) {
     }
   };
 
+  const getType = (id) => {
+    if (1 === id) {
+      return "Loại trực tiếp";
+    }
+    if (2 === id) {
+      return "Đá vòng tròn";
+    }
+    if (3 === id) {
+      return "Đá chia bảng";
+    } else {
+      return "";
+    }
+  };
+
+  const getFeild = (id) => {
+    if (1 === id) {
+      return " | Sân 5";
+    }
+    if (2 === id) {
+      return " | Sân 7";
+    }
+    if (3 === id) {
+      return " | Sân 11";
+    } else {
+      return "";
+    }
+  };
+
+  const getGender = (gender) => {
+    if (gender === "Male") {
+      return "Giải đấu Nam";
+    } else {
+      return "Giải đấu Nữ";
+    }
+  };
+
   const deleteTeamInTournament = (id) => {
     const response = deleteRegisterTeamAPI(id);
     response
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          setHideShow(false);
+          setHideShowDelete(false);
           setLoading(false);
           setTypeReport("report");
-          setCheck(!check)
+          setCheck(!check);
           toast.success(
             typeReport !== "outtournament"
-              ? "Từ chối đội bóng thành công"
-              : "Đội bóng đã hủy tham gia giải thành công",
+              ? "Từ chối giải đấu thành công"
+              : "Giải đấu đã hủy tham gia giải thành công",
             {
               position: "top-right",
               autoClose: 3000,
@@ -116,7 +162,8 @@ function TournamentTeamDetail(props) {
         });
       });
   };
-  const getTournament = async () => {
+
+  const getTeamInTournament = async () => {
     try {
       let afterURLDefault = null;
       afterURLDefault = `team-in-tournaments?team-id=${team.id}&status=${statusTeam}&page-offset=${currentPage}&limit=8`;
@@ -124,10 +171,19 @@ function TournamentTeamDetail(props) {
       const res = await getAPI(afterURLDefault);
 
       if (res.status === 200) {
-        console.log(res.data.countList);
-        setTourTeam(res.data.teamInTournaments);
-        setLoading(false);
+        console.log(res.data.teamInTournaments);
         setCount(res.data.countList);
+        const ids = res.data.teamInTournaments;
+        const tours = ids.map(async (tour) => {
+          const tourResponse = await getTournamentByID(tour.tournamentId);
+          tourResponse.idPlayerInTeam = tour.id;
+          return tourResponse;
+        });
+
+        const toursData = await Promise.all(tours);
+        setTourTeam(toursData);
+        setTeamInTour(res.data.teamInTournaments);
+        setLoading(false);
       }
     } catch (error) {
       setLoading(false);
@@ -135,8 +191,13 @@ function TournamentTeamDetail(props) {
     }
   };
 
+  const getTournamentByID = async (idTour) => {
+    const afterURL = `tournaments/${idTour}`;
+    const response = await getAPI(afterURL);
+    return response.data;
+  };
   useEffect(() => {
-    getTournament();
+    getTeamInTournament();
   }, [currentPage, check, statusTeam]);
 
   const addTeamInSchedule = (idTeamInTour) => {
@@ -206,8 +267,8 @@ function TournamentTeamDetail(props) {
           <h2>
             {" "}
             {tourTeam != null && tourTeam.length > 0
-              ? "Có " + count + " đội bóng đã tham gia"
-              : "Chưa có đội bóng tham gia"}
+              ? "Có " + count + " giải đấu"
+              : "Chưa có giải đấu "}
           </h2>
           <div className="option__view">
             <p
@@ -237,31 +298,32 @@ function TournamentTeamDetail(props) {
               tourTeam.map((item, index) => {
                 return (
                   <div key={index} className="listPlayer__item">
-                    {/* <Link
-                        to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
-                      >   */}
-                    <div className="avt">
-                      {/* <img src={item.teamAvatar} alt="team" /> */}
-                    </div>
-                    <div className="des">
-                      <p className="namePlayer">
-                        <span>Tên giải:</span>
-                        {/* {item.teamName} */}
-                      </p>
-                      <p className="mailPlayer">
-                        <span>Người quản lý:</span>
-                        {/* {item.user.username} */}
-                      </p>
-                      <p className="genderPlayer">
-                        <span>Số cầu thủ:</span>
-                        {/* {item.numberPlayerInTeam} */}
-                      </p>
-                      <p className="phonePlayer">
-                        <span>Khu vực:</span>
-                        {/* {item.teamArea} */}
-                      </p>
-                    </div>
-                    {/* </Link> */}
+                    <Link
+                      to={`/tournamentDetail/${item.id}/inforTournamentDetail`}
+                    >
+                      <div className="test">
+                        <img src={item.tournamentAvatar} alt="team" />
+                      </div>
+                      <div className="des">
+                        <p className="namePlayer">
+                          <span>Tên giải:</span>
+                          {item.tournamentName}
+                        </p>
+                        <p className="mailPlayer">
+                          <span>Giải đấu:</span>
+                          {getGender(item.tournamentGender)}
+                        </p>
+                        <p className="genderPlayer">
+                          <span>Hình thức:</span>
+                          {getType(item.tournamentTypeId)}
+                          {getFeild(item.footballFieldTypeId)}
+                        </p>
+                        <p className="phonePlayer">
+                          <span>Khu vực:</span>
+                          {item.footballFieldAddress}
+                        </p>
+                      </div>
+                    </Link>
                   </div>
                 );
               })
@@ -285,37 +347,32 @@ function TournamentTeamDetail(props) {
                 return (
                   <form onSubmit={onSubmitHandler}>
                     <div key={index} className="listPlayer__item">
-                      <Link to={`/teamDetail/1/inforTeamDetail`}>
-                        <div className="avt">
-                          <img src={item.teamAvatar} alt="team" />
+                      <Link
+                        to={`/tournamentDetail/${item.id}/inforTournamentDetail`}
+                      >
+                        <div className="test">
+                          <img src={item.tournamentAvatar} alt="team" />
                         </div>
                       </Link>
 
                       <div className="des">
-                        <Link
-                          style={{
-                            color: "white",
-                          }}
-                          to={`/teamDetail/1/inforTeamDetail`}
-                        >
-                          <p className="namePlayer">
-                            <span>Tên đội:</span>
-                            {/* {item.teamName} */}
-                          </p>
-                          <p className="mailPlayer">
-                            <span>Người quản lý:</span>
-                            {/* {item.user.username} */}
-                          </p>
-                          <p className="genderPlayer">
-                            <span>Số cầu thủ:</span>
-                            {/* {item.numberPlayerInTeam} */}
-                          </p>
-                          <p className="phonePlayer">
-                            <span>Khu vực:</span>
-                            {/* {item.teamArea} */}
-                          </p>
-                        </Link>
-
+                        <p className="namePlayer">
+                          <span>Tên giải:</span>
+                          {item.tournamentName}
+                        </p>
+                        <p className="mailPlayer">
+                          <span>Giải đấu:</span>
+                          {getGender(item.tournamentGender)}
+                        </p>
+                        <p className="genderPlayer">
+                          <span>Hình thức:</span>
+                          {getType(item.tournamentTypeId)}
+                          {getFeild(item.footballFieldTypeId)}
+                        </p>
+                        <p className="phonePlayer">
+                          <span>Khu vực:</span>
+                          {item.footballFieldAddress}
+                        </p>
                         <p
                           className="list_regis"
                           style={{
@@ -324,7 +381,7 @@ function TournamentTeamDetail(props) {
                             cursor: "pointer",
                           }}
                           onClick={() => {
-                            setViewList(item);
+                            setViewList(teamInTour[index]);
                           }}
                         >
                           Danh sách cầu thủ đăng ký
@@ -347,8 +404,8 @@ function TournamentTeamDetail(props) {
                               }}
                               onClick={() => {
                                 // acceptTeamInTournament(item, false);
-                                setTeamDelete(item);
-                                setHideShow(true);
+                                setTeamDelete(teamInTour[index]);
+                                setHideShowDelete(true);
                               }}
                               type="submit"
                               value="Từ chối"
@@ -360,20 +417,22 @@ function TournamentTeamDetail(props) {
                                 cursor: "pointer",
                               }}
                               onClick={() => {
-                                acceptTeamInTournament(item, true);
+                                // acceptTeamInTournament(item, true);
+                                setHideShow(true);
                               }}
                               type="submit"
                               className="btn_acceptTeam"
                               value="Đồng ý"
                             />
-                              <RegisterInTournament
-                            tourDetail={item}
-                            setCheckRegistertour={setCheckRegistertour}
-                            hideShow={hideShow}
-                            setHideShow={setHideShow}
-                            idUser={
-                              user != undefined ? user.userVM.id : undefined
-                            }/>
+                            <RegisterInTournament
+                              tourDetail={item}
+                              setCheckRegistertour={setCheckRegistertour}
+                              hideShow={hideShow}
+                              setHideShow={setHideShow}
+                              idUser={
+                                user != undefined ? user.userVM.id : undefined
+                              }
+                            />
                           </div>
                         ) : null}
                       </div>
@@ -392,15 +451,17 @@ function TournamentTeamDetail(props) {
                 Chưa có đội bóng đăng ký
               </h1>
             )}
-            <div className={hideShow ? "overlay active" : "overlay"}></div>
+            <div
+              className={hideShowDelete ? "overlay active" : "overlay"}
+            ></div>
             <DenyTeamInTournament
               getAllPlayerInTournamentByIdTeam={
                 getAllPlayerInTournamentByIdTeam
               }
               teamDelete={teamDelete}
               setTeamDelete={setTeamDelete}
-              setHideShow={setHideShow}
-              hideShow={hideShow}
+              setHideShowDelete={setHideShowDelete}
+              hideShowDelete={hideShowDelete}
             />
           </div>
         ) : null}
@@ -432,12 +493,12 @@ function TournamentTeamDetail(props) {
         ) : null}
       </div>
       <div className={hideShow ? "overlay active" : "overlay"}></div>
-      <ViewListPlayerRegister
+      {/* <ViewListPlayerRegister
         teamInTournament={viewList}
         setViewList={setViewList}
         setHideShow={setHideShow}
         hideShow={hideShow}
-      />
+      /> */}
     </div>
   );
 }

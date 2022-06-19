@@ -153,7 +153,7 @@ function HeaderTournamentDetail() {
           startDate={tourDetail.tournamentStartDate}
           endDate={tourDetail.tournamentEndDate}
           user={user != undefined ? user : undefined}
-          teamCreate = {tourDetail.footballTeamNumber}
+          teamCreate={tourDetail.footballTeamNumber}
         />
       );
     }
@@ -200,7 +200,6 @@ function HeaderTournamentDetail() {
   useEffect(() => {
     setActiveTeamDetail(location.pathname);
     getTourDetail();
-    
   }, [location.pathname]);
 
   useEffect(() => {
@@ -217,8 +216,6 @@ function HeaderTournamentDetail() {
     }
   };
 
-
-  
   useEffect(() => {
     if (user != undefined) {
       checkTeamPaticipate();
@@ -233,9 +230,10 @@ function HeaderTournamentDetail() {
         currentPage,
         user.userVM.id
       );
-      console.log(tourDetail.registerEndDate)
-      console.log(new Date().getTime() <=
-      new Date(tourDetail.registerEndDate).getTime());
+      console.log(tourDetail.registerEndDate);
+      console.log(
+        new Date().getTime() <= new Date(tourDetail.registerEndDate).getTime()
+      );
       if (response.data.teamInTournaments.length > 0) {
         setCheckPaticipate(response.data.teamInTournaments[0].status);
       }
@@ -526,8 +524,8 @@ function HeaderTournamentDetail() {
     }
   };
 
-  const [checkTeam,setCheckTeam] = useState(null);
-  
+  const [checkTeam, setCheckTeam] = useState(null);
+
   const checkTeamInTour = () => {
     if (user !== undefined && tourDetail.id !== undefined) {
       const response = getTeamPaticaipateInTourByTourIDAPI(tourDetail.id);
@@ -535,27 +533,35 @@ function HeaderTournamentDetail() {
         .then((res) => {
           if (res.status === 200) {
             const teamPaticipate = res.data.teamInTournaments;
-            if(teamPaticipate.length > 0){
+            if (teamPaticipate.length > 0) {
               const findTeam = teamPaticipate.find(
                 (item) => item.teamId === user.userVM.id
               );
-              console.log(findTeam)
+              console.log(findTeam);
               if (findTeam !== undefined) {
-                setCheckTeam(true) ;
+                setCheckTeam(true);
               } else {
-                 setCheckTeam(false);
+                setCheckTeam(false);
               }
-            }else  setCheckTeam(false);
-            
+            } else setCheckTeam(false);
           }
         })
         .catch((err) => {
           console.error(err);
         });
     } else {
-       setCheckTeam(false);
+      setCheckTeam(false);
     }
   };
+
+  const getGender = (gender) => {
+    if (gender === "Male") {
+      return "Nam";
+    } else {
+      return "Nữ";
+    }
+  };
+
   return (
     <>
       <Header id={idTour} />
@@ -694,9 +700,13 @@ function HeaderTournamentDetail() {
                         >
                           Đang chờ xét duyệt
                         </button>
-                      ) : <p>Khoa ngu</p>}
+                      ) : (
+                        <p>Khoa ngu</p>
+                      )}
                     </>
-                  ) : <p>Khoa ngu1</p>}
+                  ) : (
+                    <p>Khoa ngu1</p>
+                  )}
                 </div>
 
                 <div className="headertext__team">
@@ -745,6 +755,11 @@ function HeaderTournamentDetail() {
                       {getFeild(tourDetail.footballFieldTypeId)}
                     </span>
                   </div>
+                  <div className="man email__manager">
+                    <i className="fas fa-transgender"></i>
+                    <span className="title">Giải đấu: </span>
+                    <span>{getGender(tourDetail.tournamentGender)}</span>
+                  </div>
                   <div className="man gender__manager location">
                     <i className="fas fa-solid fa-location-dot"></i>
                     <span className="title">Địa điểm: </span>
@@ -778,7 +793,7 @@ function HeaderTournamentDetail() {
                   <>
                     <div
                       style={{
-                        top:checkTeam === true ? 70 : 40,
+                        top: checkTeam === true ? 70 : 40,
                       }}
                       className="report"
                       onClick={() => {
@@ -840,11 +855,13 @@ function HeaderTournamentDetail() {
                           </button>
                         </div>
                       ) : (
-                        <p style={{
-                          color:"red",
-                          fontSize: 20,
-                          lineHeight: 1.6
-                        }}>
+                        <p
+                          style={{
+                            color: "red",
+                            fontSize: 20,
+                            lineHeight: 1.6,
+                          }}
+                        >
                           Hiện tại giải đang diễn ra bạn không thể rời khỏi
                           giải. Nếu có vấn đề liên quan tới giải đấu xin vui
                           lòng báo cáo giải đấu và chờ người xét duyệt

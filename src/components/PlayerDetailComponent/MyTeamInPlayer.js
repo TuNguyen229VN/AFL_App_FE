@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import styles from "../FindTournamentComponent/TournamentFind.module.css";
+import styles2 from "./styles/style.module.css";
 import ModelDeleteTeam from "./ModelDeleteTeam";
 import { Link } from "react-router-dom";
 function MyTeamInPlayer(props) {
@@ -33,17 +34,9 @@ function MyTeamInPlayer(props) {
   };
   return (
     <div className="teamdetail__content listPlayer">
-      <h1
-        style={{
-          fontSize: 36,
-          fontWeight: 700,
-          marginTop: 20,
-          marginBottom: 20,
-          textAlign: "center",
-        }}
-      >
+       <h2 className={styles2.title}>
         Đội bóng bạn đã tham gia
-      </h1>
+      </h2>
       <div className="listPlayer__list">
         {allTeam != null ? (
           allTeam.length > 0 ? (
@@ -231,9 +224,7 @@ function MyTeamInPlayer(props) {
           ) : (
             <p
               style={{
-                color: "red",
                 fontSize: 21,
-                fontWeight: 700,
               }}
             >
               Bạn chưa tham gia đội bóng

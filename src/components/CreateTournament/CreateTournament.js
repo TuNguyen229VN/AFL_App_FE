@@ -540,10 +540,7 @@ const CreateTournament = () => {
               <hr
                 width={100}
                 size={10}
-                style={{
-                  backgroundColor: "black",
-                  opacity: 1,
-                }}
+                className={styles.hr}
               />
             </div>
             <div
@@ -1119,30 +1116,22 @@ const CreateTournament = () => {
                 </div>
               </div>
             </div>
-            <div className={styles.btn_nextPage}>
-              {btnActive ? (
-                <input
-                  type="submit"
-                  className={styles.btn_Next}
-                  value="Tiếp theo"
-                />
-              ) : null}
-
-              <input
+            <div className={styles.optionBtn}>
+            <input
                 type="button"
-                className={styles.btn_Next}
-                style={{
-                  backgroundColor: "white",
-                  border:1,
-                  borderColor: "white",
-                  textDecoration: "underline",
-                  color: "#9693ED"
-                }}
+                className={styles.cancleCreate}
                 onClick={() => {
                   navigate(-1);
                 }}
                 value="Hủy tạo"
               />
+              {btnActive ? (
+                <input
+                  type="submit"
+                  className={styles.createTeam_btn}
+                  value="Tiếp theo"
+                />
+              ) : null}
             </div>
           </form>
         </div>

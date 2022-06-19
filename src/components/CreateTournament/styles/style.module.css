@@ -1,4 +1,3 @@
-
 a {
   font-family: "Mulish-Regular";
   color: var(--blue-black);
@@ -8,6 +7,7 @@ a {
 .createTournament {
   width: 100%;
   height: 100%;
+  margin-bottom: 30px;
 }
 
 .createTournament_info {
@@ -85,13 +85,19 @@ a {
 .createTournament_row1_col3 input,
 .phoneContact {
   width: 100%;
+  border: 1px solid #ccc;
   padding: 10px 5px;
 }
-
+.mininum_member_input:focus,
+.timeCloseRegister_input:focus,
+.fieldSoccer_input:focus,
+.createTournament_row2 input:focus,
+.createTournament_row1_col2 input:focus,
+.createTournament_row1_col3 input:focus,
+.phoneContact:focus,
 input:focus {
-  border: 2px solid var(--green-bold);
+  border: 2px solid var(--blue-black);
 }
-
 
 .select_typeFootballField {
   width: 100%;
@@ -110,6 +116,7 @@ input:focus {
 .createTournament_row2 input {
   margin: 20px 0;
   margin-left: 140px;
+  border: 1px solid #ccc;
 }
 
 .createTournament_row2 label {
@@ -132,8 +139,8 @@ input:focus {
   align-items: center;
 }
 
-.img_type_footballField input{
-display: none;
+.img_type_footballField input {
+  display: none;
 }
 /* createTournament_row3 */
 
@@ -187,6 +194,7 @@ display: none;
 .fieldSoccer_input {
   width: 100%;
   padding: 10px 5px;
+  border: 1px solid #ccc;
 }
 
 .description_text {
@@ -196,19 +204,51 @@ display: none;
 }
 
 /* Button next */
-.btn_nextPage {
-  width: 100%;
-  height: 50px;
-  margin-bottom: 30px;
-}
-.btn_Next {
-  padding: 15px 30px;
+.optionBtn {
+  margin-top: 40px;
   display: flex;
-  float: right;
-  background-color: #70f994;
-  color: #207607;
-  border: 1px solid var(--green-bold);
-  font-weight: 600;
+  align-items: center;
+  justify-content: flex-end;
+  column-gap: 30px;
+}
+.createTeam_btn {
+  padding: 10px 5px;
+  width: 150px;
+  text-align: center;
+  font-family: "Mulish-Bold";
+  font-size: 18px;
+  background-color: var(--blue-black);
+  transition: 0.5s;
+  color: var(--white-text);
+  cursor: pointer;
+  user-select: none;
+  border: 0;
+  height: 55px;
+  outline: none;
+  border-radius: 5px;
+}
+
+.cancleCreate {
+  padding: 10px 5px;
+  height: 55px;
+  width: 150px;
+  text-align: center;
+  font-family: "Mulish-Bold";
+  font-size: 18px;
+  background-color: #bf0e51;
+  color: var(--white-text);
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+}
+.cancleCreate:hover {
+  filter: brightness(90%);
+}
+.createTeam_btn:hover {
+  background-color: var(--green-bold);
+  color: var(--blue-black);
 }
 
 /* Animation */
@@ -221,7 +261,7 @@ display: none;
   display: inline-block;
   overflow: hidden;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  background: #000;
+  background: var(--blue-black);
   border-radius: 100rem;
   transition: background-color 0.25s linear;
 }
@@ -243,10 +283,10 @@ display: none;
 }
 
 .switch__input:checked + .switch {
-  background-color: #6a5af9;
+  background-color: #70f994;
 }
 
-.switch-input:checked + .switch:after {
+.switch__input:checked + .switch:after {
   transform: translateX(3.1rem);
   background-color: white;
 }
@@ -311,7 +351,7 @@ display: none;
 .mapboxgl-canvas {
   height: 600px;
 }
- .cmrb {
+.cmrb {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -320,7 +360,7 @@ display: none;
   transform: translate(-50%, -50%);
 }
 
- .cmr {
+.cmr {
   width: 80px;
   position: absolute;
   left: 50%;
@@ -328,10 +368,16 @@ display: none;
   transform: translateX(-50%);
 }
 
-.wrapAvt{
+.wrapAvt {
   position: relative;
   width: 300px;
   height: 300px;
   overflow: hidden;
   border: 1px solid var(--blue-black);
+}
+
+.hr {
+  background-color: var(--blue-black);
+  opacity: 1;
+  height: 5px;
 }

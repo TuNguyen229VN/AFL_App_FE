@@ -1,5 +1,5 @@
 .HeaderTeamDetail .player_detail {
-  height: 430px;
+  max-height: 550px;
 }
 
 .HeaderTeamDetail .player_detail::after {

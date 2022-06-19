@@ -25,9 +25,7 @@ import FootballPlayer from "./components/FootballPlayer/FootballPlayer";
 import CreatePlayer from "./components/CreatePlayerComponent/CreatePlayer";
 import UpdatePlayer from "./components/UpdatePlayerComponent/UpdatePlayer";
 function App() {
-  // get Locoal Storage
-  const { user } = useAuthListener();
-
+  const { user } = useAuthListener()  
   return (
     <div>
       <BrowserRouter>

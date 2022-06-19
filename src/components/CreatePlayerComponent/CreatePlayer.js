@@ -81,7 +81,7 @@ function CreatePlayer() {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(avt.value)
+    console.log(avt.value);
     setLoading(true);
     if (namePlayer.value === null || namePlayer.value === "") {
       toast.error("Không được để trống", {
@@ -160,10 +160,11 @@ function CreatePlayer() {
       );
       if (response.status === 200) {
         const userInFor = JSON.parse(localStorage.getItem("userInfo"));
-        userInFor.teamInfo = userInFor.teamInfo != null ? userInFor.teamInfo : null;
+        userInFor.teamInfo =
+          userInFor.teamInfo != null ? userInFor.teamInfo : null;
         userInFor.playerInfo = response.data;
         localStorage.setItem("userInfo", JSON.stringify(userInFor));
-       //localStorage.setItem("playerInfo", JSON.stringify(response.data));
+        //localStorage.setItem("playerInfo", JSON.stringify(response.data));
       }
     } catch (error) {
       console.log(error);
@@ -249,12 +250,7 @@ function CreatePlayer() {
       <Header />
 
       <form onSubmit={onSubmitHandler}>
-        <div
-          className={styles.create__team}
-          style={{
-            marginBottom: 40,
-          }}
-        >
+        <div className={styles.create__team}>
           <h2 className={styles.title}>Tạo thông tin cầu thủ cho bạn</h2>
           <p className={styles.avt}>Hình ảnh thi đấu</p>
           <div className={styles.main__team}>
@@ -326,7 +322,9 @@ function CreatePlayer() {
                   id="genderteam"
                   required
                 >
-                  <option value="striker" selected>Tiền đạo</option>
+                  <option value="striker" selected>
+                    Tiền đạo
+                  </option>
                   <option value="midfielder">Tiền vệ</option>
                   <option value="defender">Hậu vệ</option>
                   <option value="goalkeeper">Thủ môn</option>
@@ -344,35 +342,26 @@ function CreatePlayer() {
               />
             </div>
           </div>
-          {btnActive ? (
-            <input
-              style={{
-                float: "right",
-              }}
-              type="submit"
-              className={styles.createTeam_btn}
-              value="Tạo cầu thủ"
-            />
-          ) : null}
+          <div className={styles.optionBtn}>
           <input
-            type="button"
-            
-            style={{
-              backgroundColor: "white",
-              border: 1,
-              borderColor: "white",
-              textDecoration: "underline",
-              color: "#9693ED",
-              float: "right",
-              marginTop:42,
-              marginRight:25,
-              fontWeight:600
-            }}
-            onClick={() => {
-              navigate(-1);
-            }}
-            value="Hủy tạo"
-          />
+              type="button"
+              className={styles.cancleCreate}
+              onClick={() => {
+                navigate(-1);
+              }}
+              value="Hủy tạo"
+            />
+            {btnActive ? (
+              <input
+                style={{
+                  float: "right",
+                }}
+                type="submit"
+                className={styles.createTeam_btn}
+                value="Tạo cầu thủ"
+              />
+            ) : null}
+          </div>
         </div>
       </form>
       {loading ? <LoadingAction /> : null}

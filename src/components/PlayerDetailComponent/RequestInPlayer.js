@@ -27,7 +27,7 @@ function RequestInPlayer(props) {
       setCurrentPage(1);
     }
   }, []);
-  
+
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
   };
@@ -35,49 +35,38 @@ function RequestInPlayer(props) {
     e.preventDefault();
   };
   return (
-    <div>
-      <div
-        className="schedule__tour"
-        style={{
-          display: "flex",
-          marginTop: 20,
-          //ustifyContent: "right",
-        }}
+    <div className="teamdetail__content listPlayer schedule__tour">
+      <h3
+        className="listPlayer__title"
       >
-        <div className="option__view">
-          <p
-            className={active === "Chờ xét duyệt từ cầu thủ" ? "active" : ""}
-            onClick={() => {
-              setactive("Chờ xét duyệt từ cầu thủ");
-              if (active !== "Chờ xét duyệt từ cầu thủ") setCurrentPage(1);
-            }}
-          >
-            Chờ duyệt
-          </p>
-          <p
-            className={active === "Chờ xét duyệt từ đội bóng" ? "active" : ""}
-            onClick={() => {
-              setactive("Chờ xét duyệt từ đội bóng");
-              if (active !== "Chờ xét duyệt từ đội bóng") setCurrentPage(1);
-            }}
-          >
-            Tham gia
-          </p>
-        </div>
-      </div>
-      <div className="teamdetail__content listPlayer">
-        <h1
-          style={{
-            fontSize: 36,
-            fontWeight: 700,
-            marginBottom: 50,
-            textAlign: "center",
+        {active === "Chờ xét duyệt từ cầu thủ"
+          ? "Đội bóng chờ duyệt"
+          : "Đội bóng muốn tham gia"}
+      </h3>
+      <div className="listPlayer__total">
+      <h2></h2>
+      <div className="option__view">
+        <p
+          className={active === "Chờ xét duyệt từ cầu thủ" ? "active" : ""}
+          onClick={() => {
+            setactive("Chờ xét duyệt từ cầu thủ");
+            if (active !== "Chờ xét duyệt từ cầu thủ") setCurrentPage(1);
           }}
         >
-          {active === "Chờ xét duyệt từ cầu thủ"
-            ? "Đội bóng chờ duyệt"
-            : "Đội bóng muốn tham gia"}
-        </h1>
+          Chờ duyệt
+        </p>
+        <p
+          className={active === "Chờ xét duyệt từ đội bóng" ? "active" : ""}
+          onClick={() => {
+            setactive("Chờ xét duyệt từ đội bóng");
+            if (active !== "Chờ xét duyệt từ đội bóng") setCurrentPage(1);
+          }}
+        >
+          Tham gia
+        </p>
+      </div>
+      </div>
+      <div className="teamdetail__content listPlayer">
         <div className="listPlayer__list">
           {allTeam != null ? (
             allTeam.length > 0 ? (
@@ -159,7 +148,11 @@ function RequestInPlayer(props) {
                                 fontWeight: 600,
                               }}
                               onClick={() => {
-                                updateStatusFootballPlayer(item.id, "true", item.team.id);
+                                updateStatusFootballPlayer(
+                                  item.id,
+                                  "true",
+                                  item.team.id
+                                );
                                 setStatusAdd(false);
                               }}
                             >
@@ -221,9 +214,7 @@ function RequestInPlayer(props) {
             ) : (
               <p
                 style={{
-                  color: "red",
                   fontSize: 20,
-                  fontWeight: 700,
                 }}
               >
                 {active === "Chờ xét duyệt từ đội bóng"

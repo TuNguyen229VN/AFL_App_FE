@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/style.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import firebase from "firebase/compat/app";
+// import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import axios from "axios";
@@ -9,20 +9,21 @@ import SignUpGoogle from "../SignUpGoogle/SignUpGoogle";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import { getAPI } from "../../api";
+import app from "../../firebase/firebase";
 function Login() {
   const [checkLoading, setCheckLoading] = useState(false);
-  const firebaseConfig = {
-    apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
-    authDomain: "amateurfoooballleague.firebaseapp.com",
-    databaseURL: "gs://amateurfoooballleague.appspot.com",
-    projectId: "amateurfoooballleague",
-    storageBucket: "amateurfoooballleague.appspot.com",
-    messagingSenderId: "765175452190",
-    appId: "1:765175452190:web:3e01517d116d4777c9140f",
-    measurementId: "G-7Z7LB0W52J",
-  };
+  // const firebaseConfig = {
+  //   apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
+  //   authDomain: "amateurfoooballleague.firebaseapp.com",
+  //   databaseURL: "gs://amateurfoooballleague.appspot.com",
+  //   projectId: "amateurfoooballleague",
+  //   storageBucket: "amateurfoooballleague.appspot.com",
+  //   messagingSenderId: "765175452190",
+  //   appId: "1:765175452190:web:3e01517d116d4777c9140f",
+  //   measurementId: "G-7Z7LB0W52J",
+  // };
 
-  firebase.initializeApp(firebaseConfig);
+  // !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePass = () => {
@@ -115,7 +116,7 @@ function Login() {
 
   // Listen to the Firebase Auth state and set the local state.
   useEffect(() => {
-    const unregisterAuthObserver = firebase
+    const unregisterAuthObserver = app
       .auth()
       .onAuthStateChanged(async (user) => {
         if (!user) {

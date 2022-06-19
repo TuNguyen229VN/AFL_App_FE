@@ -290,7 +290,6 @@ const MyTournamemts = () => {
             ) : (
               <h1
                 style={{
-                  color: "red",
                   fontSize: 24,
                   fontWeight: 700,
                   marginBottom: 30,
