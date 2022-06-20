@@ -1,0 +1,62 @@
+.detailMatch{
+    margin-top: 100px;
+    line-height: 50px;
+}
+
+.titleDetail{
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    font-size: 30px;
+}
+
+.fight{
+    display: block;
+    text-align: center;
+    font-weight: 500;
+    font-size: 26px; 
+}
+
+.btnInput{
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+.cancleCreate {
+    padding: 5px 5px;
+    height: 55px;
+    width: 80px;
+    
+    font-family: "Mulish-Bold";
+    font-size: 14px;
+    background-color: #bf0e51;
+    color: var(--white-text);
+    cursor: pointer;
+    user-select: none;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+  .cancleCreate:hover {
+    filter: brightness(90%);
+  }
+  .createTeam_btn:hover {
+    background-color: var(--green-bold);
+    color: var(--blue-black);
+  }
+  .createTeam_btn {
+    padding: 5px 5px;
+    width: 80px;
+    font-family: "Mulish-Bold";
+    font-size: 14px;
+    background-color: var(--blue-black);
+    transition: 0.5s;
+    color: var(--white-text);
+    cursor: pointer;
+    user-select: none;
+    border: 0;
+    height: 55px;
+    outline: none;
+    border-radius: 5px;
+  }

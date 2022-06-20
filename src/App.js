@@ -24,6 +24,7 @@ import ResetPassword from "./components/ResetPasswordComponent/ResetPassword";
 import FootballPlayer from "./components/FootballPlayer/FootballPlayer";
 import CreatePlayer from "./components/CreatePlayerComponent/CreatePlayer";
 import UpdatePlayer from "./components/UpdatePlayerComponent/UpdatePlayer";
+import DetailMatch from "./components/DetailMatchComponent/DetailMatch";
 function App() {
   const { user } = useAuthListener()  
   return (
@@ -196,6 +197,7 @@ function App() {
             element={<HeaderPlayerDetail />}
           />
           <Route exact path="/footballPlayer" element={<FootballPlayer />} />
+          <Route exact path="/detailMatch/:idMatch" element={<DetailMatch />} />
         </Routes>
       </BrowserRouter>
     </div>

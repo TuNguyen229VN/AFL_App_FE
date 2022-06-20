@@ -154,6 +154,7 @@ function HeaderTournamentDetail() {
           endDate={tourDetail.tournamentEndDate}
           user={user != undefined ? user : undefined}
           teamCreate={tourDetail.footballTeamNumber}
+          tourDetail={tourDetail}
         />
       );
     }
@@ -371,7 +372,6 @@ function HeaderTournamentDetail() {
         status: status ? "Tham gia" : "Từ chối",
       };
       setLoadingAc(true);
-      console.log(teamInTournament);
       const response = updateStatusTeamInTournament(data);
       response
         .then((res) => {

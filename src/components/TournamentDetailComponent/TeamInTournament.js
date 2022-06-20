@@ -575,8 +575,8 @@ function TeamInTournament(props) {
                 }
                 teamDelete={teamDelete}
                 setTeamDelete={setTeamDelete}
-                setHideShow={setHideShow}
-                hideShow={hideShow}
+                setHideShowDelete={setHideShow}
+                hideShowDelete={hideShow}
               />
             </div>
           ) : null}

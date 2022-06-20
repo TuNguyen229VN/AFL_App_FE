@@ -20,6 +20,7 @@ function CommentTeamDetail() {
   const [contentEditError, setContentEditError] = useState("");
   const [deleteId, setDeleteId] = useState(0);
   const [sort, setSort] = useState("DESC");
+  const [countText, setCountText] = useState(0);
   const getComment = async () => {
     try {
       console.log("page index", pageIndex);
@@ -44,6 +45,11 @@ function CommentTeamDetail() {
     getComment();
   }, [limit, sort]);
 
+  useEffect(() => {
+    setCountText(content.length);
+    setContentError("");
+  }, [content])
+
   const createComment = async () => {
     try {
       if (user == null) {
@@ -51,6 +57,10 @@ function CommentTeamDetail() {
       }
       if (content == null || content == "") {
         setContentError("Vui lòng nhập bình luận...");
+        return;
+      }
+      if(content.length >256){
+        setContentError("Bình luận không vượt quá 256 ký tự...");
         return;
       }
       const data = {
@@ -79,7 +89,11 @@ function CommentTeamDetail() {
   const updateComment = async (id) => {
     try {
       if (contentEdit == null || contentEdit == "") {
-        setContentError("Vui lòng nhập bình luận...");
+        setContentEditError("Vui lòng nhập bình luận...");
+        return;
+      }
+      if(contentEdit.length >256){
+        setContentEditError("Bình luận không vượt quá 256 ký tự...");
         return;
       }
       const data = {
@@ -164,6 +178,10 @@ function CommentTeamDetail() {
             value={content}
           />
           <p className="error">{contentError}</p>
+          <div className={`countText ${countText>256?'active':""}`}>
+          <span>{countText}</span><span>/</span><span>256</span>
+          </div>
+          
           <button
             onClick={(e) => {
               createComment();
@@ -268,8 +286,9 @@ function CommentTeamDetail() {
                     </div>
                   </form>
                   <p className="time">
-                    {formatDate(comment.dateCreate)}{" "}
-                    {formatTime(comment.dateCreate)}
+                    {/* {formatDate(comment.dateCreate)}{" "}
+                    {formatTime(comment.dateCreate)} */}
+                    {comment.dateCreate}
                   </p>
                 </div>
               </div>

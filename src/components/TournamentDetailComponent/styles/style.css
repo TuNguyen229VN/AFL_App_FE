@@ -424,7 +424,6 @@
 .popup__prediction .popup__prediction__wrap .line {
   width: 10px;
   background-color: var(--blue-black);
-  position: absolute;
   height: 2px;
 }
 

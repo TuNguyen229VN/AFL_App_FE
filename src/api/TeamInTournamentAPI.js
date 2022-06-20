@@ -8,7 +8,7 @@ export function getTeamInTournamentByTourIdAPI(id,status,currentPage,teamid){
 }
 
 export function getTeamPaticaipateInTourByTourIDAPI(id){
-    const afterDefaultURL = `team-in-tournaments?tournament-id=${id}&status=Tham%20gia&page-offset=1&limit=10`;
+    const afterDefaultURL = `team-in-tournaments?tournament-id=${id}&status=Tham%20gia&page-offset=1&limit=17`;
     return axios.get(url + afterDefaultURL);
 }
 
