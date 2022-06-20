@@ -7,7 +7,12 @@ import Footer from "../Footer/Footer";
 import gsap from "gsap";
 import AOS from "aos";
 import Transitions from "../Transitions/Transitions";
-import { EditorState, convertToRaw,ContentState, convertFromHTML } from "draft-js";
+import {
+  EditorState,
+  convertToRaw,
+  ContentState,
+  convertFromHTML,
+} from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import CompetitionFormat from "../CreateTournament/CompetitionFormat";
@@ -41,6 +46,7 @@ const UpdateTournamentInformation = (props) => {
   const descriptionText = draftToHtml(
     convertToRaw(editorState.getCurrentContent())
   );
+
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
@@ -57,6 +63,7 @@ const UpdateTournamentInformation = (props) => {
     value: "",
     error: null,
   });
+  const [beginTeamPaticipate,setBeginTeamPaticipate] = useState(null);
   const [typeFootballField, setTypeFootballField] = useState({
     value: "Field5",
     error: null,
@@ -77,6 +84,7 @@ const UpdateTournamentInformation = (props) => {
     value: 1,
     error: null,
   });
+  const [beginCompetitionFormat, setBeginCompetitionFormat] = useState(null);
   const [minimunPlayerInTournament, setMinimunPlayerInTournament] = useState({
     value: null,
     error: null,
@@ -101,6 +109,7 @@ const UpdateTournamentInformation = (props) => {
     value: "2",
     error: null,
   });
+  const [beginGroupNumber,setBeginGroupNumber] = useState(null);
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
   const [provice, setProvice] = useState(null);
@@ -171,6 +180,7 @@ const UpdateTournamentInformation = (props) => {
         value: team.footballTeamNumber,
         error: null,
       });
+      setBeginTeamPaticipate(team.footballTeamNumber);
       setTypeFootballField({
         value:
           team.footballFieldTypeId === 1
@@ -200,11 +210,18 @@ const UpdateTournamentInformation = (props) => {
         value: team.matchMinutes,
         error: null,
       });
-      setEditorState(EditorState.createWithContent(
-        ContentState.createFromBlockArray(
-          convertFromHTML(team.description)
+      setEditorState(
+        EditorState.createWithContent(
+          ContentState.createFromBlockArray(convertFromHTML(team.description))
         )
-      ))
+      );
+      setBeginCompetitionFormat(
+        team.tournamentTypeId === 1
+          ? "KnockoutStage"
+          : team.tournamentTypeId === 2
+          ? "CircleStage"
+          : "GroupStage"
+      );
       setCompetitionFormat({
         value:
           team.tournamentTypeId === 1
@@ -230,6 +247,7 @@ const UpdateTournamentInformation = (props) => {
         value: team.groupNumber + "",
         error: null,
       });
+      setBeginGroupNumber(team.groupNumber + "");
       // setProviceSearch({
       //   value: team.footballFieldAddress.split(", ")[3],
       //   error:null
@@ -264,37 +282,94 @@ const UpdateTournamentInformation = (props) => {
         progress: undefined,
       });
     } else {
-      
-      try {
-        const data = {
-          Id: idTournament,
-          tournamentName: nameTournament.value,
-          mode: status === -1 ? "PRIVATE" : "PUBLIC",
-          tournamentPhone: phoneContact.value,
-          tournamentGender: gender.value,
-          registerEndDate: closeRegister.value,
-          tournamentStartDate: startTime.value,
-          tournamentEndDate: endTime.value,
-          footballFieldAddress:
-            addressField != null
-              ? footballField.value + addressField
-              : addressTour,
-          tournamentAvatar: imgTournament.value,
-          description: descriptionText,
-          matchMinutes: +timeDuration.value,
-          footballTeamNumber: teamPaticipate.value,
-          footballPlayerMaxNumber: minimunPlayerInTournament.value,
-          status: true,
-          groupNumber: +groupNumber.value,
-          userId: user.userVM.id,
-          TournamentTypeEnum: competitionFormat.value,
-          TournamentFootballFieldTypeEnum: typeFootballField.value,
-        };
-        console.log(data);
-        const response = await updateTournamentInfoAPI(data);
-        if (response.status === 200) {
+      if (beginCompetitionFormat === competitionFormat && beginTeamPaticipate === teamPaticipate && beginGroupNumber !== null) {
+        try {
+          const data = {
+            Id: idTournament,
+            tournamentName: nameTournament.value,
+            mode: status === -1 ? "PRIVATE" : "PUBLIC",
+            tournamentPhone: phoneContact.value,
+            tournamentGender: gender.value,
+            registerEndDate: closeRegister.value,
+            tournamentStartDate: startTime.value,
+            tournamentEndDate: endTime.value,
+            footballFieldAddress:
+              addressField != null
+                ? footballField.value + addressField
+                : addressTour,
+            tournamentAvatar: imgTournament.value,
+            description: descriptionText,
+            matchMinutes: +timeDuration.value,
+            footballTeamNumber: teamPaticipate.value,
+            footballPlayerMaxNumber: minimunPlayerInTournament.value,
+            status: true,
+            groupNumber: +groupNumber.value,
+            userId: user.userVM.id,
+            TournamentTypeEnum: competitionFormat.value,
+            TournamentFootballFieldTypeEnum: typeFootballField.value,
+          };
+          
+          const response = await updateTournamentInfoAPI(data);
+          if (response.status === 200) {
+            setLoadingAction(false);
+            toast.success("Thay đổi thông tin giải đấu thành công", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+
+            const intitalState = {
+              value: "",
+              error: "",
+            };
+            setImgTournament(intitalState);
+            setNameTournament(intitalState);
+            setTeamPaticipate(intitalState);
+            setTypeFootballField({
+              value: 1,
+              error: "",
+            });
+
+            setCloseRegister({
+              value: null,
+              error: "",
+            });
+            setStartTime(intitalState);
+            setEndTime(intitalState);
+            setCompetitionFormat({
+              value: 1,
+              error: "",
+            });
+            setMinimunPlayerInTournament(intitalState);
+            setPhoneContact(intitalState);
+            setFootballField(intitalState);
+            setGender({
+              value: "Male",
+              error: "",
+            });
+            setTimeDuration({
+              value: 15,
+              error: "",
+            });
+            setEditorState(EditorState.createEmpty());
+            setProvice(null);
+            setDistricts(null);
+            setWards(null);
+            setResetProvice(0);
+            setGroupNumber({
+              value: "2",
+              error: null,
+            });
+            // navigate(`tournamentDetail/${idTournament}/inforTournamentDetail`);
+            navigate(-1);
+          }
+        } catch (error) {
           setLoadingAction(false);
-          toast.success("Thay đổi thông tin giải đấu thành công", {
+          toast.error(error.response.data.message, {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -303,64 +378,10 @@ const UpdateTournamentInformation = (props) => {
             draggable: true,
             progress: undefined,
           });
-
-          const intitalState = {
-            value: "",
-            error: "",
-          };
-          setImgTournament(intitalState);
-          setNameTournament(intitalState);
-          setTeamPaticipate(intitalState);
-          setTypeFootballField({
-            value: 1,
-            error: "",
-          });
-
-          setCloseRegister({
-            value: null,
-            error: "",
-          });
-          setStartTime(intitalState);
-          setEndTime(intitalState);
-          setCompetitionFormat({
-            value: 1,
-            error: "",
-          });
-          setMinimunPlayerInTournament(intitalState);
-          setPhoneContact(intitalState);
-          setFootballField(intitalState);
-          setGender({
-            value: "Male",
-            error: "",
-          });
-          setTimeDuration({
-            value: 15,
-            error: "",
-          });
-          setEditorState(EditorState.createEmpty());
-          setProvice(null);
-          setDistricts(null);
-          setWards(null);
-          setResetProvice(0);
-          setGroupNumber({
-            value: "2",
-            error: null,
-          });
-          // navigate(`tournamentDetail/${idTournament}/inforTournamentDetail`);
-          navigate(-1);
+          console.error(error.response);
         }
-      } catch (error) {
-        setLoadingAction(false);
-        toast.error(error.response.data.message, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        console.error(error.response);
+      }else{
+        // delete match detail and add again.
       }
     }
   };
@@ -1021,6 +1042,7 @@ const UpdateTournamentInformation = (props) => {
               competitionFormat={competitionFormat}
               onChangeHandler={onChangeHandler}
               groupNumber={groupNumber}
+              lengthTeamPaticipate={lengthTeamPaticipate}
             />
 
             <div className={styles.createTournament_row4}>
