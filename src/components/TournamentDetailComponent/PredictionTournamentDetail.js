@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./styles/style.css";
 import axios from "axios";
 import { useNavigate,useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function PredictionTournamentDetail() {
 
 
@@ -47,13 +49,14 @@ function PredictionTournamentDetail() {
     
     const predict = await getAllPredictions();
     const d = new Date();
-    let day = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`;
-    let time  = `${d.getHours()}h${d.getMinutes()}`;
+    // let day = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`;
+    // let time  = `${d.getHours()}h${d.getMinutes()}`;
     console.log(predict);
     for(let i=0; i<response.data.matchs.length; i++){
-      let dayMatch  = formatDate(response.data.matchs[i].matchDate);
-          let timeMatch = formatTime(response.data.matchs[i].matchDate);
-          if(dayMatch<day && timeMatch<time){
+     
+      // let dayMatch  = formatDate(response.data.matchs[i].matchDate);
+      //     let timeMatch = formatTime(response.data.matchs[i].matchDate);
+          if(Date.parse(response.data.matchs[i].matchDate) < d){
             response.data.matchs[i].predictStatus =false; 
           }
           else{
@@ -115,6 +118,15 @@ function PredictionTournamentDetail() {
         }
       const response  =await axios.post(`https://afootballleague.ddns.net/api/v1/ScorePrediction`,dataCreate,
       {headers: {'Content-Type': 'application/json'}});
+      toast.success("Dự đoán thành công", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
 }
 getAllMatch();
 setActivePopup(false);
@@ -123,6 +135,16 @@ setActivePopup(false);
     
     catch(e){
       console.log(e)
+      toast.error(e.response.data.messgae, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setActivePopup(false);
     }
   }
 
@@ -135,7 +157,7 @@ setActivePopup(false);
           activePopup ? "popup__prediction active" : "popup__prediction"
         }
       >
-        <h2>Dự đoán trận đấu {matchPredict&&formatDate(matchPredict.matchDate)} </h2>
+        <h2>Dự đoán trận đấu {matchPredict&&matchPredict.matchDate} </h2>
         <p
           className="close"
           onClick={() => {
@@ -167,14 +189,15 @@ setActivePopup(false);
             <tr>
               <th colSpan={5}>Dự đoán</th>
             </tr>
-            {match&&match.matchs.map(match =>(<tr>
-              <td>{formatDate(match.matchDate)} {formatTime(match.matchDate)}</td>
+            {match&&match.matchs.map(match =>(match.teamInMatches.length==2&&<tr>
+              <td>{match.matchDate}</td>
               <td>
-                {match.teamInMatches[0].teamName}
+
                 <img
-                  src={match.teamInMatches[0].team.teamAvatar}
+                  src={match.teamInMatches[0].teamInTournament.team.teamAvatar}
                   alt="gallery_item"
                 />
+                   <p>{match.teamInMatches[0].teamName}</p>
               </td>
               <td>
                 <span className="score">{match.predict&&match.predict.teamAscore}</span>
@@ -183,10 +206,10 @@ setActivePopup(false);
               </td>
               <td>
                 <img
-                  src={match.teamInMatches[1].team.teamAvatar}
+                  src={match.teamInMatches[1].teamInTournament.team.teamAvatar}
                   alt="gallery_item"
                 />
-               {match.teamInMatches[1].teamName}{" "}
+               <p>{match.teamInMatches[1].teamName}{" "}</p>
               </td>
               <td>
                 {match.predictStatus&&

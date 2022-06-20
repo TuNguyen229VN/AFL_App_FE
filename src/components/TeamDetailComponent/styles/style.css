@@ -309,7 +309,7 @@
 .teamdetail .cmtTeam .totalcmt {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
   position: relative;
 }
 
@@ -664,4 +664,16 @@ background-color: #f0f2f5;
 
 .schedule__tour .option__view p.active {
   background-color: var(--green-bold);
+}
+
+.countText {
+  position: absolute;
+  top:-20px;
+  font-weight: bold;
+  font-size: 14px;
+  left:5px;
+}
+
+.countText.active span{
+  color: red;
 }
