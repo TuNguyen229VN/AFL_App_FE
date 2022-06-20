@@ -83,7 +83,7 @@ const CreateTournament = () => {
     error: null,
   });
   const [groupNumber, setGroupNumber] = useState({
-    value: "2",
+    value: "-1",
     error: null,
   });
   const [minDate, setMinDate] = useState(
@@ -233,7 +233,7 @@ const CreateTournament = () => {
           setWards(null);
           setResetProvice(0);
           setGroupNumber({
-            value: "2",
+            value: "-1",
             error: null,
           });
         }
@@ -452,7 +452,7 @@ const CreateTournament = () => {
           error: null,
         });
         setGroupNumber({
-          value: "2",
+          value: "-1",
           error: null,
         });
         console.log(value);

@@ -25,10 +25,15 @@ import styles from "../CreateTournament/styles/style.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LoadingAction from "../LoadingComponent/LoadingAction";
+import ModalNotiUpdate from "./ModalNotiUpdate";
+import { async } from "@firebase/util";
+import { deleteTeamInMatchByTourIdAPI } from "../../api/TeamInMatchAPI";
+import { deleteMatchByTourIdAPI, createSchedule } from "../../api/MatchAPI";
 
 const UpdateTournamentInformation = (props) => {
   let navigate = useNavigate();
   const location = useLocation();
+  const [hideShowNoti, setHideShowNoti] = useState(false);
   const addressTour = location.state.address;
   const lengthTeamPaticipate = location.state.lengthTeamPaticipate;
   const idTournament = location.state.id;
@@ -43,6 +48,7 @@ const UpdateTournamentInformation = (props) => {
       )
     )
   );
+  const [typeNoti, setTypeNoti] = useState("Noteam");
   const descriptionText = draftToHtml(
     convertToRaw(editorState.getCurrentContent())
   );
@@ -63,7 +69,7 @@ const UpdateTournamentInformation = (props) => {
     value: "",
     error: null,
   });
-  const [beginTeamPaticipate,setBeginTeamPaticipate] = useState(null);
+  const [beginTeamPaticipate, setBeginTeamPaticipate] = useState(null);
   const [typeFootballField, setTypeFootballField] = useState({
     value: "Field5",
     error: null,
@@ -109,7 +115,7 @@ const UpdateTournamentInformation = (props) => {
     value: "2",
     error: null,
   });
-  const [beginGroupNumber,setBeginGroupNumber] = useState(null);
+  const [beginGroupNumber, setBeginGroupNumber] = useState(null);
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
   const [provice, setProvice] = useState(null);
@@ -121,6 +127,7 @@ const UpdateTournamentInformation = (props) => {
   const [wardSearch, setWardSearch] = useState(null);
   AOS.init();
   const tour = gsap.timeline();
+  const [changeFormat, setChangeFormat] = useState(false);
   const getAllCity = async () => {
     const response = await axios.get(
       "https://provinces.open-api.vn/api/?depth=3"
@@ -148,11 +155,17 @@ const UpdateTournamentInformation = (props) => {
       setWards(allWard);
     }
   };
+  useEffect(() => {
+    if (lengthTeamPaticipate > 0) {
+      setHideShowNoti(true);
+      setTypeNoti("hasTeam");
+    }
+  }, []);
   const getInforTournamentById = async () => {
     const response = await getTournamentById(idTournament);
     if (response.status === 200) {
       const team = response.data;
-      console.log(new Date(team.registerEndDate).toISOString());
+
       setCloseRegister({
         value: team.registerEndDate,
         error: null,
@@ -266,10 +279,13 @@ const UpdateTournamentInformation = (props) => {
   };
 
   const onSubmitHandler = async (e) => {
+   
     e.preventDefault();
+    await updateTournamentDetail();
+  };
+  const updateTournamentDetail = async () => {
     setLoadingAction(true);
     const flag = checkValidateAdd();
-    console.log(flag);
     if (flag !== null) {
       setLoading(false);
       toast.error(flag, {
@@ -282,7 +298,11 @@ const UpdateTournamentInformation = (props) => {
         progress: undefined,
       });
     } else {
-      if (beginCompetitionFormat === competitionFormat && beginTeamPaticipate === teamPaticipate && beginGroupNumber !== null) {
+      if (
+        beginCompetitionFormat === competitionFormat.value &&
+        beginTeamPaticipate === teamPaticipate.value &&
+        (beginGroupNumber === -1 || beginGroupNumber === groupNumber.value)
+      ) {
         try {
           const data = {
             Id: idTournament,
@@ -308,20 +328,12 @@ const UpdateTournamentInformation = (props) => {
             TournamentTypeEnum: competitionFormat.value,
             TournamentFootballFieldTypeEnum: typeFootballField.value,
           };
-          
+
           const response = await updateTournamentInfoAPI(data);
           if (response.status === 200) {
-            setLoadingAction(false);
-            toast.success("Thay đổi thông tin giải đấu thành công", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-
+            if (typeNoti !== "hasTeam") {
+              createGenerateTable(response.data.id);
+            }
             const intitalState = {
               value: "",
               error: "",
@@ -380,11 +392,78 @@ const UpdateTournamentInformation = (props) => {
           });
           console.error(error.response);
         }
-      }else{
+      } else {
         // delete match detail and add again.
+        setHideShowNoti(true);
       }
     }
   };
+  const createGenerateTable = (id) => {
+    const response = createSchedule(id);
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          navigate(`/tournamentDetail/${id}/inforTournamentDetail`);
+          setLoadingAction(false);
+          toast.success("Thay đổi thông tin giải đấu thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
+  useEffect(() => {
+    if (changeFormat === true) {
+      deleteTeamInMatch();
+    }
+  }, [changeFormat === true]);
+  const deleteTeamInMatch = async () => {
+    try {
+      const response = await deleteTeamInMatchByTourIdAPI(idTournament);
+
+      if (response.status === 200) {
+        await deleteMatch();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const deleteMatch = async () => {
+    try {
+      const response = await deleteMatchByTourIdAPI(idTournament);
+
+      if (response.status === 200) {
+        updateTournamentDetail();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const accpetChangCompetitionFormat = () => {
+    setBeginCompetitionFormat(competitionFormat.value);
+    setBeginGroupNumber(groupNumber.value);
+    setBeginTeamPaticipate(teamPaticipate.value);
+    setChangeFormat(true);
+  };
+
   const validateForm = (name, value) => {
     switch (name) {
       case "imgTournament":
@@ -540,7 +619,7 @@ const UpdateTournamentInformation = (props) => {
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const validate = validateForm(name, value);
-    console.log(value);
+
     if (validate.flag) {
       setBtnActive(true);
     } else {
@@ -703,12 +782,10 @@ const UpdateTournamentInformation = (props) => {
         <div className={styles.createTournament_info}>
           <div>
             <div>
-              <h1 className={styles.createTournament_title}>Cập nhật giải đấu</h1>
-              <hr
-                width={100}
-                size={10}
-                className={styles.hr}
-              />
+              <h1 className={styles.createTournament_title}>
+                Cập nhật giải đấu
+              </h1>
+              <hr width={100} size={10} className={styles.hr} />
             </div>
             <div
               style={{
@@ -1076,6 +1153,7 @@ const UpdateTournamentInformation = (props) => {
                     name="minimunPlayerInTournament"
                     value={minimunPlayerInTournament.value}
                     onChange={onChangeHandler}
+                    disabled={lengthTeamPaticipate > 0 ? "disabled" : ""}
                   />
                 </div>
 
@@ -1104,6 +1182,7 @@ const UpdateTournamentInformation = (props) => {
                     Loại sân thi đấu
                   </label>
                   <select
+                    disabled={lengthTeamPaticipate > 0 ? "disabled" : ""}
                     className={styles.select_typeFootballField}
                     onChange={onChangeHandler}
                     value={typeFootballField.value}
@@ -1122,6 +1201,7 @@ const UpdateTournamentInformation = (props) => {
                     Thời gian thi đấu mỗi trận
                   </label>
                   <select
+                    disabled={lengthTeamPaticipate > 0 ? "disabled" : ""}
                     className={styles.select_typeFootballField}
                     id="timeDuration"
                     onChange={onChangeHandler}
@@ -1155,6 +1235,7 @@ const UpdateTournamentInformation = (props) => {
                       name="provice"
                       onChange={onChangeHandler}
                       value={proviceSearch}
+                      disabled={lengthTeamPaticipate > 0 ? "disabled" : ""}
                     >
                       <option selected disabled>
                         Chọn thành phố
@@ -1192,6 +1273,7 @@ const UpdateTournamentInformation = (props) => {
                       name="districts"
                       onChange={onChangeHandler}
                       value={districSearch}
+                      disabled={lengthTeamPaticipate > 0 ? "disabled" : ""}
                     >
                       <option value="default" selected disabled>
                         Chọn quận
@@ -1229,6 +1311,7 @@ const UpdateTournamentInformation = (props) => {
                       name="wards"
                       onChange={onChangeHandler}
                       value={wardSearch}
+                      disabled={lengthTeamPaticipate > 0 ? "disabled" : ""}
                     >
                       <option value="default" selected disabled>
                         Chọn phường
@@ -1279,13 +1362,14 @@ const UpdateTournamentInformation = (props) => {
                       name="footballField"
                       value={footballField.value}
                       onChange={onChangeHandler}
+                      disabled={lengthTeamPaticipate > 0 ? "disabled" : ""}
                     />
                   </div>
                 </div>
               </div>
             </div>
             <div className={styles.optionBtn}>
-            <input
+              <input
                 type="button"
                 className={styles.cancleCreate}
                 onClick={() => {
@@ -1293,6 +1377,9 @@ const UpdateTournamentInformation = (props) => {
                 }}
                 value="Hủy tạo"
               />
+              <div
+                className={hideShowNoti ? "overlay active" : "overlay"}
+              ></div>
               {/* {btnActive ? ( */}
               <input
                 type="submit"
@@ -1305,6 +1392,15 @@ const UpdateTournamentInformation = (props) => {
         </div>
       </div>
       {loading ? <LoadingAction /> : null}
+      {hideShowNoti ? (
+        <ModalNotiUpdate
+          typeNoti={typeNoti}
+          hideShow={hideShowNoti}
+          setHideShow={setHideShowNoti}
+          accpetChangCompetitionFormat={accpetChangCompetitionFormat}
+          setLoading={setLoading}
+        />
+      ) : null}
       <ToastContainer />
       <Footer />
     </>
