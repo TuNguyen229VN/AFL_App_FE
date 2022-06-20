@@ -134,7 +134,7 @@ function UpdateTeam() {
       case "imgClub":
         break;
       case "nameClub":
-          if (/\d+/.test(value)) {
+        if (/\d+/.test(value)) {
           return {
             flag: false,
             content: "Tên đội bóng là chữ",
@@ -142,12 +142,12 @@ function UpdateTeam() {
         }
         break;
       case "phoneContact":
-         if (!/^[0-9]+$/.test(value)) {
+        if (!/^[0-9]+$/.test(value)) {
           return {
             flag: false,
             content: "Số điện thoại không được là chữ hay kí tự khác",
           };
-        } 
+        }
 
         break;
       case "gender":
@@ -433,9 +433,6 @@ function UpdateTeam() {
       <form onSubmit={onSubmitHandler}>
         <div
           className={styles.create__team}
-          style={{
-            marginBottom: 40,
-          }}
         >
           <h2 className={styles.title}>Cập nhật đội bóng</h2>
           <p className={styles.avt}>Hình đội bóng</p>
@@ -483,8 +480,6 @@ function UpdateTeam() {
                     <p
                       style={{
                         color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
                       }}
                     >
                       {nameClub.error}
@@ -502,7 +497,6 @@ function UpdateTeam() {
                   placeholder="Tên đội bóng *"
                   value={nameClub.value}
                   onChange={onChangeHandler}
-                  
                 />
               </div>
               <div className={styles.text__field}>
@@ -518,8 +512,6 @@ function UpdateTeam() {
                     <p
                       style={{
                         color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
                       }}
                     >
                       {phoneContact.error}
@@ -537,7 +529,6 @@ function UpdateTeam() {
                   id="phoneteam"
                   placeholder="Số điện thoại *"
                   onChange={onChangeHandler}
-                  
                 />
               </div>
               <div className={styles.text__field}>
@@ -569,8 +560,6 @@ function UpdateTeam() {
                     <p
                       style={{
                         color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
                       }}
                     >
                       {nameManager.error}
@@ -603,8 +592,6 @@ function UpdateTeam() {
                     <p
                       style={{
                         color: "red",
-                        fontWeight: 900,
-                        fontSize: 18,
                       }}
                     >
                       {email.error}
@@ -639,7 +626,6 @@ function UpdateTeam() {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                marginBottom: 65,
                 width: "30%",
               }}
             >
@@ -789,41 +775,32 @@ function UpdateTeam() {
               }}
             />
           </div>
-          {btnActive ? (
+          <div className={styles.optionBtn}>
             <input
-              style={{
-                float: "right",
-                // backgroundColor: buttonFlag === true ? "#d7fc6a" : "#D9D9D9",
-                // cursor: buttonFlag === true ? "pointer" : "default",
+              type="button"
+              className={styles.cancleCreate}
+              onClick={() => {
+                navigate(-1);
               }}
-              type="submit"
-              className={styles.createTeam_btn}
-              value="Cập nhật đội"
-              // disabled = {buttonFlag === true ? false : false}
+              value="Hủy tạo"
             />
-          ) : null}
-           <input
-            type="button"
-            
-            style={{
-              backgroundColor: "white",
-              border: 1,
-              borderColor: "white",
-              textDecoration: "underline",
-              color: "#9693ED",
-              float: "right",
-              marginTop:42,
-              marginRight:25,
-              fontWeight:600
-            }}
-            onClick={() => {
-              navigate(-1);
-            }}
-            value="Hủy tạo"
-          />
+            {btnActive ? (
+              <input
+                style={{
+                  float: "right",
+                  // backgroundColor: buttonFlag === true ? "#d7fc6a" : "#D9D9D9",
+                  // cursor: buttonFlag === true ? "pointer" : "default",
+                }}
+                type="submit"
+                className={styles.createTeam_btn}
+                value="Cập nhật đội"
+                // disabled = {buttonFlag === true ? false : false}
+              />
+            ) : null}
+          </div>
         </div>
       </form>
-      {loading ? <LoadingAction/> : null}
+      {loading ? <LoadingAction /> : null}
       <ToastContainer />
       <Footer />
     </>

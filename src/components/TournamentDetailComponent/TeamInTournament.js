@@ -334,7 +334,7 @@ function TeamInTournament(props) {
                           >
                             Danh sách cầu thủ đăng ký
                           </p>
-                          {user !== undefined &&
+                          {user !== undefined && tourDetail.mode !== "PRIVATE" &&
                           user.userVM.id === hostTournamentId ? (
                             <div
                               style={{
@@ -416,7 +416,7 @@ function TeamInTournament(props) {
                     fontSize: 16,
                   }}
                 >
-                  Tìm kiếm cầu thủ theo tên:{" "}
+                  Tìm kiếm đội bóng theo tên:{" "}
                 </label>
                 <input
                   style={{
@@ -424,6 +424,7 @@ function TeamInTournament(props) {
                     padding: "5px 10px",
                     width: 300,
                   }}
+                  className="searchaa"
                   placeholder="Tên cầu thủ"
                   value={contentSearch}
                   id="namePlayer"

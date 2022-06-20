@@ -1,39 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./styles/style.css";
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
+// import firebase from "firebase/compat/app";
+// import "firebase/compat/auth";
+import app from "../../firebase/firebase";
 import { getAPI } from "../../api";
 import Notification from "../NotificationComponent/Notification";
 function Header(id) {
-  const firebaseConfig = {
-    apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
-    authDomain: "amateurfoooballleague.firebaseapp.com",
-    databaseURL: "gs://amateurfoooballleague.appspot.com",
-    projectId: "amateurfoooballleague",
-    storageBucket: "amateurfoooballleague.appspot.com",
-    messagingSenderId: "765175452190",
-    appId: "1:765175452190:web:3e01517d116d4777c9140f",
-    measurementId: "G-7Z7LB0W52J",
-  };
+  // const firebaseConfig = {
+  //   apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
+  //   authDomain: "amateurfoooballleague.firebaseapp.com",
+  //   databaseURL: "gs://amateurfoooballleague.appspot.com",
+  //   projectId: "amateurfoooballleague",
+  //   storageBucket: "amateurfoooballleague.appspot.com",
+  //   messagingSenderId: "765175452190",
+  //   appId: "1:765175452190:web:3e01517d116d4777c9140f",
+  //   measurementId: "G-7Z7LB0W52J",
+  // };
 
-  firebase.initializeApp(firebaseConfig);
+  // !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
   // get Locoal Storage
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-  const [team, setTeam] = useState(
-    JSON.parse(localStorage.getItem("teamInfo"))
-  );
-  const [player, setPlayer] = useState(
-    JSON.parse(localStorage.getItem("playerInfo"))
-  );
+  // const [team, setTeam] = useState(
+  //   JSON.parse(localStorage.getItem("teamInfo"))
+  // );
+  // const [player, setPlayer] = useState(
+  //   JSON.parse(localStorage.getItem("playerInfo"))
+  // );
   // signout
   const signout = () => {
-    firebase.auth().signOut();
+    app.auth().signOut();
     localStorage.removeItem("userInfo");
     localStorage.removeItem("teamInfo");
     localStorage.removeItem("playerInfo");
+    localStorage.removeItem("token_subcribe")
     window.location.reload();
   };
   const [myAccount, setMyAccount] = useState([]);

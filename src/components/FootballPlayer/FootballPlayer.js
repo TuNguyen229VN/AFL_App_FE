@@ -3,7 +3,7 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import AOS from "aos";
 import gsap from "gsap";
-import styles from "../FindTeamComponent/TeamFind.module.css";
+import styles from "./styles/style.module.css";
 import Transitions from "../Transitions/Transitions";
 import ReactPaginate from "react-paginate";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
@@ -190,7 +190,6 @@ export default function FootballPlayer() {
             ) : <p style={{
               fontWeight: 700,
               fontSize: 24,
-              color: "red",
               marginBottom: 50
             }}>Không tìm thấy cầu thủ</p> : null}
           </div>

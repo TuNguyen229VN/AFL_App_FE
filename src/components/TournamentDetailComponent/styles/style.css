@@ -14,7 +14,7 @@
 }
 
 .HeaderTeamDetail .infor_tourdetail {
-  height: 495px;
+  max-height: 550px;
 }
 
 .HeaderTeamDetail .infor_tourdetail .avt__Team {
@@ -658,7 +658,9 @@
 .popup__news textarea:focus {
   border: none;
 }
-
+.searchaa:focus{
+  border: 2px solid var(--black-text);
+}
 .popup__news button {
   display: block;
   background-color: var(--green-bold);

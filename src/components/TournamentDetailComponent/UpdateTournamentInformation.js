@@ -703,14 +703,11 @@ const UpdateTournamentInformation = (props) => {
         <div className={styles.createTournament_info}>
           <div>
             <div>
-              <h1 className={styles.createTournament_title}>Tạo giải đấu</h1>
+              <h1 className={styles.createTournament_title}>Cập nhật giải đấu</h1>
               <hr
                 width={100}
                 size={10}
-                style={{
-                  backgroundColor: "black",
-                  opacity: 1,
-                }}
+                className={styles.hr}
               />
             </div>
             <div
@@ -1287,27 +1284,20 @@ const UpdateTournamentInformation = (props) => {
                 </div>
               </div>
             </div>
-            <div className={styles.btn_nextPage}>
-              {/* {btnActive ? ( */}
-              <input
-                type="submit"
-                className={styles.btn_Next}
-                value="Thay đổi"
-              />
-              <input
+            <div className={styles.optionBtn}>
+            <input
                 type="button"
-                className={styles.btn_Next}
-                style={{
-                  backgroundColor: "white",
-                  border: 1,
-                  borderColor: "white",
-                  textDecoration: "underline",
-                  color: "#9693ED",
-                }}
+                className={styles.cancleCreate}
                 onClick={() => {
                   navigate(-1);
                 }}
                 value="Hủy tạo"
+              />
+              {/* {btnActive ? ( */}
+              <input
+                type="submit"
+                className={styles.createTeam_btn}
+                value="Thay đổi"
               />
               {/* ) : null} */}
             </div>

@@ -148,20 +148,47 @@
     position: initial;
   }
   
+  .optionBtn{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 30px;
+  }
   .create__team .createTeam_btn {
-    padding: 20px 35px;
-    width: max-content;
+    padding: 10px 5px;
+    width: 150px;
     text-align: center;
     font-family: "Mulish-Bold";
     font-size: 18px;
     background-color: var(--blue-black);
-    margin: 20px 0 0 auto;
     transition: 0.5s;
     color: var(--white-text);
     cursor: pointer;
     user-select: none;
+    border: 0;
+    height: 55px;
+    outline: none;
+    border-radius: 5px;
   }
   
+  .create__team .cancleCreate {
+    padding: 10px 5px;
+    height: 55px;
+    width: 150px;
+    text-align: center;
+    font-family: "Mulish-Bold";
+    font-size: 18px;
+    background-color: #bf0e51;
+    color: var(--white-text);
+    cursor: pointer;
+    user-select: none;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+  .create__team .cancleCreate:hover {
+    filter: brightness(90%);
+  }
   .create__team .createTeam_btn:hover {
     background-color: var(--green-bold);
     color: var(--blue-black);

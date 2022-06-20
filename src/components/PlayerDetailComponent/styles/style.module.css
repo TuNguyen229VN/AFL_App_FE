@@ -1,14 +1,14 @@
 .my__tournament {
-  margin-top: 80px;
+  margin-top: 40px;
 }
 
-.my__tournament .title {
+ .title {
   font-size: 24px;
   font-family: "Mulish-Bold";
   text-transform: uppercase;
 }
 
-.my__tournament .title::after {
+ .title::after {
   display: block;
   content: "";
   height: 4px;

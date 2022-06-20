@@ -28,7 +28,7 @@ const MyTournamemts = () => {
   const [sort, setSort] = useState("");
   const [gender, setGender] = useState("");
   const [orderBy, setOrderBy] = useState("DateCreate");
-  const [orderType, setOrderType] = useState("DESC")
+  const [orderType, setOrderType] = useState("DESC");
   // Get Tournament
   const getTournament = async (nameFind, currentPage, anotherSearch, value) => {
     try {
@@ -44,11 +44,11 @@ const MyTournamemts = () => {
       } else if (anotherSearch === "FIELDTYPE") {
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${value}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "GENDER") {
-        console.log("Gender" + value)
+        console.log("Gender" + value);
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${value}&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "NAME") {
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
-      } else if (anotherSearch === "SORT"){
+      } else if (anotherSearch === "SORT") {
         const fullOrder = value.split("-");
         afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${footballField}&order-by=${fullOrder[0]}&order-type=${fullOrder[1]}&page-offset=${currentPage}&limit=8`;
       }
@@ -106,10 +106,17 @@ const MyTournamemts = () => {
   //   }
   // };
 
+  const getGender = (gender) => {
+    if (gender === "Male") {
+      return "Giải đấu Nam";
+    } else {
+      return "Giải đấu Nữ";
+    }
+  };
   // Click paging number
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
-    
+
     setCheck(!check);
     getTournament(contentSearch, data.selected + 1, "NAME", null);
   };
@@ -128,7 +135,7 @@ const MyTournamemts = () => {
     switch (name) {
       case "searchName":
         setContentSearch(value);
-        
+
         break;
       case "FIELDTYPE":
         setFootballField(value === "default" ? "" : value);
@@ -152,37 +159,34 @@ const MyTournamemts = () => {
         let ordertype = null;
         let orderby = null;
         console.log(value);
-        if(value === 'nameDesc'){
+        if (value === "nameDesc") {
           orderby = "TournamentName";
           ordertype = "ASC";
-
-        }else if ( value === "nameIns"){
+        } else if (value === "nameIns") {
           orderby = "TournamentName";
           ordertype = "DESC";
-        }else if ( value === "timeDesc"){
-          orderby ="DateCreate" ;
+        } else if (value === "timeDesc") {
+          orderby = "DateCreate";
           ordertype = "ASC";
-        }else if( value === "default"){
-          orderby ="DateCreate" ;
+        } else if (value === "default") {
+          orderby = "DateCreate";
           ordertype = "DESC";
-        }
-        else{
+        } else {
           orderby = "DateCreate";
           ordertype = "DESC";
         }
-          setOrderBy(orderby);
-          setOrderType(ordertype);
-          
-          getTournament(
-            contentSearch,
-            currentPage,
-            "SORT",
-            value === "default" ? "DateCreate-DESC" : orderby + "-" + ordertype
-          );
+        setOrderBy(orderby);
+        setOrderType(ordertype);
+
+        getTournament(
+          contentSearch,
+          currentPage,
+          "SORT",
+          value === "default" ? "DateCreate-DESC" : orderby + "-" + ordertype
+        );
         setSort(value === "default" ? "" : value);
         break;
       case "MODE":
-        
         setMode(value === "default" ? "" : value);
         getTournament(
           contentSearch,
@@ -192,7 +196,7 @@ const MyTournamemts = () => {
         );
         break;
       default:
-        console.log(value)
+        console.log(value);
         setGender(value === "default" ? "" : value);
         getTournament(
           contentSearch,
@@ -492,8 +496,8 @@ const MyTournamemts = () => {
           <div className={styles.listTour}>
             {loading ? (
               <Loading />
-            ) : (
-              tournaments.length > 0 ? tournaments.map((tour) => {
+            ) : tournaments.length > 0 ? (
+              tournaments.map((tour) => {
                 if (tour.status === true) {
                   return (
                     <div key={tour.id}>
@@ -514,7 +518,9 @@ const MyTournamemts = () => {
                             {tour.tournamentName}
                           </h1>
                           <p className={styles.type}>
-                            {tour.mode + " | " +  tour.tournamentGender}
+                            {tour.mode +
+                              " | " +
+                              getGender(tour.tournamentGender)}
                           </p>
                           <p className={styles.type}>
                             {getType(tour.tournamentTypeId)}
@@ -539,43 +545,47 @@ const MyTournamemts = () => {
                     </div>
                   );
                 }
-              }) : <div></div>
+              })
+            ) : (
+              <div></div>
             )}
-            
           </div>
-          { tournaments.length <= 0 ?  <h1 className={styles.titleNoContent}>Không tìm thấy giải đấu phù hợp</h1> :
-          null}
-          
+          {tournaments.length <= 0 ? (
+            <h1 className={styles.titleNoContent}>
+              Không tìm thấy giải đấu phù hợp
+            </h1>
+          ) : null}
         </div>
 
         {/* Paging */}
-        {
-          tournaments.length > 0 ? <nav
-          aria-label="Page navigation example"
-          className={styles.pagingTournament}
-        >
-          <ReactPaginate
-            previousLabel={"Trang trước"}
-            nextLabel={"Trang sau"}
-            containerClassName="pagination"
-            activeClassName={styles.active}
-            pageClassName={styles.pageItem}
-            nextClassName={styles.pageItem}
-            previousClassName={styles.pageItem}
-            breakLabel={"..."}
-            pageCount={Math.ceil(count / 8)}
-            marginPagesDisplayed={3}
-            onPageChange={handlePageClick}
-            pageLinkClassName={styles.pagelink}
-            previousLinkClassName={styles.pagelink}
-            nextLinkClassName={styles.pagelink}
-            breakClassName={styles.pageItem}
-            breakLinkClassName={styles.pagelink}
-            pageRangeDisplayed={2}
-          />
-        </nav> : <nav></nav>
-        }
-
+        {tournaments.length > 0 ? (
+          <nav
+            aria-label="Page navigation example"
+            className={styles.pagingTournament}
+          >
+            <ReactPaginate
+              previousLabel={"Trang trước"}
+              nextLabel={"Trang sau"}
+              containerClassName="pagination"
+              activeClassName={styles.active}
+              pageClassName={styles.pageItem}
+              nextClassName={styles.pageItem}
+              previousClassName={styles.pageItem}
+              breakLabel={"..."}
+              pageCount={Math.ceil(count / 8)}
+              marginPagesDisplayed={3}
+              onPageChange={handlePageClick}
+              pageLinkClassName={styles.pagelink}
+              previousLinkClassName={styles.pagelink}
+              nextLinkClassName={styles.pagelink}
+              breakClassName={styles.pageItem}
+              breakLinkClassName={styles.pagelink}
+              pageRangeDisplayed={2}
+            />
+          </nav>
+        ) : (
+          <nav></nav>
+        )}
       </div>
       <Footer />
     </>

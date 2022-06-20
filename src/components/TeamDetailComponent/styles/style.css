@@ -19,6 +19,7 @@
   display: flex;
   column-gap: 200px;
   position: relative;
+  max-height: 550px;
 }
 
 .avt__Team {
@@ -213,13 +214,16 @@
   position: absolute;
   bottom: -20px;
 }
-
+.teamdetail .listPlayer .listPlayer__item .test,
 .teamdetail .listPlayer .listPlayer__item .avt {
   height: 0;
   overflow: hidden;
   padding-bottom: 80%;
   position: relative;
 }
+
+
+.listPlayer__item .test img,
 .teamdetail .listPlayer .listPlayer__item .avt img {
   top: 50%;
   min-width: 100%;

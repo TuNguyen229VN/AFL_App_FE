@@ -229,12 +229,7 @@ function UpdatePlayer() {
       <Header />
 
       <form onSubmit={onSubmitHandler}>
-        <div
-          className={styles.create__team}
-          style={{
-            marginBottom: 40,
-          }}
-        >
+        <div className={styles.create__team}>
           <h2 className={styles.title}>Cập nhật thông tin cầu thủ cho bạn</h2>
           <p className={styles.avt}>Hình ảnh thi đấu</p>
           <div className={styles.main__team}>
@@ -324,35 +319,26 @@ function UpdatePlayer() {
               />
             </div>
           </div>
-          {user !== null && user.userVM.id == idPlayer&& btnActive ? (
+          <div className={styles.optionBtn}>
             <input
-              style={{
-                float: "right",
+              type="button"
+              className={styles.cancleCreate}
+              onClick={() => {
+                navigate(-1);
               }}
-              type="submit"
-              className={styles.createTeam_btn}
-              value="Cập nhật cầu thủ"
+              value="Hủy tạo"
             />
-          ) : null}
-          <input
-            type="button"
-            
-            style={{
-              backgroundColor: "white",
-              border: 1,
-              borderColor: "white",
-              textDecoration: "underline",
-              color: "#9693ED",
-              float: "right",
-              marginTop:42,
-              marginRight:25,
-              fontWeight:600
-            }}
-            onClick={() => {
-              navigate(-1);
-            }}
-            value="Hủy tạo"
-          />
+            {user !== null && user.userVM.id == idPlayer && btnActive ? (
+              <input
+                style={{
+                  float: "right",
+                }}
+                type="submit"
+                className={styles.createTeam_btn}
+                value="Cập nhật cầu thủ"
+              />
+            ) : null}
+          </div>
         </div>
       </form>
       {loading ? <LoadingAction /> : null}
