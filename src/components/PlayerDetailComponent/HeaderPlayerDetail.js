@@ -113,7 +113,7 @@ function HeaderPlayerDetail() {
   };
 
   useEffect(() => {
-    if (user != undefined && user.userVM.roleId === 3) {
+    if (user != undefined) {
       checkPaticipateTeam();
     }
   }, []);
@@ -123,7 +123,6 @@ function HeaderPlayerDetail() {
       .then((res) => {
         if (res.status === 200) {
           setStatusPaticipate("Chờ xét duyệt từ cầu thủ");
-
           toast.success(
             "Yêu cầu chiêu mộ cầu thủ thành công.Chờ phản hồi từ cầu thủ nhé!",
             {
@@ -186,6 +185,7 @@ function HeaderPlayerDetail() {
     respone
       .then((res) => {
         if (res.status === 200) {
+          console.log(res.data);
           if (res.data.playerInTeamsFull.length > 0) {
             const playerInTeam = res.data.playerInTeamsFull[0];
 

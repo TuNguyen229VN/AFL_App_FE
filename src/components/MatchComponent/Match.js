@@ -12,12 +12,14 @@ import LoadingAction from "../LoadingComponent/LoadingAction";
 import Livestream from "./Livestream";
 import MatchDetail from "./MatchDetail";
 import styles from "./styles/style.module.css";
+import { useNavigate } from "react-router-dom";
 function Match() {
   const location = useLocation();
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
   // location.state.hostTournamentId
+  const navigate = useNavigate();
   const { idMatch } = useParams();
   const [allTeamA, setAllTeamA] = useState(null);
   const [allTeamB, setAllTeamB] = useState(null);
@@ -751,7 +753,7 @@ function Match() {
               user.userVM.id === location.state.hostTournamentId ? ( */}
               <p
                 className={styles.updateMatch}
-                onClick={() => setPopupUpdateMatch(true)}
+                onClick={() => navigate(`/detailMatch/${idMatch}`)}
               >
                 Cập nhật tỉ số
               </p>
