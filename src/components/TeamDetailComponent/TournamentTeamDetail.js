@@ -17,11 +17,13 @@ import {
   getAllPlayerInTournamentByTeamInTournamentIdAPI,
 } from "../../api/PlayerInTournamentAPI";
 import RegisterInTournament from "../TournamentDetailComponent/RegisterInTournament";
+import AcceptPrivateTour from "./AcceptPrivateTour";
 function TournamentTeamDetail(props) {
   const { user, team } = props;
   const [checkRegisterTour, setCheckRegistertour] = useState(false);
   const [teamInTour, setTeamInTour] = useState([]);
   const [hideShow, setHideShow] = useState(false);
+  const [hideShowRegis, setHideShowRegis] = useState(false);
   const [hideShowDelete, setHideShowDelete] = useState(false);
   const [viewList, setViewList] = useState(null);
   const [tourTeam, setTourTeam] = useState([]);
@@ -198,7 +200,7 @@ function TournamentTeamDetail(props) {
   };
   useEffect(() => {
     getTeamInTournament();
-  }, [currentPage, check, statusTeam]);
+  }, [currentPage, check, statusTeam,hideShow]);
 
   const addTeamInSchedule = (idTeamInTour) => {
     const data = {
@@ -287,6 +289,15 @@ function TournamentTeamDetail(props) {
                 setStatusTeam("Chờ duyệt");
               }}
             >
+              Đã đăng ký
+            </p>
+            <p
+              className={active === 3 ? "active" : ""}
+              onClick={() => {
+                setactive(3);
+                setStatusTeam("Chờ duyệt private");
+              }}
+            >
               Chờ duyệt
             </p>
           </div>
@@ -322,6 +333,19 @@ function TournamentTeamDetail(props) {
                           <span>Khu vực:</span>
                           {item.footballFieldAddress}
                         </p>
+                        <p
+                          className="list_regis"
+                          style={{
+                            color: "#D7FC6A",
+                            textDecoration: "underline",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            setViewList(teamInTour[index]);
+                          }}
+                        >
+                          Danh sách cầu thủ đăng ký
+                        </p>
                       </div>
                     </Link>
                   </div>
@@ -341,6 +365,68 @@ function TournamentTeamDetail(props) {
           </div>
         ) : null}
         {active === 2 ? (
+          <div className="listPlayer__list">
+            {" "}
+            {tourTeam != null && tourTeam.length > 0 ? (
+              tourTeam.map((item, index) => {
+                return (
+                  <div key={index} className="listPlayer__item">
+                    <Link
+                      to={`/tournamentDetail/${item.id}/inforTournamentDetail`}
+                    >
+                      <div className="test">
+                        <img src={item.tournamentAvatar} alt="team" />
+                      </div>
+                      <div className="des">
+                        <p className="namePlayer">
+                          <span>Tên giải:</span>
+                          {item.tournamentName}
+                        </p>
+                        <p className="mailPlayer">
+                          <span>Giải đấu:</span>
+                          {getGender(item.tournamentGender)}
+                        </p>
+                        <p className="genderPlayer">
+                          <span>Hình thức:</span>
+                          {getType(item.tournamentTypeId)}
+                          {getFeild(item.footballFieldTypeId)}
+                        </p>
+                        <p className="phonePlayer">
+                          <span>Khu vực:</span>
+                          {item.footballFieldAddress}
+                        </p>
+                        <p
+                          className="list_regis"
+                          style={{
+                            color: "#D7FC6A",
+                            textDecoration: "underline",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            setViewList(teamInTour[index]);
+                          }}
+                        >
+                          Danh sách cầu thủ đăng ký
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })
+            ) : (
+              <h1
+                style={{
+                  color: "red",
+                  fontWeight: 600,
+                  fontSize: 18,
+                }}
+              >
+                Chưa tham gia giải đấu
+              </h1>
+            )}
+          </div>
+        ) : null}
+        {active === 3 ? (
           <div className="listPlayer__list">
             {tourTeam != null && tourTeam.length > 0 ? (
               tourTeam.map((item, index) => {
@@ -372,19 +458,6 @@ function TournamentTeamDetail(props) {
                         <p className="phonePlayer">
                           <span>Khu vực:</span>
                           {item.footballFieldAddress}
-                        </p>
-                        <p
-                          className="list_regis"
-                          style={{
-                            color: "#D7FC6A",
-                            textDecoration: "underline",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            setViewList(teamInTour[index]);
-                          }}
-                        >
-                          Danh sách cầu thủ đăng ký
                         </p>
                         {user !== undefined && user.userVM.id === team.id ? (
                           <div
@@ -418,17 +491,20 @@ function TournamentTeamDetail(props) {
                               }}
                               onClick={() => {
                                 // acceptTeamInTournament(item, true);
-                                setHideShow(true);
+                                setHideShowRegis(true);
                               }}
                               type="submit"
                               className="btn_acceptTeam"
                               value="Đồng ý"
                             />
-                            <RegisterInTournament
+                            <AcceptPrivateTour
+                            loading={loading}
+                            setLoading={setLoading}
+                             teamInTour={teamInTour[index]}
                               tourDetail={item}
                               setCheckRegistertour={setCheckRegistertour}
-                              hideShow={hideShow}
-                              setHideShow={setHideShow}
+                              hideShow={hideShowRegis}
+                              setHideShow={setHideShowRegis}
                               idUser={
                                 user != undefined ? user.userVM.id : undefined
                               }
@@ -492,13 +568,13 @@ function TournamentTeamDetail(props) {
           </nav>
         ) : null}
       </div>
-      <div className={hideShow ? "overlay active" : "overlay"}></div>
-      {/* <ViewListPlayerRegister
+      <div className={hideShow||hideShowRegis ? "overlay active" : "overlay"}></div>
+      <ViewListPlayerRegister
         teamInTournament={viewList}
         setViewList={setViewList}
         setHideShow={setHideShow}
         hideShow={hideShow}
-      /> */}
+      />
     </div>
   );
 }

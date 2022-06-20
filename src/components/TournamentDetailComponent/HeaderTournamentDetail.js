@@ -748,11 +748,11 @@ function HeaderTournamentDetail() {
                           Đang chờ xét duyệt
                         </button>
                       ) : (
-                        <p>Khoa ngu</p>
+                       null
                       )}
                     </>
                   ) : (
-                    <p>Khoa ngu1</p>
+                    null
                   )}
                 </div>
 

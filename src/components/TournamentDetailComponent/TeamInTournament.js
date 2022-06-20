@@ -10,6 +10,7 @@ import ReactPaginate from "react-paginate";
 import { addTeamInTournamentAPI } from "../../api/TeamInTournamentAPI";
 import { toast } from "react-toastify";
 import ModalDeleteTeamOutTournament from "./ModalDeleteTeamOutTournament";
+import axios from "axios";
 
 function TeamInTournament(props) {
   const {
@@ -23,9 +24,11 @@ function TeamInTournament(props) {
     hideShow,
     setHideShow,
     getAllPlayerInTournamentByIdTeam,
-    deleteTeamInTour,hideShowDeleteTeamOut,setHideShowDeleteTeamOut
+    deleteTeamInTour,
+    hideShowDeleteTeamOut,
+    setHideShowDeleteTeamOut,
   } = props;
-  
+
   const [active, setactive] = useState(1);
   const [viewList, setViewList] = useState(null);
   const [teamDelete, setTeamDelete] = useState(null);
@@ -39,12 +42,13 @@ function TeamInTournament(props) {
   const [orderType, setOrderType] = useState("DESC");
   const [contentSearch, setContentSearch] = useState("");
   const [check, setCheck] = useState(false);
+  const [teamInTourPrivate, setTeamInTourPrivate] = useState([]);
   const [viewMoreOption, setViewMoreOption] = useState({
     index: "0",
     check: false,
   });
-  const [idTeamDelete,setIdTeamDelete] = useState(null);
-  
+  const [idTeamDelete, setIdTeamDelete] = useState(null);
+
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
     getTeam(contentSearch, data.selected + 1, "NAME", contentSearch);
@@ -55,6 +59,37 @@ function TeamInTournament(props) {
     e.preventDefault();
   };
 
+  const getTeamInTourPrivate = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `https://afootballleague.ddns.net/api/v1/team-in-tournaments?tournament-id=${tourDetail.id}&status=Ch%E1%BB%9D%20duy%E1%BB%87t%20private&page-offset=1&limit=30`
+      );
+      if (res.status === 200) {
+        setTeamInTourPrivate(res.data.teamInTournaments);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const checkTeamInTourPrivate = (item) => {
+    let a = false;
+    if (teamInTourPrivate.length > 0) {
+      for (let i = 0; i < teamInTourPrivate.length; i++) {
+        if (
+          item.id === teamInTourPrivate[i].teamId &&
+          teamInTourPrivate[i].status === "Chờ duyệt private"
+        ) {
+          a = true;
+          break;
+        }
+      }
+    }
+    return a;
+  };
   const addTeamInTournament = (idTeam) => {
     setLoading(true);
     const data = {
@@ -77,6 +112,7 @@ function TeamInTournament(props) {
             draggable: true,
             progress: undefined,
           });
+          setCheck(!check);
           setLoading(false);
           //console.log(res.data);
         }
@@ -94,6 +130,7 @@ function TeamInTournament(props) {
         });
       });
   };
+
   const getTeam = async (nameFind, currentPage, anotherSearch, value) => {
     try {
       let afterURLDefault = null;
@@ -115,7 +152,7 @@ function TeamInTournament(props) {
   };
 
   useEffect(() => {
-    console.log(tourDetail);
+    getTeamInTourPrivate();
     getTeam(contentSearch, currentPage, "NAME", contentSearch);
   }, [check, currentPage]);
 
@@ -139,9 +176,13 @@ function TeamInTournament(props) {
           <div className="listPlayer__total">
             <h2>
               {" "}
-              {allTeam != null && allTeam.length > 0
-                ? "Có " + allTeam.countList + " đội bóng đã tham gia"
-                : "Chưa có đội bóng tham gia"}
+              {active !== 4 ? (
+                <>
+                  {allTeam != null && allTeam.length > 0
+                    ? "Có " + allTeam.countList + " đội bóng"
+                    : "Chưa có đội bóng"}
+                </>
+              ) : null}
             </h2>
             <div className="option__view">
               <p
@@ -153,22 +194,35 @@ function TeamInTournament(props) {
               >
                 Tham gia
               </p>
-              <p
-                className={active === 2 ? "active" : ""}
-                onClick={() => {
-                  setactive(2);
-                  setStatusTeam("Chờ duyệt");
-                }}
-              >
-                Chờ duyệt
-              </p>
-              {user &&
-              user.userVM.id === tourDetail.userId &&
-              tourDetail.mode === "PRIVATE" ? (
+              {tourDetail.mode !== "PRIVATE" ? (
+                <p
+                  className={active === 2 ? "active" : ""}
+                  onClick={() => {
+                    setactive(2);
+                    setStatusTeam("Chờ duyệt");
+                  }}
+                >
+                  Chờ duyệt
+                </p>
+              ) : null}
+              {tourDetail.mode === "PRIVATE" ? (
                 <p
                   className={active === 3 ? "active" : ""}
                   onClick={() => {
                     setactive(3);
+                    setStatusTeam("Chờ duyệt private");
+                  }}
+                >
+                  Chờ duyệt
+                </p>
+              ) : null}
+              {user &&
+              user.userVM.id === tourDetail.userId &&
+              tourDetail.mode === "PRIVATE" ? (
+                <p
+                  className={active === 4 ? "active" : ""}
+                  onClick={() => {
+                    setactive(4);
                     setStatusTeam("Chiêu mộ");
                   }}
                 >
@@ -183,46 +237,53 @@ function TeamInTournament(props) {
                 allTeam.map((item, index) => {
                   return (
                     <div key={index} className="listPlayer__item">
-                     {user !== undefined && tourDetail != null && user.userVM.id === tourDetail.userId ?  <div>
-                        <div
-                          className="view__more"
-                          onClick={() => {
-                            setViewMoreOption({
-                              index: index,
-                              check: !viewMoreOption.check,
-                            });
-                          }}
-                        >
-                          <i className="fa-solid fa-ellipsis"></i>
-                        </div>
-                        <div
-                          className={
-                            viewMoreOption.index === index &&
-                            viewMoreOption.check
-                              ? "option__player active"
-                              : "option__player"
-                          }
-                        >
+                      {user !== undefined &&
+                      tourDetail != null &&
+                      user.userVM.id === tourDetail.userId ? (
+                        <div>
                           <div
-                            className={
-                              hideShowDeleteTeamOut ? "overlay active" : "overlay"
-                            }
-                          ></div>
-                          <p
+                            className="view__more"
                             onClick={() => {
-                              //deletePlayerInTeam(item.idPlayerInTeam);
-                              // setHideShowDelete(true);
-                              // setIdDelete(item.idPlayerInTeam);
-                              // setDeleteSuccessFul(false);
-                              setHideShowDeleteTeamOut(true);
-                              setIdTeamDelete(item.teamInTournament.id)
+                              setViewMoreOption({
+                                index: index,
+                                check: !viewMoreOption.check,
+                              });
                             }}
                           >
-                            <i class="fa-solid fa-trash"></i>Xóa đội bóng khỏi giải
-                          </p>
+                            <i className="fa-solid fa-ellipsis"></i>
+                          </div>
+                          <div
+                            className={
+                              viewMoreOption.index === index &&
+                              viewMoreOption.check
+                                ? "option__player active"
+                                : "option__player"
+                            }
+                          >
+                            <div
+                              className={
+                                hideShowDeleteTeamOut
+                                  ? "overlay active"
+                                  : "overlay"
+                              }
+                            ></div>
+                            <p
+                              onClick={() => {
+                                //deletePlayerInTeam(item.idPlayerInTeam);
+                                // setHideShowDelete(true);
+                                // setIdDelete(item.idPlayerInTeam);
+                                // setDeleteSuccessFul(false);
+                                setHideShowDeleteTeamOut(true);
+                                setIdTeamDelete(item.teamInTournament.id);
+                              }}
+                            >
+                              <i class="fa-solid fa-trash"></i>Xóa đội bóng khỏi
+                              giải
+                            </p>
+                          </div>
                         </div>
-                      </div> : null}
-                      
+                      ) : null}
+
                       {/* <Link
                         to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
                       >   */}
@@ -276,7 +337,14 @@ function TeamInTournament(props) {
                   Chưa có đội bóng tham gia
                 </h1>
               )}
-              <ModalDeleteTeamOutTournament deleteTeamInTour={deleteTeamInTour} tourDetail={tourDetail !== null ? tourDetail : null} idTeamDelete={idTeamDelete} setIdTeamDelete={setIdTeamDelete} hideShow={hideShowDeleteTeamOut} setHideShow={setHideShowDeleteTeamOut} />
+              <ModalDeleteTeamOutTournament
+                deleteTeamInTour={deleteTeamInTour}
+                tourDetail={tourDetail !== null ? tourDetail : null}
+                idTeamDelete={idTeamDelete}
+                setIdTeamDelete={setIdTeamDelete}
+                hideShow={hideShowDeleteTeamOut}
+                setHideShow={setHideShowDeleteTeamOut}
+              />
             </div>
           ) : null}
 
@@ -334,7 +402,117 @@ function TeamInTournament(props) {
                           >
                             Danh sách cầu thủ đăng ký
                           </p>
-                          {user !== undefined && tourDetail.mode !== "PRIVATE" &&
+                          {user !== undefined &&
+                          tourDetail.mode !== "PRIVATE" &&
+                          user.userVM.id === hostTournamentId ? (
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-around",
+                                marginTop: 20,
+                                marginBottom: 20,
+                              }}
+                            >
+                              <input
+                                className="btn_deleteTeam"
+                                style={{
+                                  width: 80,
+                                  padding: 10,
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                  //acceptTeamInTournament(item, false);
+                                  setTeamDelete(item);
+                                  setHideShow(true);
+                                }}
+                                type="submit"
+                                value="Từ chối"
+                              />
+                              <input
+                                style={{
+                                  width: 80,
+                                  padding: 10,
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                  acceptTeamInTournament(item, true);
+                                }}
+                                type="submit"
+                                className="btn_acceptTeam"
+                                value="Đồng ý"
+                              />
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
+                    </form>
+                  );
+                })
+              ) : (
+                <h1
+                  style={{
+                    color: "red",
+                    fontWeight: 600,
+                    fontSize: 18,
+                  }}
+                >
+                  Chưa có đội bóng đăng ký
+                </h1>
+              )}
+              <div className={hideShow ? "overlay active" : "overlay"}></div>
+              <DenyTeamInTournament
+                getAllPlayerInTournamentByIdTeam={
+                  getAllPlayerInTournamentByIdTeam
+                }
+                teamDelete={teamDelete}
+                setTeamDelete={setTeamDelete}
+                setHideShow={setHideShow}
+                hideShow={hideShow}
+              />
+            </div>
+          ) : null}
+          {/* ==========Chờ chiêu mộ================ */}
+          {active === 3 ? (
+            <div className="listPlayer__list">
+              {allTeam != null && allTeam.length > 0 ? (
+                allTeam.map((item, index) => {
+                  return (
+                    <form onSubmit={onSubmitHandler}>
+                      <div key={index} className="listPlayer__item">
+                        <Link
+                          to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
+                        >
+                          <div className="avt">
+                            <img src={item.teamAvatar} alt="team" />
+                          </div>
+                        </Link>
+
+                        <div className="des">
+                          <Link
+                            style={{
+                              color: "white",
+                            }}
+                            to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
+                          >
+                            <p className="namePlayer">
+                              <span>Tên đội:</span>
+                              {item.teamName}
+                            </p>
+                            <p className="mailPlayer">
+                              <span>Người quản lý:</span>
+                              {item.user.username}
+                            </p>
+                            <p className="genderPlayer">
+                              <span>Số cầu thủ:</span>
+                              {item.numberPlayerInTeam}
+                            </p>
+                            <p className="phonePlayer">
+                              <span>Khu vực:</span>
+                              {item.teamArea}
+                            </p>
+                          </Link>
+                          {user !== undefined &&
+                          tourDetail.mode !== "PRIVATE" &&
                           user.userVM.id === hostTournamentId ? (
                             <div
                               style={{
@@ -404,7 +582,7 @@ function TeamInTournament(props) {
           ) : null}
 
           {/* ==========Chiêu mộ================= */}
-          {active === 3 ? (
+          {active === 4 ? (
             <>
               {loading ? <LoadingAction /> : null}
               <div>
@@ -425,7 +603,7 @@ function TeamInTournament(props) {
                     width: 300,
                   }}
                   className="searchaa"
-                  placeholder="Tên cầu thủ"
+                  placeholder="Tên đội bóng"
                   value={contentSearch}
                   id="namePlayer"
                   name="contentSearch"
@@ -460,12 +638,16 @@ function TeamInTournament(props) {
                               <span>Khu vực:</span>
                               {item.teamArea}
                             </p>
-                            <p
-                              className="buttonChieumoGiai"
-                              onClick={() => addTeamInTournament(item.id)}
-                            >
-                              Chiêu mộ vào giải
-                            </p>
+                            {checkTeamInTourPrivate(item) ? (
+                              <p className="daChieuMo">Chờ chấp nhận</p>
+                            ) : (
+                              <p
+                                className="buttonChieumoGiai"
+                                onClick={() => addTeamInTournament(item.id)}
+                              >
+                                Chiêu mộ
+                              </p>
+                            )}
                           </div>
                           {/* </Link> */}
                         </div>

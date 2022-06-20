@@ -13,14 +13,12 @@ export default function ViewListPlayerRegister(props) {
     }
   }, [teamInTournament]);
 
-  console.log(teamInTournament)
 
   const getAllPlayerByTeamId = () => {
     setLoading(true);
     const response = getAllPlayerByTeamIdAPI(teamInTournament.teamId);
     response
       .then((res) => {
-        console.log(res.data)
         getAllPlayerInTournamentByTeamInTournamentId(
           res.data.playerInTeamsFull
         );
@@ -41,11 +39,9 @@ export default function ViewListPlayerRegister(props) {
         const findNewPlayer = data.find(
           (itemData) => itemData.id === item.playerInTeamId
         );
-        console.log(findNewPlayer);
         findNewPlayer.clothesNumber = item.clothesNumber;
         newPlayerRegister.push(findNewPlayer);
       }
-      console.log(newPlayerRegister)
       setPlayerRegister(newPlayerRegister);
       setLoading(false);
     }

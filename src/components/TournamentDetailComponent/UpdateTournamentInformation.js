@@ -152,7 +152,6 @@ const UpdateTournamentInformation = (props) => {
     const response = await getTournamentById(idTournament);
     if (response.status === 200) {
       const team = response.data;
-      console.log(new Date(team.registerEndDate).toISOString());
       setCloseRegister({
         value: team.registerEndDate,
         error: null,
@@ -269,7 +268,6 @@ const UpdateTournamentInformation = (props) => {
     e.preventDefault();
     setLoadingAction(true);
     const flag = checkValidateAdd();
-    console.log(flag);
     if (flag !== null) {
       setLoading(false);
       toast.error(flag, {
@@ -540,7 +538,6 @@ const UpdateTournamentInformation = (props) => {
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const validate = validateForm(name, value);
-    console.log(value);
     if (validate.flag) {
       setBtnActive(true);
     } else {
@@ -647,7 +644,6 @@ const UpdateTournamentInformation = (props) => {
         });
         break;
       case "timeDuration":
-        console.log(value);
         setTimeDuration({
           ...timeDuration,
           value,

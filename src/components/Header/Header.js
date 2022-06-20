@@ -6,6 +6,8 @@ import "./styles/style.css";
 import app from "../../firebase/firebase";
 import { getAPI } from "../../api";
 import Notification from "../NotificationComponent/Notification";
+import axios from "axios";
+import { toast } from "react-toastify";
 function Header(id) {
   // const firebaseConfig = {
   //   apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
@@ -30,7 +32,30 @@ function Header(id) {
   //   JSON.parse(localStorage.getItem("playerInfo"))
   // );
   // signout
+  const logout=async()=>{
+    try {
+      
+      const res=await axios.post("https://afootballleague.ddns.net/api/v1/auth/logout",  {
+        token: localStorage.getItem("token_subcribe"),
+        email: user.userVM.email,
+    })
+    if(res.status===200){
+      toast.success(res.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const signout = () => {
+    logout();
     app.auth().signOut();
     localStorage.removeItem("userInfo");
     localStorage.removeItem("teamInfo");
