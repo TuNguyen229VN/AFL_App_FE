@@ -34,7 +34,7 @@ export default function ModalNotiUpdate(props) {
             }}>
               {typeNoti === "hasTeam"
                 ? "Bởi vì giải đấu đã có đội bóng vì thế bạn không thể thay đổi hình thức thi đấu, số cầu thủ tối đa mỗi đội, loại sân thi đấu, thời gian thi đấu và địa chỉ. "
-                : "Bởi vì thay đổi liên quan tới cầu hình giải đấu nên bạn có đồng ý nếu chúng tôi xóa bỏ lịch thi đấu và bảng xếp hạng hiện tại.Để tạo mới cho giống với cấu hình bạn đã chọn không?"}
+                : "Bởi vì thay đổi liên quan tới cầu hình giải đấu nên bạn có đồng ý nếu chúng tôi xóa bỏ lịch thi đấu và bảng xếp hạng hiện tại,để tạo mới cho giống với cấu hình bạn đã chọn không?"}
             </p>
           </div>
           <div class="modal-footer">

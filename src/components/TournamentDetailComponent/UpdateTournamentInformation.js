@@ -29,7 +29,7 @@ import ModalNotiUpdate from "./ModalNotiUpdate";
 import { async } from "@firebase/util";
 import { deleteTeamInMatchByTourIdAPI } from "../../api/TeamInMatchAPI";
 import { deleteMatchByTourIdAPI, createSchedule } from "../../api/MatchAPI";
-
+import {getTeamPaticaipateInTourByTourIDAPI,updateTeamInScheduleAPI} from "../../api/TeamInTournamentAPI";
 const UpdateTournamentInformation = (props) => {
   let navigate = useNavigate();
   const location = useLocation();
@@ -279,7 +279,6 @@ const UpdateTournamentInformation = (props) => {
   };
 
   const onSubmitHandler = async (e) => {
-   
     e.preventDefault();
     await updateTournamentDetail();
   };
@@ -394,26 +393,76 @@ const UpdateTournamentInformation = (props) => {
         }
       } else {
         // delete match detail and add again.
+        setTypeNoti("Noteam");
         setHideShowNoti(true);
       }
     }
+  };
+  const getTeamInTourByTourid = async() => {
+    try{
+      const response = await getTeamPaticaipateInTourByTourIDAPI(idTournament);
+      if(response.status === 200){
+          const teamInTournament = response.data.teamInTournaments;
+          for(const item of teamInTournament){
+            await addTeamInSchedule(item.id,true);
+          }
+          setTimeout(() => {
+            navigate(`/tournamentDetail/${idTournament}/inforTournamentDetail`);
+            setLoadingAction(false);
+            toast.success("Thay đổi thông tin giải đấu thành công", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          },2000);
+      }
+    }catch(err){
+      console.error(err);
+    }
+  }
+  const addTeamInSchedule = (idTeamInTour, status) => {
+    const data = {
+      teamInTournamentId: idTeamInTour,
+      typeUpdate: status,
+    };
+    const response = updateTeamInScheduleAPI(data);
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
   const createGenerateTable = (id) => {
     const response = createSchedule(id);
     response
       .then((res) => {
+        
         if (res.status === 200) {
-          navigate(`/tournamentDetail/${id}/inforTournamentDetail`);
-          setLoadingAction(false);
-          toast.success("Thay đổi thông tin giải đấu thành công", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          
+          if (lengthTeamPaticipate > 0) {
+            
+            getTeamInTourByTourid();
+          } else {
+            navigate(`/tournamentDetail/${id}/inforTournamentDetail`);
+            setLoadingAction(false);
+            toast.success("Thay đổi thông tin giải đấu thành công", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
         }
       })
       .catch((err) => {
@@ -571,9 +620,9 @@ const UpdateTournamentInformation = (props) => {
     } else if (
       competitionFormat.value === "CircleStage" &&
       lengthTeamPaticipate > teamPaticipate.value &&
-      (teamPaticipate.value < teamPaticipate.value || teamPaticipate.value > 8)
+      (teamPaticipate.value < lengthTeamPaticipate || teamPaticipate.value > 8)
     ) {
-      return `Số đội tham gia hình thức thi đấu vòng tròn nằm trong khoảng từ ${teamPaticipate.value}-8 đội`;
+      return `Số đội tham gia hình thức thi đấu vòng tròn nằm trong khoảng từ ${lengthTeamPaticipate}-8 đội`;
     } else if (
       competitionFormat.value === "KnockoutStage" &&
       lengthTeamPaticipate <= teamPaticipate.value &&
