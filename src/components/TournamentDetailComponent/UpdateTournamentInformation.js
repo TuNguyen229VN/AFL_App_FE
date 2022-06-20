@@ -165,10 +165,6 @@ const UpdateTournamentInformation = (props) => {
     const response = await getTournamentById(idTournament);
     if (response.status === 200) {
       const team = response.data;
-<<<<<<< HEAD
-=======
-
->>>>>>> 37d2fd1b3bc72f6327290a91c93f2374578bb7ad
       setCloseRegister({
         value: team.registerEndDate,
         error: null,
@@ -671,10 +667,6 @@ const UpdateTournamentInformation = (props) => {
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     const validate = validateForm(name, value);
-<<<<<<< HEAD
-=======
-
->>>>>>> 37d2fd1b3bc72f6327290a91c93f2374578bb7ad
     if (validate.flag) {
       setBtnActive(true);
     } else {
