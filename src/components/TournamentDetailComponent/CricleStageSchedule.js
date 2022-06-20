@@ -20,7 +20,7 @@ export default function CricleStageSchedule(props) {
     endDate,
     user,
     setStatusUpdateDate,
-    statusUpdateDate,
+    statusUpdateDate,tourDetail
   } = props;
   useEffect(() => {
     if (allTeam !== null) {
@@ -234,7 +234,7 @@ export default function CricleStageSchedule(props) {
                   {" "}
                   <Link
                     to={`/match/${item.match.id}/matchDetail`}
-                    state={{ hostTournamentId }}
+                    state={{ hostTournamentId,tourDetail }}
                   >
                     Chi tiết
                   </Link>

@@ -154,6 +154,7 @@ function HeaderTournamentDetail() {
           endDate={tourDetail.tournamentEndDate}
           user={user != undefined ? user : undefined}
           teamCreate={tourDetail.footballTeamNumber}
+          tourDetail={tourDetail}
         />
       );
     }

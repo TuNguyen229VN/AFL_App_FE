@@ -18,6 +18,7 @@ function Match() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  console.log(location)
   // location.state.hostTournamentId
   const navigate = useNavigate();
   const { idMatch } = useParams();
@@ -753,7 +754,9 @@ function Match() {
               user.userVM.id === location.state.hostTournamentId ? ( */}
               <p
                 className={styles.updateMatch}
-                onClick={() => navigate(`/detailMatch/${idMatch}`)}
+                onClick={() => navigate(`/detailMatch/${idMatch}`,{state:{
+                  tourDetail: location.state.tourDetail
+                }})}
               >
                 Cập nhật tỉ số
               </p>

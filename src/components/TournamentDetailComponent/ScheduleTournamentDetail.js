@@ -16,6 +16,7 @@ function ScheduleTournamentDetail(props) {
     endDate,
     user,
     teamCreate,
+    tourDetail
   } = props;
   const [loading, setLoading] = useState(false);
   const [active, setactive] = useState(true);
@@ -128,6 +129,7 @@ function ScheduleTournamentDetail(props) {
           <div className="wrap__table">
             {tournamentType !== "CircleStage" ? (
               <KnockOutStageSchedule
+              tourDetail={tourDetail}
                 tournamentType={tournamentType}
                 hostTournamentId={hostTournamentId}
                 typeView="result"
@@ -142,6 +144,7 @@ function ScheduleTournamentDetail(props) {
               />
             ) : (
               <CricleStageSchedule
+              tourDetail={tourDetail}
                 hostTournamentId={hostTournamentId}
                 loading={loading}
                 allTeam={allTeam}
@@ -157,6 +160,7 @@ function ScheduleTournamentDetail(props) {
           </div>
         ) : active === false ? (
           <KnockOutStageSchedule
+          
             groupNumber={groupNumber}
             tournamentType={tournamentType}
             allTeam={allTeam}

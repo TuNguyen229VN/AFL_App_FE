@@ -18,6 +18,7 @@ export default function KnockOutStageSchedule(props) {
     user,
     setStatusUpdateDate,
     statusUpdateDate,
+    tourDetail
   } = props;
 
   const [matchCurrent, setMatchCurrent] = useState(null);
@@ -405,7 +406,7 @@ export default function KnockOutStageSchedule(props) {
                         {" "}
                         <Link
                           to={`/match/${itemSeeds.id}/matchDetail`}
-                          state={{ hostTournamentId }}
+                          state={{ hostTournamentId,tourDetail }}
                         >
                           Chi tiết
                         </Link>
