@@ -5,23 +5,28 @@ import Header from "../Header/Header";
 import { useParams, useLocation } from "react-router-dom";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import { getTeamInMatchByMatchIdAPI } from "../../api/TeamInMatchAPI";
+import DetailInMatch from "./DetailInMatch"
 export default function DetailMatch(props) {
-  const [loading, setLoading] = useState(false);
+  const { idMatch } = useParams();
+  
   const location = useLocation();
   const tourDetail = location.state.tourDetail;
   const [teamA, setTeamA] = useState(null);
   const [teamB, setTeamB] = useState(null);
-  const { idMatch } = useParams();
+  const [loading, setLoading] = useState(false);
   const [scoreA, setScoreA] = useState(null);
   const [scoreB, setScoreB] = useState(null);
   const [yellowA, setYellowA] = useState(null);
   const [yellowB, setYellowB] = useState(null);
   const [redA, setRedA] = useState(null);
   const [redB, setRedB] = useState(null);
+  const [hideShow,setHideShow] = useState(false);
+  const [typeDetail,setTypeDetail] = useState("score");
   useEffect(() => {
     getTeamInMatchByMatchID();
   }, []);
   const getTeamInMatchByMatchID = () => {
+    setLoading(true);
     const response = getTeamInMatchByMatchIdAPI(idMatch);
     response
       .then((res) => {
@@ -30,9 +35,11 @@ export default function DetailMatch(props) {
           console.log(twoTeamUpdate);
           setTeamA(twoTeamUpdate[0]);
           setTeamB(twoTeamUpdate[1]);
+          setLoading(false);
         }
       })
       .catch((err) => {
+        setLoading(false);
         console.error(err);
       });
   };
@@ -143,6 +150,10 @@ export default function DetailMatch(props) {
               </div>
             ) : null}
           </div>
+          <p className="deitalScoreFootball" onClick={() => {
+            setHideShow(true);
+            setTypeDetail("score");
+          }}>Chi tiết bàn thắng</p>
         </div>
         <div>
           <p className="fight">Tổng số thẻ vàng</p>
@@ -197,6 +208,10 @@ export default function DetailMatch(props) {
               </div>
             ) : null}
           </div>
+          <p className="deitalScoreFootball" onClick={() => {
+            setHideShow(true);
+            setTypeDetail("yellow");
+          }}>Chi tiết thẻ vàng</p>
         </div>
         <div>
           <p className="fight">Tổng số thẻ đỏ</p>
@@ -251,8 +266,14 @@ export default function DetailMatch(props) {
               </div>
             ) : null}
           </div>
+          <p className="deitalScoreFootball" onClick={() => {
+            setHideShow(true);
+            setTypeDetail("red");
+          }}>Chi tiết thẻ đỏ</p>
         </div>
       </div>
+      <div className={hideShow ? "overlay active" : "overlay"}></div>
+      <DetailInMatch nameTeamA={teamA.teamName} nameTeamB={teamB.teamName} hideShow={hideShow} setHideShow={setHideShow} typeDetail={typeDetail} numTeamA={typeDetail === "score" ? scoreA : typeDetail === "yello" ? yellowA : redA} numTeamB={typeDetail === "score" ? scoreB : typeDetail === "yello" ? yellowB : redB} />
       {loading ? <LoadingAction /> : null}
       <Footer />
     </div>

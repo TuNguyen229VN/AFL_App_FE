@@ -1128,7 +1128,7 @@ const CreateTournament = () => {
                 <input
                   type="submit"
                   className={styles.createTeam_btn}
-                  value="Tiếp theo"
+                  value="Tạo giải"
                 />
               ) : null}
             </div>
