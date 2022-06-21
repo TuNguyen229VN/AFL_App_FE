@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 
 export default function DetailInMatch(props) {
     const {hideShow,setHideShow,typeDetail,nameTeamA,nameTeamB,numTeamA,numTeamB,playerA,playerB} = props;
-    
+    const renderSelectByNumber = () => {
+      
+    }
     const renderInputByNumber = (number) => {
       let array = [];
       for(let i = 0 ; i < number ; i++){
