@@ -75,6 +75,20 @@ function TeamInTournament(props) {
     }
   };
 
+  const getTeamInTourByDelte = (item) => {
+    console.log("SAadasdas")
+    let a = [];
+    if (teamInTourPrivate.length > 0) {
+      for (let i = 0; i < teamInTourPrivate.length; i++) {
+        if (item.id === teamInTourPrivate[i].teamId) {
+          a = teamInTourPrivate[i];
+          console.log(a)
+          break;
+        }
+      }
+    }
+    return a;
+  };
   const checkTeamInTourPrivate = (item) => {
     let a = false;
     if (teamInTourPrivate.length > 0) {
@@ -154,7 +168,7 @@ function TeamInTournament(props) {
   useEffect(() => {
     getTeamInTourPrivate();
     getTeam(contentSearch, currentPage, "NAME", contentSearch);
-  }, [check, currentPage]);
+  }, [check, currentPage, setStatusTeam]);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -511,47 +525,6 @@ function TeamInTournament(props) {
                               {item.teamArea}
                             </p>
                           </Link>
-                          {user !== undefined &&
-                          tourDetail.mode !== "PRIVATE" &&
-                          user.userVM.id === hostTournamentId ? (
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-around",
-                                marginTop: 20,
-                                marginBottom: 20,
-                              }}
-                            >
-                              <input
-                                className="btn_deleteTeam"
-                                style={{
-                                  width: 80,
-                                  padding: 10,
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => {
-                                  //acceptTeamInTournament(item, false);
-                                  setTeamDelete(item);
-                                  setHideShow(true);
-                                }}
-                                type="submit"
-                                value="Từ chối"
-                              />
-                              <input
-                                style={{
-                                  width: 80,
-                                  padding: 10,
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => {
-                                  acceptTeamInTournament(item, true);
-                                }}
-                                type="submit"
-                                className="btn_acceptTeam"
-                                value="Đồng ý"
-                              />
-                            </div>
-                          ) : null}
                         </div>
                       </div>
                     </form>
@@ -568,16 +541,6 @@ function TeamInTournament(props) {
                   Chưa có đội bóng đăng ký
                 </h1>
               )}
-              <div className={hideShow ? "overlay active" : "overlay"}></div>
-              <DenyTeamInTournament
-                getAllPlayerInTournamentByIdTeam={
-                  getAllPlayerInTournamentByIdTeam
-                }
-                teamDelete={teamDelete}
-                setTeamDelete={setTeamDelete}
-                setHideShowDelete={setHideShow}
-                hideShowDelete={hideShow}
-              />
             </div>
           ) : null}
 
@@ -618,39 +581,50 @@ function TeamInTournament(props) {
                       tourDetail.footballPlayerMaxNumber
                     ) {
                       return (
-                        <div key={index} className="listPlayer__item">
-                          {/* <Link
+                        <form onSubmit={onSubmitHandler}>
+                          <div key={index} className="listPlayer__item">
+                            {/* <Link
                         to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
                       >   */}
-                          <div className="avt">
-                            <img src={item.teamAvatar} alt="team" />
-                          </div>
-                          <div className="des">
-                            <p className="namePlayer">
-                              <span>Tên đội:</span>
-                              {item.teamName}
-                            </p>
-                            <p className="genderPlayer">
-                              <span>Số cầu thủ:</span>
-                              {item.numberPlayerInTeam}
-                            </p>
-                            <p className="phonePlayer">
-                              <span>Khu vực:</span>
-                              {item.teamArea}
-                            </p>
-                            {checkTeamInTourPrivate(item) ? (
-                              <p className="daChieuMo">Chờ chấp nhận</p>
-                            ) : (
-                              <p
-                                className="buttonChieumoGiai"
-                                onClick={() => addTeamInTournament(item.id)}
-                              >
-                                Chiêu mộ
+                            <div className="avt">
+                              <img src={item.teamAvatar} alt="team" />
+                            </div>
+                            <div className="des">
+                              <p className="namePlayer">
+                                <span>Tên đội:</span>
+                                {item.teamName}
                               </p>
-                            )}
+                              <p className="genderPlayer">
+                                <span>Số cầu thủ:</span>
+                                {item.numberPlayerInTeam}
+                              </p>
+                              <p className="phonePlayer">
+                                <span>Khu vực:</span>
+                                {item.teamArea}
+                              </p>
+                              {checkTeamInTourPrivate(item) ? (
+                                <p
+                                  className="daChieuMo"
+                                  onClick={() => {
+                                    // acceptTeamInTournament(item, false);
+                                    setTeamDelete(getTeamInTourByDelte(item));
+                                    setHideShow(true);
+                                  }}
+                                >
+                                  Hủy chiêu mộ
+                                </p>
+                              ) : (
+                                <p
+                                  className="buttonChieumoGiai"
+                                  onClick={() => addTeamInTournament(item.id)}
+                                >
+                                  Chiêu mộ
+                                </p>
+                              )}
+                            </div>
+                            {/* </Link> */}
                           </div>
-                          {/* </Link> */}
-                        </div>
+                        </form>
                       );
                     }
                   })
@@ -665,6 +639,16 @@ function TeamInTournament(props) {
                     Không có đội bóng để chiêu mộ
                   </h1>
                 )}
+                <div className={hideShow ? "overlay active" : "overlay"}></div>
+                <DenyTeamInTournament
+                  getAllPlayerInTournamentByIdTeam={
+                    getAllPlayerInTournamentByIdTeam
+                  }
+                  teamDelete={teamDelete}
+                  setTeamDelete={setTeamDelete}
+                  setHideShowDelete={setHideShow}
+                  hideShowDelete={hideShow}
+                />
               </div>
               {teams.length !== 0 ? (
                 <nav

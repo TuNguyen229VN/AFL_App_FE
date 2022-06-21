@@ -57,7 +57,7 @@ export default function DenyTeamInTournament(props) {
               class="btn btn-primary"
               onClick={() => {
                 //acceptTeamInTournament(teamDelete, false);
-                getAllPlayerInTournamentByIdTeam(teamDelete.teamInTournament.id);
+                getAllPlayerInTournamentByIdTeam(teamDelete.id);
               }}
             >
               Xóa

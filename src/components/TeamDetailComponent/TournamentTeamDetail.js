@@ -52,10 +52,11 @@ function TournamentTeamDetail(props) {
     response
       .then((res) => {
         if (res.status === 200) {
-          console.log(res);
-          for (let item of res.data.playerInTournaments) {
-            deletePlayerById(item.id);
-          }
+          // console.log(res);
+          // for (let item of res.data.playerInTournaments) {
+          //   deletePlayerById(item.id);
+          // }
+          console.log(idTeam);
           setTimeout(() => {
             deleteTeamInTournament(idTeam);
           }, 2000);
@@ -200,7 +201,7 @@ function TournamentTeamDetail(props) {
   };
   useEffect(() => {
     getTeamInTournament();
-  }, [currentPage, check, statusTeam,hideShow]);
+  }, [currentPage, check, statusTeam, hideShow,hideShowRegis]);
 
   const addTeamInSchedule = (idTeamInTour) => {
     const data = {
@@ -498,9 +499,9 @@ function TournamentTeamDetail(props) {
                               value="Đồng ý"
                             />
                             <AcceptPrivateTour
-                            loading={loading}
-                            setLoading={setLoading}
-                             teamInTour={teamInTour[index]}
+                              loading={loading}
+                              setLoading={setLoading}
+                              teamInTour={teamInTour[index]}
                               tourDetail={item}
                               setCheckRegistertour={setCheckRegistertour}
                               hideShow={hideShowRegis}
@@ -568,7 +569,9 @@ function TournamentTeamDetail(props) {
           </nav>
         ) : null}
       </div>
-      <div className={hideShow||hideShowRegis ? "overlay active" : "overlay"}></div>
+      <div
+        className={hideShow || hideShowRegis ? "overlay active" : "overlay"}
+      ></div>
       <ViewListPlayerRegister
         teamInTournament={viewList}
         setViewList={setViewList}
