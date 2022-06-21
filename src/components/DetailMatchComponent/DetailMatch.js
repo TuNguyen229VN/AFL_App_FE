@@ -6,6 +6,9 @@ import { useParams, useLocation } from "react-router-dom";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import { getTeamInMatchByMatchIdAPI } from "../../api/TeamInMatchAPI";
 import DetailInMatch from "./DetailInMatch"
+import {getAllPlayerInTournamentByTeamInTournamentIdAPI} from "../../api/PlayerInTournamentAPI"
+import {getPlayerInTeamByIdAPI} from "../../api/PlayerInTeamAPI";
+import { async } from "@firebase/util";
 export default function DetailMatch(props) {
   const { idMatch } = useParams();
   
@@ -22,6 +25,11 @@ export default function DetailMatch(props) {
   const [redB, setRedB] = useState(null);
   const [hideShow,setHideShow] = useState(false);
   const [typeDetail,setTypeDetail] = useState("score");
+  const [stateScore,setStateScore] = useState(false);
+  const [stateYellow,setStateYellow] = useState(false);
+  const [stateRed,setStateRed] = useState(false);
+  const [playerA,setPlayerA] = useState(null);
+  const [playerB,setPlayerB] = useState(null);
   useEffect(() => {
     getTeamInMatchByMatchID();
   }, []);
@@ -32,9 +40,10 @@ export default function DetailMatch(props) {
       .then((res) => {
         if (res.status === 200) {
           const twoTeamUpdate = res.data.teamsInMatch;
-          console.log(twoTeamUpdate);
           setTeamA(twoTeamUpdate[0]);
+          getPlayerInTournamentByTeamInTourid(twoTeamUpdate[0].teamInTournament.id,"A");
           setTeamB(twoTeamUpdate[1]);
+          getPlayerInTournamentByTeamInTourid(twoTeamUpdate[1].teamInTournament.id,"B");
           setLoading(false);
         }
       })
@@ -43,6 +52,38 @@ export default function DetailMatch(props) {
         console.error(err);
       });
   };
+  const getPlayerInTournamentByTeamInTourid = async(id,type) => {
+    try{
+      const response = await getAllPlayerInTournamentByTeamInTournamentIdAPI(id);
+      if(response.status === 200) {
+        const playerInTounament =  response.data.playerInTournaments;
+        
+       const listPlayer = playerInTounament.map(async (item,index) => {
+          const player = await getPlayerInTeamById(item.playerInTeamId);
+          return player.footballPlayer;
+        })
+        const playersData = await Promise.all(listPlayer);
+        
+        if(type === "A"){
+          setPlayerA(playersData);
+        }else{
+          setPlayerB(playersData);
+        }
+      }
+    }catch(err){
+      console.error(err);
+    }
+  } 
+  const getPlayerInTeamById = async (id) => {
+    try{
+      const response = await getPlayerInTeamByIdAPI(id);
+      if(response.status === 200){
+        return response.data;
+      }
+    }catch(err){
+      console.error(err);
+    }
+  }
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     switch (name) {
@@ -70,14 +111,26 @@ export default function DetailMatch(props) {
     if (type === "score") {
       setScoreA(null);
       setScoreB(null);
+      setStateScore(false);
     } else if (type === "yellow") {
       setYellowA(null);
       setYellowB(null);
+      setStateYellow(false);
     } else {
       setRedA(null);
       setRedB(null);
+      setStateRed(false);
     }
   };
+  const acceptResult = (type) => {
+    if (type === "score") {
+      setStateScore(true);
+    } else if (type === "yellow") {
+      setStateYellow(true);
+    } else {
+      setStateRed(true);
+    }
+  }
   return (
     <div>
       <Header />
@@ -146,14 +199,17 @@ export default function DetailMatch(props) {
                 >
                   Hủy
                 </button>
-                <button className="createTeam_btn">Xác nhận</button>
+                {!stateScore ?
+                <button className="createTeam_btn" onClick={() => {
+                    acceptResult("score");
+                  }}>Xác nhận</button> : null }
               </div>
             ) : null}
           </div>
-          <p className="deitalScoreFootball" onClick={() => {
+          {stateScore ? <p className="deitalScoreFootball" onClick={() => {
             setHideShow(true);
             setTypeDetail("score");
-          }}>Chi tiết bàn thắng</p>
+          }}>Chi tiết bàn thắng</p> : null}
         </div>
         <div>
           <p className="fight">Tổng số thẻ vàng</p>
@@ -204,14 +260,18 @@ export default function DetailMatch(props) {
                 <button className="cancleCreate" onClick={() => {
                     cancleResult("yellow");
                   }}>Hủy</button>
-                <button className="createTeam_btn">Xác nhận</button>
+                  {!stateYellow ? <button className="createTeam_btn" onClick={() => {
+                    acceptResult("yellow");
+                  }}>Xác nhận</button> : null}
+                
               </div>
             ) : null}
           </div>
-          <p className="deitalScoreFootball" onClick={() => {
+          {stateYellow ? <p className="deitalScoreFootball" onClick={() => {
             setHideShow(true);
             setTypeDetail("yellow");
-          }}>Chi tiết thẻ vàng</p>
+          }}>Chi tiết thẻ vàng</p> : null}
+          
         </div>
         <div>
           <p className="fight">Tổng số thẻ đỏ</p>
@@ -262,18 +322,24 @@ export default function DetailMatch(props) {
                 <button className="cancleCreate" onClick={() => {
                     cancleResult("red");
                   }}>Hủy</button>
-                <button className="createTeam_btn">Xác nhận</button>
+                  {!stateRed ? <button className="createTeam_btn" onClick={() => {
+                    acceptResult("red");
+                  }}>Xác nhận</button> : null}
+                
               </div>
             ) : null}
           </div>
-          <p className="deitalScoreFootball" onClick={() => {
-            setHideShow(true);
-            setTypeDetail("red");
-          }}>Chi tiết thẻ đỏ</p>
+          {
+            stateRed ? <p className="deitalScoreFootball" onClick={() => {
+              setHideShow(true);
+              setTypeDetail("red");
+            }}>Chi tiết thẻ đỏ</p> : null
+          }
+          
         </div>
       </div>
       <div className={hideShow ? "overlay active" : "overlay"}></div>
-      <DetailInMatch nameTeamA={teamA.teamName} nameTeamB={teamB.teamName} hideShow={hideShow} setHideShow={setHideShow} typeDetail={typeDetail} numTeamA={typeDetail === "score" ? scoreA : typeDetail === "yello" ? yellowA : redA} numTeamB={typeDetail === "score" ? scoreB : typeDetail === "yello" ? yellowB : redB} />
+      <DetailInMatch nameTeamA={teamA !== null ? teamA.teamName : null} nameTeamB={teamB!== null ?teamB.teamName:null} hideShow={hideShow} setHideShow={setHideShow} typeDetail={typeDetail} numTeamA={typeDetail === "score" ? scoreA : typeDetail === "yellow" ? yellowA : redA} numTeamB={typeDetail === "score" ? scoreB : typeDetail === "yellow" ? yellowB : redB} playerA={playerA !== null ? playerA : null} playerB={playerB !== null ? playerB : null} />
       {loading ? <LoadingAction /> : null}
       <Footer />
     </div>

@@ -39,3 +39,8 @@ export function checkPlayerInTeamAPI(idTeam,idPlayer){
     const afterDefaultURL = `PlayerInTeam?teamId=${idTeam}&footballPlayerId=${idPlayer}&pageIndex=1&limit=5`;
     return axios.get(url+afterDefaultURL)
 }
+
+export function getPlayerInTeamByIdAPI(id){
+    const afterDefaultURL = `PlayerInTeam/${id}`;
+    return axios.get(url + afterDefaultURL)
+}
