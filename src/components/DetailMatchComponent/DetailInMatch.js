@@ -5,6 +5,7 @@ export default function DetailInMatch(props) {
     const renderSelectByNumber = () => {
       
     }
+    console.log(playerA)
     const renderInputByNumber = (number) => {
       let array = [];
       for(let i = 0 ; i < number ; i++){

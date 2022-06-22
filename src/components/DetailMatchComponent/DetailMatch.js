@@ -5,13 +5,13 @@ import Header from "../Header/Header";
 import { useParams, useLocation } from "react-router-dom";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import { getTeamInMatchByMatchIdAPI } from "../../api/TeamInMatchAPI";
-import DetailInMatch from "./DetailInMatch"
-import {getAllPlayerInTournamentByTeamInTournamentIdAPI} from "../../api/PlayerInTournamentAPI"
-import {getPlayerInTeamByIdAPI} from "../../api/PlayerInTeamAPI";
+import DetailInMatch from "./DetailInMatch";
+import { getAllPlayerInTournamentByTeamInTournamentIdAPI } from "../../api/PlayerInTournamentAPI";
+import { getPlayerInTeamByIdAPI } from "../../api/PlayerInTeamAPI";
 import { async } from "@firebase/util";
 export default function DetailMatch(props) {
   const { idMatch } = useParams();
-  
+
   const location = useLocation();
   const tourDetail = location.state.tourDetail;
   const [teamA, setTeamA] = useState(null);
@@ -23,16 +23,21 @@ export default function DetailMatch(props) {
   const [yellowB, setYellowB] = useState(null);
   const [redA, setRedA] = useState(null);
   const [redB, setRedB] = useState(null);
-  const [hideShow,setHideShow] = useState(false);
-  const [typeDetail,setTypeDetail] = useState("score");
-  const [stateScore,setStateScore] = useState(false);
-  const [stateYellow,setStateYellow] = useState(false);
-  const [stateRed,setStateRed] = useState(false);
-  const [playerA,setPlayerA] = useState(null);
-  const [playerB,setPlayerB] = useState(null);
+  const [hideShow, setHideShow] = useState(false);
+  const [typeDetail, setTypeDetail] = useState("score");
+  const [stateScore, setStateScore] = useState(false);
+  const [stateYellow, setStateYellow] = useState(false);
+  const [stateRed, setStateRed] = useState(false);
+  const [playerA, setPlayerA] = useState(null);
+  const [playerB, setPlayerB] = useState(null);
   useEffect(() => {
     getTeamInMatchByMatchID();
   }, []);
+  useEffect(() => {
+    if (teamA !== null && teamB !== null) {
+      setAllInfor();
+    }
+  }, [teamA !== null && teamB !== null]);
   const getTeamInMatchByMatchID = () => {
     setLoading(true);
     const response = getTeamInMatchByMatchIdAPI(idMatch);
@@ -40,10 +45,17 @@ export default function DetailMatch(props) {
       .then((res) => {
         if (res.status === 200) {
           const twoTeamUpdate = res.data.teamsInMatch;
+
           setTeamA(twoTeamUpdate[0]);
-          getPlayerInTournamentByTeamInTourid(twoTeamUpdate[0].teamInTournament.id,"A");
+          getPlayerInTournamentByTeamInTourid(
+            twoTeamUpdate[0].teamInTournament.id,
+            "A"
+          );
           setTeamB(twoTeamUpdate[1]);
-          getPlayerInTournamentByTeamInTourid(twoTeamUpdate[1].teamInTournament.id,"B");
+          getPlayerInTournamentByTeamInTourid(
+            twoTeamUpdate[1].teamInTournament.id,
+            "B"
+          );
           setLoading(false);
         }
       })
@@ -52,38 +64,51 @@ export default function DetailMatch(props) {
         console.error(err);
       });
   };
-  const getPlayerInTournamentByTeamInTourid = async(id,type) => {
-    try{
-      const response = await getAllPlayerInTournamentByTeamInTournamentIdAPI(id);
-      if(response.status === 200) {
-        const playerInTounament =  response.data.playerInTournaments;
-        
-       const listPlayer = playerInTounament.map(async (item,index) => {
+  const setAllInfor = () => {
+    
+    setScoreA(teamA.teamScore);
+    setScoreB(teamB.teamScore);
+    setYellowA(teamA.yellowCardNumber);
+    setYellowB(teamB.yellowCardNumber);
+    setRedA(teamA.redCardNumber);
+    setRedB(teamB.redCardNumber);
+  };
+  const getPlayerInTournamentByTeamInTourid = async (id, type) => {
+    try {
+      const response = await getAllPlayerInTournamentByTeamInTournamentIdAPI(
+        id
+      );
+      if (response.status === 200) {
+        const playerInTounament = response.data.playerInTournaments;
+
+        const listPlayer = playerInTounament.map(async (item, index) => {
           const player = await getPlayerInTeamById(item.playerInTeamId);
+          const playerDetail = player.footballPlayer;
+          playerDetail.playerInTournamentId = item.id;
           return player.footballPlayer;
-        })
+        });
         const playersData = await Promise.all(listPlayer);
-        
-        if(type === "A"){
+
+        if (type === "A") {
           setPlayerA(playersData);
-        }else{
+        } else {
           setPlayerB(playersData);
         }
       }
-    }catch(err){
+    } catch (err) {
       console.error(err);
     }
-  } 
+  };
   const getPlayerInTeamById = async (id) => {
-    try{
+    try {
       const response = await getPlayerInTeamByIdAPI(id);
-      if(response.status === 200){
+      if (response.status === 200) {
         return response.data;
       }
-    }catch(err){
+    } catch (err) {
       console.error(err);
     }
-  }
+  };
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     switch (name) {
@@ -123,14 +148,14 @@ export default function DetailMatch(props) {
     }
   };
   const acceptResult = (type) => {
-    if (type === "score") {
+    if (type === "score" ) {
       setStateScore(true);
-    } else if (type === "yellow") {
+    } else if (type === "yellow" ) {
       setStateYellow(true);
-    } else {
+    } else if (type === "red" ) {
       setStateRed(true);
     }
-  }
+  };
   return (
     <div>
       <Header />
@@ -165,7 +190,7 @@ export default function DetailMatch(props) {
             </label>
             <input
               name="scoreA"
-              value={scoreA == null ? "" : scoreA}
+              value={scoreA === null ? "" : scoreA}
               id="scoreA"
               className="btnInput"
               onChange={onChangeHandler}
@@ -184,7 +209,11 @@ export default function DetailMatch(props) {
             <label htmlFor="scoreB" className="fight">
               {teamB !== null ? teamB.teamName : null}
             </label>
-            {((scoreA !== null) && (scoreB !== null)) && (scoreA.length > 0 && scoreB.length > 0)   ? (
+            
+            {scoreA !== null &&
+            scoreB !== null &&
+            ((scoreA + "").length > 0 ||
+            (scoreB + "").length > 0) ? (
               <div
                 style={{
                   marginLeft: 30,
@@ -199,17 +228,30 @@ export default function DetailMatch(props) {
                 >
                   Hủy
                 </button>
-                {!stateScore ?
-                <button className="createTeam_btn" onClick={() => {
-                    acceptResult("score");
-                  }}>Xác nhận</button> : null }
+                {!stateScore ? (
+                  <button
+                    className="createTeam_btn"
+                    onClick={() => {
+                      acceptResult("score");
+                    }}
+                  >
+                    Xác nhận
+                  </button>
+                ) : null}
               </div>
             ) : null}
           </div>
-          {stateScore ? <p className="deitalScoreFootball" onClick={() => {
-            setHideShow(true);
-            setTypeDetail("score");
-          }}>Chi tiết bàn thắng</p> : null}
+          {stateScore && (scoreA > 0 || scoreB > 0) ? (
+            <p
+              className="deitalScoreFootball"
+              onClick={() => {
+                setHideShow(true);
+                setTypeDetail("score");
+              }}
+            >
+              Chi tiết bàn thắng
+            </p>
+          ) : null}
         </div>
         <div>
           <p className="fight">Tổng số thẻ vàng</p>
@@ -232,7 +274,7 @@ export default function DetailMatch(props) {
             <input
               id="yellowA"
               name="yellowA"
-              value={yellowA  === null ? "" : yellowA}
+              value={yellowA === null ? "" : yellowA}
               onChange={onChangeHandler}
               className="btnInput"
             />
@@ -243,35 +285,55 @@ export default function DetailMatch(props) {
               }}
               id="yellowB"
               name="yellowB"
-              value={yellowB  === null ? "" : yellowB}
+              value={yellowB === null ? "" : yellowB}
               onChange={onChangeHandler}
               className="btnInput"
             />
             <label htmlFor="yellowB" className="fight">
               {teamB !== null ? teamB.teamName : null}
             </label>
-            {yellowA !== null && yellowB !== null && (yellowA.length > 0 && yellowB.length > 0) ? (
+            {yellowA !== null &&
+            yellowB !== null &&
+            (yellowA + "").length > 0 &&
+            (yellowB + "").length > 0 ? (
               <div
                 style={{
                   marginLeft: 30,
                 }}
                 className="btnAccept"
               >
-                <button className="cancleCreate" onClick={() => {
+                <button
+                  className="cancleCreate"
+                  onClick={() => {
                     cancleResult("yellow");
-                  }}>Hủy</button>
-                  {!stateYellow ? <button className="createTeam_btn" onClick={() => {
-                    acceptResult("yellow");
-                  }}>Xác nhận</button> : null}
-                
+                  }}
+                >
+                  Hủy
+                </button>
+                {!stateYellow ? (
+                  <button
+                    className="createTeam_btn"
+                    onClick={() => {
+                      acceptResult("yellow");
+                    }}
+                  >
+                    Xác nhận
+                  </button>
+                ) : null}
               </div>
             ) : null}
           </div>
-          {stateYellow ? <p className="deitalScoreFootball" onClick={() => {
-            setHideShow(true);
-            setTypeDetail("yellow");
-          }}>Chi tiết thẻ vàng</p> : null}
-          
+          {stateYellow && (yellowA > 0 || yellowB > 0) ? (
+            <p
+              className="deitalScoreFootball"
+              onClick={() => {
+                setHideShow(true);
+                setTypeDetail("yellow");
+              }}
+            >
+              Chi tiết thẻ vàng
+            </p>
+          ) : null}
         </div>
         <div>
           <p className="fight">Tổng số thẻ đỏ</p>
@@ -306,40 +368,80 @@ export default function DetailMatch(props) {
               id="redB"
               className="btnInput"
               name="redB"
-              value={redB === null ? "" :redB}
+              value={redB === null ? "" : redB}
               onChange={onChangeHandler}
             />
             <label htmlFor="redB" className="fight">
               {teamB !== null ? teamB.teamName : null}
             </label>
-            {redA !== null && redB !== null && (redA.length > 0 && redB.length > 0) ? (
+            {redA !== null &&
+            redB !== null &&
+            (redA + "").length > 0 &&
+            (redB + "").length > 0 ? (
               <div
                 style={{
                   marginLeft: 30,
                 }}
                 className="btnAccept"
               >
-                <button className="cancleCreate" onClick={() => {
+                <button
+                  className="cancleCreate"
+                  onClick={() => {
                     cancleResult("red");
-                  }}>Hủy</button>
-                  {!stateRed ? <button className="createTeam_btn" onClick={() => {
-                    acceptResult("red");
-                  }}>Xác nhận</button> : null}
-                
+                  }}
+                >
+                  Hủy
+                </button>
+                {!stateRed ? (
+                  <button
+                    className="createTeam_btn"
+                    onClick={() => {
+                      acceptResult("red");
+                    }}
+                  >
+                    Xác nhận
+                  </button>
+                ) : null}
               </div>
             ) : null}
           </div>
-          {
-            stateRed ? <p className="deitalScoreFootball" onClick={() => {
-              setHideShow(true);
-              setTypeDetail("red");
-            }}>Chi tiết thẻ đỏ</p> : null
-          }
-          
+          {stateRed && (redA > 0 || redB > 0) ? (
+            <p
+              className="deitalScoreFootball"
+              onClick={() => {
+                setHideShow(true);
+                setTypeDetail("red");
+              }}
+            >
+              Chi tiết thẻ đỏ
+            </p>
+          ) : null}
         </div>
       </div>
       <div className={hideShow ? "overlay active" : "overlay"}></div>
-      <DetailInMatch nameTeamA={teamA !== null ? teamA.teamName : null} nameTeamB={teamB!== null ?teamB.teamName:null} hideShow={hideShow} setHideShow={setHideShow} typeDetail={typeDetail} numTeamA={typeDetail === "score" ? scoreA : typeDetail === "yellow" ? yellowA : redA} numTeamB={typeDetail === "score" ? scoreB : typeDetail === "yellow" ? yellowB : redB} playerA={playerA !== null ? playerA : null} playerB={playerB !== null ? playerB : null} />
+      <DetailInMatch
+        nameTeamA={teamA !== null ? teamA.teamName : null}
+        nameTeamB={teamB !== null ? teamB.teamName : null}
+        hideShow={hideShow}
+        setHideShow={setHideShow}
+        typeDetail={typeDetail}
+        numTeamA={
+          typeDetail === "score"
+            ? scoreA
+            : typeDetail === "yellow"
+            ? yellowA
+            : redA
+        }
+        numTeamB={
+          typeDetail === "score"
+            ? scoreB
+            : typeDetail === "yellow"
+            ? yellowB
+            : redB
+        }
+        playerA={playerA !== null ? playerA : null}
+        playerB={playerB !== null ? playerB : null}
+      />
       {loading ? <LoadingAction /> : null}
       <Footer />
     </div>
