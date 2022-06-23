@@ -8,7 +8,8 @@ import { getTeamInMatchByMatchIdAPI } from "../../api/TeamInMatchAPI";
 import DetailInMatch from "./DetailInMatch";
 import { getAllPlayerInTournamentByTeamInTournamentIdAPI } from "../../api/PlayerInTournamentAPI";
 import { getPlayerInTeamByIdAPI } from "../../api/PlayerInTeamAPI";
-import { async } from "@firebase/util";
+import {getMatchDetailByMatchIdAPI} from "../../api/MatchDetailAPI";
+
 export default function DetailMatch(props) {
   const { idMatch } = useParams();
 
@@ -24,10 +25,11 @@ export default function DetailMatch(props) {
   const [redA, setRedA] = useState(null);
   const [redB, setRedB] = useState(null);
   const [hideShow, setHideShow] = useState(false);
-  const [typeDetail, setTypeDetail] = useState("score");
-  const [stateScore, setStateScore] = useState(false);
-  const [stateYellow, setStateYellow] = useState(false);
-  const [stateRed, setStateRed] = useState(false);
+  const [typeDetail, setTypeDetail] = useState(null);
+  const [matchDetail,setMatchDetail] = useState(null);
+  // const [stateScore, setStateScore] = useState(false);
+  // const [stateYellow, setStateYellow] = useState(false);
+  // const [stateRed, setStateRed] = useState(false);
   const [playerA, setPlayerA] = useState(null);
   const [playerB, setPlayerB] = useState(null);
   useEffect(() => {
@@ -38,6 +40,18 @@ export default function DetailMatch(props) {
       setAllInfor();
     }
   }, [teamA !== null && teamB !== null]);
+  const getMatchDetailInFor = async () => {
+    try{
+      const response = await getMatchDetailByMatchIdAPI(idMatch);
+      if(response.status === 200){
+        setMatchDetail(response.data.matchDetails);
+      }
+    }catch(err){
+      console.error(err);
+    }
+   
+
+  }
   const getTeamInMatchByMatchID = () => {
     setLoading(true);
     const response = getTeamInMatchByMatchIdAPI(idMatch);
@@ -56,6 +70,7 @@ export default function DetailMatch(props) {
             twoTeamUpdate[1].teamInTournament.id,
             "B"
           );
+          getMatchDetailInFor();
           setLoading(false);
         }
       })
@@ -132,30 +147,30 @@ export default function DetailMatch(props) {
         break;
     }
   };
-  const cancleResult = (type) => {
-    if (type === "score") {
-      setScoreA(null);
-      setScoreB(null);
-      setStateScore(false);
-    } else if (type === "yellow") {
-      setYellowA(null);
-      setYellowB(null);
-      setStateYellow(false);
-    } else {
-      setRedA(null);
-      setRedB(null);
-      setStateRed(false);
-    }
-  };
-  const acceptResult = (type) => {
-    if (type === "score" ) {
-      setStateScore(true);
-    } else if (type === "yellow" ) {
-      setStateYellow(true);
-    } else if (type === "red" ) {
-      setStateRed(true);
-    }
-  };
+  // const cancleResult = (type) => {
+  //   if (type === "score") {
+  //     setScoreA(null);
+  //     setScoreB(null);
+  //     //setStateScore(false);
+  //   } else if (type === "yellow") {
+  //     setYellowA(null);
+  //     setYellowB(null);
+  //     //setStateYellow(false);
+  //   } else {
+  //     setRedA(null);
+  //     setRedB(null);
+  //     //setStateRed(false);
+  //   }
+  // };
+  // const acceptResult = (type) => {
+  //   if (type === "score" ) {
+  //     setStateScore(true);
+  //   } else if (type === "yellow" ) {
+  //     setStateYellow(true);
+  //   } else if (type === "red" ) {
+  //     setStateRed(true);
+  //   }
+  // };
   return (
     <div>
       <Header />
@@ -220,28 +235,21 @@ export default function DetailMatch(props) {
                 }}
                 className="btnAccept"
               >
-                <button
+                {/* <button
                   className="cancleCreate"
                   onClick={() => {
                     cancleResult("score");
                   }}
                 >
                   Hủy
-                </button>
-                {!stateScore ? (
-                  <button
-                    className="createTeam_btn"
-                    onClick={() => {
-                      acceptResult("score");
-                    }}
-                  >
-                    Xác nhận
-                  </button>
-                ) : null}
+                </button> */}
+                
+                  
+         
               </div>
             ) : null}
           </div>
-          {stateScore && (scoreA > 0 || scoreB > 0) ? (
+          {((scoreA+"").length > 0 && (scoreB+"").length > 0) ? (
             <p
               className="deitalScoreFootball"
               onClick={() => {
@@ -302,28 +310,21 @@ export default function DetailMatch(props) {
                 }}
                 className="btnAccept"
               >
-                <button
+                {/* <button
                   className="cancleCreate"
                   onClick={() => {
                     cancleResult("yellow");
                   }}
                 >
                   Hủy
-                </button>
-                {!stateYellow ? (
-                  <button
-                    className="createTeam_btn"
-                    onClick={() => {
-                      acceptResult("yellow");
-                    }}
-                  >
-                    Xác nhận
-                  </button>
-                ) : null}
+                </button> */}
+                
+                 
+
               </div>
             ) : null}
           </div>
-          {stateYellow && (yellowA > 0 || yellowB > 0) ? (
+          {((yellowA+"").length > 0 && (yellowB+"").length > 0) ? (
             <p
               className="deitalScoreFootball"
               onClick={() => {
@@ -384,28 +385,21 @@ export default function DetailMatch(props) {
                 }}
                 className="btnAccept"
               >
-                <button
+                {/* <button
                   className="cancleCreate"
                   onClick={() => {
                     cancleResult("red");
                   }}
                 >
                   Hủy
-                </button>
-                {!stateRed ? (
-                  <button
-                    className="createTeam_btn"
-                    onClick={() => {
-                      acceptResult("red");
-                    }}
-                  >
-                    Xác nhận
-                  </button>
-                ) : null}
+                </button> */}
+                
+                  
+               
               </div>
             ) : null}
           </div>
-          {stateRed && (redA > 0 || redB > 0) ? (
+          {((redA+"").length > 0 && (redB+"").length > 0) ? (
             <p
               className="deitalScoreFootball"
               onClick={() => {
@@ -423,6 +417,7 @@ export default function DetailMatch(props) {
         nameTeamA={teamA !== null ? teamA.teamName : null}
         nameTeamB={teamB !== null ? teamB.teamName : null}
         hideShow={hideShow}
+        matchDetail = {matchDetail}
         setHideShow={setHideShow}
         typeDetail={typeDetail}
         numTeamA={

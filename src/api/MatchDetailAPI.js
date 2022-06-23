@@ -1,7 +1,7 @@
 import axios from "axios";
 import {url,headers} from "./index"
 
-export function getMatchDetailByMatchId(id){
+export function getMatchDetailByMatchIdAPI(id){
     const afterDefaultURL = `MatchDetail/MatchId?matchId=${id}`;
     return axios.get(url + afterDefaultURL);
 }
