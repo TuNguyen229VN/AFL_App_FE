@@ -937,7 +937,7 @@ function Profile() {
             chờ duyệt
           </p>
         ) : null}
-        <div className={styles.profile__delete}>
+        {/* <div className={styles.profile__delete}> */}
           {/* <div className={styles.delete__title}>Xóa tài khoản</div>
           <div className={styles.delete__wrap}>
             <p>
@@ -947,7 +947,7 @@ function Profile() {
             </p>
             <button>Xóa tài khoản</button>
           </div> */}
-        </div>
+        {/* </div> */}
       </div>
       <Footer />
     </>

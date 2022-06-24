@@ -63,7 +63,7 @@ function TeamInTournament(props) {
     setLoading(true);
     try {
       const res = await axios.get(
-        `https://afootballleague.ddns.net/api/v1/team-in-tournaments?tournament-id=${tourDetail.id}&status=Ch%E1%BB%9D%20duy%E1%BB%87t%20private&page-offset=1&limit=30`
+        `https://afootballleague.ddns.net/api/v1/team-in-tournaments?tournament-id=${tourDetail.id}&page-offset=1&limit=30`
       );
       if (res.status === 200) {
         setTeamInTourPrivate(res.data.teamInTournaments);
@@ -76,13 +76,12 @@ function TeamInTournament(props) {
   };
 
   const getTeamInTourByDelte = (item) => {
-    console.log("SAadasdas")
     let a = [];
     if (teamInTourPrivate.length > 0) {
       for (let i = 0; i < teamInTourPrivate.length; i++) {
         if (item.id === teamInTourPrivate[i].teamId) {
           a = teamInTourPrivate[i];
-          console.log(a)
+          console.log(a);
           break;
         }
       }
@@ -90,19 +89,26 @@ function TeamInTournament(props) {
     return a;
   };
   const checkTeamInTourPrivate = (item) => {
-    let a = false;
+    console.log(teamInTourPrivate)
+    let check = 0;
     if (teamInTourPrivate.length > 0) {
       for (let i = 0; i < teamInTourPrivate.length; i++) {
         if (
           item.id === teamInTourPrivate[i].teamId &&
           teamInTourPrivate[i].status === "Chờ duyệt private"
         ) {
-          a = true;
+          check = 1;
+          break;
+        } else if (
+          item.id === teamInTourPrivate[i].teamId &&
+          teamInTourPrivate[i].status === "Tham gia"
+        ) {
+          check = 2;
           break;
         }
       }
     }
-    return a;
+    return check;
   };
   const addTeamInTournament = (idTeam) => {
     setLoading(true);
@@ -602,7 +608,7 @@ function TeamInTournament(props) {
                                 <span>Khu vực:</span>
                                 {item.teamArea}
                               </p>
-                              {checkTeamInTourPrivate(item) ? (
+                              {checkTeamInTourPrivate(item) === 0 ? (
                                 <p
                                   className="daChieuMo"
                                   onClick={() => {
@@ -613,14 +619,22 @@ function TeamInTournament(props) {
                                 >
                                   Hủy chiêu mộ
                                 </p>
-                              ) : (
+                              ) : null}
+                              {checkTeamInTourPrivate(item) === 1 ? (
                                 <p
                                   className="buttonChieumoGiai"
                                   onClick={() => addTeamInTournament(item.id)}
                                 >
                                   Chiêu mộ
                                 </p>
-                              )}
+                              ) : null}
+                              {checkTeamInTourPrivate(item) === 2 ? (
+                                <p
+                                  className="buttonThamGia"                               
+                                >
+                                  Đã tham gia
+                                </p>
+                              ) : null}
                             </div>
                             {/* </Link> */}
                           </div>
