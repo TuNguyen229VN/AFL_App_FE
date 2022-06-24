@@ -115,6 +115,7 @@ const UpdateTournamentInformation = (props) => {
     value: "2",
     error: null,
   });
+  
   const [beginGroupNumber, setBeginGroupNumber] = useState(null);
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
@@ -326,7 +327,7 @@ const UpdateTournamentInformation = (props) => {
             TournamentTypeEnum: competitionFormat.value,
             TournamentFootballFieldTypeEnum: typeFootballField.value,
           };
-
+          // console.log(data);
           const response = await updateTournamentInfoAPI(data);
           if (response.status === 200) {
             if (typeNoti !== "hasTeam") {
@@ -593,13 +594,13 @@ const UpdateTournamentInformation = (props) => {
   };
   const checkValidateAdd = () => {
     //nameTournament phoneContact minimunPlayerInTournament  teamPaticipate  closeRegister startTime endTime
-    if (
-      closeRegister.value !== null &&
-      new Date(closeRegister.value).getTime() >=
-        new Date(startTime.value).getTime()
-    ) {
-      return "Ngày đăng ký phải trước ngày bắt đầu";
-    }
+    // if (
+    //   closeRegister.value === null ||
+    //   new Date(closeRegister.value).getTime() >=
+    //     new Date(startTime.value).getTime()
+    // ) {
+    //   return "Ngày đăng ký phải trước ngày bắt đầu";
+    // }
     if (nameTournament.value === null || nameTournament.value.length === 0) {
       return "Tên giải đấu không được để trống";
     }
@@ -689,6 +690,12 @@ const UpdateTournamentInformation = (props) => {
         });
         break;
       case "teamPaticipate":
+        if(competitionFormat.value === "GroupStage" && value < 12){
+          setGroupNumber({
+            value:"2",
+            error:null
+          })
+        }
         setTeamPaticipate({
           ...teamPaticipate,
           value,
@@ -717,6 +724,7 @@ const UpdateTournamentInformation = (props) => {
         });
         break;
       case "startTime":
+        console.log(value);
         setStartTime({
           ...startTime,
           value,
@@ -1070,7 +1078,8 @@ const UpdateTournamentInformation = (props) => {
                     name="closeRegister"
                     value={closeRegister.value}
                     onChange={onChangeHandler}
-                    disabled={status === 0 ? "" : "disable"}
+                    disabled={status === 0 && (new Date(closeRegister.value).getTime() <=
+                      new Date().getTime()) ? "" : "disable"}
                     required
                   />
                 </div>
@@ -1108,7 +1117,9 @@ const UpdateTournamentInformation = (props) => {
                     name="startTime"
                     value={startTime.value}
                     disabled={
-                      status === 0 && closeRegister.value != null
+                       
+                       (new Date(closeRegister.value).getTime() <=
+                      new Date().getTime()) && status === 0 && closeRegister.value != null
                         ? ""
                         : status === -1
                         ? ""
@@ -1151,7 +1162,8 @@ const UpdateTournamentInformation = (props) => {
                     type="datetime-local"
                     name="endTime"
                     value={endTime.value}
-                    disabled={startTime.value != null ? "" : "disable"}
+                    disabled={(new Date(closeRegister.value).getTime() <=
+                      new Date().getTime()) && startTime.value != null ? "" : "disable"}
                     onChange={onChangeHandler}
                   />
                 </div>

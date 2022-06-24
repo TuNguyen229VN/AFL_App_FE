@@ -47,15 +47,17 @@ const CreateTournament = () => {
     error: null,
   });
   const [closeRegister, setCloseRegister] = useState({
-    value: "",
+    value: null,
     error: null,
   });
   const [startTime, setStartTime] = useState({
-    value: new Date().toISOString().split(".")[0],
+    value: null,
     error: null,
   });
+
+  //new Date().toISOString().split(".")[0]
   const [endTime, setEndTime] = useState({
-    value: new Date().toISOString().split(".")[0],
+    value: null,
     error: null,
   });
   const [competitionFormat, setCompetitionFormat] = useState({
@@ -447,15 +449,23 @@ const CreateTournament = () => {
         });
         break;
       case "competitionFormat":
+        console.log(value);
         setTeamPaticipate({
           value: "",
           error: null,
         });
-        setGroupNumber({
-          value: "-1",
-          error: null,
-        });
-        console.log(value);
+        if(value !== "GroupStage"){
+          setGroupNumber({
+            value: "-1",
+            error: null,
+          });
+        }else{
+          setGroupNumber({
+            value: "2",
+            error: null,
+          });
+        }
+        
         setCompetitionFormat({
           ...competitionFormat,
           value,
@@ -810,7 +820,7 @@ const CreateTournament = () => {
                     className={styles.timeStart_input}
                     id="startTime"
                     type="datetime-local"
-                    min={minDate}
+                    //min={minDate}
                     name="startTime"
                     value={startTime.value}
                     disabled={
@@ -855,7 +865,7 @@ const CreateTournament = () => {
                   <input
                     className={styles.timeEnd_input}
                     id="endTime"
-                    min={minDate}
+                    //min={minDate}
                     type="datetime-local"
                     name="endTime"
                     value={endTime.value}

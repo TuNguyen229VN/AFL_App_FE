@@ -94,7 +94,7 @@ function ScheduleTournamentDetail(props) {
           className="wrap__title"
         >
           <h2 className="title">
-            {active !== null ? "" : "Mô tả"}
+            {active === null ? "Mô tả" : active ?  "Danh sách" : "Biểu đồ"}
           </h2>
           <div className="option__view">
             <p

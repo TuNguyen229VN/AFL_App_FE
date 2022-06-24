@@ -852,7 +852,10 @@ function HeaderTournamentDetail() {
                       <p>Báo cáo</p>
                     </div>
 
-                    <div
+                    
+                  </>
+                ) : null}
+                <div
                       className={popupReport ? `overlay active` : "active"}
                       onClick={() => {
                         setPopupReport(false);
@@ -911,12 +914,10 @@ function HeaderTournamentDetail() {
                         >
                           Hiện tại giải đang diễn ra bạn không thể rời khỏi
                           giải. Nếu có vấn đề liên quan tới giải đấu xin vui
-                          lòng báo cáo giải đấu và chờ người xét duyệt
+                          lòng báo cáo giải đấu và chờ người xét duyệt.
                         </p>
                       )}
                     </form>
-                  </>
-                ) : null}
               </div>
               {tourDetail.registerEndDate !== null ? (
                 <CountDown registerEndDate={tourDetail.registerEndDate} />

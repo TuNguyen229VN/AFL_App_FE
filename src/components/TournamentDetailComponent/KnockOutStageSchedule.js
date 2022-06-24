@@ -35,8 +35,8 @@ export default function KnockOutStageSchedule(props) {
     const data = [];
     let roundCurrent = null;
     let indexCurrent = 0;
-    console.log(allTeam);
     allTeam.map((item, index) => {
+      console.log(item);
       if (index % 2 === 0) {
         if (roundCurrent === null) {
           roundCurrent =
@@ -100,7 +100,7 @@ export default function KnockOutStageSchedule(props) {
                 teamInTournamentId: item.teamInTournamentId,
               },
               {
-                name: allTeam[index + 1].teamName,
+                name: allTeam[index + 1].teamName !== undefined ? allTeam[index + 1].teamName : "Đội ..." ,
                 team:
                   allTeam[index + 1].teamInTournament.team !== null
                     ? allTeam[index + 1].teamInTournament.team
@@ -405,7 +405,7 @@ export default function KnockOutStageSchedule(props) {
                       <td>
                         {" "}
                         <Link
-                          to={`/match/${itemSeeds.id}/matchDetail`}
+                          to={`/match/${itemSeeds.match.id}/matchDetail`}
                           state={{ hostTournamentId,tourDetail }}
                         >
                           Chi tiết

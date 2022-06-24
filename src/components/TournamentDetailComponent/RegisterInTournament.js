@@ -116,7 +116,7 @@ export default function RegisterInTournament(props) {
         .catch((err) => {
           setLoading(false);
           console.error(err);
-          toast.error(error.response.data.message, {
+          toast.error(err.response.data.message, {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
