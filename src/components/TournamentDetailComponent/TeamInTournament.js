@@ -89,7 +89,7 @@ function TeamInTournament(props) {
     return a;
   };
   const checkTeamInTourPrivate = (item) => {
-    console.log(teamInTourPrivate)
+    console.log(teamInTourPrivate[1].status)
     let check = 0;
     if (teamInTourPrivate.length > 0) {
       for (let i = 0; i < teamInTourPrivate.length; i++) {
@@ -98,6 +98,7 @@ function TeamInTournament(props) {
           teamInTourPrivate[i].status === "Chờ duyệt private"
         ) {
           check = 1;
+          console.log("asdasd")
           break;
         } else if (
           item.id === teamInTourPrivate[i].teamId &&
@@ -608,7 +609,7 @@ function TeamInTournament(props) {
                                 <span>Khu vực:</span>
                                 {item.teamArea}
                               </p>
-                              {checkTeamInTourPrivate(item) === 0 ? (
+                              {checkTeamInTourPrivate(item) === 1 ? (
                                 <p
                                   className="daChieuMo"
                                   onClick={() => {
@@ -620,7 +621,7 @@ function TeamInTournament(props) {
                                   Hủy chiêu mộ
                                 </p>
                               ) : null}
-                              {checkTeamInTourPrivate(item) === 1 ? (
+                              {checkTeamInTourPrivate(item) === 0 ? (
                                 <p
                                   className="buttonChieumoGiai"
                                   onClick={() => addTeamInTournament(item.id)}
