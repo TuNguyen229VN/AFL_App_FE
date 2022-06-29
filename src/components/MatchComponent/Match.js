@@ -13,13 +13,20 @@ import Livestream from "./Livestream";
 import MatchDetail from "./MatchDetail";
 import styles from "./styles/style.module.css";
 import { useNavigate } from "react-router-dom";
+import {HubConnectionBuilder , LogLevel} from '@microsoft/signalr';
 function Match() {
   const location = useLocation();
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [guestId,setGuestId] = useState(
+    localStorage.getItem("guestId")
+  );
   console.log(location)
   // location.state.hostTournamentId
+  useEffect(() =>{
+    // joinRoom();
+  },[])
   const navigate = useNavigate();
   const { idMatch } = useParams();
   const [allTeamA, setAllTeamA] = useState(null);
@@ -190,7 +197,7 @@ function Match() {
       );
     }
     if (activeTeamDetail === `/match/${idMatch}/livestream`) {
-      return <Livestream idMatch={idMatch} tokenLivestream={tokenLivestream} />;
+      return <Livestream idMatch={idMatch} tokenLivestream={tokenLivestream} sendComment={sendComment} message = {message}/>;
     }
   };
 
@@ -600,6 +607,63 @@ function Match() {
     }
   };
 
+  const [message, setMessage] = useState([]);
+  const [connection, setConnection] = useState();
+  const [room , setRoom] = useState(""); 
+ 
+  const joinRoom = async (room)=>{
+    try {
+      console.log(user);
+      let Id ="0";
+      let username = "guest";
+      let avatar = "guest";
+      let newGuest = true;
+      console.log("guest" + guestId);
+      if(user){
+       Id = user.userVM.id.toString();
+       username = user.userVM.username;
+       avatar = user.userVM.avatar;
+       newGuest = false;
+      }
+      if(!user && guestId){
+        Id = guestId.toString();
+        newGuest = false;
+      }
+      // const room = "room2";
+      const connectionId = "a";
+      console.log(Id);
+      const connection = new HubConnectionBuilder()
+      .withUrl("https://localhost:7225/chat")
+      .configureLogging(LogLevel.Information).build();
+      
+      connection.on("ReceiveComment",(user,comment)=>{
+        setMessage(message =>[...message,{user, comment}])
+      });
+
+      connection.on("Guest",(guestId)=>{
+        localStorage.setItem("guestId", guestId);
+        console.log(guestId);
+      });
+      await connection.start();
+      await connection.invoke("JoinStream", {Id,username, avatar, room,connectionId,newGuest});
+      setConnection(connection);
+      console.log(connection)
+    }
+    catch (err){
+      console.log(err);
+    }
+  } 
+
+  const sendComment = async (c)=>{
+    try {
+      const comment = c;
+      await connection.invoke("sendComment",comment);
+    }
+    catch (err){
+      console.log(err);
+    }
+  }
+
   return (
     <>
       <Header />
@@ -871,6 +935,13 @@ function Match() {
           <p className={styles.error}>Trận đấu này không tồn tại</p>
         )}
       </div>
+      {/* <form action="">
+        <input type="text" value={room} onChange={(e) => {
+
+          setRoom(e.target.value);
+        }} />
+        <button onClick={(e) =>{e.preventDefault(); joinRoom(room);}}>join</button>
+      </form> */}
       <Footer />
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./styles/style.module.css";
 import AgoraRTC from "agora-rtc-sdk";
 import AgoraUIKit, { PropsInterface, layout } from "agora-react-uikit";
@@ -12,7 +12,7 @@ function Livestream(data) {
     remoteStreams: [],
     params: {},
   };
-
+  const [cLive, setCLive] = useState("");
   // Options for joining a channel
   var option = {
     appID: "629c856215b345779a8fb2a691f51976",
@@ -146,6 +146,14 @@ function Livestream(data) {
     joinChannel("audience");
   }, [check]);
 
+  const messageRef = useRef();
+  useEffect(() => {
+    if(messageRef && messageRef.current){
+      const {scrollHeight, clientHeight} = messageRef.current;
+      messageRef.current.scrollTo({left:0, top: scrollHeight - clientHeight, 
+      behavior:"smooth"}); 
+    }                                                         
+  },[data.message])
   return (
     <div className={styles.livestream}>
       {/* <button onClick={() => joinChannel("host")}>
@@ -173,34 +181,25 @@ function Livestream(data) {
           allowfullscreen
         ></iframe> */}
       </div>
-      <div className={styles.comment}>
-        <div className={styles.commnet__content}>
-          <div className={styles.one__comment}>
-            <img src="/assets/img/homepage/pic-2.png" alt="a" />
+      <div className={styles.comment} ref={messageRef}>
+        <div className={styles.commnet__content} >
+          {data.message.length>0&&data.message.map(m => <div className={styles.one__comment}>
+            <img src={m.user.avatar} alt="a" />
             <div>
-              <p className={styles.name}>Nguyen Van Teo</p>
+              <p className={styles.name}>{m.user.username}</p>
               <p>
-                @Hoàng Quang Đạt gặp mấy team kia dự bị đa số top tank hk ah.
-                Đưa Itmins pick carry ngon lắm
+                {m.comment}
               </p>
             </div>
-          </div>
-          <div className={styles.one__comment}>
-            <img src="/assets/img/homepage/pic-1.png" alt="a" />
-            <div>
-              <p className={styles.name}>Nguyen Van Teo</p>
-              <p>
-                @Hoàng Quang Đạt gặp mấy team kia dự bị đa số top tank hk ah.
-                Đưa Itmins pick carry ngon lắm
-              </p>
-            </div>
-          </div>
+          </div>)}
+          
         </div>
-        <form className={styles.comment__input}>
-          <input type="text" placeholder="Nhập bình luận" />
-          <button>Gửi</button>
-        </form>
+        
       </div>
+      <form className={styles.comment__input}>
+          <input type="text" onChange={e =>{setCLive(e.target.value);}} placeholder="Nhập bình luận" value={cLive}/>
+          <button onClick={e =>{data.sendComment(cLive);setCLive(""); e.preventDefault()}}>Gửi</button>
+        </form>
     </div>
   );
 }

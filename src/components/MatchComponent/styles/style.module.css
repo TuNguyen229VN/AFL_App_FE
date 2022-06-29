@@ -169,6 +169,7 @@
   display: flex;
   justify-content: space-between;
   height: 482px;
+  position: relative;
 }
 
 .video {
@@ -180,18 +181,20 @@
   border: 1px solid var(--blue-black);
   border-radius: 10px;
   position: relative;
-  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .commnet__content {
   padding: 10px 20px;
   width: 340px;
-  overflow-y: scroll;
+ position: relative;
+ padding-bottom:40px;
+
 }
 .comment__input {
   position: absolute;
   bottom: 5px;
-  left: 5px;
-  right: 5px;
+  right: 10px;
   width: 330px;
 }
 
