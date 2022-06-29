@@ -22,7 +22,6 @@ function Match() {
   const [guestId,setGuestId] = useState(
     localStorage.getItem("guestId")
   );
-  console.log(location)
   // location.state.hostTournamentId
   useEffect(() =>{
     // joinRoom();

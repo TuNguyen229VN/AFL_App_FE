@@ -32,47 +32,53 @@ function Header(id) {
   //   JSON.parse(localStorage.getItem("playerInfo"))
   // );
   // signout
-  const logout=async()=>{
+
+
+  const logout = async () => {
     try {
-      
-      const res=await axios.post("https://afootballleague.ddns.net/api/v1/auth/logout",  {
-        token: localStorage.getItem("token_subcribe"),
-        email: user.userVM.email,
-    })
-    if(res.status===200){
-      toast.success(res.data.message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
+      const res = await axios.post(
+        "https://afootballleague.ddns.net/api/v1/auth/logout",
+        {
+          token: localStorage.getItem("token_subcribe"),
+          email: user.userVM.email,
+        }
+      );
+      if (res.status === 200) {
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   const signout = () => {
     logout();
     app.auth().signOut();
     localStorage.removeItem("userInfo");
     localStorage.removeItem("teamInfo");
     localStorage.removeItem("playerInfo");
-    localStorage.removeItem("token_subcribe")
+    localStorage.removeItem("token_subcribe");
     window.location.reload();
   };
   const [myAccount, setMyAccount] = useState([]);
-  const getMyAccount=()=>{
-    const afterURL=`users/${user?user.userVM.id:""}`;
-    const response=getAPI(afterURL);
-    response.then(res=>{
+  const getMyAccount = () => {
+    const afterURL = `users/${user ? user.userVM.id : ""}`;
+    const response = getAPI(afterURL);
+    response
+      .then((res) => {
         setMyAccount(res.data);
-    }).catch(err=>{
-      console.log(err)
-    })
-  }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const location = useLocation();
   const [clickMenu, setClickMenu] = useState(false);
@@ -101,17 +107,20 @@ function Header(id) {
     `/teamDetail/${id.id}/tournamentTeamDetail`,
   ];
 
-  const playerHighlight=[
+  const playerHighlight = [
     "/footballPlayer",
     `/playerDetail/${id.id}/myTeamInPlayer`,
     `/playerDetail/${id.id}/myTournamentInPlayer`,
     `/playerDetail/${id.id}/requestInPlayer`,
     `/playerDetail/${id.id}/scheduleInPlayer`,
     `/playerDetail/${id.id}/achivementInPlayer`,
-  ]
-  useEffect(()=>{
+  ];
+  useEffect(() => {
     getMyAccount();
-  },[])
+    window.addEventListener("click",()=>{
+     setClickUserMenu(false)
+    })
+  }, []);
   useEffect(() => {
     setactiveMenu(location.pathname);
   }, [location]);
@@ -132,7 +141,6 @@ function Header(id) {
     }
   };
 
-  
   const checkPlayer = () => {
     if (playerHighlight.indexOf(window.location.pathname) < 0) {
       return "title";
@@ -211,7 +219,10 @@ function Header(id) {
           {user ? (
             <div
               className="current"
-              onClick={() => setClickUserMenu(!clickUserMenu)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setClickUserMenu(!clickUserMenu);
+              }}
             >
               <div className="avatar">
                 <img src={myAccount.avatar} alt={myAccount.username} />
@@ -232,7 +243,7 @@ function Header(id) {
               </Link>
             </div>
           )}
-          {user ? <Notification/>:null}
+          {user ? <Notification /> : null}
           {user ? (
             <div className={clickUserMenu ? "popup_down active" : "popup_down"}>
               <Link to={"/profile"}>Hồ sơ</Link>

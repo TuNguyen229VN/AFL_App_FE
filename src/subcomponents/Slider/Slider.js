@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./styles/style.css";
 import Flickity from "react-flickity-component";
 
@@ -22,7 +22,7 @@ const flickityOptions = {
 };
 
 const Slider = () => {
-  let flkty = null;
+ const [flkty, setFlkty] = useState(null)
   const myCustomNext = () => {
     flkty.next();
   };
@@ -33,7 +33,7 @@ const Slider = () => {
   return (
     <div className="slider">
       <Flickity
-        flickityRef={(c) => (flkty = c)}
+        flickityRef={(c) => (setFlkty(c))}
         className="slider__item-wrap"
         options={flickityOptions}
       >

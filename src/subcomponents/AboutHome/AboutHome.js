@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./styles/style.css";
 import Flickity from "react-flickity-component";
 
@@ -11,7 +11,7 @@ const flickityOptions = {
   prevNextButtons: false,
 };
 function AboutHome() {
-  let flakty = null;
+  const [flakty, setFlakty] = useState(null)
   const myCustomNext = () => {
     flakty.next();
   };
@@ -35,7 +35,7 @@ function AboutHome() {
       </div>
       <Flickity
         options={flickityOptions}
-        flickityRef={(c) => (flakty = c)}
+        flickityRef={(c) => (setFlakty(c))}
         className="about__list"
       >
         <div className="about__list-item">

@@ -180,6 +180,7 @@ header .container-fluid .menu li {
   flex-direction: column;
   bottom: -240px;
   visibility: hidden;
+  user-select: none;
   opacity: 0;
 }
 .account .popup_down.active {

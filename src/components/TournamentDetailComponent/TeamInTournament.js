@@ -89,7 +89,6 @@ function TeamInTournament(props) {
     return a;
   };
   const checkTeamInTourPrivate = (item) => {
-    console.log(teamInTourPrivate[1].status)
     let check = 0;
     if (teamInTourPrivate.length > 0) {
       for (let i = 0; i < teamInTourPrivate.length; i++) {
