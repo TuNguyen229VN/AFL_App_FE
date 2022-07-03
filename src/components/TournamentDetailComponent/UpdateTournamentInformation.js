@@ -1074,9 +1074,10 @@ const UpdateTournamentInformation = (props) => {
                   <input
                     className={styles.timeCloseRegister_input}
                     id="timeCloseRegister"
-                    type="datetime-local"
+                    type="date"
                     name="closeRegister"
-                    value={closeRegister.value}
+                    value={closeRegister.value == null ? "" : closeRegister.value}
+                    min={new Date().toJSON().split('T')[0]}
                     onChange={onChangeHandler}
                     disabled={status === 0 && (new Date(closeRegister.value).getTime() <=
                       new Date().getTime()) ? "" : "disable"}
@@ -1113,9 +1114,10 @@ const UpdateTournamentInformation = (props) => {
                   <input
                     className={styles.timeStart_input}
                     id="startTime"
-                    type="datetime-local"
+                    type="date"
+                    min={status === 0 ? closeRegister.value : new Date().toJSON().split('T')[0]}
                     name="startTime"
-                    value={startTime.value}
+                    value={startTime.value === null ? "" : startTime.value}
                     disabled={
                        
                        (new Date(closeRegister.value).getTime() <=
@@ -1159,9 +1161,10 @@ const UpdateTournamentInformation = (props) => {
                   <input
                     className={styles.timeEnd_input}
                     id="endTime"
-                    type="datetime-local"
+                    type="date"
                     name="endTime"
-                    value={endTime.value}
+                    value={endTime.value === null ? "" : endTime.value}
+                    min={startTime.value}
                     disabled={(new Date(closeRegister.value).getTime() <=
                       new Date().getTime()) && startTime.value != null ? "" : "disable"}
                     onChange={onChangeHandler}

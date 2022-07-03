@@ -6,6 +6,7 @@
     "@firebase/messaging": "^0.9.14",
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@microsoft/signalr": "^6.0.6",
+    "@syncfusion/ej2-react-calendars": "^20.2.36",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",

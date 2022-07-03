@@ -781,12 +781,12 @@ const CreateTournament = () => {
                   <input
                     className={styles.timeCloseRegister_input}
                     id="timeCloseRegister"
-                    type="datetime-local"
+                    type="date"
                     name="closeRegister"
-                    value={closeRegister.value}
+                    value={closeRegister.value == null ? "" : closeRegister.value}
                     onChange={onChangeHandler}
                     disabled={status === 0 ? "" : "disable"}
-                    required
+                    min={new Date().toJSON().split('T')[0]}
                   />
                 </div>
 
@@ -819,10 +819,10 @@ const CreateTournament = () => {
                   <input
                     className={styles.timeStart_input}
                     id="startTime"
-                    type="datetime-local"
-                    //min={minDate}
+                    type="date"
+                    min={status === 0 ? closeRegister.value : new Date().toJSON().split('T')[0]}
                     name="startTime"
-                    value={startTime.value}
+                    value={startTime.value === null ? "" : startTime.value}
                     disabled={
                       status === 0 && closeRegister.value != null
                         ? ""
@@ -865,10 +865,10 @@ const CreateTournament = () => {
                   <input
                     className={styles.timeEnd_input}
                     id="endTime"
-                    //min={minDate}
-                    type="datetime-local"
+                    min={startTime.value}
+                    type="date"
                     name="endTime"
-                    value={endTime.value}
+                    value={endTime.value === null ? "" : endTime.value}
                     disabled={startTime.value != null ? "" : "disable"}
                     onChange={onChangeHandler}
                   />
