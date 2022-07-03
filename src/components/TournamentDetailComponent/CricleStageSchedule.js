@@ -40,6 +40,7 @@ export default function CricleStageSchedule(props) {
   }, [allTeam]);
 
   const onChangHandle = (e) => {
+    console.log(e.target.value);
     setDateUpdate(e.target.value);
   };
 
@@ -52,7 +53,7 @@ export default function CricleStageSchedule(props) {
     response
       .then((res) => {
         if (res.status === 200) {
-          console.log(res.data);
+          setDateUpdate(null);
           setStatusUpdateDate(true);
           setHideShow(false);
           toast.success("Thay đổi ngày giờ trận đấu thành công", {
@@ -67,6 +68,7 @@ export default function CricleStageSchedule(props) {
         }
       })
       .catch((err) => {
+        setDateUpdate(null);
         toast.error(err.response.data.message, {
           position: "top-right",
           autoClose: 3000,
@@ -105,6 +107,7 @@ export default function CricleStageSchedule(props) {
   };
   const changeDate = (data) => {
     const splitDateTime = data.split("T");
+    const numberHour = +splitDateTime[1].split(":")[0] + 7;
     return (
       splitDateTime[0].split("-")[2] +
       "-" +
@@ -112,7 +115,7 @@ export default function CricleStageSchedule(props) {
       "-" +
       splitDateTime[0].split("-")[0] +
       " " +
-      splitDateTime[1].split(":")[0] +
+      numberHour +
       ":" +
       splitDateTime[1].split(":")[1]
     );
