@@ -18,7 +18,7 @@ export default function KnockOutStageSchedule(props) {
     user,
     setStatusUpdateDate,
     statusUpdateDate,
-    tourDetail
+    tourDetail,
   } = props;
 
   const [matchCurrent, setMatchCurrent] = useState(null);
@@ -100,7 +100,10 @@ export default function KnockOutStageSchedule(props) {
                 teamInTournamentId: item.teamInTournamentId,
               },
               {
-                name: allTeam[index + 1].teamName !== undefined ? allTeam[index + 1].teamName : "Đội ..." ,
+                name:
+                  allTeam[index + 1].teamName !== undefined
+                    ? allTeam[index + 1].teamName
+                    : "Đội ...",
                 team:
                   allTeam[index + 1].teamInTournament.team !== null
                     ? allTeam[index + 1].teamInTournament.team
@@ -175,16 +178,16 @@ export default function KnockOutStageSchedule(props) {
     } else if (typeView === "diagram" && tournamentType == "GroupStage") {
       data.splice(0, groupNumber);
     }
-    for(let item of data){
-      item.seeds.sort((objA, objB) =>
-      Number(new Date(objA.date)) -
-      Number(new Date(objB.date)))
+    for (let item of data) {
+      item.seeds.sort(
+        (objA, objB) =>
+          Number(new Date(objA.date)) - Number(new Date(objB.date))
+      );
     }
     setKnoukoutTeam(data);
   };
 
   const calcAllTeamRoundOne = () => {
-    
     if (
       (allTeam.length % 2 === 0
         ? allTeam.length / 2
@@ -201,7 +204,7 @@ export default function KnockOutStageSchedule(props) {
   };
 
   const onChangHandle = (e) => {
-    console.log(e.target.value)
+    console.log(e.target.value);
     setDateUpdate(e.target.value);
   };
 
@@ -245,21 +248,9 @@ export default function KnockOutStageSchedule(props) {
   };
 
   const checkDate = (data) => {
-    const date =
-      new Date().getDate() < 10
-        ? "0" + new Date().getDate()
-        : new Date().getDate();
-    const month =
-      new Date().getMonth() + 1 < 10
-        ? "0" + (new Date().getMonth() + 1)
-        : new Date().getMonth() + 1;
-    const time = data.split(" ");
-    const conditon = time[0];
+    const dateCurrent = new Date();
+    const dateData = new Date(data);
 
-    let dateCurrent = new Date(
-      month + "/" + date   + "/" + time[0].split("/")[2]
-    );
-    let dateData = new Date(conditon);
     if (+dateCurrent > +dateData) {
       return false;
     } else {
@@ -332,7 +323,7 @@ export default function KnockOutStageSchedule(props) {
                         <Link
                           to={`/teamDetail/${itemSeeds.teams[0].team.id}/inforTeamDetail`}
                         >
-                           <p>{itemSeeds.teams[0].name}</p>
+                          <p>{itemSeeds.teams[0].name}</p>
                           {itemSeeds.teams[0].team !== null ? (
                             <img
                               src={itemSeeds.teams[0].team.teamAvatar}
@@ -414,7 +405,7 @@ export default function KnockOutStageSchedule(props) {
                         {" "}
                         <Link
                           to={`/match/${itemSeeds.match.id}/matchDetail`}
-                          state={{ hostTournamentId,tourDetail }}
+                          state={{ hostTournamentId, tourDetail }}
                         >
                           Chi tiết
                         </Link>

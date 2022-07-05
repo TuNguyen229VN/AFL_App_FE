@@ -87,23 +87,9 @@ export default function CricleStageSchedule(props) {
       });
   };
   const checkDate = (data) => {
-    const date =
-      new Date().getDate() < 10
-        ? "0" + new Date().getDate()
-        : new Date().getDate();
-    const month =
-      new Date().getMonth() + 1 < 10
-        ? "0" + (new Date().getMonth() + 1)
-        : new Date().getMonth() + 1;
-    const time = data.split(" ");
-    const conditon = time[0];
-
-    let dateCurrent = new Date(
-      month + "/" + date + "/" + time[0].split("/")[2]
-    );
-    let dateData = new Date(conditon);
-    console.log(conditon);
-    console.log(+dateCurrent > +dateData);
+    const dateCurrent = new Date();
+    const dateData = new Date(data);
+    
     if (+dateCurrent > +dateData) {
       return false;
     } else {
@@ -217,7 +203,7 @@ export default function CricleStageSchedule(props) {
 
               {user != undefined &&
               user.userVM.id === hostTournamentId &&
-              checkDate(endDate) ? (
+              checkDate(endDate) === true ? (
                 <td
                   onClick={() => {
                     setHideShow(true);
