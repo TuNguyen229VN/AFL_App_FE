@@ -10,6 +10,7 @@ export default function CricleStageSchedule(props) {
   const [matchCurrent, setMatchCurrent] = useState(null);
   const [dateUpdate, setDateUpdate] = useState(null);
   const [teamInUpdate, setTeamInUpdate] = useState(null);
+  
   const {
     allTeam,
     loading,
@@ -20,12 +21,18 @@ export default function CricleStageSchedule(props) {
     endDate,
     user,
     setStatusUpdateDate,
-    statusUpdateDate,tourDetail
+    statusUpdateDate,
+    tourDetail,
   } = props;
   useEffect(() => {
     if (allTeam !== null) {
+      const sortAsc = allTeam.sort(
+        (objA, objB) =>
+          Number(new Date(objA.match.matchDate)) -
+          Number(new Date(objB.match.matchDate))
+      );
       const teamB = [];
-      const teamA = allTeam.reduce((accumulator, currentValue) => {
+      const teamA = sortAsc.reduce((accumulator, currentValue) => {
         if (currentValue.id % 2 === 1) {
           accumulator.push(currentValue);
         } else {
@@ -35,12 +42,10 @@ export default function CricleStageSchedule(props) {
       }, []);
       setAllTeamA(teamA);
       setAllTeamB(teamB);
-      console.log(teamA);
     }
   }, [allTeam]);
 
   const onChangHandle = (e) => {
-    console.log(e.target.value);
     setDateUpdate(e.target.value);
   };
 
@@ -94,11 +99,11 @@ export default function CricleStageSchedule(props) {
     const conditon = time[0];
 
     let dateCurrent = new Date(
-      month + "/" + date   + "/" + time[0].split("/")[2]
+      month + "/" + date + "/" + time[0].split("/")[2]
     );
     let dateData = new Date(conditon);
-    console.log(conditon)
-    console.log(+dateCurrent > +dateData)
+    console.log(conditon);
+    console.log(+dateCurrent > +dateData);
     if (+dateCurrent > +dateData) {
       return false;
     } else {
@@ -107,7 +112,10 @@ export default function CricleStageSchedule(props) {
   };
   const changeDate = (data) => {
     const splitDateTime = data.split("T");
-    const numberHour = +splitDateTime[1].split(":")[0] + 7;
+    const numberHour =
+      +splitDateTime[1].split(":")[0] + 7 > 24
+        ? +splitDateTime[1].split(":")[0] + 7 - 24
+        : +splitDateTime[1].split(":")[0] + 7;
     return (
       splitDateTime[0].split("-")[2] +
       "-" +
@@ -237,7 +245,7 @@ export default function CricleStageSchedule(props) {
                   {" "}
                   <Link
                     to={`/match/${item.match.id}/matchDetail`}
-                    state={{ hostTournamentId,tourDetail }}
+                    state={{ hostTournamentId, tourDetail }}
                   >
                     Chi tiết
                   </Link>

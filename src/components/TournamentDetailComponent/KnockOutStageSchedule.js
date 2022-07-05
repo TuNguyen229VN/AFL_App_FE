@@ -175,12 +175,16 @@ export default function KnockOutStageSchedule(props) {
     } else if (typeView === "diagram" && tournamentType == "GroupStage") {
       data.splice(0, groupNumber);
     }
-    console.log(data);
+    for(let item of data){
+      item.seeds.sort((objA, objB) =>
+      Number(new Date(objA.date)) -
+      Number(new Date(objB.date)))
+    }
     setKnoukoutTeam(data);
   };
 
   const calcAllTeamRoundOne = () => {
-    console.log(allTeam);
+    
     if (
       (allTeam.length % 2 === 0
         ? allTeam.length / 2
