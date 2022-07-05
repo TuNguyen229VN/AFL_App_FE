@@ -40,6 +40,7 @@ export default function CricleStageSchedule(props) {
         }
         return accumulator;
       }, []);
+      console.log(teamA);
       setAllTeamA(teamA);
       setAllTeamB(teamB);
     }
@@ -86,14 +87,24 @@ export default function CricleStageSchedule(props) {
         console.error(err);
       });
   };
-  const checkDate = (data) => {
+  const checkDate = (data, matchDate) => {
     const dateCurrent = new Date();
     const dateData = new Date(data);
     
     if (+dateCurrent > +dateData) {
       return false;
     } else {
-      return true;
+      if(matchDate === null){
+        return true;
+      }else{
+        const dateMatchCurrent = new Date (matchDate.split("T")[0]);
+        const onlyDate = new Date (dateCurrent.toJSON().split("T")[0]);
+        if(Number(dateMatchCurrent) - Number(onlyDate) > 0) {
+          return true;
+        }else{
+          return false;
+        }
+      }
     }
   };
   const changeDate = (data) => {
@@ -203,7 +214,7 @@ export default function CricleStageSchedule(props) {
 
               {user != undefined &&
               user.userVM.id === hostTournamentId &&
-              checkDate(endDate) === true ? (
+              checkDate(endDate,item.match.matchDate) === true ? (
                 <td
                   onClick={() => {
                     setHideShow(true);

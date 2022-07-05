@@ -184,6 +184,7 @@ export default function KnockOutStageSchedule(props) {
           Number(new Date(objA.date)) - Number(new Date(objB.date))
       );
     }
+    
     setKnoukoutTeam(data);
   };
 
@@ -247,14 +248,24 @@ export default function KnockOutStageSchedule(props) {
       });
   };
 
-  const checkDate = (data) => {
+  const checkDate = (data, matchDate) => {
     const dateCurrent = new Date();
     const dateData = new Date(data);
-
+    
     if (+dateCurrent > +dateData) {
       return false;
     } else {
-      return true;
+      if(matchDate === null){
+        return true;
+      }else{
+        const dateMatchCurrent = new Date (matchDate.split("T")[0]);
+        const onlyDate = new Date (dateCurrent.toJSON().split("T")[0]);
+        if(Number(dateMatchCurrent) - Number(onlyDate) > 0) {
+          return true;
+        }else{
+          return false;
+        }
+      }
     }
   };
 
@@ -376,7 +387,7 @@ export default function KnockOutStageSchedule(props) {
                     )}
                     {user != undefined &&
                     user.userVM.id === hostTournamentId &&
-                    checkDate(endDate) ? (
+                    checkDate(endDate,itemSeeds.match.matchDate) ? (
                       <td
                         style={{
                           cursor: "pointer",
