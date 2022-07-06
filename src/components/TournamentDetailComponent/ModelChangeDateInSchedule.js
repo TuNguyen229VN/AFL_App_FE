@@ -21,7 +21,8 @@ export default function ModalChangeDateInSchedule(props) {
     // console.log(typeof new Date().toJSON())
     const dateUpdate = new Date(matchCurrent.matchDate);
     const dateCurrent = new Date();
-    if (+dateCurrent > +dateUpdate) {
+    console.log(matchCurrent);
+    if (matchCurrent.matchDate !== null && +dateCurrent > +dateUpdate) {
       setNewStart(dateCurrent.toJSON());
       setDateUpdate(
         matchCurrent != null && matchCurrent.matchDate != null
@@ -63,25 +64,48 @@ export default function ModalChangeDateInSchedule(props) {
     //   setDateUpdate(matchCurrent != null &&  matchCurrent.matchDate != null ? matchCurrent.matchDate : startDate);
     // }
   }, [matchCurrent.id]);
-  const changeDate = (data, type) => {
-    let splitDateTime = null;
-    if (type === "maxDate") {
-      splitDateTime = data.split(" ");
+  const changeMinDate = (data) => {
+    if (data !== null) {
+      const splitDateTime = data.split(" ");
       return (
-        +splitDateTime[0].split("-")[2] +
-        1 +
-        "-" +
-        splitDateTime[0].split("-")[1] +
-        "-" +
+        
         splitDateTime[0].split("-")[0] +
         " " +
-        splitDateTime[1].split(":")[0] +
+        7 +
         ":" +
         splitDateTime[1].split(":")[1]
       );
-    } else {
-      splitDateTime = data.split("T");
-      const numberHour = +splitDateTime[1].split(":")[0] + 7;
+    }
+  };
+  const changeDate = (data, type) => {
+    let splitDateTime = null;
+    if (type === "maxDate") {
+      const maxTimeSlip = data.split(" ");
+      const newDate = new Date(
+        maxTimeSlip[0].split("/")[1] +
+          "-" +
+          maxTimeSlip[0].split("/")[0] +
+          "-" +
+          maxTimeSlip[0].split("/")[2] +
+          " " +
+          maxTimeSlip[1].split(":")[0] +
+          ":" +
+          maxTimeSlip[1].split(":")[1]
+      ).toJSON();
+
+      splitDateTime = newDate.split("T");
+
+      console.log(
+        splitDateTime[0].split("-")[2] +
+          "-" +
+          splitDateTime[0].split("-")[1] +
+          "-" +
+          splitDateTime[0].split("-")[0] +
+          " " +
+          24 +
+          ":" +
+          splitDateTime[1].split(":")[1]
+      );
       return (
         splitDateTime[0].split("-")[2] +
         "-" +
@@ -89,7 +113,20 @@ export default function ModalChangeDateInSchedule(props) {
         "-" +
         splitDateTime[0].split("-")[0] +
         " " +
-        numberHour +
+        23 +
+        ":" +
+        splitDateTime[1].split(":")[1]
+      );
+    } else {
+      splitDateTime = data.split("T");
+      return (
+        splitDateTime[0].split("-")[2] +
+        "-" +
+        splitDateTime[0].split("-")[1] +
+        "-" +
+        splitDateTime[0].split("-")[0] +
+        " " +
+        23 +
         ":" +
         splitDateTime[1].split(":")[1]
       );
@@ -160,7 +197,7 @@ export default function ModalChangeDateInSchedule(props) {
                   value={dateUpdate}
                   format="dd-MM-yyy HH:mm"
                   onChange={onChangHandle}
-                  min={newStart}
+                  min={changeMinDate(newStart)}
                   max={changeDate(endDate, "maxDate")}
                 />
               </div>
@@ -188,7 +225,7 @@ export default function ModalChangeDateInSchedule(props) {
                   placeholder="Ngày giờ bắt đầu trận đấu"
                   format="dd-MM-yyy HH:mm"
                   onChange={onChangHandle}
-                  min={new Date().toJSON()}
+                  min={changeMinDate(newStart)}
                   max={changeDate(endDate, "maxDate")}
                 />
                 {/* <input

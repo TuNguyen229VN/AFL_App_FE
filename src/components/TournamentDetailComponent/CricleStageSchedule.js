@@ -97,8 +97,9 @@ export default function CricleStageSchedule(props) {
       if(matchDate === null){
         return true;
       }else{
-        const dateMatchCurrent = new Date (matchDate.split("T")[0]);
-        const onlyDate = new Date (dateCurrent.toJSON().split("T")[0]);
+        const dateMatchCurrent = matchDate.split("T")[0].split("-")[2];
+        const onlyDate = dateCurrent.toJSON().split("T")[0].split("-")[2];
+        
         if(Number(dateMatchCurrent) - Number(onlyDate) > 0) {
           return true;
         }else{
