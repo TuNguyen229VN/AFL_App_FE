@@ -885,8 +885,8 @@ function HeaderTournamentDetail() {
                           : "Rời khỏi giải đấu"}
                       </h4>
                       <p className="error errRp">{contentReport.error}</p>
-                      {new Date().getTime() <=
-                      new Date(tourDetail.tournamentStartDate).getTime() ? (
+                      {((new Date().getTime() <=
+                      new Date(tourDetail.tournamentStartDate).getTime()) && typeReport === "outtournament") || typeReport === "report" ? (
                         <div>
                           <textarea
                             placeholder={
