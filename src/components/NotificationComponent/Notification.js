@@ -5,23 +5,34 @@ import { getTokenFirebase } from "../../firebase/firebase";
 import styles from "./styles/style.module.css";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Link, useNavigate } from "react-router-dom";
+import { async } from "@firebase/util";
 function Notification() {
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const [clickNoti, setNoti] = useState(false);
   const [isMakeConnection, setMakeConnection] = useState(false);
+  const [countNoti, setcountNoti] = useState(0);
   const [notification, setNotification] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [chooseOption, setChooseOption] = useState(true);
   const [limit, setLimit] = useState(6);
-  window.onclick=()=>{
+  window.onclick = () => {
     setNoti(false);
-  }
+  };
   const getNotification = () => {
     setLoading(true);
-    let afterDefaultURL = `notifications?user-id=${user.userVM.id}&order-by=DateCreate&order-type=DESC&page-offset=1&limit=${limit}`;
+    let afterDefaultURL = "";
+    if (chooseOption) {
+      afterDefaultURL = `notifications?user-id=${user.userVM.id}&order-by=DateCreate&order-type=DESC&page-offset=1&limit=${limit}`;
+    } else {
+      afterDefaultURL = `notifications?user-id=${user.userVM.id}&is-seen=false&order-by=DateCreate&order-type=DESC&page-offset=1&limit=${limit}`;
+    }
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
         setNotification(res.data.notifications);
+        setcountNoti(res.data.countUnRead);
         setLoading(false);
       })
       .catch((err) => {
@@ -64,43 +75,89 @@ function Notification() {
 
     tokenFunc();
     getNotification();
-  }, [isMakeConnection, limit]);
+  }, [isMakeConnection, limit, clickNoti, chooseOption]);
 
   const [height, setHeight] = useState(0);
-  const infiniteScroll = (event) => {
+  const infiniteScroll = (event, clickNoti, notification) => {
     if (
       height.scrollHeight - Math.round(height.scrollTop) ===
       height.clientHeight
     ) {
       setLimit(limit + 4);
+      updateNoti(event, clickNoti, notification);
     }
   };
 
   const formatDateTime = (date) => {
     const day = new Date(date);
     return (
+      String(day.getHours()).padStart(2, "0") +
+      ":" +
+      String(day.getMinutes()).padStart(2, "0") +
+      " - " +
       String(day.getDate()).padStart(2, "0") +
       "/" +
       String(day.getMonth() + 1).padStart(2, "0") +
       "/" +
-      day.getFullYear() +
-      " " +
-      String(day.getHours()).padStart(2, "0") +
-      ":" +
-      String(day.getMinutes()).padStart(2, "0")
+      day.getFullYear()
     );
   };
 
+  const updateNoti = async (e, notification) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        "https://afootballleague.ddns.net/api/v1/notifications",
+        {
+          id: notification.id,
+          content: notification.content,
+          isSeen: true,
+          isActive: true,
+          userId: notification.userId,
+          tournamentId: notification.tournamentId,
+          teamId: notification.teamId,
+        }
+        // {
+        //   headers: { "content-type": "multipart/form-data" },
+        // }
+      );
+
+      if (response.status === 200) {
+        setLimit(limit);
+        if (notification.teamId === 0) {
+          navigate(`/teamDetail/${notification.teamId}/inforTeamDetail`);
+        } else {
+          navigate(
+            `/tournamentDetail/${notification.tournamentId}/inforTournamentDetail`
+          );
+        }
+      }
+    } catch (error) {
+      console.error(error.response);
+    }
+  };
   return (
     <div>
       <div
         className={styles.noti}
         onClick={(e) => {
           e.stopPropagation();
-          setNoti((clickNoti) => !clickNoti)}}
+          setNoti((clickNoti) => !clickNoti);
+          // updateNoti(e, clickNoti, notification);
+        }}
       >
-        <div className={styles.noti__number}>10</div>
-        <div className={styles.noti__img}>
+        {countNoti !== 0 ? (
+          <div className={styles.noti__number}>
+            {countNoti > 9 ? "9+" : countNoti}
+          </div>
+        ) : null}
+        <div
+          className={
+            countNoti === 0
+              ? styles.noti__img
+              : `${styles.noti__img} ${styles.ring__bell}`
+          }
+        >
           <img src="/assets/icons/notification.png" alt="bell" />
         </div>
       </div>
@@ -115,21 +172,53 @@ function Notification() {
           setHeight(divElement);
         }}
         onScroll={(e) => {
-          infiniteScroll(e);
+          infiniteScroll(e, clickNoti, notification);
         }}
       >
+        <div className={styles.option}>
+          <div
+            className={chooseOption ? styles.choose__text : styles.option__text}
+            onClick={(e) => {
+              e.stopPropagation();
+              setChooseOption(true);
+            }}
+          >
+            Tất cả
+          </div>
+          <div
+            className={
+              !chooseOption ? styles.choose__text : styles.option__text
+            }
+            onClick={(e) => {
+              e.stopPropagation();
+              setChooseOption(false);
+            }}
+          >
+            Chưa đọc
+          </div>
+        </div>
         {notification.length !== 0 ? (
           <>
             {notification.map((item) => (
-              <a href="#" className={styles.noti__link} key={item.id}>
-                <div className={styles.content__img}>
-                  <img src="/assets/img/homepage/team1.png" alt="img" />
-                </div>
+              <div
+                onClick={(e) => {
+                  updateNoti(e, item);
+                }}
+                className={styles.noti__link}
+                key={item.id}
+              >
                 <div className={styles.content__text}>
                   <p>{item.content}</p>
-                  <p className={styles.time}>{formatDateTime(item.dateCreate)}</p>
+                  <p className={styles.time}>
+                    {formatDateTime(item.dateCreate)}
+                  </p>
                 </div>
-              </a>
+                {item.isSeen === false ? (
+                  <div className={styles.content__img}>
+                    <div className={styles.circle}></div>
+                  </div>
+                ) : null}
+              </div>
             ))}
             {loading ? (
               <div className={styles.noti__link}>
