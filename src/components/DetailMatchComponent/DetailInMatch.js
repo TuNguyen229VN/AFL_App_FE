@@ -13,10 +13,10 @@ export default function DetailInMatch(props) {
     playerB,
     matchDetail,
     idMatch,
-    updateScoreInMatch
+    updateScoreInMatch,
   } = props;
   const [detail, setDetail] = useState([]);
-  const [newMatchDetail,setNewMatchDetail] = useState(null);
+  const [newMatchDetail, setNewMatchDetail] = useState(null);
   useEffect(() => {
     if (typeDetail === "score" && matchDetail !== null) {
       const score = [];
@@ -44,44 +44,60 @@ export default function DetailInMatch(props) {
   }, [typeDetail]);
 
   const coverMatchDetail = () => {
-    if(matchDetail !== null){
+    if (matchDetail !== null) {
       const newMatchDetail = [];
-      if(typeDetail === "score"){
-        matchDetail.map((item,index) => {
-          if(item.actionMatchId === 1){
+      if (typeDetail === "score") {
+        matchDetail.map((item, index) => {
+          if (item.actionMatchId === 1) {
             newMatchDetail.push(item);
           }
-        })
-      }else if(typeDetail === "yellow"){
-        matchDetail.map((item,index) => {
-          if(item.actionMatchId === 2){
+        });
+      } else if (typeDetail === "yellow") {
+        matchDetail.map((item, index) => {
+          if (item.actionMatchId === 2) {
             newMatchDetail.push(item);
           }
-        })
-      }else{
-        matchDetail.map((item,index) => {
-          if(item.actionMatchId === 3){
+        });
+      } else {
+        matchDetail.map((item, index) => {
+          if (item.actionMatchId === 3) {
             newMatchDetail.push(item);
           }
-        })
+        });
       }
       setNewMatchDetail(newMatchDetail);
     }
-  }
+  };
 
-  const renderSelectByNumber = (data) => {
-    console.log(newMatchDetail)
+  const renderSelectByNumber = (data, playerId) => {
+    console.log(playerId)
     if (data != undefined) {
       let array = [];
       for (let i = -1; i < data.length; i++) {
         if (i === -1) {
-          array.push(<option selected>Chọn cầu thủ</option>);
+          if (playerId == null)
+            array.push(<option selected>Chọn cầu thủ</option>);
+          else array.push(<option>Chọn cầu thủ</option>);
         } else {
-          array.push(
-            <option value={JSON.stringify(data[i])}>
+          if (playerId !== null) {
+            array.push(
+              <option
+                value={JSON.stringify(data[i])}
+                selected={
+                  playerId === data[i].playerInTournamentId
+                    ? JSON.stringify(data[i])
+                    : null
+                }
+              >
+                {data[i].playerName}
+              </option>
+            );
+          } else {
+            
+            array.push(<option value={JSON.stringify(data[i])}>
               {data[i].playerName}
-            </option>
-          );
+            </option>);
+          }
         }
       }
       return array;
@@ -90,6 +106,30 @@ export default function DetailInMatch(props) {
 
   const renderInputByNumber = (number, data, type) => {
     let array = [];
+    const player = [];
+    if (newMatchDetail !== null) {
+      console.log("test")
+      if (type === "A") {
+        const idTeamA = nameTeamA.teamInTournament.team.id;
+        for (let item of newMatchDetail) {
+          if (idTeamA === item.playerInTournament.playerInTeam.teamId)
+            player.push({
+              idPlayer: item.playerInTournament.id,
+              minutes: item.actionMinute,
+            });
+        }
+      } else {
+        const idTeamB = nameTeamB.teamInTournament.team.id;
+        for (let item of newMatchDetail) {
+          if (idTeamB === item.playerInTournament.playerInTeam.teamId)
+            player.push({
+              idPlayer: item.playerInTournament.id,
+              minutes: item.actionMinute,
+            });
+        }
+      }
+      
+    }
     for (let i = 0; i < number; i++) {
       array.push(
         <div>
@@ -101,9 +141,13 @@ export default function DetailInMatch(props) {
               padding: "10px 20px",
             }}
           >
-            {renderSelectByNumber(data)}
+            {renderSelectByNumber(
+              data,
+              player.length > 0 ? player[i].idPlayer : null
+            )}
           </select>
           <input
+            value={player.length > 0 ? player[i].minutes : null}
             onChange={onChangeHandler}
             name={type === "B" ? i + +numTeamA + "-minutes" : `${i}-minutes`}
             className="btnInput"
@@ -123,7 +167,7 @@ export default function DetailInMatch(props) {
     const type = name.split("-")[1];
     const valueObj = JSON.parse(value);
 
-    if (detail.length > 0) {
+    if (detail !== null) {
       const newDetail = detail;
       const findIndex = newDetail.findIndex((item, index) => item.id === id);
 
@@ -132,8 +176,8 @@ export default function DetailInMatch(props) {
           id: id,
           actionMatchId:
             typeDetail === "score" ? 1 : typeDetail === "yellow" ? 2 : 3,
-          actionMinute: type === "object" ? null : valueObj+"",
-          matchId: idMatch,
+          actionMinute: type === "object" ? null : valueObj + "",
+          matchId: +idMatch,
           playerInTournamentId:
             type === "object" ? valueObj.playerInTournamentId : null,
         });
@@ -141,28 +185,33 @@ export default function DetailInMatch(props) {
         if (type === "object")
           newDetail[findIndex].playerInTournamentId =
             valueObj.playerInTournamentId;
-        else newDetail[findIndex].actionMinute = valueObj+"";
+        else newDetail[findIndex].actionMinute = valueObj + "";
       }
       setDetail(newDetail);
     } else {
-      setDetail([{
-        id: id,
-        actionMatchId:
-          typeDetail === "score" ? 1 : typeDetail === "yellow" ? 2 : 3,
-        actionMinute: type === "object" ? null : valueObj+"",
-        matchId: idMatch,
-        playerInTournamentId:
-          type === "object" ? valueObj.playerInTournamentId : null,
-      }]);
+      setDetail([
+        {
+          id: id,
+          actionMatchId:
+            typeDetail === "score" ? 1 : typeDetail === "yellow" ? 2 : 3,
+          actionMinute: type === "object" ? null : valueObj + "",
+          matchId: +idMatch,
+          playerInTournamentId:
+            type === "object" ? valueObj.playerInTournamentId : null,
+        },
+      ]);
     }
   };
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    for(let item of detail){
+    for (let item of detail) {
       delete item.id;
     }
-    updateScoreInMatch(detail,typeDetail === "score" ? 1 : typeDetail === "yellow" ? 2 : 3);
-    
+    updateScoreInMatch(
+      detail,
+      typeDetail === "score" ? 1 : typeDetail === "yellow" ? 2 : 3
+    );
+    setNewMatchDetail(null);
   };
   return (
     <div>
@@ -189,6 +238,7 @@ export default function DetailInMatch(props) {
                   aria-label="Close"
                   onClick={() => {
                     setHideShow(false);
+                    setNewMatchDetail([]);
                   }}
                 ></button>
               </div>
@@ -208,7 +258,9 @@ export default function DetailInMatch(props) {
                       fontWeight: 600,
                     }}
                   >
-                    {nameTeamA + "-" + nameTeamB}
+                    {nameTeamA !== null && nameTeamB !== null
+                      ? nameTeamA.teamName + "-" + nameTeamB.teamName
+                      : null}
                   </p>
                 </div>
                 <div
@@ -237,6 +289,7 @@ export default function DetailInMatch(props) {
                   data-bs-dismiss="modal"
                   onClick={() => {
                     setHideShow(false);
+                    setNewMatchDetail([]);
                   }}
                   style={{
                     padding: "10px 15px",

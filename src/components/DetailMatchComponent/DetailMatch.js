@@ -61,7 +61,7 @@ export default function DetailMatch(props) {
       console.error(err);
     }
   };
-  const updateScoreInMatch = async (data, type) => {
+  const updateScoreInMatch = async (data, type) => {  
     const newTeamA = teamA;
     const newTeamB = teamB;
     if (type === 1) {
@@ -82,12 +82,12 @@ export default function DetailMatch(props) {
     }
 
     setLoading(true);
-    if (+scoreA + +scoreB !== teamA.teamScore + teamB.teamScore) {
+    
       for (let i = 0; i < 2; i++) {
         updateInAPI(i === 0 ? newTeamA : newTeamB);
       }
-    }
-
+    
+      console.log(data);
     await deleteMatchDetailByType(
       idMatch,
       type === 1 ? "score" : type === 2 ? "yellow" : "red",
@@ -95,6 +95,7 @@ export default function DetailMatch(props) {
     );
   };
   const deleteMatchDetailByType = async (matchId, type, data) => {
+    
     try {
       const response = await deleteMatchDetailByTypeAPI(matchId, type);
       if (response.status === 200) {
@@ -174,7 +175,6 @@ export default function DetailMatch(props) {
       .then((res) => {
         if (res.status === 200) {
           const twoTeamUpdate = res.data.teamsInMatch;
-
           setTeamA(twoTeamUpdate[0]);
           getPlayerInTournamentByTeamInTourid(
             twoTeamUpdate[0].teamInTournament.id,
@@ -520,8 +520,8 @@ export default function DetailMatch(props) {
       </div>
       <div className={hideShow ? "overlay active" : "overlay"}></div>
       <DetailInMatch
-        nameTeamA={teamA !== null ? teamA.teamName : null}
-        nameTeamB={teamB !== null ? teamB.teamName : null}
+        nameTeamA={teamA !== null ? teamA : null}
+        nameTeamB={teamB !== null ? teamB : null}
         hideShow={hideShow}
         updateScoreInMatch={updateScoreInMatch}
         matchDetail={matchDetail}
