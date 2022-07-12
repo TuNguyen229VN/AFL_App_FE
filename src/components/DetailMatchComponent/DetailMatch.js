@@ -4,11 +4,20 @@ import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import { useParams, useLocation } from "react-router-dom";
 import LoadingAction from "../LoadingComponent/LoadingAction";
-import { getTeamInMatchByMatchIdAPI } from "../../api/TeamInMatchAPI";
+import {
+  getTeamInMatchByMatchIdAPI,
+  updateTeamInMatch,
+} from "../../api/TeamInMatchAPI";
 import DetailInMatch from "./DetailInMatch";
 import { getAllPlayerInTournamentByTeamInTournamentIdAPI } from "../../api/PlayerInTournamentAPI";
 import { getPlayerInTeamByIdAPI } from "../../api/PlayerInTeamAPI";
-import {getMatchDetailByMatchIdAPI} from "../../api/MatchDetailAPI";
+import {
+  getMatchDetailByMatchIdAPI,
+  saveRecordInMatchDetail,
+  deleteMatchDetailByTypeAPI,
+} from "../../api/MatchDetailAPI";
+import { toast } from "react-toastify";
+import { async } from "@firebase/util";
 
 export default function DetailMatch(props) {
   const { idMatch } = useParams();
@@ -26,32 +35,138 @@ export default function DetailMatch(props) {
   const [redB, setRedB] = useState(null);
   const [hideShow, setHideShow] = useState(false);
   const [typeDetail, setTypeDetail] = useState(null);
-  const [matchDetail,setMatchDetail] = useState(null);
+  const [matchDetail, setMatchDetail] = useState(null);
   // const [stateScore, setStateScore] = useState(false);
   // const [stateYellow, setStateYellow] = useState(false);
   // const [stateRed, setStateRed] = useState(false);
   const [playerA, setPlayerA] = useState(null);
   const [playerB, setPlayerB] = useState(null);
+  const [statusUpdate, setStatusUpdate] = useState(false);
   useEffect(() => {
     getTeamInMatchByMatchID();
-  }, []);
+  }, [statusUpdate === true]);
   useEffect(() => {
     if (teamA !== null && teamB !== null) {
       setAllInfor();
     }
   }, [teamA !== null && teamB !== null]);
   const getMatchDetailInFor = async () => {
-    try{
+    try {
       const response = await getMatchDetailByMatchIdAPI(idMatch);
-      if(response.status === 200){
+      if (response.status === 200) {
         setMatchDetail(response.data.matchDetails);
+        console.log(response.data);
       }
-    }catch(err){
+    } catch (err) {
       console.error(err);
     }
-   
+  };
+  const updateScoreInMatch = async (data, type) => {
+    const newTeamA = teamA;
+    const newTeamB = teamB;
+    if (type === 1) {
+      newTeamA.teamScore = +scoreA;
+      newTeamA.teamScoreLose = +scoreB;
+      newTeamA.result =
+        +scoreA > +scoreB ? "3" : +scoreA === +scoreB ? "1" : "0";
+      newTeamB.teamScore = +scoreB;
+      newTeamB.teamScoreLose = +scoreA;
+      newTeamB.result =
+        +scoreB > +scoreA ? "3" : +scoreA === +scoreB ? "1" : "0";
+    } else if (type === 2) {
+      newTeamA.yellowCardNumber = +yellowA;
+      newTeamB.yellowCardNumber = +yellowB;
+    } else {
+      newTeamA.redCardNumber = +redA;
+      newTeamB.redCardNumber = +redB;
+    }
 
-  }
+    setLoading(true);
+    if (+scoreA + +scoreB !== teamA.teamScore + teamB.teamScore) {
+      for (let i = 0; i < 2; i++) {
+        updateInAPI(i === 0 ? newTeamA : newTeamB);
+      }
+    }
+
+    await deleteMatchDetailByType(
+      idMatch,
+      type === 1 ? "score" : type === 2 ? "yellow" : "red",
+      data
+    );
+  };
+  const deleteMatchDetailByType = async (matchId, type, data) => {
+    try {
+      const response = await deleteMatchDetailByTypeAPI(matchId, type);
+      if (response.status === 200) {
+        for (let item of data) {
+          console.log(item)
+          await updateMatchDetail(item);
+        }
+        setLoading(false);
+        toast.success("Cập nhật thành công chi tiết trận đấu", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setHideShow(false);
+        setStatusUpdate(true);
+        setTypeDetail(null);
+      }
+    } catch (err) {
+      if (err.response.status === 404) {
+        for (let item of data) {
+          console.log(item)
+          await updateMatchDetail(item);
+        }
+        setLoading(false);
+        toast.success("Cập nhật thành công chi tiết trận đấu", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setStatusUpdate(true);
+        setTypeDetail(null);
+      } else {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+      setHideShow(false);
+      console.error(err);
+    }
+  };
+  const updateMatchDetail = async (data) => {
+    try {
+      const response = await saveRecordInMatchDetail(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const updateInAPI = (data) => {
+    const response = updateTeamInMatch(data);
+    response
+      .then((res) => {
+        return true;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const getTeamInMatchByMatchID = () => {
     setLoading(true);
     const response = getTeamInMatchByMatchIdAPI(idMatch);
@@ -80,7 +195,6 @@ export default function DetailMatch(props) {
       });
   };
   const setAllInfor = () => {
-    
     setScoreA(teamA.teamScore);
     setScoreB(teamB.teamScore);
     setYellowA(teamA.yellowCardNumber);
@@ -224,11 +338,9 @@ export default function DetailMatch(props) {
             <label htmlFor="scoreB" className="fight">
               {teamB !== null ? teamB.teamName : null}
             </label>
-            
             {scoreA !== null &&
             scoreB !== null &&
-            ((scoreA + "").length > 0 ||
-            (scoreB + "").length > 0) ? (
+            ((scoreA + "").length > 0 || (scoreB + "").length > 0) ? (
               <div
                 style={{
                   marginLeft: 30,
@@ -243,18 +355,16 @@ export default function DetailMatch(props) {
                 >
                   Hủy
                 </button> */}
-                
-                  
-         
               </div>
             ) : null}
           </div>
-          {((scoreA+"").length > 0 && (scoreB+"").length > 0) ? (
+          {(scoreA + "").length > 0 && (scoreB + "").length > 0 ? (
             <p
               className="deitalScoreFootball"
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("score");
+                setStatusUpdate(false);
               }}
             >
               Chi tiết bàn thắng
@@ -318,18 +428,16 @@ export default function DetailMatch(props) {
                 >
                   Hủy
                 </button> */}
-                
-                 
-
               </div>
             ) : null}
           </div>
-          {((yellowA+"").length > 0 && (yellowB+"").length > 0) ? (
+          {(yellowA + "").length > 0 && (yellowB + "").length > 0 ? (
             <p
               className="deitalScoreFootball"
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("yellow");
+                setStatusUpdate(false);
               }}
             >
               Chi tiết thẻ vàng
@@ -393,18 +501,16 @@ export default function DetailMatch(props) {
                 >
                   Hủy
                 </button> */}
-                
-                  
-               
               </div>
             ) : null}
           </div>
-          {((redA+"").length > 0 && (redB+"").length > 0) ? (
+          {(redA + "").length > 0 && (redB + "").length > 0 ? (
             <p
               className="deitalScoreFootball"
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("red");
+                setStatusUpdate(false);
               }}
             >
               Chi tiết thẻ đỏ
@@ -417,7 +523,8 @@ export default function DetailMatch(props) {
         nameTeamA={teamA !== null ? teamA.teamName : null}
         nameTeamB={teamB !== null ? teamB.teamName : null}
         hideShow={hideShow}
-        matchDetail = {matchDetail}
+        updateScoreInMatch={updateScoreInMatch}
+        matchDetail={matchDetail}
         setHideShow={setHideShow}
         typeDetail={typeDetail}
         numTeamA={
@@ -436,6 +543,7 @@ export default function DetailMatch(props) {
         }
         playerA={playerA !== null ? playerA : null}
         playerB={playerB !== null ? playerB : null}
+        idMatch={idMatch}
       />
       {loading ? <LoadingAction /> : null}
       <Footer />
