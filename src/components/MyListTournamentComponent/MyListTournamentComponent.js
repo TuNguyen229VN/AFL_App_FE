@@ -13,6 +13,7 @@ function MyListTournamentComponent() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [count, setCount] = useState(0);
   const [check, setCheck] = useState(false);
@@ -34,6 +35,7 @@ function MyListTournamentComponent() {
   };
 
   const handlePageClick = (data) => {
+    setPageNumber(data.selected);
     setCurrentPage(data.selected + 1);
     setCheck(!check);
     getTournament(data.selected + 1);
@@ -158,8 +160,38 @@ function MyListTournamentComponent() {
                           </span>
                         </div>
                       </div>
-                      <div className={styles.status}>
-                        {tour.status === true ? "Đang diễn ra" : "Đã kết thúc"}
+                      <div
+                        className={
+                          tour.statusTnm === "Đang diễn ra"
+                            ? styles.status
+                            : (tour.statusTnm === "Kết thúc"?`${styles.status} ${styles.red}`:`${styles.status} ${styles.grey}`)
+                        }
+                      >
+                        {/* {tour.status === true ? "Đang diễn ra" : "Đã kết thúc"} */}
+                        {tour.statusTnm}
+                        {tour.statusTnm === "Đang diễn ra" ? (
+                          <div className={styles.col_3}>
+                            <div
+                              className={styles.snippet}
+                              data-title=".dot-shuttle"
+                            >
+                              <div className={styles.stage}>
+                                <div className={styles.dot_shuttle}></div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : tour.statusTnm === "Kết thúc" ? (
+                          <div className={styles.col_2}>
+                            <div
+                              className={styles.snippet2}
+                              data-title=".dot-shuttle"
+                            >
+                              <div className={styles.stage2}>
+                                <div className={styles.dot_shuttle2}></div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
                       </div>
                     </Link>
                   ))
@@ -182,6 +214,7 @@ function MyListTournamentComponent() {
                   nextLinkClassName={styles.pagelink}
                   breakClassName={styles.pageItem}
                   breakLinkClassName={styles.pagelink}
+                  forcePage={pageNumber}
                   pageRangeDisplayed={2}
                 />
               </div>

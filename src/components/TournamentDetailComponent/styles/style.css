@@ -619,7 +619,7 @@
 .popup__news {
   border-radius: 5px;
   height: auto;
-  width: 900px;
+  width: 450px;
   position: fixed;
   z-index: 10;
   background-color: #fff;
