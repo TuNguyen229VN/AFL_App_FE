@@ -4,8 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAPI } from "../../api";
-import { getAllPlayerByTeamIdAPI } from "../../api/PlayerInTeamAPI";
-import { getAllPlayerInTournamentByTeamInTournamentIdAPI } from "../../api/PlayerInTournamentAPI";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import LoadingAction from "../LoadingComponent/LoadingAction";
@@ -13,19 +11,18 @@ import Livestream from "./Livestream";
 import MatchDetail from "./MatchDetail";
 import styles from "./styles/style.module.css";
 import { useNavigate } from "react-router-dom";
-import {HubConnectionBuilder , LogLevel} from '@microsoft/signalr';
+import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import { getMatchDetailByMatchIdAPI } from "../../api/MatchDetailAPI";
 function Match() {
   const location = useLocation();
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-  const [guestId,setGuestId] = useState(
-    localStorage.getItem("guestId")
-  );
+  const [guestId, setGuestId] = useState(localStorage.getItem("guestId"));
   // location.state.hostTournamentId
-  useEffect(() =>{
+  useEffect(() => {
     // joinRoom();
-  },[])
+  }, []);
   const navigate = useNavigate();
   const { idMatch } = useParams();
   const [allTeamA, setAllTeamA] = useState(null);
@@ -51,12 +48,17 @@ function Match() {
   const [yellowTeamA, setYellowTeamA] = useState({ value: 0, error: "" });
   const [yellowTeamB, setYellowTeamB] = useState({ value: 0, error: "" });
   const getMatch = () => {
+    console.log("test")
     setLoading(true);
     let afterURL = `TeamInMatch/matchId?matchId=${idMatch}`;
     let response = getAPI(afterURL);
     response
       .then((res) => {
         const allMatch = res.data.teamsInMatch;
+        
+        if (allMatch[0].teamScore > 0 || allMatch[0].teamScore > 0) {
+          getDataMatchDetail(allMatch[0].matchId,allMatch[0],allMatch[1]);
+        }
         const teamB = [];
         const teamA = allMatch.reduce((accumulator, currentValue) => {
           if (currentValue.id % 2 === 1) {
@@ -66,6 +68,8 @@ function Match() {
           }
           return accumulator;
         }, []);
+
+        
         setAllTeamA(teamA);
         setAllTeamB(teamB);
         setScoreTeamA({ value: res.data.teamsInMatch[0].teamScore });
@@ -78,6 +82,7 @@ function Match() {
         setTokenLivestream(res.data.teamsInMatch[0].match.tokenLivestream);
         getTourDetail(res.data.teamsInMatch[0].match.tournamentId);
         setLoading(false);
+        
         // getAllPlayerByTeamIdA(
         //   res.data.teamsInMatch[0].teamInTournament.team.id,
         //   res.data.teamsInMatch[0].teamInTournament.id
@@ -92,7 +97,85 @@ function Match() {
         console.log(err);
       });
   };
-
+  const getDataMatchDetail = (data,teamA,teamB) => {
+    const response = getMatchDetailByMatchIdAPI(data);
+    response
+      .then((res) => {
+        const matchDetail = res.data.matchDetails;
+        devidedPlayerScore(matchDetail,teamA,teamB);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  const devidedPlayerScore = (data,teamA,teamB) => {
+   
+      const newTeamA = teamA;
+      const newTeamB = teamB;
+      const idteamA = newTeamA.teamInTournament.team.id;
+      const idteamB = newTeamB.teamInTournament.team.id;
+      
+      const playerScoreA = [];
+      for (let item of data) {
+        if (item.playerInTournament.playerInTeam.teamId === idteamA) {
+          if (playerScoreA.length > 0) {
+            const index = playerScoreA.findIndex(
+              (itemIn) =>
+                itemIn.idPlayerInTournament === item.playerInTournament.id
+            );
+            if (index === -1) {
+              playerScoreA.push({
+                idPlayerInTournament: item.playerInTournament.id,
+                namePlayer:
+                  item.playerInTournament.playerInTeam.footballPlayer
+                    .playerName,
+                minutesScore: [item.actionMinute],
+              });
+            } else {
+              playerScoreA[index].minutesScore.push(item.actionMinute);
+            }
+          } else {
+            playerScoreA.push({
+              idPlayerInTournament: item.playerInTournament.id,
+              namePlayer:
+                item.playerInTournament.playerInTeam.footballPlayer.playerName,
+              minutesScore: [item.actionMinute],
+            });
+          }
+        }
+      }
+      console.log(playerScoreA);
+      const playerScoreB = [];
+      for (let item of data) {
+        if (item.playerInTournament.playerInTeam.teamId === idteamB) {
+          if (playerScoreA.length > 0) {
+            const index = playerScoreA.findIndex(
+              (itemIn) =>
+                itemIn.idPlayerInTournament === item.playerInTournament.id
+            );
+            if (index === -1) {
+              playerScoreB.push({
+                idPlayerInTournament: item.playerInTournament.id,
+                namePlayer:
+                  item.playerInTournament.playerInTeam.footballPlayer
+                    .playerName,
+                minutesScore: [item.actionMinute],
+              });
+            } else {
+              playerScoreB[index].minutesScore.push(item.actionMinute);
+            }
+          } else {
+            playerScoreB.push({
+              idPlayerInTournament: item.playerInTournament.id,
+              namePlayer:
+                item.playerInTournament.playerInTeam.footballPlayer.playerName,
+              minutesScore: [item.actionMinute],
+            });
+          }
+        }
+      }
+      console.log(playerScoreB);
+  };
   // const getAllPlayerByTeamIdA = (teamId, teamInTournamentId) => {
   //   setLoading(true);
   //   const response = getAllPlayerByTeamIdAPI(teamId);
@@ -196,7 +279,14 @@ function Match() {
       );
     }
     if (activeTeamDetail === `/match/${idMatch}/livestream`) {
-      return <Livestream idMatch={idMatch} tokenLivestream={tokenLivestream} sendComment={sendComment} message = {message}/>;
+      return (
+        <Livestream
+          idMatch={idMatch}
+          tokenLivestream={tokenLivestream}
+          sendComment={sendComment}
+          message={message}
+        />
+      );
     }
   };
 
@@ -608,23 +698,23 @@ function Match() {
 
   const [message, setMessage] = useState([]);
   const [connection, setConnection] = useState();
-  const [room , setRoom] = useState(""); 
- 
-  const joinRoom = async (room)=>{
+  const [room, setRoom] = useState("");
+
+  const joinRoom = async (room) => {
     try {
       console.log(user);
-      let Id ="0";
+      let Id = "0";
       let username = "guest";
       let avatar = "guest";
       let newGuest = true;
       console.log("guest" + guestId);
-      if(user){
-       Id = user.userVM.id.toString();
-       username = user.userVM.username;
-       avatar = user.userVM.avatar;
-       newGuest = false;
+      if (user) {
+        Id = user.userVM.id.toString();
+        username = user.userVM.username;
+        avatar = user.userVM.avatar;
+        newGuest = false;
       }
-      if(!user && guestId){
+      if (!user && guestId) {
         Id = guestId.toString();
         newGuest = false;
       }
@@ -632,36 +722,42 @@ function Match() {
       const connectionId = "a";
       console.log(Id);
       const connection = new HubConnectionBuilder()
-      .withUrl("https://localhost:7225/chat")
-      .configureLogging(LogLevel.Information).build();
-      
-      connection.on("ReceiveComment",(user,comment)=>{
-        setMessage(message =>[...message,{user, comment}])
+        .withUrl("https://localhost:7225/chat")
+        .configureLogging(LogLevel.Information)
+        .build();
+
+      connection.on("ReceiveComment", (user, comment) => {
+        setMessage((message) => [...message, { user, comment }]);
       });
 
-      connection.on("Guest",(guestId)=>{
+      connection.on("Guest", (guestId) => {
         localStorage.setItem("guestId", guestId);
         console.log(guestId);
       });
       await connection.start();
-      await connection.invoke("JoinStream", {Id,username, avatar, room,connectionId,newGuest});
+      await connection.invoke("JoinStream", {
+        Id,
+        username,
+        avatar,
+        room,
+        connectionId,
+        newGuest,
+      });
       setConnection(connection);
-      console.log(connection)
-    }
-    catch (err){
+      console.log(connection);
+    } catch (err) {
       console.log(err);
     }
-  } 
+  };
 
-  const sendComment = async (c)=>{
+  const sendComment = async (c) => {
     try {
       const comment = c;
-      await connection.invoke("sendComment",comment);
-    }
-    catch (err){
+      await connection.invoke("sendComment", comment);
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <>
@@ -817,9 +913,13 @@ function Match() {
               user.userVM.id === location.state.hostTournamentId ? ( */}
               <p
                 className={styles.updateMatch}
-                onClick={() => navigate(`/detailMatch/${idMatch}`,{state:{
-                  tourDetail: location.state.tourDetail
-                }})}
+                onClick={() =>
+                  navigate(`/detailMatch/${idMatch}`, {
+                    state: {
+                      tourDetail: location.state.tourDetail,
+                    },
+                  })
+                }
               >
                 Cập nhật tỉ số
               </p>
