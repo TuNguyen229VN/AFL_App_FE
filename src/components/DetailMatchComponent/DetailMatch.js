@@ -526,6 +526,8 @@ export default function DetailMatch(props) {
         updateScoreInMatch={updateScoreInMatch}
         matchDetail={matchDetail}
         setHideShow={setHideShow}
+        setStatusUpdate={setStatusUpdate}
+        statusUpdate={statusUpdate}
         typeDetail={typeDetail}
         numTeamA={
           typeDetail === "score"

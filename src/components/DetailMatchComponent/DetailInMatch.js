@@ -14,6 +14,8 @@ export default function DetailInMatch(props) {
     matchDetail,
     idMatch,
     updateScoreInMatch,
+    statusUpdate,
+    setStatusUpdate
   } = props;
   const [detail, setDetail] = useState([]);
   const [newMatchDetail, setNewMatchDetail] = useState(null);
@@ -41,7 +43,7 @@ export default function DetailInMatch(props) {
       }
     }
     coverMatchDetail();
-  }, [typeDetail]);
+  }, [typeDetail,statusUpdate === false]);
 
   const coverMatchDetail = () => {
     if (matchDetail !== null) {
@@ -65,6 +67,7 @@ export default function DetailInMatch(props) {
           }
         });
       }
+      getDataDetail(newMatchDetail);
       setNewMatchDetail(newMatchDetail);
     }
   };
@@ -93,44 +96,54 @@ export default function DetailInMatch(props) {
               </option>
             );
           } else {
-            
-            array.push(<option value={JSON.stringify(data[i])}>
-              {data[i].playerName}
-            </option>);
+            array.push(
+              <option value={JSON.stringify(data[i])}>
+                {data[i].playerName}
+              </option>
+            );
           }
         }
       }
       return array;
     }
   };
-
-  const renderInputByNumber = (number, data, type) => {
-    let array = [];
+  const getDataDetail = (data) => {
     const player = [];
-    if (newMatchDetail !== null) {
-      console.log("test")
-      if (type === "A") {
-        const idTeamA = nameTeamA.teamInTournament.team.id;
-        for (let item of newMatchDetail) {
-          if (idTeamA === item.playerInTournament.playerInTeam.teamId)
-            player.push({
-              idPlayer: item.playerInTournament.id,
-              minutes: item.actionMinute,
-            });
-        }
-      } else {
-        const idTeamB = nameTeamB.teamInTournament.team.id;
-        for (let item of newMatchDetail) {
-          if (idTeamB === item.playerInTournament.playerInTeam.teamId)
-            player.push({
-              idPlayer: item.playerInTournament.id,
-              minutes: item.actionMinute,
-            });
+    
+    if (data !== null) {
+      const idTeamA = nameTeamA.teamInTournament.team.id;
+      for (let index in data) {
+        if (idTeamA === data[index].playerInTournament.playerInTeam.teamId) {
+          player.push({
+            id: index,
+            actionMatchId: data[index].actionMatchId,
+            actionMinute: data[index].actionMinute,
+            matchId: data[index].matchId,
+            playerInTournamentId: data[index].playerInTournament.id,
+          });
         }
       }
-      
+
+      const idTeamB = nameTeamB.teamInTournament.team.id;
+
+      for (let index in data) {
+        if (idTeamB === data[index].playerInTournament.playerInTeam.teamId)
+          player.push({
+            id: index,
+            actionMatchId: data[index].actionMatchId,
+            actionMinute: data[index].actionMinute,
+            matchId: data[index].matchId,
+            playerInTournamentId: data[index].playerInTournament.id,
+          });
+      }
+      setDetail(player);
     }
+  };
+  const renderInputByNumber = (number, data, type) => {
+    let array = [];
+    console.log(detail)
     for (let i = 0; i < number; i++) {
+      let calc = i + +numTeamA;
       array.push(
         <div>
           <select
@@ -143,11 +156,23 @@ export default function DetailInMatch(props) {
           >
             {renderSelectByNumber(
               data,
-              player.length > 0 ? player[i].idPlayer : null
+              detail !== null && detail.length === +numTeamA + +numTeamB
+                ? type === "B"
+                  ? detail[calc].playerInTournamentId
+                  : detail[i].playerInTournamentId
+                : null
+              // ,
+              // player.length > 0 ? player[i].idPlayer : null
             )}
           </select>
           <input
-            value={player.length > 0 ? player[i].minutes : null}
+            value={
+              detail !== null && detail.length === +numTeamA + +numTeamB
+                ? type === "B"
+                  ? detail[calc].actionMinute
+                  : detail[i].actionMinute
+                : null
+            }
             onChange={onChangeHandler}
             name={type === "B" ? i + +numTeamA + "-minutes" : `${i}-minutes`}
             className="btnInput"
@@ -166,11 +191,10 @@ export default function DetailInMatch(props) {
     const id = name.split("-")[0];
     const type = name.split("-")[1];
     const valueObj = JSON.parse(value);
-
-    if (detail !== null) {
+    
+    if (detail !== null && detail.length > 0) {
       const newDetail = detail;
       const findIndex = newDetail.findIndex((item, index) => item.id === id);
-
       if (findIndex === -1) {
         newDetail.push({
           id: id,
@@ -239,6 +263,7 @@ export default function DetailInMatch(props) {
                   onClick={() => {
                     setHideShow(false);
                     setNewMatchDetail([]);
+                    setStatusUpdate(true);
                   }}
                 ></button>
               </div>
@@ -290,6 +315,7 @@ export default function DetailInMatch(props) {
                   onClick={() => {
                     setHideShow(false);
                     setNewMatchDetail([]);
+                    setStatusUpdate(true);
                   }}
                   style={{
                     padding: "10px 15px",
