@@ -15,11 +15,14 @@ export default function DetailInMatch(props) {
     idMatch,
     updateScoreInMatch,
     statusUpdate,
-    setStatusUpdate
+    setStatusUpdate,
+    tourDetail,
   } = props;
   const [detail, setDetail] = useState([]);
   const [newMatchDetail, setNewMatchDetail] = useState(null);
+  let matchMinutes = null;
   useEffect(() => {
+    matchMinutes = tourDetail !== null ? tourDetail.matchMinutes : null;
     if (typeDetail === "score" && matchDetail !== null) {
       const score = [];
       for (let i = 0; i < matchDetail.length; i++) {
@@ -43,7 +46,7 @@ export default function DetailInMatch(props) {
       }
     }
     coverMatchDetail();
-  }, [typeDetail,statusUpdate === false]);
+  }, [typeDetail, statusUpdate === false]);
 
   const coverMatchDetail = () => {
     if (matchDetail !== null) {
@@ -67,13 +70,13 @@ export default function DetailInMatch(props) {
           }
         });
       }
+
       getDataDetail(newMatchDetail);
       setNewMatchDetail(newMatchDetail);
     }
   };
 
   const renderSelectByNumber = (data, playerId) => {
-    console.log(playerId)
     if (data != undefined) {
       let array = [];
       for (let i = -1; i < data.length; i++) {
@@ -109,12 +112,12 @@ export default function DetailInMatch(props) {
   };
   const getDataDetail = (data) => {
     const player = [];
-    
+    const newPlayerA = [];
     if (data !== null) {
       const idTeamA = nameTeamA.teamInTournament.team.id;
       for (let index in data) {
         if (idTeamA === data[index].playerInTournament.playerInTeam.teamId) {
-          player.push({
+          newPlayerA.push({
             id: index,
             actionMatchId: data[index].actionMatchId,
             actionMinute: data[index].actionMinute,
@@ -123,12 +126,15 @@ export default function DetailInMatch(props) {
           });
         }
       }
-
+      newPlayerA.sort(function (a, b) {
+        return a.actionMinute - b.actionMinute;
+      });
+      player.push(...newPlayerA);
+      const newPlayerB = [];
       const idTeamB = nameTeamB.teamInTournament.team.id;
-
       for (let index in data) {
         if (idTeamB === data[index].playerInTournament.playerInTeam.teamId)
-          player.push({
+          newPlayerB.push({
             id: index,
             actionMatchId: data[index].actionMatchId,
             actionMinute: data[index].actionMinute,
@@ -136,22 +142,53 @@ export default function DetailInMatch(props) {
             playerInTournamentId: data[index].playerInTournament.id,
           });
       }
+
+      newPlayerB.sort(function (a, b) {
+        return a.actionMinute - b.actionMinute;
+      });
+      player.push(...newPlayerB);
       setDetail(player);
     }
   };
+  const renderSelectByMinutes = (data) => {
+    let array = [];
+    console.log(tourDetail.matchMinutes);
+    for (let i = 0; i <= tourDetail.matchMinutes * 2; i++) {
+      if (i === 0) {
+        if (data == null) array.push(<option selected>TG</option>);
+        else array.push(<option>TG</option>);
+      } else {
+        if (data !== null) {
+          array.push(
+            <option value={[i]} selected={+data === i ? [i] : null}>
+              {i}
+            </option>
+          );
+        } else {
+          array.push(<option value={i}>{i}</option>);
+        }
+      }
+    }
+    return array;
+  };
   const renderInputByNumber = (number, data, type) => {
     let array = [];
-    console.log(detail)
+    
     for (let i = 0; i < number; i++) {
       let calc = i + +numTeamA;
       array.push(
-        <div>
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
           <select
             name={type === "B" ? i + +numTeamA + "-object" : i + "-object"}
             onChange={onChangeHandler}
             style={{
               marginRight: 20,
               padding: "10px 20px",
+              marginBottom: 20,
             }}
           >
             {renderSelectByNumber(
@@ -165,7 +202,23 @@ export default function DetailInMatch(props) {
               // player.length > 0 ? player[i].idPlayer : null
             )}
           </select>
-          <input
+          <select
+            onChange={onChangeHandler}
+            name={type === "B" ? i + +numTeamA + "-minutes" : `${i}-minutes`}
+            style={{
+              width: 50,
+              marginBottom: 20,
+            }}
+          >
+            {renderSelectByMinutes(
+              detail !== null && detail.length === +numTeamA + +numTeamB
+                ? type === "B"
+                  ? detail[calc].actionMinute
+                  : detail[i].actionMinute
+                : null
+            )}
+          </select>
+          {/* <input
             value={
               detail !== null && detail.length === +numTeamA + +numTeamB
                 ? type === "B"
@@ -173,13 +226,11 @@ export default function DetailInMatch(props) {
                   : detail[i].actionMinute
                 : null
             }
-            onChange={onChangeHandler}
-            name={type === "B" ? i + +numTeamA + "-minutes" : `${i}-minutes`}
             className="btnInput"
             style={{
               margin: "10px 0",
             }}
-          />
+          /> */}
         </div>
       );
     }
@@ -191,7 +242,7 @@ export default function DetailInMatch(props) {
     const id = name.split("-")[0];
     const type = name.split("-")[1];
     const valueObj = JSON.parse(value);
-    
+
     if (detail !== null && detail.length > 0) {
       const newDetail = detail;
       const findIndex = newDetail.findIndex((item, index) => item.id === id);

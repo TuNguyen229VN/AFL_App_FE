@@ -546,6 +546,7 @@ export default function DetailMatch(props) {
         playerA={playerA !== null ? playerA : null}
         playerB={playerB !== null ? playerB : null}
         idMatch={idMatch}
+        tourDetail={tourDetail !== null ? tourDetail : null}
       />
       {loading ? <LoadingAction /> : null}
       <Footer />
