@@ -47,17 +47,19 @@ function Match() {
   const [redTeamB, setRedTeamB] = useState({ value: 0, error: "" });
   const [yellowTeamA, setYellowTeamA] = useState({ value: 0, error: "" });
   const [yellowTeamB, setYellowTeamB] = useState({ value: 0, error: "" });
+  const [detailTeamA, setDetailTeamA] = useState(null);
+  const [detailTeamB, setDetailTeamB] = useState(null);
   const getMatch = () => {
-    console.log("test")
+    console.log("test");
     setLoading(true);
     let afterURL = `TeamInMatch/matchId?matchId=${idMatch}`;
     let response = getAPI(afterURL);
     response
       .then((res) => {
         const allMatch = res.data.teamsInMatch;
-        
+
         if (allMatch[0].teamScore > 0 || allMatch[0].teamScore > 0) {
-          getDataMatchDetail(allMatch[0].matchId,allMatch[0],allMatch[1]);
+          getDataMatchDetail(allMatch[0].matchId, allMatch[0], allMatch[1]);
         }
         const teamB = [];
         const teamA = allMatch.reduce((accumulator, currentValue) => {
@@ -69,7 +71,6 @@ function Match() {
           return accumulator;
         }, []);
 
-        
         setAllTeamA(teamA);
         setAllTeamB(teamB);
         setScoreTeamA({ value: res.data.teamsInMatch[0].teamScore });
@@ -82,7 +83,7 @@ function Match() {
         setTokenLivestream(res.data.teamsInMatch[0].match.tokenLivestream);
         getTourDetail(res.data.teamsInMatch[0].match.tournamentId);
         setLoading(false);
-        
+
         // getAllPlayerByTeamIdA(
         //   res.data.teamsInMatch[0].teamInTournament.team.id,
         //   res.data.teamsInMatch[0].teamInTournament.id
@@ -97,84 +98,88 @@ function Match() {
         console.log(err);
       });
   };
-  const getDataMatchDetail = (data,teamA,teamB) => {
+  const getDataMatchDetail = (data, teamA, teamB) => {
     const response = getMatchDetailByMatchIdAPI(data);
     response
       .then((res) => {
         const matchDetail = res.data.matchDetails;
-        devidedPlayerScore(matchDetail,teamA,teamB);
+        devidedPlayerScore(matchDetail, teamA, teamB);
       })
       .catch((err) => {
         console.error(err);
       });
   };
-  const devidedPlayerScore = (data,teamA,teamB) => {
-   
-      const newTeamA = teamA;
-      const newTeamB = teamB;
-      const idteamA = newTeamA.teamInTournament.team.id;
-      const idteamB = newTeamB.teamInTournament.team.id;
-      
-      const playerScoreA = [];
-      for (let item of data) {
-        if (item.playerInTournament.playerInTeam.teamId === idteamA) {
-          if (playerScoreA.length > 0) {
-            const index = playerScoreA.findIndex(
-              (itemIn) =>
-                itemIn.idPlayerInTournament === item.playerInTournament.id
-            );
-            if (index === -1) {
-              playerScoreA.push({
-                idPlayerInTournament: item.playerInTournament.id,
-                namePlayer:
-                  item.playerInTournament.playerInTeam.footballPlayer
-                    .playerName,
-                minutesScore: [item.actionMinute],
-              });
-            } else {
-              playerScoreA[index].minutesScore.push(item.actionMinute);
-            }
-          } else {
+  const devidedPlayerScore = (data, teamA, teamB) => {
+    const newTeamA = teamA;
+    const newTeamB = teamB;
+    const idteamA = newTeamA.teamInTournament.team.id;
+    const idteamB = newTeamB.teamInTournament.team.id;
+
+    const playerScoreA = [];
+    for (let item of data) {
+      if (item.playerInTournament.playerInTeam.teamId === idteamA) {
+        if (playerScoreA.length > 0) {
+          const index = playerScoreA.findIndex(
+            (itemIn) =>
+              itemIn.idPlayerInTournament === item.playerInTournament.id &&
+              itemIn.actionMatchId === item.actionMatchId
+          );
+          if (index === -1) {
             playerScoreA.push({
               idPlayerInTournament: item.playerInTournament.id,
               namePlayer:
                 item.playerInTournament.playerInTeam.footballPlayer.playerName,
+              actionMatchId: item.actionMatchId,
               minutesScore: [item.actionMinute],
             });
+          } else {
+            playerScoreA[index].minutesScore.push(item.actionMinute);
           }
+        } else {
+          playerScoreA.push({
+            idPlayerInTournament: item.playerInTournament.id,
+            namePlayer:
+              item.playerInTournament.playerInTeam.footballPlayer.playerName,
+            actionMatchId: item.actionMatchId,
+            minutesScore: [item.actionMinute],
+          });
         }
       }
-      console.log(playerScoreA);
-      const playerScoreB = [];
-      for (let item of data) {
-        if (item.playerInTournament.playerInTeam.teamId === idteamB) {
-          if (playerScoreA.length > 0) {
-            const index = playerScoreA.findIndex(
-              (itemIn) =>
-                itemIn.idPlayerInTournament === item.playerInTournament.id
-            );
-            if (index === -1) {
-              playerScoreB.push({
-                idPlayerInTournament: item.playerInTournament.id,
-                namePlayer:
-                  item.playerInTournament.playerInTeam.footballPlayer
-                    .playerName,
-                minutesScore: [item.actionMinute],
-              });
-            } else {
-              playerScoreB[index].minutesScore.push(item.actionMinute);
-            }
-          } else {
+    }
+    setDetailTeamA(playerScoreA);
+
+    const playerScoreB = [];
+    for (let item of data) {
+      if (item.playerInTournament.playerInTeam.teamId === idteamB) {
+        if (playerScoreB.length > 0) {
+          const index = playerScoreB.findIndex(
+            (itemIn) =>
+              itemIn.idPlayerInTournament === item.playerInTournament.id &&
+              itemIn.actionMatchId === item.actionMatchId
+          );
+          if (index === -1) {
             playerScoreB.push({
               idPlayerInTournament: item.playerInTournament.id,
               namePlayer:
                 item.playerInTournament.playerInTeam.footballPlayer.playerName,
+              actionMatchId: item.actionMatchId,
               minutesScore: [item.actionMinute],
             });
+          } else {
+            playerScoreB[index].minutesScore.push(item.actionMinute);
           }
+        } else {
+          playerScoreB.push({
+            idPlayerInTournament: item.playerInTournament.id,
+            namePlayer:
+              item.playerInTournament.playerInTeam.footballPlayer.playerName,
+            actionMatchId: item.actionMatchId,
+            minutesScore: [item.actionMinute],
+          });
         }
       }
-      console.log(playerScoreB);
+    }
+    setDetailTeamB(playerScoreB);
   };
   // const getAllPlayerByTeamIdA = (teamId, teamInTournamentId) => {
   //   setLoading(true);
@@ -966,37 +971,61 @@ function Match() {
               ))}
               <div className={styles.player__score}>
                 <div className={styles.player__A}>
-                  <p>
-                    Peter Pan
-                    <span>33'</span>
-                    <span>65'</span>
-                  </p>
-                  <p>
-                    Tommy Tèo
-                    <span>33'</span>
-                  </p>
-                  <p>
-                    Thay giao ba
-                    <span>33'</span>
-                  </p>
+                  {detailTeamA !== null
+                    ? detailTeamA.map((item, index) => {
+                        return (
+                          <p style={{
+                            display: "flex",
+                            alignItems: "center"
+                          }} key={index}>
+                            {item.actionMatchId === 1 ? (
+                              <img
+                              style={{
+                                width:30,
+                                marginRight:10
+                              }}
+                                src="/assets/icons/soccer-ball-retina.png"
+                                alt="ball"
+                              />
+                            ) : null}
+                            {item.namePlayer}
+                            {item.minutesScore.map((itemMin, indexMin) => {
+                              return <span key={indexMin}>{itemMin}'</span>;
+                            })}
+                          </p>
+                        );
+                      })
+                    : null}
                 </div>
                 <div className={styles.logo__ball}>
                   <img src="/assets/icons/soccer-ball-retina.png" alt="ball" />
                 </div>
                 <div className={styles.player__B}>
-                  <p>
-                    Chipu
-                    <span>33'</span>
-                    <span>65'</span>
-                  </p>
-                  <p>
-                    Tommy Tèo
-                    <span>33'</span>
-                  </p>
-                  <p>
-                    Thay giao ba
-                    <span>33'</span>
-                  </p>
+                  {detailTeamB !== null
+                    ? detailTeamB.map((item, index) => {
+                        return (
+                          <p style={{
+                            display: "flex",
+                            alignItems: "center"
+                          }} key={index}>
+                            {item.actionMatchId === 1 ? (
+                              <img
+                              style={{
+                                width:30,
+                                marginRight:10
+                              }}
+                                src="/assets/icons/soccer-ball-retina.png"
+                                alt="ball"
+                              />
+                            ) : null}
+                            {item.namePlayer}
+                            {item.minutesScore.map((itemMin, indexMin) => {
+                              return <span key={indexMin}>{itemMin}'</span>;
+                            })}
+                          </p>
+                        );
+                      })
+                    : null}
                 </div>
               </div>
             </div>

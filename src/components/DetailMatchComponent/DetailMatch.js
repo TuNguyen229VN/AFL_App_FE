@@ -61,7 +61,8 @@ export default function DetailMatch(props) {
       console.error(err);
     }
   };
-  const updateScoreInMatch = async (data, type) => {  
+  const updateScoreInMatch = async (data, type) => {
+    console.log(data);  
     const newTeamA = teamA;
     const newTeamB = teamB;
     if (type === 1) {
@@ -239,6 +240,7 @@ export default function DetailMatch(props) {
     }
   };
   const onChangeHandler = (e) => {
+    
     const { name, value } = e.target;
     switch (name) {
       case "scoreA":
@@ -524,7 +526,7 @@ export default function DetailMatch(props) {
         nameTeamB={teamB !== null ? teamB : null}
         hideShow={hideShow}
         updateScoreInMatch={updateScoreInMatch}
-        matchDetail={matchDetail}
+        matchDetail={scoreA !== null && scoreB !== null && teamA != null && teamB != null ? ((+scoreA)+ (+scoreB)) === ((+teamA.teamScore) + (+teamB.teamScore)) ? matchDetail : null : null}
         setHideShow={setHideShow}
         setStatusUpdate={setStatusUpdate}
         statusUpdate={statusUpdate}
