@@ -16,10 +16,10 @@ function ScheduleTournamentDetail(props) {
     endDate,
     user,
     teamCreate,
-    tourDetail
+    tourDetail,
   } = props;
   const [loading, setLoading] = useState(false);
-  const [active, setactive] = useState(true);
+  const [active, setactive] = useState(null);
   const [allTeam, setAllTeam] = useState(null);
   const [hideShow, setHideShow] = useState(false);
   const [statusUpdateDate, setStatusUpdateDate] = useState(false);
@@ -94,7 +94,7 @@ function ScheduleTournamentDetail(props) {
           className="wrap__title"
         >
           <h2 className="title">
-            {active === null ? "Mô tả" : active ?  "Danh sách" : "Biểu đồ"}
+            {active === null ? "Mô tả" : active ? "Danh sách" : "Biểu đồ"}
           </h2>
           <div className="option__view">
             <p
@@ -129,7 +129,7 @@ function ScheduleTournamentDetail(props) {
           <div className="wrap__table">
             {tournamentType !== "CircleStage" ? (
               <KnockOutStageSchedule
-              tourDetail={tourDetail}
+                tourDetail={tourDetail}
                 tournamentType={tournamentType}
                 hostTournamentId={hostTournamentId}
                 typeView="result"
@@ -144,7 +144,8 @@ function ScheduleTournamentDetail(props) {
               />
             ) : (
               <CricleStageSchedule
-              tourDetail={tourDetail}
+                tourDetail={tourDetail}
+                type={null}
                 hostTournamentId={hostTournamentId}
                 loading={loading}
                 allTeam={allTeam}
@@ -160,7 +161,6 @@ function ScheduleTournamentDetail(props) {
           </div>
         ) : active === false ? (
           <KnockOutStageSchedule
-          
             groupNumber={groupNumber}
             tournamentType={tournamentType}
             allTeam={allTeam}
@@ -175,7 +175,6 @@ function ScheduleTournamentDetail(props) {
             }}
             className="wrap__title"
           >
-           
             <p
               style={{
                 fontSize: 20,
@@ -232,6 +231,38 @@ function ScheduleTournamentDetail(props) {
                 và sẽ mặc định lấy 2 đội mạnh nhất mỗi bảng vào vòng loại trực
                 tiếp{" "}
               </p>
+            ) : null}
+            {tournamentType === "GroupStage" ? (
+              <KnockOutStageSchedule
+                tourDetail={tourDetail}
+                groupNumber={groupNumber}
+                tournamentType={tournamentType}
+                hostTournamentId={hostTournamentId}
+                typeView="description"
+                allTeam={allTeam}
+                hideShow={hideShow}
+                setHideShow={setHideShow}
+                startDate={startDate}
+                endDate={endDate}
+                user={user}
+                setStatusUpdateDate={setStatusUpdateDate}
+                statusUpdateDate={statusUpdateDate}
+              />
+            ) : tournamentType === "CircleStage" ? (
+              <CricleStageSchedule
+                tourDetail={tourDetail}
+                type="description"
+                hostTournamentId={hostTournamentId}
+                loading={loading}
+                allTeam={allTeam}
+                hideShow={hideShow}
+                setHideShow={setHideShow}
+                startDate={startDate}
+                endDate={endDate}
+                user={user}
+                setStatusUpdateDate={setStatusUpdateDate}
+                statusUpdateDate={statusUpdateDate}
+              />
             ) : null}
           </div>
         )}

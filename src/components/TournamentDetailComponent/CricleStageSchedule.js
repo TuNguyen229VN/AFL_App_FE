@@ -10,7 +10,7 @@ export default function CricleStageSchedule(props) {
   const [matchCurrent, setMatchCurrent] = useState(null);
   const [dateUpdate, setDateUpdate] = useState(null);
   const [teamInUpdate, setTeamInUpdate] = useState(null);
-  
+  const [teamDescription, setTeamDescription] = useState(null);
   const {
     allTeam,
     loading,
@@ -23,6 +23,7 @@ export default function CricleStageSchedule(props) {
     setStatusUpdateDate,
     statusUpdateDate,
     tourDetail,
+    type,
   } = props;
   useEffect(() => {
     if (allTeam !== null) {
@@ -40,7 +41,64 @@ export default function CricleStageSchedule(props) {
         }
         return accumulator;
       }, []);
-      console.log(teamA);
+      if (type === "description") {
+        const desTeam = [];
+        for (let item of teamA) {
+          if (desTeam.length > 0) {
+            const index = desTeam.findIndex(
+              (obj) => obj.teamName === item.teamName
+            );
+            if (index === -1) {
+              desTeam.push({
+                teamName: item.teamName,
+                team:
+                  item.teamInTournament.team !== null
+                    ? item.teamInTournament.team
+                    : null,
+              });
+            }
+          } else {
+            desTeam.push({
+              teamName: item.teamName,
+              team:
+                item.teamInTournament.team !== null
+                  ? item.teamInTournament.team
+                  : null,
+            });
+          }
+        }
+        if (desTeam.length < tourDetail.footballTeamNumber) {
+          for (let item of teamB) {
+            if (desTeam.length > 0) {
+              const index = desTeam.findIndex(
+                (obj) => obj.teamName === item.teamName
+              );
+              if (index === -1) {
+                desTeam.push({
+                  teamName: item.teamName,
+                  team:
+                    item.teamInTournament.team !== null
+                      ? item.teamInTournament.team
+                      : null,
+                });
+              }
+            } else {
+              desTeam.push({
+                teamName: item.teamName,
+                team:
+                  item.teamInTournament.team !== null
+                    ? item.teamInTournament.team
+                    : null,
+              });
+            }
+          }
+        }
+        desTeam.sort(function (a, b) {
+          return a.teamName.localeCompare(b.teamName);
+        });
+        setTeamDescription(desTeam);
+      }
+
       setAllTeamA(teamA);
       setAllTeamB(teamB);
     }
@@ -90,19 +148,19 @@ export default function CricleStageSchedule(props) {
   const checkDate = (data, matchDate) => {
     const dateCurrent = new Date();
     const dateData = new Date(data);
-    
+
     if (+dateCurrent > +dateData) {
       return false;
     } else {
-      if(matchDate === null){
+      if (matchDate === null) {
         return true;
-      }else{
+      } else {
         const dateMatchCurrent = matchDate.split("T")[0].split("-")[2];
         const onlyDate = dateCurrent.toJSON().split("T")[0].split("-")[2];
-        
-        if(Number(dateMatchCurrent) - Number(onlyDate) > 0) {
+
+        if (Number(dateMatchCurrent) - Number(onlyDate) > 0) {
           return true;
-        }else{
+        } else {
           return false;
         }
       }
@@ -126,7 +184,7 @@ export default function CricleStageSchedule(props) {
       splitDateTime[1].split(":")[1]
     );
   };
-  return (
+  return type === null ? (
     <table className="schedule__table">
       <tr>
         <th
@@ -215,7 +273,7 @@ export default function CricleStageSchedule(props) {
 
               {user != undefined &&
               user.userVM.id === hostTournamentId &&
-              checkDate(endDate,item.match.matchDate) === true ? (
+              checkDate(endDate, item.match.matchDate) === true ? (
                 <td
                   onClick={() => {
                     setHideShow(true);
@@ -282,6 +340,64 @@ export default function CricleStageSchedule(props) {
           teamInUpdate={teamInUpdate}
         />
       ) : null}
+    </table>
+  ) : (
+    <table className="schedule__table">
+      <tr>
+        <th colSpan={2}>Bảng đấu</th>
+      </tr>
+      {loading ? (
+        <LoadingAction />
+      ) : teamDescription != null ? (
+        teamDescription.map((item, index) => {
+          return (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              {item.team != null ? (
+                <td>
+                  <Link
+                    to={`/teamDetail/${item.team.id}/inforTeamDetail`}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <p
+                      style={{
+                        marginRight: 10,
+                      }}
+                    >
+                      {item.teamName}
+                    </p>
+                    {item.team != null ? (
+                      <img src={item.team.teamAvatar} alt="gallery_item" />
+                    ) : null}
+                  </Link>
+                </td>
+              ) : (
+                <td>
+                  <p>{item.teamName}</p>
+                  {item.team != null ? (
+                    <img src={item.team.teamAvatar} alt="gallery_item" />
+                  ) : null}
+                </td>
+              )}
+            </tr>
+          );
+        })
+      ) : (
+        <p
+          style={{
+            padding: 20,
+            fontSize: 24,
+            fontWeight: 700,
+            color: "red",
+          }}
+        >
+          Hệ thống chưa xếp lịch thi đấu cho giải này
+        </p>
+      )}
     </table>
   );
 }
