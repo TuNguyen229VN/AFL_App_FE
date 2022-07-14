@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ModalDenyMatchDetail from "./ModalDenyMatchDetail";
 
 export default function DetailInMatch(props) {
   const {
@@ -20,6 +21,7 @@ export default function DetailInMatch(props) {
   } = props;
   const [detail, setDetail] = useState([]);
   const [newMatchDetail, setNewMatchDetail] = useState(null);
+  const [hideShowDeny, setHideShowDeny] = useState(null);
   let matchMinutes = null;
   useEffect(() => {
     matchMinutes = tourDetail !== null ? tourDetail.matchMinutes : null;
@@ -173,7 +175,7 @@ export default function DetailInMatch(props) {
   };
   const renderInputByNumber = (number, data, type) => {
     let array = [];
-    
+
     for (let i = 0; i < number; i++) {
       let calc = i + +numTeamA;
       array.push(
@@ -306,15 +308,16 @@ export default function DetailInMatch(props) {
                     ? "thẻ vàng"
                     : "thẻ đỏ"}
                 </h5>
+                <div
+                  className={hideShowDeny ? "overlay active" : "overlay"}
+                ></div>
                 <button
                   type="button"
                   class="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                   onClick={() => {
-                    setHideShow(false);
-                    setNewMatchDetail([]);
-                    setStatusUpdate(true);
+                    setHideShowDeny(true);
                   }}
                 ></button>
               </div>
@@ -359,14 +362,18 @@ export default function DetailInMatch(props) {
                 </div>
               </div>
               <div class="modal-footer">
+                <div
+                  className={hideShowDeny ? "overlay active" : "overlay"}
+                ></div>
                 <button
                   type="button"
                   class="btn btn-secondary"
                   data-bs-dismiss="modal"
                   onClick={() => {
-                    setHideShow(false);
-                    setNewMatchDetail([]);
-                    setStatusUpdate(true);
+                    // setHideShow(false);
+                    // setNewMatchDetail([]);
+                    // setStatusUpdate(true);
+                    setHideShowDeny(true);
                   }}
                   style={{
                     padding: "10px 15px",
@@ -388,6 +395,14 @@ export default function DetailInMatch(props) {
           </div>
         </div>
       </div>
+      
+      <ModalDenyMatchDetail
+        hideShow={hideShowDeny}
+        setHideShow={setHideShowDeny}
+        setNewMatchDetail={setNewMatchDetail}
+        setStatusUpdate={setStatusUpdate}
+        setHideShowNormal={setHideShow}
+      />
     </div>
   );
 }
