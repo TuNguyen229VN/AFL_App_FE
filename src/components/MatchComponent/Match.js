@@ -146,6 +146,9 @@ function Match() {
         }
       }
     }
+    playerScoreA.sort(function (a, b) {
+      return a.actionMatchId - b.actionMatchId;
+    });
     setDetailTeamA(playerScoreA);
 
     const playerScoreB = [];
@@ -179,6 +182,9 @@ function Match() {
         }
       }
     }
+    playerScoreB.sort(function (a, b) {
+      return a.actionMatchId - b.actionMatchId;
+    });
     setDetailTeamB(playerScoreB);
   };
   // const getAllPlayerByTeamIdA = (teamId, teamInTournamentId) => {
@@ -974,20 +980,27 @@ function Match() {
                   {detailTeamA !== null
                     ? detailTeamA.map((item, index) => {
                         return (
-                          <p style={{
-                            display: "flex",
-                            alignItems: "center"
-                          }} key={index}>
-                            {item.actionMatchId === 1 ? (
-                              <img
+                          <p
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                            key={index}
+                          >
+                            <img
                               style={{
-                                width:30,
-                                marginRight:10
+                                width: 30,
+                                marginRight: 10,
                               }}
-                                src="/assets/icons/soccer-ball-retina.png"
-                                alt="ball"
-                              />
-                            ) : null}
+                              src={
+                                item.actionMatchId === 1
+                                  ? "/assets/icons/soccer-ball-retina.png"
+                                  : item.actionMatchId === 2 ? "/assets/icons/yellow-card.png" : 
+                                  "/assets/icons/red-card.png"
+                              }
+                              alt="ball"
+                            />
+
                             {item.namePlayer}
                             {item.minutesScore.map((itemMin, indexMin) => {
                               return <span key={indexMin}>{itemMin}'</span>;
@@ -1004,20 +1017,27 @@ function Match() {
                   {detailTeamB !== null
                     ? detailTeamB.map((item, index) => {
                         return (
-                          <p style={{
-                            display: "flex",
-                            alignItems: "center"
-                          }} key={index}>
-                            {item.actionMatchId === 1 ? (
-                              <img
+                          <p
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                            key={index}
+                          >
+                            <img
                               style={{
-                                width:30,
-                                marginRight:10
+                                width: 30,
+                                marginRight: 10,
                               }}
-                                src="/assets/icons/soccer-ball-retina.png"
-                                alt="ball"
-                              />
-                            ) : null}
+                              src={
+                                item.actionMatchId === 1
+                                  ? "/assets/icons/soccer-ball-retina.png"
+                                  : item.actionMatchId === 2 ? "/assets/icons/yellow-card.png" : 
+                                  "/assets/icons/red-card.png"
+                              }
+                              alt="ball"
+                            />
+
                             {item.namePlayer}
                             {item.minutesScore.map((itemMin, indexMin) => {
                               return <span key={indexMin}>{itemMin}'</span>;
