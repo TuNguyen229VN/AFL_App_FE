@@ -16,6 +16,7 @@ import {
   saveRecordInMatchDetail,
   deleteMatchDetailByTypeAPI,
 } from "../../api/MatchDetailAPI";
+import { updateScoreInTournamentByTourIdAPI } from "../../api/TeamInTournamentAPI";
 import { toast } from "react-toastify";
 import { async } from "@firebase/util";
 
@@ -42,6 +43,7 @@ export default function DetailMatch(props) {
   const [playerA, setPlayerA] = useState(null);
   const [playerB, setPlayerB] = useState(null);
   const [statusUpdate, setStatusUpdate] = useState(false);
+
   useEffect(() => {
     getTeamInMatchByMatchID();
   }, [statusUpdate === true]);
@@ -55,14 +57,12 @@ export default function DetailMatch(props) {
       const response = await getMatchDetailByMatchIdAPI(idMatch);
       if (response.status === 200) {
         setMatchDetail(response.data.matchDetails);
-        console.log(response.data);
       }
     } catch (err) {
       console.error(err);
     }
   };
   const updateScoreInMatch = async (data, type) => {
-    console.log(data);  
     const newTeamA = teamA;
     const newTeamB = teamB;
     if (type === 1) {
@@ -84,24 +84,35 @@ export default function DetailMatch(props) {
 
     setLoading(true);
     
-      for (let i = 0; i < 2; i++) {
-        updateInAPI(i === 0 ? newTeamA : newTeamB);
-      }
-    
-      console.log(data);
+    for (let i = 0; i < 2; i++) {
+      updateInAPI(i === 0 ? newTeamA : newTeamB);
+    }
+
     await deleteMatchDetailByType(
       idMatch,
       type === 1 ? "score" : type === 2 ? "yellow" : "red",
       data
     );
+    
+    if (
+      type === 1 
+    ) {
+      
+      updateScoreTeamInTour();
+    }
+  };
+  const updateScoreTeamInTour = async () => {
+    try {
+      const response = updateScoreInTournamentByTourIdAPI(tourDetail.id);
+    } catch (err) {
+      console.error(err);
+    }
   };
   const deleteMatchDetailByType = async (matchId, type, data) => {
-    
     try {
       const response = await deleteMatchDetailByTypeAPI(matchId, type);
       if (response.status === 200) {
         for (let item of data) {
-          console.log(item)
           await updateMatchDetail(item);
         }
         setLoading(false);
@@ -121,7 +132,7 @@ export default function DetailMatch(props) {
     } catch (err) {
       if (err.response.status === 404) {
         for (let item of data) {
-          console.log(item)
+          console.log(item);
           await updateMatchDetail(item);
         }
         setLoading(false);
@@ -240,7 +251,6 @@ export default function DetailMatch(props) {
     }
   };
   const onChangeHandler = (e) => {
-    
     const { name, value } = e.target;
     switch (name) {
       case "scoreA":
@@ -526,7 +536,13 @@ export default function DetailMatch(props) {
         nameTeamB={teamB !== null ? teamB : null}
         hideShow={hideShow}
         updateScoreInMatch={updateScoreInMatch}
-        matchDetail={scoreA !== null && scoreB !== null && teamA != null && teamB != null ? ((+scoreA)+ (+scoreB)) === ((+teamA.teamScore) + (+teamB.teamScore)) ? matchDetail : null : null}
+        matchDetail={
+          scoreA !== null && scoreB !== null && teamA != null && teamB != null
+            ? +scoreA + +scoreB === +teamA.teamScore + +teamB.teamScore
+              ? matchDetail
+              : null
+            : null
+        }
         setHideShow={setHideShow}
         setStatusUpdate={setStatusUpdate}
         statusUpdate={statusUpdate}

@@ -961,7 +961,58 @@ function HeaderTournamentDetail() {
                         <label htmlFor="test5">Lý do khác:</label>
                       </p>
                     </div>
-                  ) : null}
+                  ) : <div className={styles.checkbox}>
+                  <p>
+                    <input
+                      type="radio"
+                      id="test1"
+                      name="radio-group"
+                      value={"Giải đấu giả mạo"}
+                      onChange={onChangeHandler}
+                    />
+                    <label htmlFor="test1">Giải đấu giả mạo</label>
+                  </p>
+                  <p>
+                    <input
+                      type="radio"
+                      id="test2"
+                      name="radio-group"
+                      value={"Tên giải đấu không hợp lệ"}
+                      onChange={onChangeHandler}
+                    />
+                    <label htmlFor="test2">Thời gian giải đấu đã thay đổi</label>
+                  </p>
+                  <p>
+                    <input
+                      type="radio"
+                      id="test3"
+                      name="radio-group"
+                      value={"Quấy rối, bắt nạt"}
+                      onChange={onChangeHandler}
+                    />
+                    <label htmlFor="test3">Hình thức giải đấu giải đấu đã thay đổi</label>
+                  </p>
+                  <p>
+                    <input
+                      type="radio"
+                      id="test4"
+                      name="radio-group"
+                      value={"Nội dung không phù hợp"}
+                      onChange={onChangeHandler}
+                    />
+                    <label htmlFor="test4">Tìm được giải đấu khác phù hợp hơn</label>
+                  </p>
+                  <p>
+                    <input
+                      type="radio"
+                      id="test5"
+                      name="radio-group"
+                      value={"Lý do khác"}
+                      onChange={onChangeHandler}
+                    />
+                    <label htmlFor="test5">Lý do khác:</label>
+                  </p>
+                </div>}
                   <p className="error errRp">{contentReport.error}</p>
 
                   {(new Date().getTime() <=
@@ -971,7 +1022,8 @@ function HeaderTournamentDetail() {
                       <div>
                     {(typeReport === "report" &&
                       contentCheckbox.value === "Lý do khác") ||
-                    typeReport !== "report" ? (
+                    (typeReport !== "report" &&
+                    contentCheckbox.value === "Lý do khác")  ? (
                         <textarea
                           placeholder={
                             typeReport === "report"

@@ -208,15 +208,16 @@ const UpdateTournamentInformation = (props) => {
         error: null,
       });
       setCloseRegister({
-        value: new Date(team.registerEndDate).toISOString().slice(0, 16),
+        value: new Date(team.registerEndDate).toISOString().slice(0, 10),
         error: null,
       });
+      
       setStartTime({
-        value: new Date(team.tournamentStartDate).toISOString().slice(0, 16),
+        value: new Date(team.tournamentStartDate).toISOString().slice(0, 10),
         error: null,
       });
       setEndTime({
-        value: new Date(team.tournamentEndDate).toISOString().slice(0, 16),
+        value: new Date(team.tournamentEndDate).toISOString().slice(0, 10),
         error: null,
       });
       setTimeDuration({

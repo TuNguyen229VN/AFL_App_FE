@@ -154,7 +154,7 @@ export default function DetailInMatch(props) {
   };
   const renderSelectByMinutes = (data) => {
     let array = [];
-    console.log(tourDetail.matchMinutes);
+    
     for (let i = 0; i <= tourDetail.matchMinutes * 2; i++) {
       if (i === 0) {
         if (data == null) array.push(<option selected>TG</option>);
