@@ -37,3 +37,8 @@ export function updateScoreInTournamentByTourIdAPI(id){
     const afterDefaultURL = `team-in-tournaments/update-score?tournamentId=${id}`;
     return axios.put(url + afterDefaultURL);
 }
+
+export function updateYellowRedCardInTournamentByTourIdAPI(data){
+    const afterDefaultURL = `team-in-tournaments/card`;
+    return axios.put(url + afterDefaultURL,data); 
+}

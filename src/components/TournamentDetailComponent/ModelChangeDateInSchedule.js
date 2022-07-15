@@ -21,7 +21,6 @@ export default function ModalChangeDateInSchedule(props) {
     // console.log(typeof new Date().toJSON())
     const dateUpdate = new Date(matchCurrent.matchDate);
     const dateCurrent = new Date();
-    console.log(matchCurrent);
     if (matchCurrent.matchDate !== null && +dateCurrent > +dateUpdate) {
       setNewStart(dateCurrent.toJSON());
       setDateUpdate(
@@ -68,7 +67,6 @@ export default function ModalChangeDateInSchedule(props) {
     if (data !== null) {
       const splitDateTime = data.split(" ");
       return (
-        
         splitDateTime[0].split("-")[0] +
         " " +
         7 +
@@ -82,9 +80,9 @@ export default function ModalChangeDateInSchedule(props) {
     if (type === "maxDate") {
       const maxTimeSlip = data.split(" ");
       const newDate = new Date(
-        maxTimeSlip[0].split("/")[1] +
+        maxTimeSlip[0].split("/")[0] +
           "-" +
-          maxTimeSlip[0].split("/")[0] +
+          maxTimeSlip[0].split("/")[1] +
           "-" +
           maxTimeSlip[0].split("/")[2] +
           " " +
@@ -92,25 +90,22 @@ export default function ModalChangeDateInSchedule(props) {
           ":" +
           maxTimeSlip[1].split(":")[1]
       ).toJSON();
-
       splitDateTime = newDate.split("T");
-
-      console.log(
-        splitDateTime[0].split("-")[2] +
-          "-" +
-          splitDateTime[0].split("-")[1] +
-          "-" +
-          splitDateTime[0].split("-")[0] +
-          " " +
-          24 +
-          ":" +
-          splitDateTime[1].split(":")[1]
-      );
+      console.log(splitDateTime[0].split("-")[2] +
+      "-" +
+      splitDateTime[0].split("-")[1] +
+      "-" +
+      splitDateTime[0].split("-")[0] +
+      " " +
+      23 +
+      ":" +
+      splitDateTime[1].split(":")[1])
       return (
-        splitDateTime[0].split("-")[2] +
-        "-" +
         splitDateTime[0].split("-")[1] +
         "-" +
+        splitDateTime[0].split("-")[2] +
+        "-" +
+        
         splitDateTime[0].split("-")[0] +
         " " +
         23 +

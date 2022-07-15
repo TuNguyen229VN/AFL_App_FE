@@ -92,15 +92,21 @@ export default function DetailMatch(props) {
       idMatch,
       type === 1 ? "score" : type === 2 ? "yellow" : "red",
       data
-    );
-    
-    if (
-      type === 1 
-    ) {
-      
+    );  
       updateScoreTeamInTour();
-    }
   };
+  // const updateRedCardTeamInTour = async () => {
+  //   const data = {
+  //     "id": tourDetail.id,
+  //     "totalYellowCard": 0,
+  //     "totalRedCard": 0
+  //   }
+  //   try{
+  //     const response = await updateYellowRedCardInTournamentByTourIdAPI(data);
+  //   }catch(err){
+  //     console.error(err);
+  //   }
+  // }
   const updateScoreTeamInTour = async () => {
     try {
       const response = updateScoreInTournamentByTourIdAPI(tourDetail.id);
