@@ -167,7 +167,7 @@ function HeaderTournamentDetail() {
       activeTeamDetail ===
       `/tournamentDetail/${idTour}/rankTableTournamentDetail`
     ) {
-      return <RankTableTournamentDetail />;
+      return <RankTableTournamentDetail tourDetail={tourDetail} />;
     }
     if (activeTeamDetail === `/tournamentDetail/${idTour}/teamInTournament`) {
       return (
@@ -199,7 +199,7 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/commentTournamentDetail`
     ) {
-      return <CommentTournamentDetail />;
+      return <CommentTournamentDetail  />;
     }
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/newsTournamentDetail`
@@ -348,6 +348,7 @@ function HeaderTournamentDetail() {
     const data = {
       teamInTournamentId: idTeamInTour,
       typeUpdate: status,
+      teamIndex:1
     };
     const response = updateTeamInScheduleAPI(data);
     response
@@ -1124,7 +1125,7 @@ function HeaderTournamentDetail() {
                 >
                   Lịch thi đấu
                 </Link>
-                <Link
+                {tourDetail !== null && tourDetail.tournamentTypeId !== 1 ? <Link
                   to={`/tournamentDetail/${idTour}/rankTableTournamentDetail`}
                   className={
                     activeTeamDetail ===
@@ -1139,7 +1140,7 @@ function HeaderTournamentDetail() {
                   }
                 >
                   Bảng xếp hạng
-                </Link>
+                </Link> : null}
                 <Link
                   to={`/tournamentDetail/${idTour}/teamInTournament`}
                   className={

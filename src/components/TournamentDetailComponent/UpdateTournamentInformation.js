@@ -404,8 +404,8 @@ const UpdateTournamentInformation = (props) => {
       const response = await getTeamPaticaipateInTourByTourIDAPI(idTournament);
       if(response.status === 200){
           const teamInTournament = response.data.teamInTournaments;
-          for(const item of teamInTournament){
-            await addTeamInSchedule(item.id,true);
+          for(const index in teamInTournament){
+            await addTeamInSchedule(teamInTournament[index].id,true,index+1);
           }
           setTimeout(() => {
             navigate(`/tournamentDetail/${idTournament}/inforTournamentDetail`);
@@ -425,10 +425,11 @@ const UpdateTournamentInformation = (props) => {
       console.error(err);
     }
   }
-  const addTeamInSchedule = (idTeamInTour, status) => {
+  const addTeamInSchedule = (idTeamInTour, status,index) => {
     const data = {
       teamInTournamentId: idTeamInTour,
       typeUpdate: status,
+      teamIndex: index,
     };
     const response = updateTeamInScheduleAPI(data);
     response

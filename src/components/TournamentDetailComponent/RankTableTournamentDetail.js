@@ -1,6 +1,8 @@
 import React from "react";
 import "./styles/style.css";
-function RankTableTournamentDetail() {
+function RankTableTournamentDetail(props) {
+  const {tourDetail} = props;
+  console.log(tourDetail)
   return (
     <>
       <div className="tournamentdetail">

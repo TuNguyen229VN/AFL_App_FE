@@ -57,6 +57,7 @@ const MyTournamemts = () => {
       const res = await getAPI(afterURLDefault);
 
       if (res.status === 200) {
+        console.log(res.data)
         setTeams(res.data.teams);
         setLoading(false);
         setCount(res.data.countList);
@@ -88,7 +89,7 @@ const MyTournamemts = () => {
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
     getTournament(contentSearch, currentPage, "NAME", contentSearch);
-    setCheck(!check);
+    //setCheck(!check);
   };
 
   const onSubmitHandler = (e) => {
