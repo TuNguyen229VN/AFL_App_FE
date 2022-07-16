@@ -100,7 +100,7 @@ function Match() {
 
         getPlayer(res.data.teamsInMatch[0].teamInTournament.id, "teamA");
         getPlayer(res.data.teamsInMatch[1].teamInTournament.id, "teamB");
-          getMatchDetail();
+        getMatchDetail();
        
         // getAllPlayerByTeamIdA(
         //   res.data.teamsInMatch[0].teamInTournament.team.id,
@@ -122,12 +122,13 @@ function Match() {
     setLoading(true);
     let response = getMatchDetailByMatchIdAPI(idMatch);
     response.then(res=>{
-      console.log(res.data);
+      
       devidePlayer(res.data.matchDetails);
       // setDetail(res.data.matchDetails);
       setLoading(false);
     })
     .catch(err => {
+      setLoading(false);
       console.log(err);
     })
   }
