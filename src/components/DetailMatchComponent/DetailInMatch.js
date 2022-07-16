@@ -19,7 +19,9 @@ export default function DetailInMatch(props) {
     setStatusUpdate,
     tourDetail,
   } = props;
+  
   const [detail, setDetail] = useState([]);
+  const [statusCall,setStatusCall] = useState(false);
   const [newMatchDetail, setNewMatchDetail] = useState(null);
   const [hideShowDeny, setHideShowDeny] = useState(null);
   let matchMinutes = null;
@@ -47,10 +49,12 @@ export default function DetailInMatch(props) {
         }
       }
     }
+    
     coverMatchDetail();
   }, [typeDetail, statusUpdate === false]);
 
   const coverMatchDetail = () => {
+    console.log(matchDetail)
     if (matchDetail !== null) {
       const newMatchDetail = [];
       if (typeDetail === "score") {
@@ -72,7 +76,7 @@ export default function DetailInMatch(props) {
           }
         });
       }
-
+      
       getDataDetail(newMatchDetail);
       setNewMatchDetail(newMatchDetail);
     }
@@ -149,6 +153,7 @@ export default function DetailInMatch(props) {
         return a.actionMinute - b.actionMinute;
       });
       player.push(...newPlayerB);
+      console.log(player)
       setDetail(player);
     }
   };
@@ -356,9 +361,9 @@ export default function DetailInMatch(props) {
                       flexDirection: "column",
                     }}
                   >
-                    {renderInputByNumber(numTeamA, playerA, "A")}
+                    {detail !== null ? renderInputByNumber(numTeamA, playerA, "A") : null }
                   </div>
-                  <div>{renderInputByNumber(numTeamB, playerB, "B")}</div>
+                  <div>{ detail !== null ?  renderInputByNumber(numTeamB, playerB, "B") : null}</div>
                 </div>
               </div>
               <div class="modal-footer">

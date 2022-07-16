@@ -56,9 +56,12 @@ export default function DetailMatch(props) {
     try {
       const response = await getMatchDetailByMatchIdAPI(idMatch);
       if (response.status === 200) {
+        setLoading(false);
+        console.log(response.data.matchDetails)
         setMatchDetail(response.data.matchDetails);
       }
     } catch (err) {
+      setLoading(false);
       console.error(err);
     }
   };
@@ -192,6 +195,8 @@ export default function DetailMatch(props) {
     response
       .then((res) => {
         if (res.status === 200) {
+          console.log(res.data);
+          getMatchDetailInFor();
           const twoTeamUpdate = res.data.teamsInMatch;
           setTeamA(twoTeamUpdate[0]);
           getPlayerInTournamentByTeamInTourid(
@@ -203,8 +208,8 @@ export default function DetailMatch(props) {
             twoTeamUpdate[1].teamInTournament.id,
             "B"
           );
-          getMatchDetailInFor();
-          setLoading(false);
+          
+          
         }
       })
       .catch((err) => {
@@ -382,7 +387,7 @@ export default function DetailMatch(props) {
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("score");
-                setStatusUpdate(false);
+                //setStatusUpdate(false);
               }}
             >
               Chi tiết bàn thắng
@@ -455,7 +460,7 @@ export default function DetailMatch(props) {
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("yellow");
-                setStatusUpdate(false);
+                //setStatusUpdate(false);
               }}
             >
               Chi tiết thẻ vàng
@@ -528,7 +533,7 @@ export default function DetailMatch(props) {
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("red");
-                setStatusUpdate(false);
+                //setStatusUpdate(false);
               }}
             >
               Chi tiết thẻ đỏ
@@ -543,11 +548,7 @@ export default function DetailMatch(props) {
         hideShow={hideShow}
         updateScoreInMatch={updateScoreInMatch}
         matchDetail={
-          scoreA !== null && scoreB !== null && teamA != null && teamB != null
-            ? +scoreA + +scoreB === +teamA.teamScore + +teamB.teamScore
-              ? matchDetail
-              : null
-            : null
+          matchDetail !== null ? matchDetail : null
         }
         setHideShow={setHideShow}
         setStatusUpdate={setStatusUpdate}
