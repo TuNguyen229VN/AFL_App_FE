@@ -90,16 +90,36 @@
   align-items: center;
   font-size: 16px;
   color: #70757a;
+  flex-wrap: wrap;
 }
+
+.player__A ,
+.player__B {
+  max-width: 400px;
+} 
+
+.playerAction{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.player{
+  display: flex;
+  align-items: center;
+  
+}
+
 
 .player__A p,
 .player__B p {
-  margin-bottom: 10px;
+  width: max-content;
 }
 
 .player__A span,
 .player__B span {
   margin-left: 5px;
+  line-height: 1.6;
 }
 .logo__ball {
   margin-left: -50px;
@@ -533,11 +553,13 @@
  margin-top:50px;
 }
 
+.playerCardWrap div{
+  max-width: 600px;
+}
 
 .playerCard__item{
   display: flex;
   align-items: center;
-  max-width: 400px;
   flex-wrap: wrap;
   margin-top: 20px;
 }
@@ -556,14 +578,14 @@
   font-size: 18px;
 }
 
-.reverse .playerCard__item p{
+.reverse .playerCard__item span{
 margin-left: 0;
-margin-right:20px;
+margin-right:10px;
 }
 .playerCard__item .yellow{
   margin-right: 0;
 }
 
-.playerCard__item p{
-  margin-left: 20px;
+.playerCard__item span{
+  margin-left: 10px;
 }
