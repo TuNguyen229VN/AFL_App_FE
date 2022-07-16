@@ -50,14 +50,16 @@ function RankTableTournamentDetail(props) {
           ranking.push(null);
         }
       }
-
-      ranking.sort((teamA, teamB) => {
-        return (
-          teamB.point - teamA.point ||
-          teamB.differentPoint - teamA.differentPoint ||
-          teamB.winScoreNumber - teamA.winScoreNumber
-        );
-      });
+      const findIndexNull = ranking.findIndex((obj) => obj === null);
+      if (findIndexNull === -1) {
+        ranking.sort((teamA, teamB) => {
+          return (
+            teamB.point - teamA.point ||
+            teamB.differentPoint - teamA.differentPoint ||
+            teamB.winScoreNumber - teamA.winScoreNumber
+          );
+        });
+      }
     } else {
       const tableInTournament = tourDetail.groupNumber;
       const teamInTable = Math.floor(numberTeamPaticipate / tableInTournament);

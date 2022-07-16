@@ -68,6 +68,7 @@ function HeaderTournamentDetail() {
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
+
         setTourDetail(res.data);
         getUserById(res.data.userId);
         setLoading(false);
@@ -348,7 +349,7 @@ function HeaderTournamentDetail() {
     const data = {
       teamInTournamentId: idTeamInTour,
       typeUpdate: status,
-      teamIndex:1
+      teamIndex:tourDetail.numberTeamInTournament + 1,
     };
     const response = updateTeamInScheduleAPI(data);
     response

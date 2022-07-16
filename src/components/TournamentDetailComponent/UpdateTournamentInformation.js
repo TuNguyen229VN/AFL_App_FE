@@ -405,7 +405,7 @@ const UpdateTournamentInformation = (props) => {
       if(response.status === 200){
           const teamInTournament = response.data.teamInTournaments;
           for(const index in teamInTournament){
-            await addTeamInSchedule(teamInTournament[index].id,true,index+1);
+            await addTeamInSchedule(teamInTournament[index].id,true,+index+1);
           }
           setTimeout(() => {
             navigate(`/tournamentDetail/${idTournament}/inforTournamentDetail`);
@@ -426,11 +426,13 @@ const UpdateTournamentInformation = (props) => {
     }
   }
   const addTeamInSchedule = (idTeamInTour, status,index) => {
+    
     const data = {
       teamInTournamentId: idTeamInTour,
       typeUpdate: status,
       teamIndex: index,
     };
+    console.log(data);
     const response = updateTeamInScheduleAPI(data);
     response
       .then((res) => {
