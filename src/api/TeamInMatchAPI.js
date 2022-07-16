@@ -15,3 +15,8 @@ export function getTeamInMatchByMatchIdAPI(id) {
   const afterDefaultUrl = `TeamInMatch/matchId?matchId=${id}`;
   return axios.get(url + afterDefaultUrl);
 }
+
+export function updateTeamInMatch(data){
+ const afterDefaultUrl = `TeamInMatch`;
+ return axios.put(url + afterDefaultUrl , data);
+}

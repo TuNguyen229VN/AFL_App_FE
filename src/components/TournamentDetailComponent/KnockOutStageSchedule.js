@@ -18,13 +18,14 @@ export default function KnockOutStageSchedule(props) {
     user,
     setStatusUpdateDate,
     statusUpdateDate,
-    tourDetail
+    tourDetail,
   } = props;
 
   const [matchCurrent, setMatchCurrent] = useState(null);
   const [knockoutTeam, setKnoukoutTeam] = useState(null);
   const [dateUpdate, setDateUpdate] = useState(null);
   const [teamInUpdate, setTeamInUpdate] = useState(null);
+  const [teamDescription, setTeamDescription] = useState(null);
   useEffect(() => {
     if (allTeam != null) {
       devideRound();
@@ -36,7 +37,6 @@ export default function KnockOutStageSchedule(props) {
     let roundCurrent = null;
     let indexCurrent = 0;
     allTeam.map((item, index) => {
-      console.log(item);
       if (index % 2 === 0) {
         if (roundCurrent === null) {
           roundCurrent =
@@ -100,7 +100,10 @@ export default function KnockOutStageSchedule(props) {
                 teamInTournamentId: item.teamInTournamentId,
               },
               {
-                name: allTeam[index + 1].teamName !== undefined ? allTeam[index + 1].teamName : "Đội ..." ,
+                name:
+                  allTeam[index + 1].teamName !== undefined
+                    ? allTeam[index + 1].teamName
+                    : "Đội ...",
                 team:
                   allTeam[index + 1].teamInTournament.team !== null
                     ? allTeam[index + 1].teamInTournament.team
@@ -175,12 +178,53 @@ export default function KnockOutStageSchedule(props) {
     } else if (typeView === "diagram" && tournamentType == "GroupStage") {
       data.splice(0, groupNumber);
     }
-    console.log(data);
+    for (let item of data) {
+      item.seeds.sort(
+        (objA, objB) =>
+          Number(new Date(objA.date)) - Number(new Date(objB.date))
+      );
+    }
+    if (typeView === "description") {
+      data.splice(groupNumber, data.length);
+      const desTeam = [];
+      for (let index in data) {
+        desTeam.push({
+          title: data[index].title,
+          seeds: [],
+        });
+        for (let itemData of data[index].seeds) {
+          for (let seedTeam of itemData.teams) {
+            if (desTeam[index].seeds.length > 0) {
+              const findIndex = desTeam[index].seeds.findIndex(
+                (obj) => obj.teamName === seedTeam.name
+              );
+              if (findIndex === -1) {
+                desTeam[index].seeds.push({
+                  teamName: seedTeam.name,
+                  team: seedTeam.team !== null ? seedTeam.team : null,
+                });
+              }
+            } else {
+              desTeam[index].seeds.push({
+                teamName: seedTeam.name,
+                team: seedTeam.team !== null ? seedTeam.team : null,
+              });
+            }
+          }
+        }
+        desTeam[index].seeds.sort(function (a, b) {
+          return a.teamName.localeCompare(b.teamName);
+        });
+      }
+      console.log(desTeam);
+
+      setTeamDescription(desTeam);
+    }
+
     setKnoukoutTeam(data);
   };
 
   const calcAllTeamRoundOne = () => {
-    console.log(allTeam);
     if (
       (allTeam.length % 2 === 0
         ? allTeam.length / 2
@@ -197,7 +241,7 @@ export default function KnockOutStageSchedule(props) {
   };
 
   const onChangHandle = (e) => {
-    console.log(e.target.value)
+    console.log(e.target.value);
     setDateUpdate(e.target.value);
   };
 
@@ -240,26 +284,24 @@ export default function KnockOutStageSchedule(props) {
       });
   };
 
-  const checkDate = (data) => {
-    const date =
-      new Date().getDate() < 10
-        ? "0" + new Date().getDate()
-        : new Date().getDate();
-    const month =
-      new Date().getMonth() + 1 < 10
-        ? "0" + (new Date().getMonth() + 1)
-        : new Date().getMonth() + 1;
-    const time = data.split(" ");
-    const conditon = time[0];
+  const checkDate = (data, matchDate) => {
+    const dateCurrent = new Date();
+    const dateData = new Date(data);
 
-    let dateCurrent = new Date(
-      month + "/" + date   + "/" + time[0].split("/")[2]
-    );
-    let dateData = new Date(conditon);
     if (+dateCurrent > +dateData) {
       return false;
     } else {
-      return true;
+      if (matchDate === null) {
+        return true;
+      } else {
+        const dateMatchCurrent = matchDate.split("T")[0].split("-")[2];
+        const onlyDate = dateCurrent.toJSON().split("T")[0].split("-")[2];
+        if (Number(dateMatchCurrent) - Number(onlyDate) > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
   };
 
@@ -287,6 +329,65 @@ export default function KnockOutStageSchedule(props) {
         }}
       >
         <Bracket rounds={rounds} />
+      </div>
+    ) : typeView === "description" ? (
+      <div>
+        {teamDescription !== null
+          ? teamDescription.map((itemIn, indexIn) => {
+              return (
+                <table key={indexIn} style={{
+                  marginBottom:  50 
+                }} className="schedule__table">
+                  <tr>
+                    <th colSpan={2}>Bảng đấu - {itemIn.title}</th>
+                  </tr>
+                  {itemIn.seeds.map((item, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        {item.team != null ? (
+                          <td>
+                            <Link
+                              to={`/teamDetail/${item.team.id}/inforTeamDetail`}
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              <p
+                                style={{
+                                  marginRight: 10,
+                                }}
+                              >
+                                {item.teamName}
+                              </p>
+                              {item.team != null ? (
+                                <img
+                                  src={item.team.teamAvatar}
+                                  alt="gallery_item"
+                                />
+                              ) : null}
+                            </Link>
+                          </td>
+                        ) : (
+                          <td>
+                            <p>{item.teamName}</p>
+                            {item.team != null ? (
+                              <img
+                                src={item.team.teamAvatar}
+                                alt="gallery_item"
+                              />
+                            ) : null}
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  })}
+                </table>
+              );
+            })
+          : null}
       </div>
     ) : (
       <div>
@@ -328,7 +429,7 @@ export default function KnockOutStageSchedule(props) {
                         <Link
                           to={`/teamDetail/${itemSeeds.teams[0].team.id}/inforTeamDetail`}
                         >
-                           <p>{itemSeeds.teams[0].name}</p>
+                          <p>{itemSeeds.teams[0].name}</p>
                           {itemSeeds.teams[0].team !== null ? (
                             <img
                               src={itemSeeds.teams[0].team.teamAvatar}
@@ -381,7 +482,7 @@ export default function KnockOutStageSchedule(props) {
                     )}
                     {user != undefined &&
                     user.userVM.id === hostTournamentId &&
-                    checkDate(endDate) ? (
+                    checkDate(endDate, itemSeeds.match.matchDate) ? (
                       <td
                         style={{
                           cursor: "pointer",
@@ -410,7 +511,7 @@ export default function KnockOutStageSchedule(props) {
                         {" "}
                         <Link
                           to={`/match/${itemSeeds.match.id}/matchDetail`}
-                          state={{ hostTournamentId,tourDetail }}
+                          state={{ hostTournamentId, tourDetail }}
                         >
                           Chi tiết
                         </Link>

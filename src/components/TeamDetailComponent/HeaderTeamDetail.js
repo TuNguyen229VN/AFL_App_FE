@@ -9,6 +9,7 @@ import CommentTeamDetail from "./CommentTeamDetail";
 import InforTeamDetail from "./InforTeamDetail";
 import ListPlayer from "./ListPlayer";
 import ReportTeamDetail from "./ReportTeamDetail";
+import styles from "./styles/style.module.css";
 import {
   checkPlayerInTeamAPI,
   addPlayerInTeamAPI,
@@ -23,7 +24,7 @@ import TournamentTeamDetail from "./TournamentTeamDetail";
 function HeaderTeamDetail() {
   const { idTeam } = useParams();
   const location = useLocation();
-  const [loadingAc,setLoadingAc] = useState(false);
+  const [loadingAc, setLoadingAc] = useState(false);
   const [loading, setLoading] = useState(false);
   const [team, setTeam] = useState("");
   const [manager, setManager] = useState("");
@@ -34,6 +35,10 @@ function HeaderTeamDetail() {
   const [statusPaticipate, setStatusPaticipate] = useState("Tham gia đội bóng");
   const [popupReport, setPopupReport] = useState(false);
   const [contentReport, setContentReport] = useState({ value: "", error: "" });
+  const [contentCheckbox, setContentCheckbox] = useState({
+    value: "",
+    error: "",
+  });
   // format Date
   const formatDate = (date) => {
     const day = new Date(date);
@@ -226,6 +231,24 @@ function HeaderTeamDetail() {
     const { name, value } = e.target;
     const flagValid = validateForm(name, value);
     switch (name) {
+      case "radio-group":
+        let contentRadio = null;
+        if (flagValid.flag === false) {
+          contentRadio = {
+            value,
+            error: flagValid.content,
+          };
+        } else {
+          contentRadio = {
+            value,
+            error: null,
+          };
+        }
+        setContentCheckbox({
+          ...contentRadio,
+        });
+        setContentReport({ value: "", error: "" });
+        break;
       case "contentU":
         let contentU = null;
         if (flagValid.flag === false) {
@@ -251,7 +274,11 @@ function HeaderTeamDetail() {
   const sendReport = async (e) => {
     setLoadingAc(true);
     e.preventDefault();
-    if (contentReport.value === null || contentReport.value === "") {
+    if (
+      (contentReport.value === null && contentCheckbox.value === null) ||
+      (contentReport.value === "" && contentCheckbox.value === "") ||
+      (contentReport.value === "" && contentCheckbox.value === "Lý do khác")
+    ) {
       toast.error("Không được để trống", {
         position: "top-right",
         autoClose: 3000,
@@ -265,9 +292,13 @@ function HeaderTeamDetail() {
       return;
     }
     const data = {
-      reason: contentReport.value,
+      reason:
+        contentReport.value !== ""
+          ? contentReport.value
+          : contentCheckbox.value,
       userId: user.userVM.id,
       teamId: idTeam,
+      status: "Chưa duyệt",
     };
     try {
       const response = await axios.post(
@@ -276,7 +307,7 @@ function HeaderTeamDetail() {
       );
       if (response.status === 201) {
         setPopupReport(false);
-        setContentReport({value:"",error:""})
+        setContentReport({ value: "", error: "" });
         setLoadingAc(false);
         toast.success("Báo cáo thành công", {
           position: "top-right",
@@ -414,46 +445,104 @@ function HeaderTeamDetail() {
                     </div>
                   </div>
                   {user !== null && user.userVM.id !== team.id ? (
-                  <>
-                    <div
-                      className="report"
-                      onClick={() => setPopupReport(true)}
-                    >
-                      <i class="fa-solid fa-exclamation"></i>
-                      <p>Báo cáo</p>
-                    </div>
-                    <div
-                      className={popupReport ? `overlay active` : "active"}
-                      onClick={() => {
-                        setPopupReport(false);
-                      }}
-                    ></div>
-                    <form
-                      className={
-                        popupReport ? "popup__news active" : "popup__news"
-                      }
-                      onSubmit={sendReport}
-                    >
+                    <>
                       <div
-                        className="close"
-                        onClick={() => setPopupReport(false)}
+                        className="report"
+                        onClick={() => setPopupReport(true)}
                       >
-                        X
+                        <i class="fa-solid fa-exclamation"></i>
+                        <p>Báo cáo</p>
                       </div>
-                      <h4>Báo cáo đội bóng</h4>
-                      <p className="error errRp">{contentReport.error}</p>
-                      <textarea
-                        placeholder="Lý do báo cáo đội bóng này"
-                        className="content"
-                        name="contentU"
-                        autoComplete="off"
-                        value={contentReport.value}
-                        onChange={onChangeHandler}
-                      />
-                      <button>Báo cáo</button>
-                    </form>
-                  </>
-                ) : null}
+                      <div
+                        className={popupReport ? `overlay active` : "active"}
+                        onClick={() => {
+                          setPopupReport(false);
+                        }}
+                      ></div>
+                      <form
+                        className={
+                          popupReport ? "popup__news active" : "popup__news"
+                        }
+                        onSubmit={sendReport}
+                      >
+                        <div
+                          className="close"
+                          onClick={() => setPopupReport(false)}
+                        >
+                          X
+                        </div>
+                        <h4>Báo cáo đội bóng</h4>
+                        <div className={styles.checkbox}>
+                          <p>
+                            <input
+                              type="radio"
+                              id="test1"
+                              name="radio-group"
+                              value={"Đội bóng giả mạo"}
+                              onChange={onChangeHandler}
+                            />
+                            <label htmlFor="test1">Đội bóng giả mạo</label>
+                          </p>
+                          <p>
+                            <input
+                              type="radio"
+                              id="test2"
+                              name="radio-group"
+                              value={"Tên đội bóng không hợp lệ"}
+                              onChange={onChangeHandler}
+                            />
+                            <label htmlFor="test2">
+                              Tên đội bóng không hợp lệ
+                            </label>
+                          </p>
+                          <p>
+                            <input
+                              type="radio"
+                              id="test3"
+                              name="radio-group"
+                              value={"Quấy rối, bắt nạt"}
+                              onChange={onChangeHandler}
+                            />
+                            <label htmlFor="test3">Quấy rối, bắt nạt</label>
+                          </p>
+                          <p>
+                            <input
+                              type="radio"
+                              id="test4"
+                              name="radio-group"
+                              value={"Nội dung không phù hợp"}
+                              onChange={onChangeHandler}
+                            />
+                            <label htmlFor="test4">
+                              Nội dung không phù hợp
+                            </label>
+                          </p>
+                          <p>
+                            <input
+                              type="radio"
+                              id="test5"
+                              name="radio-group"
+                              value={"Lý do khác"}
+                              onChange={onChangeHandler}
+                            />
+                            <label htmlFor="test5">Lý do khác:</label>
+                          </p>
+                        </div>
+                        <p className="error errRp">{contentReport.error}</p>
+                        {contentCheckbox.value === "Lý do khác" ? (
+                          <textarea
+                            placeholder="Lý do báo cáo đội bóng này"
+                            className="content"
+                            name="contentU"
+                            autoComplete="off"
+                            value={contentReport.value}
+                            onChange={onChangeHandler}
+                          />
+                        ) : null}
+                        <button>Báo cáo</button>
+                      </form>
+                    </>
+                  ) : null}
                 </div>
                 <div className="headerteamdetail__tag">
                   <Link

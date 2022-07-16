@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
+import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
 export default function ModalChangeDateInSchedule(props) {
   const {
     hideShow,
@@ -12,7 +12,7 @@ export default function ModalChangeDateInSchedule(props) {
     dateUpdate,
     setDateUpdate,
     updateDateInMatch,
-    teamInUpdate
+    teamInUpdate,
   } = props;
 
   const [newStart, setNewStart] = useState(null);
@@ -21,15 +21,21 @@ export default function ModalChangeDateInSchedule(props) {
     // console.log(typeof new Date().toJSON())
     const dateUpdate = new Date(matchCurrent.matchDate);
     const dateCurrent = new Date();
-    if(+dateCurrent > +dateUpdate){
+    if (matchCurrent.matchDate !== null && +dateCurrent > +dateUpdate) {
       setNewStart(dateCurrent.toJSON());
-      setDateUpdate(matchCurrent != null &&  matchCurrent.matchDate != null ? matchCurrent.matchDate : dateCurrent.toJSON());
-    }else{
+      setDateUpdate(
+        matchCurrent != null && matchCurrent.matchDate != null
+          ? matchCurrent.matchDate
+          : dateCurrent.toJSON()
+      );
+    } else {
       setNewStart(startDate);
-      setDateUpdate(matchCurrent != null ? matchCurrent.matchDate : dateCurrent.toJSON());
+      setDateUpdate(
+        matchCurrent != null ? matchCurrent.matchDate : dateCurrent.toJSON()
+      );
       //setDateUpdate(matchCurrent != null &&  matchCurrent.matchDate != null ? matchCurrent.matchDate : startDate);
     }
-        //console.log(setNewStart(new Date().toJSON().split('T')[0] + "" + new Date().toJSON().split('T')[1]))
+    //console.log(setNewStart(new Date().toJSON().split('T')[0] + "" + new Date().toJSON().split('T')[1]))
     // const time = startDate.split(" ");
     // const date =
     //   new Date().getDate() < 10
@@ -57,20 +63,65 @@ export default function ModalChangeDateInSchedule(props) {
     //   setDateUpdate(matchCurrent != null &&  matchCurrent.matchDate != null ? matchCurrent.matchDate : startDate);
     // }
   }, [matchCurrent.id]);
-  const changeDate = (data) => {
-    const splitDateTime = data.split("T");
-    const numberHour = +splitDateTime[1].split(":")[0] + 7;
-    return (
-      splitDateTime[0].split("-")[2] +
-      "-" +
-      splitDateTime[0].split("-")[1] +
-      "-" +
-      splitDateTime[0].split("-")[0] +
-      " " +
-      numberHour +
-      ":" +
-      splitDateTime[1].split(":")[1]
-    );
+  const changeMinDate = (data) => {
+    if (data !== null) {
+      const splitDateTime = data.split(" ");
+      return (
+        splitDateTime[0].split("-")[0] +
+        " " +
+        7 +
+        ":" +
+        splitDateTime[1].split(":")[1]
+      );
+    }
+  };
+  const changeDate = (data, type) => {
+    let splitDateTime = null;
+    if (type === "maxDate") {
+      const maxTimeSlip = data.split(" ");
+      const newDate = new Date(
+        maxTimeSlip[0].split("/")[0] +
+          "-" +
+          maxTimeSlip[0].split("/")[1] +
+          "-" +
+          maxTimeSlip[0].split("/")[2] +
+          " " +
+          maxTimeSlip[1].split(":")[0] +
+          ":" +
+          maxTimeSlip[1].split(":")[1]
+      ).toJSON();
+      splitDateTime = newDate.split("T");
+
+      return (
+        splitDateTime[0].split("-")[1] +
+        "-" +
+        splitDateTime[0].split("-")[2] +
+        "-" +
+        
+        splitDateTime[0].split("-")[0] +
+        " " +
+        23 +
+        ":" +
+        splitDateTime[1].split(":")[1]
+      );
+    } else {
+      splitDateTime = data.split("T");
+      const numberHour =
+      +splitDateTime[1].split(":")[0] + 7 > 24
+        ? +splitDateTime[1].split(":")[0] + 7 - 24
+        : +splitDateTime[1].split(":")[0] + 7;
+      return (
+        splitDateTime[0].split("-")[2] +
+        "-" +
+        splitDateTime[0].split("-")[1] +
+        "-" +
+        splitDateTime[0].split("-")[0] +
+        " " +
+        numberHour +
+        ":" +
+        splitDateTime[1].split(":")[1]
+      );
+    }
   };
   return (
     <div
@@ -95,11 +146,15 @@ export default function ModalChangeDateInSchedule(props) {
               }}
             ></button>
           </div>
-          <p style={{
-            marginTop:20,
-            textAlign: "center",
-            fontWeight: 600
-          }}>{teamInUpdate}</p>
+          <p
+            style={{
+              marginTop: 20,
+              textAlign: "center",
+              fontWeight: 600,
+            }}
+          >
+            {teamInUpdate}
+          </p>
           {matchCurrent != null ? (
             matchCurrent.matchDate != null ? (
               <div
@@ -126,7 +181,16 @@ export default function ModalChangeDateInSchedule(props) {
                   min={newStart}
                   max={endDate}
                 /> */}
-                <DateTimePickerComponent id="datetimepicker" placeholder="Chỉnh sửa ngày giờ bắt đầu trận đấu" name="dateUpdate" value={dateUpdate} format="dd-MM-yyy HH:mm" onChange={onChangHandle} min={newStart}  max={endDate}/>
+                <DateTimePickerComponent
+                  id="datetimepicker"
+                  placeholder="Chỉnh sửa ngày giờ bắt đầu trận đấu"
+                  name="dateUpdate"
+                  value={dateUpdate}
+                  format="dd-MM-yyy HH:mm"
+                  onChange={onChangHandle}
+                  min={changeMinDate(newStart)}
+                  max={changeDate(endDate, "maxDate")}
+                />
               </div>
             ) : (
               <div
@@ -145,7 +209,16 @@ export default function ModalChangeDateInSchedule(props) {
                 >
                   Hiện tại trận đấu chưa có ngày giờ diễn ra hãy cập nhật nó
                 </p>
-                <DateTimePickerComponent id="datetimepicker" name="dateUpdate" value={dateUpdate} placeholder="Ngày giờ bắt đầu trận đấu" format="dd-MM-yyy HH:mm" onChange={onChangHandle} min={new Date().toJSON()} max={endDate}/>
+                <DateTimePickerComponent
+                  id="datetimepicker"
+                  name="dateUpdate"
+                  value={dateUpdate}
+                  placeholder="Ngày giờ bắt đầu trận đấu"
+                  format="dd-MM-yyy HH:mm"
+                  onChange={onChangHandle}
+                  min={changeMinDate(newStart)}
+                  max={changeDate(endDate, "maxDate")}
+                />
                 {/* <input
                   style={{
                     width: "50%",

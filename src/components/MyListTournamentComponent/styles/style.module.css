@@ -77,7 +77,6 @@
 }
 
 .item__tournament .status {
-  background-color: var(--green-bold);
   padding: 10px;
   height: max-content;
   width: 120px;
@@ -85,9 +84,16 @@
   right: 0;
   text-align: center;
   font-family: "Mulish-Bold";
+  color: green;
   border-radius: 5px;
 }
-
+.item__tournament .red{
+  color: #ea6061;
+}
+.item__tournament .grey{
+  color: #828282;
+  border: 1px dashed #828282;
+}
 .details {
   background-color: var(--green-bold);
   padding: 20px;
@@ -128,6 +134,8 @@
 .pagingTournament {
   width: max-content;
   margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,3 +167,105 @@ cursor: pointer;
   border: 1px solid transparent;
 }
 /* End PagingTournament */
+/**
+ * ==============================================
+ * Experiment-Gooey Effect
+ * Dot Shuttle
+ * ==============================================
+ */
+ .col_3{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -2px;
+ }
+
+ .dot_shuttle {
+  position: relative;
+  left: -5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 6px;
+  background-color: green;
+  color: transparent;
+  margin: -1px 0;
+  /* filter: blur(2px); */
+}
+
+.dot_shuttle::before, .dot_shuttle::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 6px;
+  background-color: green;
+  color: transparent;
+  /* filter: blur(2px); */
+}
+
+.dot_shuttle::before {
+  left: 5px;
+  animation: dotShuttle 2s infinite ease-out;
+}
+
+.dot_shuttle::after {
+  left: 20px;
+}
+
+@keyframes dotShuttle {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-30px);
+  }
+  75% {
+    transform: translateX(30px);
+  }
+}
+
+.col_2{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -2px;
+ }
+
+ .dot_shuttle2 {
+  position: relative;
+  left: -5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 6px;
+  background-color: #ea6061;
+  color: transparent;
+  margin: -1px 0;
+  /* filter: blur(2px); */
+}
+
+.dot_shuttle2::before, .dot_shuttle2::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 6px;
+  background-color: #ea6061;
+  color: transparent;
+  /* filter: blur(2px); */
+}
+
+.dot_shuttle2::before {
+  left: 10px;
+}
+
+.dot_shuttle2::after {
+  left: 20px;
+}
+
+ 
