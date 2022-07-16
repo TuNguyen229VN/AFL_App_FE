@@ -6,8 +6,9 @@ function MatchDetail(data) {
     <>
       <ScrollToTop />
       <div className={styles.match__detail}>
-        {data.allTeamA != null && data.allTeamB != null
-          ? data.allTeamA.map((item, index) => (
+        {
+        data.allTeamA != null && data.allTeamB != null?
+           data.allTeamA.map((item, index) => (
               <table className={styles.match__statics}>
                 <tr>
                   <th>
@@ -19,24 +20,24 @@ function MatchDetail(data) {
                   </th>
                 </tr>
                 <tr>
-                  <th>{item.teamScore}</th>
+                  <th>{data.scoreA ==0?item.teamScore:data.scoreA}</th>
                   <th>Bàn thắng</th>
-                  <th>{data.allTeamB[index].teamScore}</th>
+                  <th>{data.scoreB ==0?data.allTeamB[index].teamScore:data.scoreB}</th>
                 </tr>
                 <tr>
-                  <th>{data.allTeamB[index].teamScore}</th>
+                  <th>{data.scoreB ==0?data.allTeamB[index].teamScore:data.scoreB}</th>
                   <th>Bàn thua</th>
-                  <th>{item.teamScore}</th>
+                  <th>{data.scoreA ==0?item.teamScore:data.scoreA}</th>
                 </tr>
                 <tr>
-                  <th>{item.yellowCardNumber}</th>
+                  <th>{data.yellowA==0?item.yellowCardNumber:data.yellowA}</th>
                   <th>Thẻ vàng</th>
-                  <th>{data.allTeamB[index].yellowCardNumber}</th>
+                  <th>{data.yellowB==0?data.allTeamB[index].yellowCardNumber:data.yellowB}</th>
                 </tr>
                 <tr>
-                  <th>{item.redCardNumber}</th>
+                  <th>{data.redA==0?item.redCardNumber:data.redA}</th>
                   <th>Thẻ đỏ</th>
-                  <th>{data.allTeamB[index].redCardNumber}</th>
+                  <th>{data.redB==0?data.allTeamB[index].redCardNumber:data.redB}</th>
                 </tr>
               </table>
             ))
