@@ -50,7 +50,7 @@ function Match() {
   const [detailTeamA, setDetailTeamA] = useState(null);
   const [detailTeamB, setDetailTeamB] = useState(null);
   const getMatch = () => {
-    console.log("test");
+    
     setLoading(true);
     let afterURL = `TeamInMatch/matchId?matchId=${idMatch}`;
     let response = getAPI(afterURL);
@@ -58,7 +58,7 @@ function Match() {
       .then((res) => {
         const allMatch = res.data.teamsInMatch;
 
-        if (allMatch[0].teamScore > 0 || allMatch[0].teamScore > 0) {
+        if (allMatch[0].teamScore > 0 || allMatch[1].teamScore > 0) {
           getDataMatchDetail(allMatch[0].matchId, allMatch[0], allMatch[1]);
         }
         const teamB = [];

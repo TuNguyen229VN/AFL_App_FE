@@ -50,7 +50,14 @@ function RankTableTournamentDetail(props) {
           ranking.push(null);
         }
       }
-      console.log(ranking);
+
+      ranking.sort((teamA, teamB) => {
+        return (
+          teamB.point - teamA.point ||
+          teamB.differentPoint - teamA.differentPoint ||
+          teamB.winScoreNumber - teamA.winScoreNumber
+        );
+      });
     } else {
       const tableInTournament = tourDetail.groupNumber;
       const teamInTable = Math.floor(numberTeamPaticipate / tableInTournament);
@@ -93,12 +100,19 @@ function RankTableTournamentDetail(props) {
             allTeam.push(item);
           }
         }
-
+        allTeam.sort((teamA, teamB) => {
+          return (
+            teamB.point - teamA.point ||
+            teamB.differentPoint - teamA.differentPoint ||
+            teamB.winScoreNumber - teamA.winScoreNumber
+          );
+        });
         for (let j = 0; j < tableName[i].numberTeam; j++) {
           if (allTeam[j] === undefined) {
             allTeam.push(null);
           }
         }
+
         ranking.push({
           title: tableName[i].title,
           team: allTeam,
@@ -168,9 +182,12 @@ function RankTableTournamentDetail(props) {
             ) : (
               ranking.map((itemIn, indexIn) => {
                 return (
-                  <div style={{
-                    marginBottom: 20
-                  }} className="wrap__table">
+                  <div
+                    style={{
+                      marginBottom: 20,
+                    }}
+                    className="wrap__table"
+                  >
                     <div className="name__table">
                       <h5>{itemIn.title}</h5>
                     </div>

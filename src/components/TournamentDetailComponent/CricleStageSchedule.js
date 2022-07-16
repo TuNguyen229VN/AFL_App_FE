@@ -172,6 +172,7 @@ export default function CricleStageSchedule(props) {
       +splitDateTime[1].split(":")[0] + 7 > 24
         ? +splitDateTime[1].split(":")[0] + 7 - 24
         : +splitDateTime[1].split(":")[0] + 7;
+
     return (
       splitDateTime[0].split("-")[2] +
       "-" +

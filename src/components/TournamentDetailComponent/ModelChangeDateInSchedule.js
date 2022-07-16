@@ -91,15 +91,7 @@ export default function ModalChangeDateInSchedule(props) {
           maxTimeSlip[1].split(":")[1]
       ).toJSON();
       splitDateTime = newDate.split("T");
-      console.log(splitDateTime[0].split("-")[2] +
-      "-" +
-      splitDateTime[0].split("-")[1] +
-      "-" +
-      splitDateTime[0].split("-")[0] +
-      " " +
-      23 +
-      ":" +
-      splitDateTime[1].split(":")[1])
+
       return (
         splitDateTime[0].split("-")[1] +
         "-" +
@@ -114,6 +106,10 @@ export default function ModalChangeDateInSchedule(props) {
       );
     } else {
       splitDateTime = data.split("T");
+      const numberHour =
+      +splitDateTime[1].split(":")[0] + 7 > 24
+        ? +splitDateTime[1].split(":")[0] + 7 - 24
+        : +splitDateTime[1].split(":")[0] + 7;
       return (
         splitDateTime[0].split("-")[2] +
         "-" +
@@ -121,7 +117,7 @@ export default function ModalChangeDateInSchedule(props) {
         "-" +
         splitDateTime[0].split("-")[0] +
         " " +
-        23 +
+        numberHour +
         ":" +
         splitDateTime[1].split(":")[1]
       );
