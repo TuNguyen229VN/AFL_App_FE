@@ -11,7 +11,7 @@ import Livestream from "./Livestream";
 import MatchDetail from "./MatchDetail";
 import styles from "./styles/style.module.css";
 import { useNavigate } from "react-router-dom";
-
+import {getAllPlayerInTournamentByTeamInTournamentIdAPI} from "../../api/PlayerInTournamentAPI";
 import {HubConnectionBuilder , LogLevel} from '@microsoft/signalr';
 import {getMatchDetailByMatchIdAPI} from "../../api/MatchDetailAPI";
 import {saveRecordInMatchDetail} from "../../api/MatchDetailAPI";
@@ -73,9 +73,9 @@ function Match() {
       .then( (res) => {
         const allMatch = res.data.teamsInMatch;
 
-        if (allMatch[0].teamScore > 0 || allMatch[1].teamScore > 0) {
-          getDataMatchDetail(allMatch[0].matchId, allMatch[0], allMatch[1]);
-        }
+        // if (allMatch[0].teamScore > 0 || allMatch[1].teamScore > 0) {
+        //   getDataMatchDetail(allMatch[0].matchId, allMatch[0], allMatch[1]);
+        // }
         const teamB = [];
         const teamA = allMatch.reduce((accumulator, currentValue) => {
           if (currentValue.id % 2 === 1) {
@@ -123,7 +123,8 @@ function Match() {
     let response = getMatchDetailByMatchIdAPI(idMatch);
     response.then(res=>{
       console.log(res.data);
-      setDetail(res.data.matchDetails);
+      devidePlayer(res.data.matchDetails);
+      // setDetail(res.data.matchDetails);
       setLoading(false);
     })
     .catch(err => {
@@ -131,6 +132,45 @@ function Match() {
     })
   }
 
+  const devidePlayer = (data) =>{
+
+    const playerScoreA = [];
+    for (let item of data) {
+        if (playerScoreA.length > 0) {
+          const index = playerScoreA.findIndex(
+            (itemIn) =>
+              itemIn.idPlayerInTournament === item.playerInTournament.id &&
+              itemIn.actionMatchId === item.actionMatchId
+          );
+          if (index === -1) {
+            playerScoreA.push({
+              idPlayerInTournament: item.playerInTournament.id,
+              namePlayer:
+                item.playerInTournament.playerInTeam.footballPlayer.playerName,
+                playerAvatar: item.playerInTournament.playerInTeam.footballPlayer.playerAvatar,
+                teamId : item.playerInTournament.playerInTeam.teamId,
+              actionMatchId: item.actionMatchId,
+              minutesScore: [item.actionMinute],
+            });
+          } else {
+            playerScoreA[index].minutesScore.push(item.actionMinute);
+          }
+        } else {
+          playerScoreA.push({ 
+            idPlayerInTournament: item.playerInTournament.id,
+            namePlayer:
+              item.playerInTournament.playerInTeam.footballPlayer.playerName,
+              playerAvatar: item.playerInTournament.playerInTeam.footballPlayer.playerAvatar,
+                teamId : item.playerInTournament.playerInTeam.teamId,
+            actionMatchId: item.actionMatchId,
+            minutesScore: [item.actionMinute],
+          });
+        }
+      
+    }
+
+    setDetail(playerScoreA);
+  }
 
   const getDataMatchDetail = (data, teamA, teamB) => {
     const response = getMatchDetailByMatchIdAPI(data);
@@ -222,6 +262,8 @@ function Match() {
     });
     setDetailTeamB(playerScoreB);
   };
+
+  console.log(detailTeamA)
   // const getAllPlayerByTeamIdA = (teamId, teamInTournamentId) => {
   //   setLoading(true);
   //   const response = getAllPlayerByTeamIdAPI(teamId);
@@ -762,6 +804,7 @@ function Match() {
     }
   };
   const [team, setTeam] = useState(); 
+  const [mDetail,setMDetail] = useState();
   const [scoreA,setScoreA] = useState(0);
   const [scoreB,setScoreB] = useState(0);
   const [redA,setRedA] = useState(0);
@@ -804,10 +847,9 @@ function Match() {
 
       connection.on("MatchDetail", (mDt)=>{
         console.log(mDt)
-        console.log(detail);
-        setDetail(detail =>[...detail,mDt]);
-        console.log(mDt);
-        console.log("matchdt")
+        setMDetail(mDt);
+        // setDetail(detail =>[...detail,mDt]);
+        
       });
 
       connection.on("TeamInMatch", (tim)=>{
@@ -847,16 +889,43 @@ function Match() {
 
   useEffect(() => {
 
-    
-       if(team && allTeamA!= null&&team.id === allTeamA[0].id ){
+       if(team && mDetail &&detail && allTeamA!= null&&team.id === allTeamA[0].id ){
          setRedA(team.redCardNumber);
          setYellowA(team.yellowCardNumber);
          setScoreA(team.teamScore);
+
        }
-       if(team&& allTeamB!= null && team.id === allTeamB[0].id ){
+       if(team&& mDetail &&allTeamB!= null && team.id === allTeamB[0].id ){
          setRedB(team.redCardNumber);
          setYellowB(team.yellowCardNumber);
          setScoreB(team.teamScore);
+       }
+
+       if(mDetail &&detail){
+      
+              const index = detail.findIndex(
+                (itemIn) =>
+                  itemIn.idPlayerInTournament === mDetail.playerInTournament.id &&
+                  itemIn.actionMatchId === mDetail.actionMatchId
+              );
+              if (index === -1) {
+                const data ={
+                  idPlayerInTournament: mDetail.playerInTournament.id,
+                  namePlayer:
+                  mDetail.playerInTournament.playerInTeam.footballPlayer.playerName,
+                  playerAvatar: mDetail.playerInTournament.playerInTeam.footballPlayer.playerAvatar,
+                teamId : mDetail.playerInTournament.playerInTeam.teamId,
+                  actionMatchId: mDetail.actionMatchId,
+                  minutesScore: [mDetail.actionMinute],
+                }
+                 setDetail(detail =>[...detail,data]);
+                 console.log("a")
+              } else {
+                let minutesScore = [...detail[index].minutesScore];
+                minutesScore.push(mDetail.actionMinute);
+                setDetail(detail =>[...detail, detail[index].minutesScore=minutesScore]);
+              }
+  
        }
      
   },[team])
@@ -875,7 +944,6 @@ function Match() {
   const [minutesError, setMinutesError] = useState();
 
   const createMatchDetail =async (playerId, actionId,minutes)=>{
-    
     if(card == "yellow"){
       if(cardIndex != minuteIndex ){
         return;
@@ -896,7 +964,7 @@ function Match() {
     }
 
     if(playerId == minuteIndex){
-      if(minutes == "" || minutesError == undefined){
+      if(minutes == "" || minutes == undefined || minutes == null){
         setMinutesError("Vui lòng nhập số phút ...");
         return;
       }
@@ -1006,6 +1074,7 @@ function Match() {
   }
   const PopupPlayer = (players) => {
     const [minutes,setMinutes]=useState();
+    console.log(minutes);
      return (
       <div className={styles.popUpPlayerWrap}>
         <div className = {styles.playerPopup}>
@@ -1315,29 +1384,11 @@ function Match() {
 
                 {detail && allTeamA
                &&detail.map(item =>(
-                <>
-                {item.playerInTournament.playerInTeam.teamId == allTeamA[0].teamInTournament.teamId&&item.actionMatchId==1&&
-                  <p>
-                    {item.playerInTournament.playerInTeam.footballPlayer.playerName}
-                    <span>{item.actionMinute}'</span>
-                  </p>
-}
-                  </>
-               ))
-}
-               
-
-                  {detailTeamA !== null
-                    ? detailTeamA.map((item, index) => {
-                        return (
-                          <p
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                            key={index}
-                          >
-                            <img
+                <> 
+                {item.teamId == allTeamA[0].teamInTournament.teamId&&item.actionMatchId==1&&
+                  <div className={styles.playerAction}>
+                  <div className={styles.player}>
+                  <img
                               style={{
                                 width: 30,
                                 marginRight: 10,
@@ -1350,16 +1401,22 @@ function Match() {
                               }
                               alt="ball"
                             />
-
-                            {item.namePlayer}
-                            {item.minutesScore.map((itemMin, indexMin) => {
+                  <p>
+                    {item.namePlayer}
+                    
+                  </p>
+                  </div>
+              
+                  {item.minutesScore.map((itemMin, indexMin) => {
                               return <span key={indexMin}>{itemMin}'</span>;
                             })}
-                          </p>
-                        );
-                      })
-                    : null}
-
+              
+                  </div>
+}
+                  </>
+               ))
+}
+               
                 </div>
                 <div className={styles.logo__ball}>
                   <img src="/assets/icons/soccer-ball-retina.png" alt="ball" />
@@ -1367,50 +1424,39 @@ function Match() {
                 <div className={styles.player__B}>
 
                 {detail && allTeamB
-               &&detail.map(item =>(
-                <>
-                {item.playerInTournament.playerInTeam.teamId == allTeamB[0].teamInTournament.teamId&&item.actionMatchId==1&&
-                  <p>
-                    {item.playerInTournament.playerInTeam.footballPlayer.playerName}
-                    <span>{item.actionMinute}'</span>
-                  </p>
+               &&detail.map(item =>( 
+                <> 
+                {item.teamId == allTeamB[0].teamInTournament.teamId&&item.actionMatchId==1&&
+                 <div className={styles.playerAction}>
+                 <div className={styles.player}>
+                 <img
+                             style={{
+                               width: 30,
+                               marginRight: 10,
+                             }}
+                             src={
+                               item.actionMatchId === 1
+                                 ? "/assets/icons/soccer-ball-retina.png"
+                                 : item.actionMatchId === 2 ? "/assets/icons/yellow-card.png" : 
+                                 "/assets/icons/red-card.png"
+                             }
+                             alt="ball"
+                           />
+                 <p>
+                   {item.namePlayer}
+                   
+                 </p>
+                 </div>
+             
+                 {item.minutesScore.map((itemMin, indexMin) => {
+                             return <span key={indexMin}>{itemMin}'</span>;
+                           })}
+             
+                 </div>
 }
                   </>
                ))
 }
-
-                  {detailTeamB !== null
-                    ? detailTeamB.map((item, index) => {
-                        return (
-                          <p
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                            key={index}
-                          >
-                            <img
-                              style={{
-                                width: 30,
-                                marginRight: 10,
-                              }}
-                              src={
-                                item.actionMatchId === 1
-                                  ? "/assets/icons/soccer-ball-retina.png"
-                                  : item.actionMatchId === 2 ? "/assets/icons/yellow-card.png" : 
-                                  "/assets/icons/red-card.png"
-                              }
-                              alt="ball"
-                            />
-
-                            {item.namePlayer}
-                            {item.minutesScore.map((itemMin, indexMin) => {
-                              return <span key={indexMin}>{itemMin}'</span>;
-                            })}
-                          </p>
-                        );
-                      })
-                    : null}
 
                 </div>
               </div>
@@ -1448,17 +1494,27 @@ function Match() {
             <div className={styles.playerCard}>
               {detail && allTeamA
                &&detail.map(item =>(
-                <>
-                {item.playerInTournament.playerInTeam.teamId == allTeamA[0].teamInTournament.teamId&&item.actionMatchId>1&&
+                <> 
+                {item.teamId == allTeamA[0].teamInTournament.teamId&&item.actionMatchId>1&&
             <div className={styles.playerCard__item}>
-              <img src={item.playerInTournament.playerInTeam.footballPlayer.playerAvatar} alt="" />
-              <h3>{item.playerInTournament.playerInTeam.footballPlayer.playerName} </h3>
-              <div className = {styles.card}>
-            {item.actionMatchId==2 &&<div className={`${styles.yellow}`}></div>}
-            {item.actionMatchId==3 &&<div className={`${styles.red}`}></div>}
-            
-           </div>
-           <p>{item.actionMinute}'</p>
+              <img src={item.playerAvatar} alt="" />
+              <h3>{item.namePlayer} </h3>
+              <img
+                             style={{
+                               width: 30,
+                               marginRight: 10,
+                             }}
+                             src={
+                               item.actionMatchId === 1
+                                 ? "/assets/icons/soccer-ball-retina.png"
+                                 : item.actionMatchId === 2 ? "/assets/icons/yellow-card.png" : 
+                                 "/assets/icons/red-card.png"
+                             }
+                             alt="ball"
+                           />
+           {item.minutesScore.map((itemMin, indexMin) => {
+                              return <span style={{display:"block"}} key={indexMin}>{itemMin}'</span>;
+                            })}
             </div>
             
                 }</>
@@ -1468,17 +1524,27 @@ function Match() {
             </div>
             <div className={`${styles.playerCard} ${styles.reverse}`}>
               {detail && allTeamB&&detail.map(item =>(
-                <>
-                {item.playerInTournament.playerInTeam.teamId == allTeamB[0].teamInTournament.teamId&&item.actionMatchId>1&&
+                <> 
+                {item.teamId == allTeamB[0].teamInTournament.teamId&&item.actionMatchId>1&&
             <div className={styles.playerCard__item}>
-              <img src={item.playerInTournament.playerInTeam.footballPlayer.playerAvatar} alt="" />
-              <h3>{item.playerInTournament.playerInTeam.footballPlayer.playerName} </h3>
-              <div className = {styles.card}>
-            {item.actionMatchId==2 &&<div className={`${styles.yellow}`}></div>}
-            {item.actionMatchId==3 &&<div className={`${styles.red}`}></div>}
-            
-           </div>
-           <p>{item.actionMinute}'</p>
+              <img src={item.playerAvatar} alt="" />
+              <h3>{item.namePlayer} </h3>
+              <img
+                             style={{
+                               width: 30,
+                               marginRight: 10,
+                             }}
+                             src={
+                               item.actionMatchId === 1
+                                 ? "/assets/icons/soccer-ball-retina.png"
+                                 : item.actionMatchId === 2 ? "/assets/icons/yellow-card.png" : 
+                                 "/assets/icons/red-card.png"
+                             }
+                             alt="ball"
+                           />
+           {item.minutesScore.map((itemMin, indexMin) => {
+                              return <span className={styles.minute} key={indexMin}>{itemMin}'</span>;
+                            })}
             </div>
 }
 </>
