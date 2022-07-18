@@ -22,6 +22,7 @@ import { getFootballPlayerById } from "../../api/FootballPlayer";
 import { toast } from "react-toastify";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import axios from "axios";
+import postNotifacation from "../../api/NotificationAPI";
 function HeaderPlayerDetail() {
   const { idPlayer } = useParams();
   const location = useLocation();
@@ -130,20 +131,7 @@ function HeaderPlayerDetail() {
     response
       .then((res) => {
         if (res.status === 200) {
-          setStatusPaticipate("Chờ xét duyệt từ cầu thủ");
-          toast.success(
-            "Yêu cầu chiêu mộ cầu thủ thành công.Chờ phản hồi từ cầu thủ nhé!",
-            {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            }
-          );
-          setLoading(false);
+          postNotificationforTeamManager(+playerId, teamId, "teamManager")
         }
       })
       .catch((err) => {
@@ -209,12 +197,20 @@ function HeaderPlayerDetail() {
         console.error(err);
       });
   };
-  const sendMailPlayerAccept = (playerId, teamId) => {
-    const response = PlayerAcceptAPI(+playerId, teamId);
-    response
-      .then((res) => {
-        if (res.status === 200) {
-          //setStatusAdd(true);
+  const postNotificationforTeamManager = async (playerId, teamId, type) => {
+    const data = {
+      content:
+        type === "player"
+          ? "Cầu thủ đã đồng ý tham gia đội bóng của bạn.Xem ngay"
+          : "Có đội bóng muốn chiêu mộ bạn về đội của họ.Xem ngay",
+      userId: type === "player" ? teamId : playerId,
+      tournamentId: 0,
+      teamId: teamId,
+    };
+    try {
+      const response = await postNotifacation(data);
+      if (response.status === 201) {
+        if (type === "player") {
           getTeamByIdPlayer(active);
           setLoading(false);
           toast.success("Chấp nhận đội bóng thành công", {
@@ -226,6 +222,35 @@ function HeaderPlayerDetail() {
             draggable: true,
             progress: undefined,
           });
+        } else {
+          setStatusPaticipate("Chờ xét duyệt từ cầu thủ");
+          toast.success(
+            "Yêu cầu chiêu mộ cầu thủ thành công.Chờ phản hồi từ cầu thủ nhé!",
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            }
+          );
+          setLoading(false);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const sendMailPlayerAccept = (playerId, teamId) => {
+    
+    const response = PlayerAcceptAPI(+playerId, teamId);
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          //setStatusAdd(true);
+          postNotificationforTeamManager(+playerId, teamId, "player");
         }
       })
       .catch((err) => {
@@ -253,16 +278,16 @@ function HeaderPlayerDetail() {
       })
       .then((err) => {
         console.error(err);
-        setLoading(false);
-        toast.error(err.response.data.message, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        //setLoading(false);
+        // toast.error(err.response.data.message, {
+        //   position: "top-right",
+        //   autoClose: 3000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        // });
       });
   };
 

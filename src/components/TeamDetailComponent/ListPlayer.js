@@ -14,7 +14,8 @@ import ModelAcceptDeletePlayer from "./ModelAcceptDeletePlayer";
 import { Link } from "react-router-dom";
 import { TeamAcceptAPI } from "../../api/System";
 function ListPlayer(props) {
-  const { id, numberPlayerInTeam, idHost, getInforTeam } = props;
+  const { id, numberPlayerInTeam, idHost, getInforTeam, postNotifacation } =
+    props;
   const [loading, setLoading] = useState(true);
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [playerInTeam, setPlayerInTeam] = useState(null);
@@ -113,14 +114,14 @@ function ListPlayer(props) {
     }
   };
 
-  const updateStatusFootballPlayer = (id, status,idPlayer) => {
+  const updateStatusFootballPlayer = (id, status, idPlayer) => {
     setLoadingAdd(true);
     const response = upDatePlayerInTeamAPI(id, status);
     response
       .then((res) => {
         if (res.status === 200) {
           getInforTeam();
-          sendMailTeamAccpet(idPlayer,idHost);
+          sendMailTeamAccpet(idPlayer, idHost);
         }
       })
       .catch((err) => {
@@ -137,10 +138,17 @@ function ListPlayer(props) {
         });
       });
   };
-  const sendMailTeamAccpet = (playerId, teamId) => {
-    const respone = TeamAcceptAPI(playerId, teamId);
-    respone.then(res => {
-      if(res.status === 200){
+
+  const postNotificationforTeamManager = async (playerId, teamId) => {
+    const data = {
+      content: "Quản lý đội bóng đã chấp nhận lời đề nghị tham gia đội bóng từ bạn. Xem ngay",
+      userId: playerId,
+      tournamentId: 0,
+      teamId: teamId,
+    };
+    try {
+      const response = await postNotifacation(data);
+      if (response.status === 201) {
         setLoadingAdd(false);
         setDeleteSuccessFul(true);
         toast.success("Thêm cầu thủ vào đội bóng thành công", {
@@ -153,11 +161,24 @@ function ListPlayer(props) {
           progress: undefined,
         });
       }
-    }).catch(err => {
-      setLoadingAdd(false);
+    } catch (err) {
       console.error(err);
-    }) 
-  }
+    }
+  };
+
+  const sendMailTeamAccpet = (playerId, teamId) => {
+    const respone = TeamAcceptAPI(playerId, teamId);
+    respone
+      .then((res) => {
+        if (res.status === 200) {
+          postNotificationforTeamManager(playerId, teamId);
+        }
+      })
+      .catch((err) => {
+        setLoadingAdd(false);
+        console.error(err);
+      });
+  };
   return (
     <>
       <div className="teamdetail__content listPlayer">
@@ -165,7 +186,11 @@ function ListPlayer(props) {
 
         <div>
           <div className="listPlayer__total">
-           {active === "Cầu thủ"? <h2>Có {numberPlayerInTeam} thành viên</h2>:<h2></h2>}
+            {active === "Cầu thủ" ? (
+              <h2>Có {numberPlayerInTeam} thành viên</h2>
+            ) : (
+              <h2></h2>
+            )}
 
             <div
               className="schedule__tour"
@@ -289,48 +314,54 @@ function ListPlayer(props) {
                                 </div>
                               </div>
                             ) : null}
-                            <Link to={`/playerDetail/${item.id}/myTeamInPlayer`}>
-                            <div className="avt">
-                              <img
-                                style={{
-                                  objectFit: "cover",
-                                }}
-                                src={item.playerAvatar}
-                                alt="dev"
-                              />
-                            </div>
+                            <Link
+                              to={`/playerDetail/${item.id}/myTeamInPlayer`}
+                            >
+                              <div className="avt">
+                                <img
+                                  style={{
+                                    objectFit: "cover",
+                                  }}
+                                  src={item.playerAvatar}
+                                  alt="dev"
+                                />
+                              </div>
                             </Link>
                             <div className="des">
-                            <Link to={`/playerDetail/${item.id}/myTeamInPlayer`}>
-                              <p className="namePlayer">
-                                <span>Tên:</span>
-                                {item.playerName}
-                              </p>
-                              <p className="genderPlayer">
-                                <span>Giới tính:</span>
-                                {item.gender === "Male" ? "Nam" : "Nữ"}
-                              </p>
-                              <p className="mailPlayer">
-                                <span>Email:</span>
-                                <span className="namePlayerInTeam">
-                                  {item.userVM.email}
-                                </span>
-                              </p>
-                              <p className="phonePlayer">
-                                <span>Sdt:</span>
-                                {item.userVM.phone}
-                              </p>
-                              <p className="dobPlayer">
-                                <span>Ngày sinh:</span>
-                                {item.userVM.dateOfBirth != null ? item.userVM.dateOfBirth.split(" ")[0] : null}
-                                {/* {item.userVM.dateOfBirth != null ? item.userVM.dateOfBirth
+                              <Link
+                                to={`/playerDetail/${item.id}/myTeamInPlayer`}
+                              >
+                                <p className="namePlayer">
+                                  <span>Tên:</span>
+                                  {item.playerName}
+                                </p>
+                                <p className="genderPlayer">
+                                  <span>Giới tính:</span>
+                                  {item.gender === "Male" ? "Nam" : "Nữ"}
+                                </p>
+                                <p className="mailPlayer">
+                                  <span>Email:</span>
+                                  <span className="namePlayerInTeam">
+                                    {item.userVM.email}
+                                  </span>
+                                </p>
+                                <p className="phonePlayer">
+                                  <span>Sdt:</span>
+                                  {item.userVM.phone}
+                                </p>
+                                <p className="dobPlayer">
+                                  <span>Ngày sinh:</span>
+                                  {item.userVM.dateOfBirth != null
+                                    ? item.userVM.dateOfBirth.split(" ")[0]
+                                    : null}
+                                  {/* {item.userVM.dateOfBirth != null ? item.userVM.dateOfBirth
                                   .split("-")[2]
                                   .split("T")[0] +
                                   "/" +
                                   item.userVM.dateOfBirth.split("-")[1] +
                                   "/" +
                                   item.userVM.dateOfBirth.split("-")[0] : null} */}
-                              </p>
+                                </p>
                               </Link>
                               {active === "Chờ duyệt" && idHost === id ? (
                                 <div
@@ -374,7 +405,8 @@ function ListPlayer(props) {
                                     onClick={() => {
                                       updateStatusFootballPlayer(
                                         item.idPlayerInTeam,
-                                        "true", item.id
+                                        "true",
+                                        item.id
                                       );
                                       setDeleteSuccessFul(false);
                                     }}
@@ -457,32 +489,32 @@ function ListPlayer(props) {
           </div>
         </div>
 
-        {playerInTeam != null && playerInTeam.length > 0 ?
-        <nav
-        aria-label="Page navigation example"
-        className={styles.pagingTournament}
-      >
-        <ReactPaginate
-          previousLabel={"Trang trước"}
-          nextLabel={"Trang sau"}
-          containerClassName="pagination"
-          activeClassName={styles.active}
-          pageClassName={styles.pageItem}
-          nextClassName={styles.pageItem}
-          previousClassName={styles.pageItem}
-          breakLabel={"..."}
-          pageCount={Math.ceil(count / 8)}
-          marginPagesDisplayed={3}
-          onPageChange={handlePageClick}
-          pageLinkClassName={styles.pagelink}
-          previousLinkClassName={styles.pagelink}
-          nextLinkClassName={styles.pagelink}
-          breakClassName={styles.pageItem}
-          breakLinkClassName={styles.pagelink}
-          pageRangeDisplayed={2}
-        />
-      </nav>
-      : null}
+        {playerInTeam != null && playerInTeam.length > 0 ? (
+          <nav
+            aria-label="Page navigation example"
+            className={styles.pagingTournament}
+          >
+            <ReactPaginate
+              previousLabel={"Trang trước"}
+              nextLabel={"Trang sau"}
+              containerClassName="pagination"
+              activeClassName={styles.active}
+              pageClassName={styles.pageItem}
+              nextClassName={styles.pageItem}
+              previousClassName={styles.pageItem}
+              breakLabel={"..."}
+              pageCount={Math.ceil(count / 8)}
+              marginPagesDisplayed={3}
+              onPageChange={handlePageClick}
+              pageLinkClassName={styles.pagelink}
+              previousLinkClassName={styles.pagelink}
+              nextLinkClassName={styles.pagelink}
+              breakClassName={styles.pageItem}
+              breakLinkClassName={styles.pagelink}
+              pageRangeDisplayed={2}
+            />
+          </nav>
+        ) : null}
 
         {loadingAdd === true ? <LoadingAction /> : null}
       </div>

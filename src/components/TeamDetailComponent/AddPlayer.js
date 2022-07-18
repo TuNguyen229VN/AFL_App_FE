@@ -4,10 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "react-toastify/dist/ReactToastify.css";
 const AddPlayer = (props) => {
-  
-
-
-
   const {addPlayerInListPlayer,onClickAddPlayer,hideShow,setHideShowAdd} = props;
   useEffect(() => {
     if(hideShow === false){

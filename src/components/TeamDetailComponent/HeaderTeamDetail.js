@@ -20,6 +20,8 @@ import { PlayerRegisterAPI, TeamAcceptAPI } from "../../api/System";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import axios from "axios";
 import TournamentTeamDetail from "./TournamentTeamDetail";
+import postNotifacation from "../../api/NotificationAPI";
+import { async } from "@firebase/util";
 
 function HeaderTeamDetail() {
   const { idTeam } = useParams();
@@ -124,6 +126,7 @@ function HeaderTeamDetail() {
           gender={team.teamGender}
           numberPlayerInTeam={team.numberPlayerInTeam}
           getInforTeam={getInforTeam}
+          postNotifacation={postNotifacation}
         />
       );
     }
@@ -137,26 +140,41 @@ function HeaderTeamDetail() {
       return <TournamentTeamDetail user={user} team={team} />;
     }
   };
-
+  const postNotificationforTeamManager = async () => {
+    const data = {
+      content: "Có cầu thủ muốn tham gia vào đội bóng.Xem ngay",
+      userId: idTeam,
+      tournamentId: 0,
+      teamId: idTeam,
+    };
+    try {
+      const response = await postNotifacation(data);
+      if (response.status === 201) {
+        setLoadingAc(false);
+        setStatusPaticipate("Chờ xét duyệt từ đội bóng");
+        toast.success(
+          "Yêu cầu tham gia đội bóng thành công.Chờ phản hồi từ đội bóng nhé!",
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const sendMailPlayerRequestInTeam = (iPdlayer, idTeam) => {
     const respone = PlayerRegisterAPI(iPdlayer, +idTeam);
     respone
       .then((res) => {
         if (res.status === 200) {
-          setLoadingAc(false);
-          setStatusPaticipate("Chờ xét duyệt từ đội bóng");
-          toast.success(
-            "Yêu cầu tham gia đội bóng thành công.Chờ phản hồi từ đội bóng nhé!",
-            {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            }
-          );
+          postNotificationforTeamManager();
         }
       })
       .catch((err) => {
