@@ -506,6 +506,7 @@ function TournamentTeamDetail(props) {
                               setCheckRegistertour={setCheckRegistertour}
                               hideShow={hideShowRegis}
                               setHideShow={setHideShowRegis}
+                              team={team !== null ? team : null}
                               idUser={
                                 user != undefined ? user.userVM.id : undefined
                               }

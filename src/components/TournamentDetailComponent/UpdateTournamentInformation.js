@@ -29,13 +29,19 @@ import ModalNotiUpdate from "./ModalNotiUpdate";
 import { async } from "@firebase/util";
 import { deleteTeamInMatchByTourIdAPI } from "../../api/TeamInMatchAPI";
 import { deleteMatchByTourIdAPI, createSchedule } from "../../api/MatchAPI";
-import {getTeamPaticaipateInTourByTourIDAPI,updateTeamInScheduleAPI} from "../../api/TeamInTournamentAPI";
-const UpdateTournamentInformation = (props) => {
+import {
+  getTeamPaticaipateInTourByTourIDAPI,
+  updateTeamInScheduleAPI,
+} from "../../api/TeamInTournamentAPI";
+import postNotifacation from "../../api/NotificationAPI";
+const UpdateTournamentInformation = () => {
   let navigate = useNavigate();
   const location = useLocation();
   const [hideShowNoti, setHideShowNoti] = useState(false);
   const addressTour = location.state.address;
   const lengthTeamPaticipate = location.state.lengthTeamPaticipate;
+  const allTeam = location.state.allTeam;
+  const tourDetail = location.state.tourDetail;
   const idTournament = location.state.id;
   const [loadingAction, setLoadingAction] = useState(false);
   const [team, setTeam] = useState(null);
@@ -115,7 +121,7 @@ const UpdateTournamentInformation = (props) => {
     value: "2",
     error: null,
   });
-  
+
   const [beginGroupNumber, setBeginGroupNumber] = useState(null);
   const [btnActive, setBtnActive] = useState(false);
   const [resetProvice, setResetProvice] = useState(-1);
@@ -211,7 +217,7 @@ const UpdateTournamentInformation = (props) => {
         value: new Date(team.registerEndDate).toISOString().slice(0, 10),
         error: null,
       });
-      
+
       setStartTime({
         value: new Date(team.tournamentStartDate).toISOString().slice(0, 10),
         error: null,
@@ -399,34 +405,49 @@ const UpdateTournamentInformation = (props) => {
       }
     }
   };
-  const getTeamInTourByTourid = async() => {
-    try{
-      const response = await getTeamPaticaipateInTourByTourIDAPI(idTournament);
-      if(response.status === 200){
-          const teamInTournament = response.data.teamInTournaments;
-          for(const index in teamInTournament){
-            await addTeamInSchedule(teamInTournament[index].id,true,+index+1);
-          }
-          setTimeout(() => {
-            navigate(`/tournamentDetail/${idTournament}/inforTournamentDetail`);
-            setLoadingAction(false);
-            toast.success("Thay đổi thông tin giải đấu thành công", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          },2000);
-      }
-    }catch(err){
+  const postNotificationforTeamManager = async (idTeam, idTour, idUser) => {
+    const data = {
+      content: `${tourDetail.tournamentName} thay đổi thông tin giải đấu. Xem ngay`,
+      userId: idUser,
+      tournamentId: idTour,
+      teamId: idTeam,
+    };
+    try {
+      const response = await postNotifacation(data);
+    } catch (err) {
       console.error(err);
     }
-  }
-  const addTeamInSchedule = (idTeamInTour, status,index) => {
-    
+  };
+  const getTeamInTourByTourid = async () => {
+    try {
+      const response = await getTeamPaticaipateInTourByTourIDAPI(idTournament);
+      if (response.status === 200) {
+        const teamInTournament = response.data.teamInTournaments;
+        for (const index in teamInTournament) {
+          await addTeamInSchedule(teamInTournament[index].id, true, +index + 1);
+        }
+        setTimeout(() => {
+          navigate(`/tournamentDetail/${idTournament}/inforTournamentDetail`);
+          setLoadingAction(false);
+          toast.success("Thay đổi thông tin giải đấu thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }, 2000);
+        for (const item of allTeam) {
+          await postNotificationforTeamManager(item.id, tourDetail.id, item.id);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const addTeamInSchedule = (idTeamInTour, status, index) => {
     const data = {
       teamInTournamentId: idTeamInTour,
       typeUpdate: status,
@@ -437,7 +458,6 @@ const UpdateTournamentInformation = (props) => {
     response
       .then((res) => {
         if (res.status === 200) {
-          
         }
       })
       .catch((err) => {
@@ -448,11 +468,8 @@ const UpdateTournamentInformation = (props) => {
     const response = createSchedule(id);
     response
       .then((res) => {
-        
         if (res.status === 200) {
-          
           if (lengthTeamPaticipate > 0) {
-            
             getTeamInTourByTourid();
           } else {
             navigate(`/tournamentDetail/${id}/inforTournamentDetail`);
@@ -496,6 +513,7 @@ const UpdateTournamentInformation = (props) => {
         await deleteMatch();
       }
     } catch (err) {
+      setLoading(false);
       console.error(err);
     }
   };
@@ -694,11 +712,11 @@ const UpdateTournamentInformation = (props) => {
         });
         break;
       case "teamPaticipate":
-        if(competitionFormat.value === "GroupStage" && value < 12){
+        if (competitionFormat.value === "GroupStage" && value < 12) {
           setGroupNumber({
-            value:"2",
-            error:null
-          })
+            value: "2",
+            error: null,
+          });
         }
         setTeamPaticipate({
           ...teamPaticipate,
@@ -1080,11 +1098,18 @@ const UpdateTournamentInformation = (props) => {
                     id="timeCloseRegister"
                     type="date"
                     name="closeRegister"
-                    value={closeRegister.value == null ? "" : closeRegister.value}
-                    min={new Date().toJSON().split('T')[0]}
+                    value={
+                      closeRegister.value == null ? "" : closeRegister.value
+                    }
+                    min={new Date().toJSON().split("T")[0]}
                     onChange={onChangeHandler}
-                    disabled={status === 0 && (new Date(closeRegister.value).getTime() <=
-                      new Date().getTime()) ? "" : "disable"}
+                    disabled={
+                      status === 0 &&
+                      new Date(closeRegister.value).getTime() <=
+                        new Date().getTime()
+                        ? ""
+                        : "disable"
+                    }
                     required
                   />
                 </div>
@@ -1119,18 +1144,22 @@ const UpdateTournamentInformation = (props) => {
                     className={styles.timeStart_input}
                     id="startTime"
                     type="date"
-                    min={status === 0 ? closeRegister.value : new Date().toJSON().split('T')[0]}
+                    min={
+                      status === 0
+                        ? closeRegister.value
+                        : new Date().toJSON().split("T")[0]
+                    }
                     name="startTime"
                     value={startTime.value === null ? "" : startTime.value}
-                    disabled={
-                       
-                       (new Date(closeRegister.value).getTime() <=
-                      new Date().getTime()) && status === 0 && closeRegister.value != null
-                        ? ""
-                        : status === -1
-                        ? ""
-                        : "disable"
-                    }
+                    // disabled={
+
+                    //    (new Date(closeRegister.value).getTime() <=
+                    //   new Date().getTime()) && status === 0 && closeRegister.value != null
+                    //     ? ""
+                    //     : status === -1
+                    //     ? ""
+                    //     : "disable"
+                    // }
                     onChange={onChangeHandler}
                   />
                 </div>
@@ -1169,9 +1198,9 @@ const UpdateTournamentInformation = (props) => {
                     name="endTime"
                     value={endTime.value === null ? "" : endTime.value}
                     min={startTime.value}
-                    disabled={(new Date(closeRegister.value).getTime() <=
-                      new Date().getTime()) && startTime.value != null ? "" : "disable"}
-                    onChange={onChangeHandler}
+                    // disabled={(new Date(closeRegister.value).getTime() <=
+                    //   new Date().getTime()) && startTime.value != null ? "" : "disable"}
+                    // onChange={onChangeHandler}
                   />
                 </div>
               </div>

@@ -27,6 +27,7 @@ function TeamInTournament(props) {
     deleteTeamInTour,
     hideShowDeleteTeamOut,
     setHideShowDeleteTeamOut,
+    postNotificationforTeamManager,
   } = props;
 
   const [active, setactive] = useState(1);
@@ -97,7 +98,7 @@ function TeamInTournament(props) {
           teamInTourPrivate[i].status === "Chờ duyệt private"
         ) {
           check = 1;
-          console.log("asdasd")
+          console.log("asdasd");
           break;
         } else if (
           item.id === teamInTourPrivate[i].teamId &&
@@ -110,6 +111,7 @@ function TeamInTournament(props) {
     }
     return check;
   };
+
   const addTeamInTournament = (idTeam) => {
     setLoading(true);
     const data = {
@@ -123,6 +125,12 @@ function TeamInTournament(props) {
     response
       .then((res) => {
         if (res.status === 201) {
+          postNotificationforTeamManager(
+            idTeam,
+            tourDetail.id,
+            idTeam,
+            "waitPrivate"
+          );
           toast.success("Chiêu mộ đội bóng thành công", {
             position: "top-right",
             autoClose: 3000,
@@ -134,6 +142,7 @@ function TeamInTournament(props) {
           });
           setCheck(!check);
           setLoading(false);
+
           //console.log(res.data);
         }
       })
@@ -455,7 +464,7 @@ function TeamInTournament(props) {
                                   cursor: "pointer",
                                 }}
                                 onClick={() => {
-                                  acceptTeamInTournament(item, true);
+                                  acceptTeamInTournament(item, true, item.id);
                                 }}
                                 type="submit"
                                 className="btn_acceptTeam"
@@ -629,11 +638,7 @@ function TeamInTournament(props) {
                                 </p>
                               ) : null}
                               {checkTeamInTourPrivate(item) === 2 ? (
-                                <p
-                                  className="buttonThamGia"                               
-                                >
-                                  Đã tham gia
-                                </p>
+                                <p className="buttonThamGia">Đã tham gia</p>
                               ) : null}
                             </div>
                             {/* </Link> */}

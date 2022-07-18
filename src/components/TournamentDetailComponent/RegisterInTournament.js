@@ -6,7 +6,7 @@ import { addTeamInTournamentAPI } from "../../api/TeamInTournamentAPI";
 import { addPlayerInTournamentAPI } from "../../api/PlayerInTournamentAPI";
 import { NotiFootballInTournamentAPI } from "../../api/System";
 export default function RegisterInTournament(props) {
-  const { idUser, tourDetail, setCheckRegistertour, hideShow, setHideShow } =
+  const { idUser, tourDetail, setCheckRegistertour, hideShow, setHideShow,postNotificationforTeamManager } =
     props;
   const [playerInTeam, setPlayerInTeam] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -183,6 +183,7 @@ export default function RegisterInTournament(props) {
       draggable: true,
       progress: undefined,
     });
+    postNotificationforTeamManager(idUser,tourDetail.id,tourDetail.userId,"team");
   };
   // const checkChoice = (index) => {
   //   const allPlayer = playerInTeam;

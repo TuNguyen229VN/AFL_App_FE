@@ -5,7 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getAPI } from "../../api";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import ReactPaginate from "react-paginate";
-function NewsTournamentDetail(data) {
+function NewsTournamentDetail(data,props) {
+  const {allTeam,postNotificationforTeamManager} = data;
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
@@ -17,6 +18,7 @@ function NewsTournamentDetail(data) {
     error: "",
     img: "",
   });
+  
   const [contentUpdate, setContentUpdate] = useState({ value: "", error: "" });
   const [imgUpdate, setImageUpdate] = useState({
     value: "",
@@ -102,6 +104,9 @@ function NewsTournamentDetail(data) {
         }
       );
       if (response.status === 201) {
+        for(const item of allTeam){
+          await postNotificationforTeamManager(item.id,idTour,item.id,"news")
+        }
         setImage({ value: "", img: "", error: "" });
         setContent({ value: "", error: "" });
         setPopupCreateNews(false);

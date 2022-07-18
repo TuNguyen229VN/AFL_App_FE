@@ -34,6 +34,7 @@ import {
 import { toast } from "react-toastify";
 import { getUserByIdAPI } from "../../api/User";
 import CountDown from "./CountDown";
+import postNotifacation from "../../api/NotificationAPI";
 function HeaderTournamentDetail() {
   const now = new Date().getTime();
   const { idTour } = useParams();
@@ -41,6 +42,7 @@ function HeaderTournamentDetail() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+
   const [hideShowDelete, setHideShowDelete] = useState(false);
   const [hideShow, setHideShow] = useState(false);
   const [checkRegisterTour, setCheckRegistertour] = useState(false);
@@ -68,7 +70,7 @@ function HeaderTournamentDetail() {
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
-
+        console.log(res.data)
         setTourDetail(res.data);
         getUserById(res.data.userId);
         setLoading(false);
@@ -188,6 +190,7 @@ function HeaderTournamentDetail() {
           deleteTeamInTour={deleteTeamInTour}
           hideShowDeleteTeamOut={hideShowDeleteTeamOut}
           setHideShowDeleteTeamOut={setHideShowDeleteTeamOut}
+          postNotificationforTeamManager={postNotificationforTeamManager}
         />
       );
     }
@@ -200,12 +203,18 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/commentTournamentDetail`
     ) {
-      return <CommentTournamentDetail  />;
+      return <CommentTournamentDetail />;
     }
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/newsTournamentDetail`
     ) {
-      return <NewsTournamentDetail idTour={tourDetail.userId} />;
+      return (
+        <NewsTournamentDetail
+          postNotificationforTeamManager={postNotificationforTeamManager}
+          idTour={tourDetail.userId}
+          allTeam={allTeam}
+        />
+      );
     }
   };
 
@@ -227,7 +236,46 @@ function HeaderTournamentDetail() {
       return response.data;
     }
   };
-
+  const postNotificationforTeamManager = async (
+    idTeam,
+    idTour,
+    idUser,
+    type
+  ) => {
+    const data = {
+      content:
+        type === "team"
+          ? "Có đội bóng muốn tham gia giải đấu của bạn.Xem ngay"
+          : type === "tour"
+          ? `${tourDetail.tournamentName} đã chấp nhận lời mời tham gia giải đấu từ đội bóng của bạn. Xem ngay`
+          : type === "news"
+          ? `${tourDetail.tournamentName} đăng tin tức mới ở giải đấu của họ.Xem ngay`
+          : `${tourDetail.tournamentName} mời đội bóng của bạn tham gia giải đấu của họ.Xem ngay`,
+      userId: idUser,
+      tournamentId: idTour,
+      teamId: idTeam,
+    };
+    try {
+      const response = await postNotifacation(data);
+      if (response.status === 201) {
+        if (type === "tour") {
+          setHideShowDelete(false);
+          getAllTeamInTournamentByTourId();
+          toast.success("Đội bóng đã được thêm vào giải", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   useEffect(() => {
     if (user != undefined) {
       checkTeamPaticipate();
@@ -345,34 +393,24 @@ function HeaderTournamentDetail() {
         });
       });
   };
-  const addTeamInSchedule = (idTeamInTour, status) => {
+  const addTeamInSchedule = (idTeamInTour, status, idTeam) => {
     const data = {
       teamInTournamentId: idTeamInTour,
       typeUpdate: status,
-      teamIndex:tourDetail.numberTeamInTournament + 1,
+      teamIndex: tourDetail.numberTeamInTournament + 1,
     };
     const response = updateTeamInScheduleAPI(data);
     response
       .then((res) => {
         if (res.status === 200) {
-          setHideShowDelete(false);
-          getAllTeamInTournamentByTourId();
-          toast.success("Đội bóng đã được thêm vào giải", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          postNotificationforTeamManager(idTeam, tourDetail.id, idTeam, "tour");
         }
       })
       .catch((err) => {
         console.error(err);
       });
   };
-  const acceptTeamInTournament = (teamInTournament, status) => {
+  const acceptTeamInTournament = (teamInTournament, status, idTeam) => {
     if (teamInTournament != null) {
       const data = {
         ...teamInTournament.teamInTournament,
@@ -384,7 +422,11 @@ function HeaderTournamentDetail() {
         .then((res) => {
           if (res.status === 201) {
             getTourDetail();
-            addTeamInSchedule(teamInTournament.teamInTournament.id, true);
+            addTeamInSchedule(
+              teamInTournament.teamInTournament.id,
+              true,
+              idTeam
+            );
           }
         })
         .catch((err) => {
@@ -504,10 +546,10 @@ function HeaderTournamentDetail() {
   const sendReport = async (e) => {
     setLoadingAc(true);
     e.preventDefault();
-    console.log(contentCheckbox.value)
+    console.log(contentCheckbox.value);
     if (
       (contentReport.value === null && contentCheckbox.value === null) ||
-      (contentReport.value === "" && contentCheckbox.value === "")||
+      (contentReport.value === "" && contentCheckbox.value === "") ||
       (contentReport.value === "" && contentCheckbox.value === "Lý do khác")
     ) {
       toast.error("Không được để trống", {
@@ -673,6 +715,9 @@ function HeaderTournamentDetail() {
                             address: tourDetail.footballFieldAddress,
                             lengthTeamPaticipate:
                               tourDetail.numberTeamInTournament,
+                              allTeam:allTeam,
+                              tourDetail:tourDetail
+                             
                           }}
                           className="btn_UpdateTournament"
                           style={{
@@ -728,6 +773,9 @@ function HeaderTournamentDetail() {
                           </button>
                           <RegisterInTournament
                             tourDetail={tourDetail}
+                            postNotificationforTeamManager={
+                              postNotificationforTeamManager
+                            }
                             setCheckRegistertour={setCheckRegistertour}
                             hideShow={hideShow}
                             setHideShow={setHideShow}
@@ -963,69 +1011,77 @@ function HeaderTournamentDetail() {
                         <label htmlFor="test5">Lý do khác:</label>
                       </p>
                     </div>
-                  ) : <div className={styles.checkbox}>
-                  <p>
-                    <input
-                      type="radio"
-                      id="test1"
-                      name="radio-group"
-                      value={"Giải đấu giả mạo"}
-                      onChange={onChangeHandler}
-                    />
-                    <label htmlFor="test1">Giải đấu giả mạo</label>
-                  </p>
-                  <p>
-                    <input
-                      type="radio"
-                      id="test2"
-                      name="radio-group"
-                      value={"Tên giải đấu không hợp lệ"}
-                      onChange={onChangeHandler}
-                    />
-                    <label htmlFor="test2">Thời gian giải đấu đã thay đổi</label>
-                  </p>
-                  <p>
-                    <input
-                      type="radio"
-                      id="test3"
-                      name="radio-group"
-                      value={"Quấy rối, bắt nạt"}
-                      onChange={onChangeHandler}
-                    />
-                    <label htmlFor="test3">Hình thức giải đấu giải đấu đã thay đổi</label>
-                  </p>
-                  <p>
-                    <input
-                      type="radio"
-                      id="test4"
-                      name="radio-group"
-                      value={"Nội dung không phù hợp"}
-                      onChange={onChangeHandler}
-                    />
-                    <label htmlFor="test4">Tìm được giải đấu khác phù hợp hơn</label>
-                  </p>
-                  <p>
-                    <input
-                      type="radio"
-                      id="test5"
-                      name="radio-group"
-                      value={"Lý do khác"}
-                      onChange={onChangeHandler}
-                    />
-                    <label htmlFor="test5">Lý do khác:</label>
-                  </p>
-                </div>}
+                  ) : (
+                    <div className={styles.checkbox}>
+                      <p>
+                        <input
+                          type="radio"
+                          id="test1"
+                          name="radio-group"
+                          value={"Giải đấu giả mạo"}
+                          onChange={onChangeHandler}
+                        />
+                        <label htmlFor="test1">Giải đấu giả mạo</label>
+                      </p>
+                      <p>
+                        <input
+                          type="radio"
+                          id="test2"
+                          name="radio-group"
+                          value={"Tên giải đấu không hợp lệ"}
+                          onChange={onChangeHandler}
+                        />
+                        <label htmlFor="test2">
+                          Thời gian giải đấu đã thay đổi
+                        </label>
+                      </p>
+                      <p>
+                        <input
+                          type="radio"
+                          id="test3"
+                          name="radio-group"
+                          value={"Quấy rối, bắt nạt"}
+                          onChange={onChangeHandler}
+                        />
+                        <label htmlFor="test3">
+                          Hình thức giải đấu giải đấu đã thay đổi
+                        </label>
+                      </p>
+                      <p>
+                        <input
+                          type="radio"
+                          id="test4"
+                          name="radio-group"
+                          value={"Nội dung không phù hợp"}
+                          onChange={onChangeHandler}
+                        />
+                        <label htmlFor="test4">
+                          Tìm được giải đấu khác phù hợp hơn
+                        </label>
+                      </p>
+                      <p>
+                        <input
+                          type="radio"
+                          id="test5"
+                          name="radio-group"
+                          value={"Lý do khác"}
+                          onChange={onChangeHandler}
+                        />
+                        <label htmlFor="test5">Lý do khác:</label>
+                      </p>
+                    </div>
+                  )}
                   <p className="error errRp">{contentReport.error}</p>
 
                   {(new Date().getTime() <=
                     new Date(tourDetail.tournamentStartDate).getTime() &&
                     typeReport === "outtournament") ||
                   typeReport === "report" ? (
-                      <div>
-                    {(typeReport === "report" &&
-                      contentCheckbox.value === "Lý do khác") ||
-                    (typeReport !== "report" &&
-                    contentCheckbox.value === "Lý do khác")  ? (
+                    <div>
+                      {(typeReport === "report" &&
+                        contentCheckbox.value === "Lý do khác") ||
+                      (typeReport !== "report" &&
+                        contentCheckbox.value === "Lý do khác") ? (
                         <textarea
                           placeholder={
                             typeReport === "report"
@@ -1038,11 +1094,11 @@ function HeaderTournamentDetail() {
                           value={contentReport.value}
                           onChange={onChangeHandler}
                         />
-                    ) : null}
-                        <button>
-                          {typeReport === "report" ? "Báo cáo" : "Rời giải"}
-                        </button>
-                      </div>
+                      ) : null}
+                      <button>
+                        {typeReport === "report" ? "Báo cáo" : "Rời giải"}
+                      </button>
+                    </div>
                   ) : (
                     <p
                       style={{
@@ -1126,22 +1182,24 @@ function HeaderTournamentDetail() {
                 >
                   Lịch thi đấu
                 </Link>
-                {tourDetail !== null && tourDetail.tournamentTypeId !== 1 ? <Link
-                  to={`/tournamentDetail/${idTour}/rankTableTournamentDetail`}
-                  className={
-                    activeTeamDetail ===
-                    `/tournamentDetail/${idTour}/rankTableTournamentDetail`
-                      ? "active"
-                      : ""
-                  }
-                  onClick={() =>
-                    setActiveTeamDetail(
+                {tourDetail !== null && tourDetail.tournamentTypeId !== 1 ? (
+                  <Link
+                    to={`/tournamentDetail/${idTour}/rankTableTournamentDetail`}
+                    className={
+                      activeTeamDetail ===
                       `/tournamentDetail/${idTour}/rankTableTournamentDetail`
-                    )
-                  }
-                >
-                  Bảng xếp hạng
-                </Link> : null}
+                        ? "active"
+                        : ""
+                    }
+                    onClick={() =>
+                      setActiveTeamDetail(
+                        `/tournamentDetail/${idTour}/rankTableTournamentDetail`
+                      )
+                    }
+                  >
+                    Bảng xếp hạng
+                  </Link>
+                ) : null}
                 <Link
                   to={`/tournamentDetail/${idTour}/teamInTournament`}
                   className={
