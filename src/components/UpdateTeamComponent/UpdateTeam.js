@@ -1,6 +1,11 @@
 import axios from "axios";
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw,ContentState, convertFromHTML } from "draft-js";
+import {
+  EditorState,
+  convertToRaw,
+  ContentState,
+  convertFromHTML,
+} from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -13,6 +18,9 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { getAPI } from "../../api";
 import LoadingAction from "../LoadingComponent/LoadingAction";
+import { getAllPlayerByTeamIdAPI } from "../../api/PlayerInTeamAPI";
+import postNotifacation from "../../api/NotificationAPI";
+import { async } from "@firebase/util";
 function UpdateTeam() {
   const location = useLocation();
   const address = location.state.address;
@@ -26,7 +34,7 @@ function UpdateTeam() {
   const descriptionText = draftToHtml(
     convertToRaw(editorState.getCurrentContent())
   );
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [manager, setManager] = useState("");
 
   let navigate = useNavigate();
@@ -67,6 +75,7 @@ function UpdateTeam() {
   const [proviceSearch, setProviceSearch] = useState(null);
   const [districSearch, setDistricSearch] = useState(null);
   const [wardSearch, setWardSearch] = useState(null);
+  const [player,setPlayer] = useState(null);
   useEffect(() => {
     setResetProvice(-1);
     getAllCity();
@@ -75,7 +84,35 @@ function UpdateTeam() {
   useEffect(() => {
     getUser();
     getInforTeam();
+    getPlayerPaticipateInTeam();
   }, []);
+
+  const postNotificationforTeamManager = async (footballPlayer,nameClub) => {
+    const data = {
+      content: `${nameClub} đội bóng mà bạn đang tham gia thay đổi thông tin đội bóng của họ.Xem ngay`,
+      userId: footballPlayer.id,
+      tournamentId: 0,
+      teamId: 0,
+    };
+    try {
+      const response = await postNotifacation(data);
+      if (response.status === 201) {
+        
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  
+  const getPlayerPaticipateInTeam =  () => {
+    const response =  getAllPlayerByTeamIdAPI(user.userVM.id);
+    response
+      .then((res) => {
+        setPlayer(res.data.playerInTeamsFull)
+      })
+      .catch((err) => console.error(err));
+  };
+
   const getUser = () => {
     let afterDefaultURL = `users/${user.userVM.id}`;
     let response = getAPI(afterDefaultURL);
@@ -97,11 +134,13 @@ function UpdateTeam() {
         setPhoneContact({ value: res.data.teamPhone });
         setGender({ value: res.data.teamGender });
         setArea(res.data.teamArea);
-        setEditorState(EditorState.createWithContent(
-          ContentState.createFromBlockArray(
-            convertFromHTML(res.data.description)
+        setEditorState(
+          EditorState.createWithContent(
+            ContentState.createFromBlockArray(
+              convertFromHTML(res.data.description)
+            )
           )
-        ))
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -206,11 +245,10 @@ function UpdateTeam() {
     return null;
   };
   const onSubmitHandler = async (e) => {
-    
     e.preventDefault();
     setLoading(true);
     const flag = validateAdd();
-    
+
     if (flag !== null) {
       setLoading(false);
       toast.error(flag.content, {
@@ -223,7 +261,7 @@ function UpdateTeam() {
         progress: undefined,
       });
     } else {
-      console.log(descriptionText)
+      
       try {
         const data = {
           id: user.userVM.id,
@@ -243,6 +281,9 @@ function UpdateTeam() {
           }
         );
         if (response.status === 200) {
+          for(const item of player){
+            await postNotificationforTeamManager(item.footballPlayer,nameClub.value)
+          }
           setLoading(false);
           toast.success("Cập nhật đội bóng thành công", {
             position: "top-right",
@@ -431,9 +472,7 @@ function UpdateTeam() {
       <Header />
 
       <form onSubmit={onSubmitHandler}>
-        <div
-          className={styles.create__team}
-        >
+        <div className={styles.create__team}>
           <h2 className={styles.title}>Cập nhật đội bóng</h2>
           <p className={styles.avt}>Hình đội bóng</p>
           <div className={styles.main__team}>

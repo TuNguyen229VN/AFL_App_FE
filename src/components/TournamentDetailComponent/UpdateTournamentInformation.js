@@ -168,6 +168,12 @@ const UpdateTournamentInformation = () => {
       setTypeNoti("hasTeam");
     }
   }, []);
+
+  const ChangeDate = (data) => {
+    const sampleData = data.split("-")[0] + "-" + data.split("-")[1] + "-";
+    const date = +data.split("-")[2] + 1;
+    return sampleData + date;
+  }
   const getInforTournamentById = async () => {
     const response = await getTournamentById(idTournament);
     if (response.status === 200) {
@@ -214,16 +220,16 @@ const UpdateTournamentInformation = () => {
         error: null,
       });
       setCloseRegister({
-        value: new Date(team.registerEndDate).toISOString().slice(0, 10),
+        value: ChangeDate(new Date(team.registerEndDate).toISOString().slice(0, 10)),
         error: null,
       });
 
       setStartTime({
-        value: new Date(team.tournamentStartDate).toISOString().slice(0, 10),
+        value: ChangeDate(new Date(team.tournamentStartDate).toISOString().slice(0, 10)),
         error: null,
       });
       setEndTime({
-        value: new Date(team.tournamentEndDate).toISOString().slice(0, 10),
+        value: ChangeDate(new Date(team.tournamentEndDate).toISOString().slice(0, 10)),
         error: null,
       });
       setTimeDuration({
