@@ -90,7 +90,7 @@ export default function DetailMatch(props) {
     for (let i = 0; i < 2; i++) {
       updateInAPI(i === 0 ? newTeamA : newTeamB);
     }
-
+    console.log(type)
     await deleteMatchDetailByType(
       idMatch,
       type === 1 ? "score" : type === 2 ? "yellow" : "red",
@@ -124,7 +124,6 @@ export default function DetailMatch(props) {
         for (let item of data) {
           await updateMatchDetail(item);
         }
-        setLoading(false);
         toast.success("Cập nhật thành công chi tiết trận đấu", {
           position: "top-right",
           autoClose: 3000,
@@ -137,6 +136,7 @@ export default function DetailMatch(props) {
         setHideShow(false);
         setStatusUpdate(true);
         setTypeDetail(null);
+        setLoading(false);
       }
     } catch (err) {
       if (err.response.status === 404) {
@@ -387,7 +387,7 @@ export default function DetailMatch(props) {
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("score");
-                //setStatusUpdate(false);
+                setStatusUpdate(false);
               }}
             >
               Chi tiết bàn thắng
@@ -460,7 +460,7 @@ export default function DetailMatch(props) {
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("yellow");
-                //setStatusUpdate(false);
+                setStatusUpdate(false);
               }}
             >
               Chi tiết thẻ vàng
@@ -533,7 +533,7 @@ export default function DetailMatch(props) {
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("red");
-                //setStatusUpdate(false);
+                setStatusUpdate(false);
               }}
             >
               Chi tiết thẻ đỏ

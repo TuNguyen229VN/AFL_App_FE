@@ -20,5 +20,6 @@ export function updateRecordInMatchDetail(data){
 
 export function deleteMatchDetailByTypeAPI(matchId,type){
     const afterDefaultURL = `MatchDetail/delete-type?matchId=${matchId}&type=${type}`;
+    console.log(afterDefaultURL)
     return axios.delete(url+afterDefaultURL);
 }

@@ -19,9 +19,9 @@ export default function DetailInMatch(props) {
     setStatusUpdate,
     tourDetail,
   } = props;
-  
+
   const [detail, setDetail] = useState([]);
-  const [statusCall,setStatusCall] = useState(false);
+  const [statusCall, setStatusCall] = useState(false);
   const [newMatchDetail, setNewMatchDetail] = useState(null);
   const [hideShowDeny, setHideShowDeny] = useState(null);
   let matchMinutes = null;
@@ -49,12 +49,12 @@ export default function DetailInMatch(props) {
         }
       }
     }
-    
+
     coverMatchDetail();
   }, [typeDetail, statusUpdate === false]);
 
   const coverMatchDetail = () => {
-    console.log(matchDetail)
+    
     if (matchDetail !== null) {
       const newMatchDetail = [];
       if (typeDetail === "score") {
@@ -76,7 +76,7 @@ export default function DetailInMatch(props) {
           }
         });
       }
-      
+
       getDataDetail(newMatchDetail);
       setNewMatchDetail(newMatchDetail);
     }
@@ -117,18 +117,20 @@ export default function DetailInMatch(props) {
     }
   };
   const getDataDetail = (data) => {
+    
     const player = [];
     const newPlayerA = [];
     if (data !== null) {
-      const idTeamA = nameTeamA.teamInTournament.team.id;
+      //const idTeamA = nameTeamA.teamInTournament.team.id;
       for (let index in data) {
-        if (idTeamA === data[index].playerInTournament.playerInTeam.teamId) {
+        if (index < numTeamA) {
           newPlayerA.push({
             id: index,
             actionMatchId: data[index].actionMatchId,
             actionMinute: data[index].actionMinute,
             matchId: data[index].matchId,
-            playerInTournamentId: data[index].playerInTournament.id,
+            playerInTournamentId: data[index].playerInTournamentId,
+            footballPlayerId: data[index].footballPlayerId,
           });
         }
       }
@@ -137,15 +139,16 @@ export default function DetailInMatch(props) {
       });
       player.push(...newPlayerA);
       const newPlayerB = [];
-      const idTeamB = nameTeamB.teamInTournament.team.id;
+      //const idTeamB = nameTeamB.teamInTournament.team.id;
       for (let index in data) {
-        if (idTeamB === data[index].playerInTournament.playerInTeam.teamId)
+        if (index >= numTeamA)
           newPlayerB.push({
             id: index,
             actionMatchId: data[index].actionMatchId,
             actionMinute: data[index].actionMinute,
             matchId: data[index].matchId,
-            playerInTournamentId: data[index].playerInTournament.id,
+            playerInTournamentId: data[index].playerInTournamentId,
+            footballPlayerId: data[index].footballPlayerId,
           });
       }
 
@@ -153,13 +156,12 @@ export default function DetailInMatch(props) {
         return a.actionMinute - b.actionMinute;
       });
       player.push(...newPlayerB);
-      console.log(player)
       setDetail(player);
     }
   };
   const renderSelectByMinutes = (data) => {
     let array = [];
-    
+
     for (let i = 0; i <= tourDetail.matchMinutes * 2; i++) {
       if (i === 0) {
         if (data == null) array.push(<option selected>TG</option>);
@@ -262,11 +264,15 @@ export default function DetailInMatch(props) {
           matchId: +idMatch,
           playerInTournamentId:
             type === "object" ? valueObj.playerInTournamentId : null,
+          footballPlayerId: valueObj.id,
         });
       } else {
-        if (type === "object")
+        if (type === "object"){
           newDetail[findIndex].playerInTournamentId =
-            valueObj.playerInTournamentId;
+          valueObj.playerInTournamentId;
+          newDetail[findIndex].footballPlayerId = valueObj.id;
+        }
+          
         else newDetail[findIndex].actionMinute = valueObj + "";
       }
       setDetail(newDetail);
@@ -280,6 +286,7 @@ export default function DetailInMatch(props) {
           matchId: +idMatch,
           playerInTournamentId:
             type === "object" ? valueObj.playerInTournamentId : null,
+          footballPlayerId: valueObj.id,
         },
       ]);
     }
@@ -361,9 +368,15 @@ export default function DetailInMatch(props) {
                       flexDirection: "column",
                     }}
                   >
-                    {detail !== null ? renderInputByNumber(numTeamA, playerA, "A") : null }
+                    {detail !== null
+                      ? renderInputByNumber(numTeamA, playerA, "A")
+                      : null}
                   </div>
-                  <div>{ detail !== null ?  renderInputByNumber(numTeamB, playerB, "B") : null}</div>
+                  <div>
+                    {detail !== null
+                      ? renderInputByNumber(numTeamB, playerB, "B")
+                      : null}
+                  </div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -400,7 +413,7 @@ export default function DetailInMatch(props) {
           </div>
         </div>
       </div>
-      
+
       <ModalDenyMatchDetail
         hideShow={hideShowDeny}
         setHideShow={setHideShowDeny}
