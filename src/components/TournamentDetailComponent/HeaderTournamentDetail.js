@@ -70,7 +70,7 @@ function HeaderTournamentDetail() {
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         setTourDetail(res.data);
         getUserById(res.data.userId);
         setLoading(false);
@@ -240,7 +240,8 @@ function HeaderTournamentDetail() {
     idTeam,
     idTour,
     idUser,
-    type
+    type,
+    team
   ) => {
     const data = {
       content:
@@ -250,10 +251,14 @@ function HeaderTournamentDetail() {
           ? `${tourDetail.tournamentName} đã chấp nhận lời mời tham gia giải đấu từ đội bóng của bạn. Xem ngay`
           : type === "news"
           ? `${tourDetail.tournamentName} đăng tin tức mới ở giải đấu của họ.Xem ngay`
+          : type === "denyTeam"
+          ? `${tourDetail.tournamentName} đã xóa đội bóng của bạn ra khỏi giải đấu của họ.Xem ngay`
+          : type === "teamDeny"
+          ? `${team.teamName} đã rời khỏi ${tourDetail.tournamentName} của bạn. Xem ngay`
           : `${tourDetail.tournamentName} mời đội bóng của bạn tham gia giải đấu của họ.Xem ngay`,
       userId: idUser,
-      tournamentId: idTour,
-      teamId: idTeam,
+      tournamentId: type === "team" || type === "teamDeny" ? idTour : 0,
+      teamId: type === "team" || type === "teamDeny" ? 0 : idTeam,
     };
     try {
       const response = await postNotifacation(data);
@@ -546,7 +551,6 @@ function HeaderTournamentDetail() {
   const sendReport = async (e) => {
     setLoadingAc(true);
     e.preventDefault();
-    console.log(contentCheckbox.value);
     if (
       (contentReport.value === null && contentCheckbox.value === null) ||
       (contentReport.value === "" && contentCheckbox.value === "") ||
@@ -607,10 +611,17 @@ function HeaderTournamentDetail() {
         console.log(error);
       }
     } else {
-      await deleteTeamInTour(null);
+      let team = null;
+      for (const item of allTeam) {
+        if (item.id === user.userVM.id) {
+          team = item;
+          break;
+        }
+      }
+      await deleteTeamInTour(null, null, team);
     }
   };
-  const deleteTeamInTour = async (id) => {
+  const deleteTeamInTour = async (id, idTeam, team) => {
     try {
       let teamInTourId = null;
       if (id === null) {
@@ -620,12 +631,26 @@ function HeaderTournamentDetail() {
       }
 
       const data = {
-        teamInTournamentId: teamInTourId,
+        teamInTournamentId:
+          id !== null ? teamInTourId : teamInTourId.split("-")[0],
         typeUpdate: false,
       };
       const response = await updateTeamInScheduleAPI(data);
       if (response.status === 200) {
-        await getAllPlayerInTournamentByIdTeam(teamInTourId);
+        if (id !== null) {
+          postNotificationforTeamManager(idTeam, 0, idTeam, "denyTeam");
+        } else {
+          postNotificationforTeamManager(
+            0,
+            tourDetail.id,
+            tourDetail.userId,
+            "teamDeny",
+            team
+          );
+        }
+        await getAllPlayerInTournamentByIdTeam(
+          id !== null ? teamInTourId : teamInTourId.split("-")[0]
+        );
       }
     } catch (err) {
       console.error(err);
@@ -640,7 +665,11 @@ function HeaderTournamentDetail() {
         teamID
       );
       if (response.status === 200) {
-        return response.data.teamInTournaments[0].id;
+        return (
+          response.data.teamInTournaments[0].id +
+          "-" +
+          response.data.teamInTournaments[0].teamId
+        );
       }
     } catch (err) {
       console.error(err);
@@ -715,9 +744,8 @@ function HeaderTournamentDetail() {
                             address: tourDetail.footballFieldAddress,
                             lengthTeamPaticipate:
                               tourDetail.numberTeamInTournament,
-                              allTeam:allTeam,
-                              tourDetail:tourDetail
-                             
+                            allTeam: allTeam,
+                            tourDetail: tourDetail,
                           }}
                           className="btn_UpdateTournament"
                           style={{

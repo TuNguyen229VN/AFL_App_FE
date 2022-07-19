@@ -141,7 +141,8 @@ function ListPlayer(props) {
 
   const postNotificationforTeamManager = async (playerId, teamId) => {
     const data = {
-      content: "Quản lý đội bóng đã chấp nhận lời đề nghị tham gia đội bóng từ bạn. Xem ngay",
+      content:
+        "Quản lý đội bóng đã chấp nhận lời đề nghị tham gia đội bóng từ bạn. Xem ngay",
       userId: playerId,
       tournamentId: 0,
       teamId: teamId,

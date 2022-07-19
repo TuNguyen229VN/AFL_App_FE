@@ -75,7 +75,7 @@ export default function ModalDeleteTeamOutTournament(props) {
                   padding: "10px",
                 }}
                 onClick={() => {
-                  deleteTeamInTour(idTeamDelete);
+                  deleteTeamInTour(idTeamDelete.split("-")[0],idTeamDelete.split("-")[1]);
                   setHideShow(false);
                 }}
                 type="button"

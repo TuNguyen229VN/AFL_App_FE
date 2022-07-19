@@ -409,7 +409,7 @@ const UpdateTournamentInformation = () => {
     const data = {
       content: `${tourDetail.tournamentName} thay đổi thông tin giải đấu. Xem ngay`,
       userId: idUser,
-      tournamentId: idTour,
+      tournamentId: 0,
       teamId: idTeam,
     };
     try {

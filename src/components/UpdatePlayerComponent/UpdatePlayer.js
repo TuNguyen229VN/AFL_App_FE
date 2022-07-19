@@ -8,6 +8,8 @@ import Header from "../Header/Header";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import styles from "./styles/style.module.css";
+import {getAllTeamByPlayerIdAPI} from "../../api/PlayerInTeamAPI"
+import postNotifacation from "../../api/NotificationAPI";
 function UpdatePlayer() {
   let navigate = useNavigate();
   const [user, setUser] = useState(
@@ -34,10 +36,39 @@ function UpdatePlayer() {
   });
   const [loading, setLoading] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
-
+  const [team,setTeam] = useState(null);
   useEffect(() => {
     getUser();
+    getTeamPlayerPaticipate();
   }, []);
+  const getTeamPlayerPaticipate = () => {
+    const response = getAllTeamByPlayerIdAPI(idPlayer,true,1,20);
+    response.then(res => {
+      if(res.status === 200){
+        setTeam(res.data.playerInTeamsFull)
+      }
+    }).catch(err => {
+      console.error(err);
+    })
+  }
+
+  const postNotificationforTeamManager = async (userId,team,playerName) => {
+    const data = {
+      content: `Cầu thủ ${playerName} trong ${team.teamName} của bạn đã thay đổi thông tin cá nhân.Xem ngay `,
+      userId: userId,
+      tournamentId: 0,
+      teamId: team.id,
+    };
+    try {
+      const response = await postNotifacation(data);
+      if (response.status === 201) {
+        
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const getUser = () => {
     let afterDefaultURL = `football-players/${idPlayer}`;
     let response = getAPI(afterDefaultURL);
@@ -110,6 +141,9 @@ function UpdatePlayer() {
         }
       );
       if (response.status === 200) {
+        for(const item of team){
+          await postNotificationforTeamManager(item.team.id,item.team,namePlayer.value)
+        }
         setLoading(false);
         toast.success("Cập nhật thành công", {
           position: "top-right",

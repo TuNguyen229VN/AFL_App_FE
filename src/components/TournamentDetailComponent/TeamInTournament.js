@@ -303,7 +303,7 @@ function TeamInTournament(props) {
                                 // setIdDelete(item.idPlayerInTeam);
                                 // setDeleteSuccessFul(false);
                                 setHideShowDeleteTeamOut(true);
-                                setIdTeamDelete(item.teamInTournament.id);
+                                setIdTeamDelete(item.teamInTournament.id + "-" + item.id);
                               }}
                             >
                               <i class="fa-solid fa-trash"></i>Xóa đội bóng khỏi

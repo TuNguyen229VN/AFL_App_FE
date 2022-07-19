@@ -9,8 +9,8 @@ export function getAllPlayerByTeamIdAPI(id) {
     return axios.get(url + afterDefaultURL );
 }
 
-export function getAllTeamByPlayerIdAPI(id,status,currentPage) {
-    const afterDefaultURL = `PlayerInTeam?footballPlayerId=${id}&status=${status}&orderType=DESC&pageIndex=${currentPage}&limit=8`; 
+export function getAllTeamByPlayerIdAPI(id,status,currentPage,limit) {
+    const afterDefaultURL = `PlayerInTeam?footballPlayerId=${id}&status=${status}&orderType=DESC&pageIndex=${currentPage}&limit=${limit !== undefined ? limit : 8}`; 
     return axios.get(url + afterDefaultURL );
 }
 

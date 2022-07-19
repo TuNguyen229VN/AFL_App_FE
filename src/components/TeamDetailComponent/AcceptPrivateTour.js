@@ -206,10 +206,10 @@ export default function AcceptPrivateTour(props) {
 
   const postNotificationforTeamManager = async () => {
     const data = {
-      content: `${team.teamName} đã đồng ý tham gia giải đấu của bạn.Xem ngay`,
+      content: `${team.teamName} đã đồng ý tham gia ${tourDetail.tournamentName} của bạn.Xem ngay`,
       userId: tourDetail.userId,
       tournamentId: tourDetail.id,
-      teamId: team.id,
+      teamId: 0,
     };
     try {
       const response = await postNotifacation(data);
