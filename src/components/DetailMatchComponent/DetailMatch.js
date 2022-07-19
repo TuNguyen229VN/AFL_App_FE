@@ -16,7 +16,10 @@ import {
   saveRecordInMatchDetail,
   deleteMatchDetailByTypeAPI,
 } from "../../api/MatchDetailAPI";
-import { updateScoreInTournamentByTourIdAPI } from "../../api/TeamInTournamentAPI";
+import {
+  updateScoreInTournamentByTourIdAPI,
+  getTeamByPlayerIdAPI,
+} from "../../api/TeamInTournamentAPI";
 import { toast } from "react-toastify";
 import { async } from "@firebase/util";
 
@@ -52,13 +55,36 @@ export default function DetailMatch(props) {
       setAllInfor();
     }
   }, [teamA !== null && teamB !== null]);
-  const getMatchDetailInFor = async () => {
+  const checkPlayerInTeam = async (idTeam, idPlayer, idTeamB) => {
+    try {
+      const response = await getTeamByPlayerIdAPI(idTeam, idPlayer);
+      if (response.status === 200) {
+        if (response.data.countList > 0) {
+          return idTeam;
+        } else {
+          return idTeamB;
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const getMatchDetailInFor = async (idteamA,idTeamB) => {
     try {
       const response = await getMatchDetailByMatchIdAPI(idMatch);
       if (response.status === 200) {
         setLoading(false);
-        console.log(response.data.matchDetails)
-        setMatchDetail(response.data.matchDetails);
+        const data = response.data.matchDetails;
+        console.log(teamA);
+        for (const item of data) {
+          const teamId = await checkPlayerInTeam(
+            idteamA,
+            item.footballPlayer.id,
+            idTeamB
+          );
+          item.teamId = teamId;
+        }
+        setMatchDetail(data);
       }
     } catch (err) {
       setLoading(false);
@@ -86,17 +112,17 @@ export default function DetailMatch(props) {
     }
 
     setLoading(true);
-    
+
     for (let i = 0; i < 2; i++) {
       updateInAPI(i === 0 ? newTeamA : newTeamB);
     }
-    console.log(type)
+    console.log(type);
     await deleteMatchDetailByType(
       idMatch,
       type === 1 ? "score" : type === 2 ? "yellow" : "red",
       data
-    );  
-      updateScoreTeamInTour();
+    );
+    updateScoreTeamInTour();
   };
   // const updateRedCardTeamInTour = async () => {
   //   const data = {
@@ -195,8 +221,11 @@ export default function DetailMatch(props) {
     response
       .then((res) => {
         if (res.status === 200) {
-          console.log(res.data);
-          getMatchDetailInFor();
+          
+          getMatchDetailInFor(
+            res.data.teamsInMatch[0].teamInTournament.team.id,
+            res.data.teamsInMatch[1].teamInTournament.team.id
+          );
           const twoTeamUpdate = res.data.teamsInMatch;
           setTeamA(twoTeamUpdate[0]);
           getPlayerInTournamentByTeamInTourid(
@@ -208,8 +237,6 @@ export default function DetailMatch(props) {
             twoTeamUpdate[1].teamInTournament.id,
             "B"
           );
-          
-          
         }
       })
       .catch((err) => {
@@ -547,9 +574,7 @@ export default function DetailMatch(props) {
         nameTeamB={teamB !== null ? teamB : null}
         hideShow={hideShow}
         updateScoreInMatch={updateScoreInMatch}
-        matchDetail={
-          matchDetail !== null ? matchDetail : null
-        }
+        matchDetail={matchDetail !== null ? matchDetail : null}
         setHideShow={setHideShow}
         setStatusUpdate={setStatusUpdate}
         statusUpdate={statusUpdate}

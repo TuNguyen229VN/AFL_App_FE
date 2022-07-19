@@ -12,6 +12,11 @@ export function getTeamPaticaipateInTourByTourIDAPI(id){
     return axios.get(url + afterDefaultURL);
 }
 
+export function getTeamByPlayerIdAPI(idTeam,idPlayer){
+    const afterDefaultURL = `PlayerInTeam?teamId=${idTeam}&footballPlayerId=${idPlayer}&pageIndex=1&limit=5`;
+    return axios.get(url + afterDefaultURL);
+}
+
 export function addTeamInTournamentAPI(data){
     const afterDefaultURL = `team-in-tournaments`;
     return axios.post(url+afterDefaultURL,data);

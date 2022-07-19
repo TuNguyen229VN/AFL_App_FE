@@ -117,13 +117,13 @@ export default function DetailInMatch(props) {
     }
   };
   const getDataDetail = (data) => {
-    
+    console.log(data);
     const player = [];
     const newPlayerA = [];
     if (data !== null) {
-      //const idTeamA = nameTeamA.teamInTournament.team.id;
+      const idTeamA = nameTeamA.teamInTournament.team.id;
       for (let index in data) {
-        if (index < numTeamA) {
+        if (data[index].teamId === idTeamA) {
           newPlayerA.push({
             id: index,
             actionMatchId: data[index].actionMatchId,
@@ -139,9 +139,9 @@ export default function DetailInMatch(props) {
       });
       player.push(...newPlayerA);
       const newPlayerB = [];
-      //const idTeamB = nameTeamB.teamInTournament.team.id;
+      const idTeamB = nameTeamB.teamInTournament.team.id;
       for (let index in data) {
-        if (index >= numTeamA)
+        if (data[index].teamId === idTeamB)
           newPlayerB.push({
             id: index,
             actionMatchId: data[index].actionMatchId,
