@@ -98,7 +98,7 @@ function Match() {
         setTokenLivestream(res.data.teamsInMatch[0].match.tokenLivestream);
         getTourDetail(res.data.teamsInMatch[0].match.tournamentId);
 
-        getPlayer(res.data.teamsInMatch[0].teamInTournament.id, "teamA");
+       getPlayer(res.data.teamsInMatch[0].teamInTournament.id, "teamA");
         getPlayer(res.data.teamsInMatch[1].teamInTournament.id, "teamB");
         getMatchDetail();
        
@@ -118,12 +118,11 @@ function Match() {
   };
 
   const [detail, setDetail] = useState([]);
-  const getMatchDetail = () => {
+  const getMatchDetail = (data,team) => {
     setLoading(true);
     let response = getMatchDetailByMatchIdAPI(idMatch);
     response.then(res=>{
-      
-      devidePlayer(res.data.matchDetails);
+      devidePlayer(res.data.matchDetails,data,team);
       // setDetail(res.data.matchDetails);
       setLoading(false);
     })
@@ -133,38 +132,56 @@ function Match() {
     })
   }
 
-  const devidePlayer = (data) =>{
+  const devidePlayer = (data,player,team) =>{
 
     const playerScoreA = [];
     for (let item of data) {
         if (playerScoreA.length > 0) {
           const index = playerScoreA.findIndex(
             (itemIn) =>
-              itemIn.idPlayerInTournament === item.playerInTournament.id &&
+              itemIn.idPlayer === item.footballPlayer.id &&
               itemIn.actionMatchId === item.actionMatchId
           );
           if (index === -1) {
+            let playerSide = "teamB";
+            const playerIndex = player.findIndex(
+              (itemP) =>
+                itemP.playerInTeam.footballPlayerId === item.footballPlayer.id 
+            );
+            if(playerIndex>=0){
+              playerSide = "teamA"
+            }
+    
             playerScoreA.push({
-              idPlayerInTournament: item.playerInTournament.id,
+              idPlayer: item.footballPlayer.id,
               namePlayer:
-                item.playerInTournament.playerInTeam.footballPlayer.playerName,
-                playerAvatar: item.playerInTournament.playerInTeam.footballPlayer.playerAvatar,
-                teamId : item.playerInTournament.playerInTeam.teamId,
+                item.footballPlayer.playerName,
+                playerAvatar: item.footballPlayer.playerAvatar,
               actionMatchId: item.actionMatchId,
               minutesScore: [item.actionMinute],
+              playerSide: playerSide
             });
           } else {
             playerScoreA[index].minutesScore.push(item.actionMinute);
           }
         } else {
+          let playerSide = "teamB";
+            const playerIndex = player.findIndex(
+              (itemP) =>
+                itemP.playerInTeam.footballPlayerId === item.footballPlayer.id 
+            );
+            if(playerIndex>=0){
+              playerSide = "teamA"
+            }
           playerScoreA.push({ 
-            idPlayerInTournament: item.playerInTournament.id,
+            idPlayer: item.footballPlayer.id,
             namePlayer:
-              item.playerInTournament.playerInTeam.footballPlayer.playerName,
-              playerAvatar: item.playerInTournament.playerInTeam.footballPlayer.playerAvatar,
-                teamId : item.playerInTournament.playerInTeam.teamId,
+              item.footballPlayer.playerName,
+              playerAvatar: item.footballPlayer.playerAvatar,
+                teamId : item.teamId,
             actionMatchId: item.actionMatchId,
             minutesScore: [item.actionMinute],
+            playerSide: playerSide
           });
         }
       
@@ -174,7 +191,7 @@ function Match() {
     });
     setDetail(playerScoreA);
   }
-
+  
   const getDataMatchDetail = (data, teamA, teamB) => {
     const response = getMatchDetailByMatchIdAPI(data);
     response
@@ -354,13 +371,14 @@ function Match() {
       });
   };
 
-
+console.log(playerTeamA);
 
   const [players , setPlayers] = useState([]);
   const getPlayer = (id , team) => {
     let response = getAllPlayerInTournamentByTeamInTournamentIdAPI(id);
     response.then((res) => {
       if(team == 'teamA'){
+        getMatchDetail(res.data.playerInTournaments);
         setPlayerTeamA(res.data);
       }
       else{
@@ -904,22 +922,30 @@ function Match() {
          setScoreB(team.teamScore);
        }
 
-       if(mDetail &&detail){
+       if(mDetail &&detail &&playerTeamA){
       
               const index = detail.findIndex(
                 (itemIn) =>
-                  itemIn.idPlayerInTournament === mDetail.playerInTournament.id &&
+                  itemIn.idPlayer === mDetail.footballPlayer.id &&
                   itemIn.actionMatchId === mDetail.actionMatchId
               );
               if (index === -1) {
+                let playerSide = "teamB";
+            const playerIndex =playerTeamA.playerInTournaments.findIndex(
+              (itemP) =>
+                itemP.playerInTeam.footballPlayerId === mDetail.footballPlayer.id 
+            );
+            if(playerIndex>=0){
+              playerSide = "teamA"
+            }
                 const data ={
-                  idPlayerInTournament: mDetail.playerInTournament.id,
+                  idPlayer: mDetail.footballPlayer.id,
                   namePlayer:
-                  mDetail.playerInTournament.playerInTeam.footballPlayer.playerName,
-                  playerAvatar: mDetail.playerInTournament.playerInTeam.footballPlayer.playerAvatar,
-                teamId : mDetail.playerInTournament.playerInTeam.teamId,
+                  mDetail.footballPlayer.playerName,
+                  playerAvatar: mDetail.footballPlayer.playerAvatar,
                   actionMatchId: mDetail.actionMatchId,
                   minutesScore: [mDetail.actionMinute],
+                  playerSide: playerSide
                 }
                 let sortList = [...detail,data];
                 sortList.sort(function (a, b) {
@@ -951,7 +977,8 @@ function Match() {
   const [minuteIndex, setMinuteIndex] = useState();
   const [minutesError, setMinutesError] = useState();
 
-  const createMatchDetail =async (playerId, actionId,minutes)=>{
+  const createMatchDetail =async (playerId,playerInTournamentId, actionId,minutes)=>{
+    console.log(playerInTournamentId +"acmcm" + minuteIndex +cardIndex)
     if(card == "yellow"){
       if(cardIndex != minuteIndex ){
         return;
@@ -968,10 +995,11 @@ function Match() {
   actionMatchId: actionId,
   actionMinute: `${minutes}`,
   matchId: idMatch,
-  playerInTournamentId: playerId
+  playerInTournamentId: playerInTournamentId,
+  footballPlayerId: playerId
     }
-
-    if(playerId == minuteIndex){
+   
+    if(playerInTournamentId == minuteIndex){
       if(minutes == "" || minutes == undefined || minutes == null){
         setMinutesError("Vui lòng nhập số phút ...");
         return;
@@ -1082,7 +1110,6 @@ function Match() {
   }
   const PopupPlayer = (players) => {
     const [minutes,setMinutes]=useState();
-    console.log(minutes);
      return (
       <div className={styles.popUpPlayerWrap}>
         <div className = {styles.playerPopup}>
@@ -1111,7 +1138,7 @@ function Match() {
             <p className = "error">{minutesError}</p>
           </div>}
           <span className = {styles.choose} onClick={() => {setMinuteIndex(item.id);
-          createMatchDetail(item.id,1,minutes);setMinutes("")}}>{minuteIndex==item.id?"Hoàn tất":"Chọn"}</span>
+          createMatchDetail(item.playerInTeam.footballPlayerId,item.id,1,minutes);setMinutes("")}}>{minuteIndex==item.id?"Hoàn tất":"Chọn"}</span>
         </div>
        )}
         </div>
@@ -1155,14 +1182,14 @@ function Match() {
             <p className = "error">{minutesError}</p>
           </div>}
            <span className = {styles.choose} onClick={() => {setMinuteIndex(item.id);
-           createMatchDetail(item.id,1,minutes); setMinutes("");}}>{minuteIndex==item.id?"Hoàn tất":"Chọn"}</span>
+           createMatchDetail(item.playerInTeam.footballPlayerId,item.id,1,minutes); setMinutes("");}}>{minuteIndex==item.id?"Hoàn tất":"Chọn"}</span>
          </div>
         )}
          </div>
          </div>
      )
    } 
-
+console.log(minuteIndex)
    useEffect(() =>{
     console.log(scoreA);
 
@@ -1393,7 +1420,7 @@ function Match() {
                 {detail && allTeamA
                &&detail.map(item =>(
                 <> 
-                {item.teamId == allTeamA[0].teamInTournament.teamId&&
+                {item.playerSide == "teamA"&&
                   <div className={styles.playerAction}>
                   <div className={styles.player}>
                   <img
@@ -1430,11 +1457,11 @@ function Match() {
                   <img src="/assets/icons/soccer-ball-retina.png" alt="ball" />
                 </div>
                 <div className={styles.player__B}>
-
+                {console.log(playerTeamA)}
                 {detail && allTeamB
                &&detail.map(item =>( 
                 <> 
-                {item.teamId == allTeamB[0].teamInTournament.teamId&&
+                {item.playerSide == "teamB"&&
                  <div className={styles.playerAction}>
                  <div className={styles.player}>
                  <img
