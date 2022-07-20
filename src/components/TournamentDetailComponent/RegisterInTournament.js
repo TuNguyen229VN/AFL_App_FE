@@ -5,24 +5,36 @@ import { toast } from "react-toastify";
 import { addTeamInTournamentAPI } from "../../api/TeamInTournamentAPI";
 import { addPlayerInTournamentAPI } from "../../api/PlayerInTournamentAPI";
 import { NotiFootballInTournamentAPI } from "../../api/System";
+import { getPlayerBusyInTeambyTeamIdAPI } from "../../api/PlayerInTeamAPI";
+import { async } from "@firebase/util";
+import ModelNotRegisterInTour from "./ModelNotRegisterInTour";
 export default function RegisterInTournament(props) {
-  const { idUser, tourDetail, setCheckRegistertour, hideShow, setHideShow,postNotificationforTeamManager } =
-    props;
+  const {
+    idUser,
+    tourDetail,
+    setCheckRegistertour,
+    hideShow,
+    setHideShow,
+    postNotificationforTeamManager,
+    status,
+    setStatus,
+  } = props;
   const [playerInTeam, setPlayerInTeam] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [hideShowDeny, setHideShowDeny] = useState(false);
   const [countChoice, setCountChoice] = useState(0);
   const [listClothes, setListClothes] = useState([]);
   const [error, setError] = useState(false);
   const rowRef = useRef();
   useEffect(() => {
     getListPlayerInTeamByIdTeam();
-  }, [idUser]);
+  }, [idUser, status === true]);
   // console.log(tourDetail);
   const getListPlayerInTeamByIdTeam = async () => {
+    
     setLoading(true);
     const afterURL = `PlayerInTeam?teamId=${idUser}&status=true&pageIndex=1&limit=50`;
     const response = await getAPI(afterURL);
-
     const ids = response.data.playerInTeamsFull;
     const players = ids.map(async (player) => {
       const playerResponse = await getPlayerById(player.footballPlayerId);
@@ -33,11 +45,38 @@ export default function RegisterInTournament(props) {
     });
     const playersData = await Promise.all(players);
     playersData.countList = response.data.countList;
-    console.log(playersData);
-    setPlayerInTeam(playersData);
-    setLoading(false);
+    
+    deletePlayerBusyInAnotherTournament(playersData);
   };
-
+  const deletePlayerBusyInAnotherTournament = async (data) => {
+    //console.log(data);
+    try {
+      const response = await getPlayerBusyInTeambyTeamIdAPI(idUser);
+      if (response.status === 200) {
+        const playerBusy = response.data.playerInTeamsFull;
+        const newData = [];
+        for (let index in data) {
+          if (index !== "countList") {
+            let flag = false;
+            for (let indexRes in playerBusy) {
+              if (data[index].idPlayerInTeam === playerBusy[indexRes].id) {
+                flag = true;
+                break;
+              }
+            }
+            if (!flag) {
+              newData.push(data[index]);
+            }
+          }
+        }
+        console.log(newData);
+        setPlayerInTeam(newData);
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const getPlayerById = async (idPlayer) => {
     const afterURL = `football-players/${idPlayer}`;
     const response = await getAPI(afterURL);
@@ -84,7 +123,7 @@ export default function RegisterInTournament(props) {
     setLoading(true);
     const getPlayerChoice = getPlayerChoiceRegister();
     const mininumPlayer = getNumberInField();
-    console.log(getPlayerChoice.length)
+    console.log(getPlayerChoice.length);
     if (getPlayerChoice.length < mininumPlayer) {
       setLoading(false);
       toast.error(`Bạn phải đăng ký tối thiểu ${mininumPlayer} cầu thủ`, {
@@ -140,14 +179,14 @@ export default function RegisterInTournament(props) {
       });
   };
   const getPlayerChoiceRegister = () => {
-    console.log(playerInTeam)
+    console.log(playerInTeam);
     const getPlayerChoice = playerInTeam.reduce((accumulator, currentValue) => {
       if (currentValue.choice === true) {
         accumulator.push(currentValue);
       }
       return accumulator;
     }, []);
-    console.log(getPlayerChoice)
+    console.log(getPlayerChoice);
     return getPlayerChoice;
   };
   const addPlayerInTournament = (id, getPlayerChoice) => {
@@ -183,7 +222,12 @@ export default function RegisterInTournament(props) {
       draggable: true,
       progress: undefined,
     });
-    postNotificationforTeamManager(idUser,tourDetail.id,tourDetail.userId,"team");
+    postNotificationforTeamManager(
+      idUser,
+      tourDetail.id,
+      tourDetail.userId,
+      "team"
+    );
   };
   // const checkChoice = (index) => {
   //   const allPlayer = playerInTeam;
@@ -199,7 +243,6 @@ export default function RegisterInTournament(props) {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     addTeamInTournament();
-    
   };
   const onRowClick = () => {
     rowRef.current.focus();
@@ -224,12 +267,16 @@ export default function RegisterInTournament(props) {
             >
               Đăng ký cầu thủ vào giải đấu
             </h3>
+            <div className={hideShowDeny ? "overlay active" : "overlay"}></div>
             <button
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onClick={() => setHideShow(false)}
+              onClick={() => {
+                setHideShowDeny(true);
+                
+              }}
             ></button>
           </div>
           <form onSubmit={onSubmitHandler}>
@@ -240,17 +287,33 @@ export default function RegisterInTournament(props) {
               class="modal-body"
             >
               {playerInTeam != null &&
-              playerInTeam.countList < getNumberInField() ? (
-                <h1
-                  style={{
-                    fontWeight: 600,
-                    fontSize: 20,
-                    color: "red",
-                  }}
-                >
-                  Đội bóng của bạn không đủ thành viên để tham gia giải đấu, tối
-                  thiểu đội bóng phải có {getNumberInField()} cầu thủ
-                </h1>
+              playerInTeam.length < getNumberInField() ? (
+                <div>
+                  <p
+                    style={{
+                      fontWeight: 500,
+                      fontSize: 16,
+                      fontStyle: "italic",
+                      marginBottom: 10,
+                      paddingRight: 60,
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    Lưu ý: Sẽ có vài cầu thủ tham gia đội bóng của bạn nhưng ko
+                    có trong danh sách, vì đang thi đấu cho đội bóng khác ở giải
+                    đấu khác .
+                  </p>
+                  <h1
+                    style={{
+                      fontWeight: 600,
+                      fontSize: 20,
+                      color: "red",
+                    }}
+                  >
+                    Đội bóng của bạn không đủ thành viên để tham gia giải đấu,
+                    tối thiểu đội bóng phải có {getNumberInField()} cầu thủ
+                  </h1>
+                </div>
               ) : (
                 <div>
                   <h1
@@ -275,10 +338,18 @@ export default function RegisterInTournament(props) {
                         fontSize: 16,
                         fontStyle: "italic",
                         marginBottom: 10,
+                        paddingRight: 60,
+                        lineHeight: 1.5,
                       }}
                     >
                       Lưu ý: Chọn ít nhất {getNumberInField()} cầu thủ - tối đa{" "}
-                      {tourDetail.footballPlayerMaxNumber} cầu thủ
+                      {tourDetail.footballPlayerMaxNumber} cầu thủ.
+                      <p>
+                        Sẽ có vài cầu thủ tham gia đội bóng của bạn nhưng ko có
+                        trong danh sách, vì đang thi đấu cho đội bóng khác ở
+                        giải đấu khác
+                      </p>
+                      .
                     </p>
                     <div
                       style={{
@@ -385,6 +456,7 @@ export default function RegisterInTournament(props) {
                                       placeholder="Nhập số áo"
                                       disabled={!item.choice}
                                       name={`clothesNumberInput${index}`}
+                                      //value={item.clothesNumber !== -1 ? item.clothesNumber : ""}
                                       onChange={onChangeHandler}
                                       ref={rowRef}
                                     />
@@ -410,6 +482,9 @@ export default function RegisterInTournament(props) {
               )}
             </div>
             <div class="modal-footer">
+              <div
+                className={hideShowDeny ? "overlay active" : "overlay"}
+              ></div>
               <button
                 style={{
                   padding: 10,
@@ -417,7 +492,10 @@ export default function RegisterInTournament(props) {
                 type="button"
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
-                onClick={() => setHideShow(false)}
+                onClick={() => {
+                  setHideShowDeny(true);
+                  
+                }}
               >
                 Đóng
               </button>
@@ -436,6 +514,12 @@ export default function RegisterInTournament(props) {
           </form>
         </div>
       </div>
+      <ModelNotRegisterInTour
+        setHideShow={setHideShow}
+        hideShowDeny={hideShowDeny}
+        setHideShowDeny={setHideShowDeny}
+        setStatus={setStatus}
+      />
       {loading ? <LoadingAction /> : null}
     </div>
   );

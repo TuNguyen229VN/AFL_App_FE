@@ -59,6 +59,7 @@ function HeaderTournamentDetail() {
     value: "",
     error: "",
   });
+  const [status,setStatus] = useState(false);
   let navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [allTeam, setAllTeam] = useState(null);
@@ -795,6 +796,7 @@ function HeaderTournamentDetail() {
                             }}
                             onClick={() => {
                               setHideShow(true);
+                              setStatus(false);
                             }}
                           >
                             Tham gia giải đấu
@@ -807,6 +809,8 @@ function HeaderTournamentDetail() {
                             setCheckRegistertour={setCheckRegistertour}
                             hideShow={hideShow}
                             setHideShow={setHideShow}
+                            status={status}
+                            setStatus={setStatus}
                             idUser={
                               user != undefined ? user.userVM.id : undefined
                             }

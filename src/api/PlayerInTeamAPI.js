@@ -44,3 +44,9 @@ export function getPlayerInTeamByIdAPI(id){
     const afterDefaultURL = `PlayerInTeam/${id}`;
     return axios.get(url + afterDefaultURL)
 }
+
+
+export function getPlayerBusyInTeambyTeamIdAPI(id){
+    const afterDefaultURL = `PlayerInTeam?teamId=${id}&status=true&busy=busy&pageIndex=1&limit=30`
+    return axios.get(url + afterDefaultURL);
+}
