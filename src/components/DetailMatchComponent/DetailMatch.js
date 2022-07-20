@@ -69,7 +69,7 @@ export default function DetailMatch(props) {
       console.error(err);
     }
   };
-  const getMatchDetailInFor = async (idteamA,idTeamB) => {
+  const getMatchDetailInFor = async (idteamA, idTeamB) => {
     try {
       const response = await getMatchDetailByMatchIdAPI(idMatch);
       if (response.status === 200) {
@@ -222,7 +222,6 @@ export default function DetailMatch(props) {
     response
       .then((res) => {
         if (res.status === 200) {
-          
           getMatchDetailInFor(
             res.data.teamsInMatch[0].teamInTournament.team.id,
             res.data.teamsInMatch[1].teamInTournament.team.id
@@ -570,13 +569,19 @@ export default function DetailMatch(props) {
         </div>
       </div>
       <div className={hideShow ? "overlay active" : "overlay"}></div>
-      
+
       <DetailInMatch
         nameTeamA={teamA !== null ? teamA : null}
         nameTeamB={teamB !== null ? teamB : null}
         hideShow={hideShow}
         updateScoreInMatch={updateScoreInMatch}
-        matchDetail={ teamA !== null && teamB !== null ? teamA.teamScore + teamB.teamScore === scoreA + scoreB ? matchDetail : null : null}
+        matchDetail={
+          teamA !== null && teamB !== null
+            ? teamA.teamScore + "-" + teamB.teamScore === scoreA + "-" +scoreB
+              ? matchDetail
+              : null
+            : null
+        }
         setHideShow={setHideShow}
         setStatusUpdate={setStatusUpdate}
         statusUpdate={statusUpdate}
