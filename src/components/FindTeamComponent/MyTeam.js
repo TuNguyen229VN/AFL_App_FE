@@ -96,7 +96,7 @@ const MyTournamemts = () => {
     e.preventDefault();
     setCurrentPage(1);
     getTournament(contentSearch, currentPage, "NAME", contentSearch);
-    setCheck(!check);
+    //setCheck(!check);
   };
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
