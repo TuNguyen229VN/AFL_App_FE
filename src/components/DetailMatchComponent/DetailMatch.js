@@ -144,6 +144,7 @@ export default function DetailMatch(props) {
     }
   };
   const deleteMatchDetailByType = async (matchId, type, data) => {
+    console.log(data);
     try {
       const response = await deleteMatchDetailByTypeAPI(matchId, type);
       if (response.status === 200) {
@@ -569,12 +570,13 @@ export default function DetailMatch(props) {
         </div>
       </div>
       <div className={hideShow ? "overlay active" : "overlay"}></div>
+      
       <DetailInMatch
         nameTeamA={teamA !== null ? teamA : null}
         nameTeamB={teamB !== null ? teamB : null}
         hideShow={hideShow}
         updateScoreInMatch={updateScoreInMatch}
-        matchDetail={matchDetail !== null ? matchDetail : null}
+        matchDetail={ teamA !== null && teamB !== null ? teamA.teamScore + teamB.teamScore === scoreA + scoreB ? matchDetail : null : null}
         setHideShow={setHideShow}
         setStatusUpdate={setStatusUpdate}
         statusUpdate={statusUpdate}

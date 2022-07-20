@@ -1,6 +1,6 @@
 import axios from "axios";
 import { data } from "flickity";
-import React, { useEffect, useState, useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAPI } from "../../api";
@@ -11,10 +11,10 @@ import Livestream from "./Livestream";
 import MatchDetail from "./MatchDetail";
 import styles from "./styles/style.module.css";
 import { useNavigate } from "react-router-dom";
-import {getAllPlayerInTournamentByTeamInTournamentIdAPI} from "../../api/PlayerInTournamentAPI";
-import {HubConnectionBuilder , LogLevel} from '@microsoft/signalr';
-import {getMatchDetailByMatchIdAPI} from "../../api/MatchDetailAPI";
-import {saveRecordInMatchDetail} from "../../api/MatchDetailAPI";
+import { getAllPlayerInTournamentByTeamInTournamentIdAPI } from "../../api/PlayerInTournamentAPI";
+import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import { getMatchDetailByMatchIdAPI } from "../../api/MatchDetailAPI";
+import { saveRecordInMatchDetail } from "../../api/MatchDetailAPI";
 
 function Match() {
   const location = useLocation();
@@ -22,15 +22,12 @@ function Match() {
     JSON.parse(localStorage.getItem("userInfo"))
   );
 
-  const [guestId,setGuestId] = useState(
-    localStorage.getItem("guestId")
-  );
+  const [guestId, setGuestId] = useState(localStorage.getItem("guestId"));
   const inputRef = useRef(null);
   // location.state.hostTournamentId
-  useEffect(() =>{
-      joinRoom();
-  },[])
-
+  useEffect(() => {
+    joinRoom();
+  }, []);
 
   const navigate = useNavigate();
   const { idMatch } = useParams();
@@ -65,12 +62,11 @@ function Match() {
   const [detailTeamA, setDetailTeamA] = useState(null);
   const [detailTeamB, setDetailTeamB] = useState(null);
   const getMatch = () => {
-    
     setLoading(true);
     let afterURL = `TeamInMatch/matchId?matchId=${idMatch}`;
     let response = getAPI(afterURL);
     response
-      .then( (res) => {
+      .then((res) => {
         const allMatch = res.data.teamsInMatch;
 
         // if (allMatch[0].teamScore > 0 || allMatch[1].teamScore > 0) {
@@ -98,10 +94,10 @@ function Match() {
         setTokenLivestream(res.data.teamsInMatch[0].match.tokenLivestream);
         getTourDetail(res.data.teamsInMatch[0].match.tournamentId);
 
-       getPlayer(res.data.teamsInMatch[0].teamInTournament.id, "teamA");
+        getPlayer(res.data.teamsInMatch[0].teamInTournament.id, "teamA");
         getPlayer(res.data.teamsInMatch[1].teamInTournament.id, "teamB");
         getMatchDetail();
-       
+
         // getAllPlayerByTeamIdA(
         //   res.data.teamsInMatch[0].teamInTournament.team.id,
         //   res.data.teamsInMatch[0].teamInTournament.id
@@ -118,80 +114,77 @@ function Match() {
   };
 
   const [detail, setDetail] = useState([]);
-  const getMatchDetail = (data,team) => {
+  const getMatchDetail = (data, team) => {
     setLoading(true);
     let response = getMatchDetailByMatchIdAPI(idMatch);
-    response.then(res=>{
-      devidePlayer(res.data.matchDetails,data,team);
-      // setDetail(res.data.matchDetails);
-      setLoading(false);
-    })
-    .catch(err => {
-      setLoading(false);
-      console.log(err);
-    })
-  }
+    response
+      .then((res) => {
+        devidePlayer(res.data.matchDetails, data, team);
+        // setDetail(res.data.matchDetails);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+      });
+  };
 
-  const devidePlayer = (data,player,team) =>{
-
+  const devidePlayer = (data, player, team) => {
     const playerScoreA = [];
     for (let item of data) {
-        if (playerScoreA.length > 0) {
-          const index = playerScoreA.findIndex(
-            (itemIn) =>
-              itemIn.idPlayer === item.footballPlayer.id &&
-              itemIn.actionMatchId === item.actionMatchId
-          );
-          if (index === -1) {
-            let playerSide = "teamB";
-            const playerIndex = player.findIndex(
-              (itemP) =>
-                itemP.playerInTeam.footballPlayerId === item.footballPlayer.id 
-            );
-            if(playerIndex>=0){
-              playerSide = "teamA"
-            }
-    
-            playerScoreA.push({
-              idPlayer: item.footballPlayer.id,
-              namePlayer:
-                item.footballPlayer.playerName,
-                playerAvatar: item.footballPlayer.playerAvatar,
-              actionMatchId: item.actionMatchId,
-              minutesScore: [item.actionMinute],
-              playerSide: playerSide
-            });
-          } else {
-            playerScoreA[index].minutesScore.push(item.actionMinute);
-          }
-        } else {
+      if (playerScoreA.length > 0) {
+        const index = playerScoreA.findIndex(
+          (itemIn) =>
+            itemIn.idPlayer === item.footballPlayer.id &&
+            itemIn.actionMatchId === item.actionMatchId
+        );
+        if (index === -1) {
           let playerSide = "teamB";
-            const playerIndex = player.findIndex(
-              (itemP) =>
-                itemP.playerInTeam.footballPlayerId === item.footballPlayer.id 
-            );
-            if(playerIndex>=0){
-              playerSide = "teamA"
-            }
-          playerScoreA.push({ 
+          const playerIndex = player.findIndex(
+            (itemP) =>
+              itemP.playerInTeam.footballPlayerId === item.footballPlayer.id
+          );
+          if (playerIndex >= 0) {
+            playerSide = "teamA";
+          }
+
+          playerScoreA.push({
             idPlayer: item.footballPlayer.id,
-            namePlayer:
-              item.footballPlayer.playerName,
-              playerAvatar: item.footballPlayer.playerAvatar,
-                teamId : item.teamId,
+            namePlayer: item.footballPlayer.playerName,
+            playerAvatar: item.footballPlayer.playerAvatar,
             actionMatchId: item.actionMatchId,
             minutesScore: [item.actionMinute],
-            playerSide: playerSide
+            playerSide: playerSide,
           });
+        } else {
+          playerScoreA[index].minutesScore.push(item.actionMinute);
         }
-      
+      } else {
+        let playerSide = "teamB";
+        const playerIndex = player.findIndex(
+          (itemP) =>
+            itemP.playerInTeam.footballPlayerId === item.footballPlayer.id
+        );
+        if (playerIndex >= 0) {
+          playerSide = "teamA";
+        }
+        playerScoreA.push({
+          idPlayer: item.footballPlayer.id,
+          namePlayer: item.footballPlayer.playerName,
+          playerAvatar: item.footballPlayer.playerAvatar,
+          teamId: item.teamId,
+          actionMatchId: item.actionMatchId,
+          minutesScore: [item.actionMinute],
+          playerSide: playerSide,
+        });
+      }
     }
     playerScoreA.sort(function (a, b) {
       return a.actionMatchId - b.actionMatchId;
     });
     setDetail(playerScoreA);
-  }
-  
+  };
+
   const getDataMatchDetail = (data, teamA, teamB) => {
     const response = getMatchDetailByMatchIdAPI(data);
     response
@@ -245,7 +238,6 @@ function Match() {
     });
     setDetailTeamA(playerScoreA);
 
-
     const playerScoreB = [];
     for (let item of data) {
       if (item.playerInTournament.playerInTeam.teamId === idteamB) {
@@ -283,7 +275,7 @@ function Match() {
     setDetailTeamB(playerScoreB);
   };
 
-  console.log(detailTeamA)
+  console.log(detailTeamA);
   // const getAllPlayerByTeamIdA = (teamId, teamInTournamentId) => {
   //   setLoading(true);
   //   const response = getAllPlayerByTeamIdAPI(teamId);
@@ -371,21 +363,20 @@ function Match() {
       });
   };
 
-console.log(playerTeamA);
+  console.log(playerTeamA);
 
-  const [players , setPlayers] = useState([]);
-  const getPlayer = (id , team) => {
+  const [players, setPlayers] = useState([]);
+  const getPlayer = (id, team) => {
     let response = getAllPlayerInTournamentByTeamInTournamentIdAPI(id);
     response.then((res) => {
-      if(team == 'teamA'){
+      if (team == "teamA") {
         getMatchDetail(res.data.playerInTournaments);
         setPlayerTeamA(res.data);
-      }
-      else{
+      } else {
         setPlayerTeamB(res.data);
       }
-    })
-  }
+    });
+  };
   useEffect(() => {
     getMatch();
   }, [check]);
@@ -824,19 +815,19 @@ console.log(playerTeamA);
         break;
     }
   };
-  const [team, setTeam] = useState(); 
-  const [mDetail,setMDetail] = useState();
-  const [scoreA,setScoreA] = useState(0);
-  const [scoreB,setScoreB] = useState(0);
-  const [redA,setRedA] = useState(0);
-  const [redB,setRedB] = useState(0);
-  const [yellowA,setYellowA] = useState(0);
-  const [yellowB,setYellowB] = useState(0);
+  const [team, setTeam] = useState();
+  const [mDetail, setMDetail] = useState();
+  const [scoreA, setScoreA] = useState(0);
+  const [scoreB, setScoreB] = useState(0);
+  const [redA, setRedA] = useState(0);
+  const [redB, setRedB] = useState(0);
+  const [yellowA, setYellowA] = useState(0);
+  const [yellowB, setYellowB] = useState(0);
   const [message, setMessage] = useState([]);
   const [connection, setConnection] = useState();
 
-  const [room , setRoom] = useState(""); 
-  const joinRoom = async ()=>{
+  const [room, setRoom] = useState("");
+  const joinRoom = async () => {
     try {
       console.log(user);
       let Id = "0";
@@ -859,36 +850,35 @@ console.log(playerTeamA);
       console.log(Id);
       const connection = new HubConnectionBuilder()
 
-      .withUrl("https://afootballleague.ddns.net/chat")
-      .configureLogging(LogLevel.Information).build();
-      
-      connection.on("ReceiveComment",(user,comment)=>{
-        setMessage(message =>[...message,{user, comment}])
+        .withUrl("https://afootballleague.ddns.net/chat")
+        .configureLogging(LogLevel.Information)
+        .build();
+
+      connection.on("ReceiveComment", (user, comment) => {
+        setMessage((message) => [...message, { user, comment }]);
       });
 
-      connection.on("MatchDetail", (mDt)=>{
-        console.log(mDt)
+      connection.on("MatchDetail", (mDt) => {
+        console.log(mDt);
         setMDetail(mDt);
         // setDetail(detail =>[...detail,mDt]);
-        
       });
 
-      connection.on("TeamInMatch", (tim)=>{
-       
-       console.log(tim.teamScore);
-       setTeam(tim);
-        if(tim && allTeamA!= null&&tim.id === allTeamA[0].id ){
+      connection.on("TeamInMatch", (tim) => {
+        console.log(tim.teamScore);
+        setTeam(tim);
+        if (tim && allTeamA != null && tim.id === allTeamA[0].id) {
           setRedA(tim.redCardNumber);
           setYellowA(tim.yellowCardNumber);
           setScoreA(tim.teamScore);
         }
-        if(tim&& allTeamB && tim.id === allTeamB[0].id ){
+        if (tim && allTeamB && tim.id === allTeamB[0].id) {
           setRedB(tim.redCardNumber);
           setYellowB(tim.yellowCardNumber);
           setScoreB(tim.teamScore);
         }
-      })
-      connection.on("Guest",(guestId)=>{
+      });
+      connection.on("Guest", (guestId) => {
         localStorage.setItem("guestId", guestId);
         console.log(guestId);
       });
@@ -909,62 +899,65 @@ console.log(playerTeamA);
   };
 
   useEffect(() => {
+    if (
+      team &&
+      mDetail &&
+      detail &&
+      allTeamA != null &&
+      team.id === allTeamA[0].id
+    ) {
+      setRedA(team.redCardNumber);
+      setYellowA(team.yellowCardNumber);
+      setScoreA(team.teamScore);
+    }
+    if (team && mDetail && allTeamB != null && team.id === allTeamB[0].id) {
+      setRedB(team.redCardNumber);
+      setYellowB(team.yellowCardNumber);
+      setScoreB(team.teamScore);
+    }
 
-       if(team && mDetail &&detail && allTeamA!= null&&team.id === allTeamA[0].id ){
-         setRedA(team.redCardNumber);
-         setYellowA(team.yellowCardNumber);
-         setScoreA(team.teamScore);
+    if (mDetail && detail && playerTeamA) {
+      const index = detail.findIndex(
+        (itemIn) =>
+          itemIn.idPlayer === mDetail.footballPlayer.id &&
+          itemIn.actionMatchId === mDetail.actionMatchId
+      );
+      if (index === -1) {
+        let playerSide = "teamB";
+        const playerIndex = playerTeamA.playerInTournaments.findIndex(
+          (itemP) =>
+            itemP.playerInTeam.footballPlayerId === mDetail.footballPlayer.id
+        );
+        if (playerIndex >= 0) {
+          playerSide = "teamA";
+        }
+        const data = {
+          idPlayer: mDetail.footballPlayer.id,
+          namePlayer: mDetail.footballPlayer.playerName,
+          playerAvatar: mDetail.footballPlayer.playerAvatar,
+          actionMatchId: mDetail.actionMatchId,
+          minutesScore: [mDetail.actionMinute],
+          playerSide: playerSide,
+        };
+        let sortList = [...detail, data];
+        sortList.sort(function (a, b) {
+          return a.actionMatchId - b.actionMatchId;
+        });
 
-       }
-       if(team&& mDetail &&allTeamB!= null && team.id === allTeamB[0].id ){
-         setRedB(team.redCardNumber);
-         setYellowB(team.yellowCardNumber);
-         setScoreB(team.teamScore);
-       }
+        setDetail(sortList);
+        console.log("a");
+      } else {
+        let minutesScore = [...detail[index].minutesScore];
+        minutesScore.push(mDetail.actionMinute);
+        setDetail((detail) => [
+          ...detail,
+          (detail[index].minutesScore = minutesScore),
+        ]);
+      }
+    }
+  }, [team]);
 
-       if(mDetail &&detail &&playerTeamA){
-      
-              const index = detail.findIndex(
-                (itemIn) =>
-                  itemIn.idPlayer === mDetail.footballPlayer.id &&
-                  itemIn.actionMatchId === mDetail.actionMatchId
-              );
-              if (index === -1) {
-                let playerSide = "teamB";
-            const playerIndex =playerTeamA.playerInTournaments.findIndex(
-              (itemP) =>
-                itemP.playerInTeam.footballPlayerId === mDetail.footballPlayer.id 
-            );
-            if(playerIndex>=0){
-              playerSide = "teamA"
-            }
-                const data ={
-                  idPlayer: mDetail.footballPlayer.id,
-                  namePlayer:
-                  mDetail.footballPlayer.playerName,
-                  playerAvatar: mDetail.footballPlayer.playerAvatar,
-                  actionMatchId: mDetail.actionMatchId,
-                  minutesScore: [mDetail.actionMinute],
-                  playerSide: playerSide
-                }
-                let sortList = [...detail,data];
-                sortList.sort(function (a, b) {
-                  return a.actionMatchId - b.actionMatchId;
-                });
-                
-                 setDetail(sortList);
-                 console.log("a")
-              } else {
-                let minutesScore = [...detail[index].minutesScore];
-                minutesScore.push(mDetail.actionMinute);
-                setDetail(detail =>[...detail, detail[index].minutesScore=minutesScore]);
-              }
-  
-       }
-     
-  },[team])
-
-  const sendComment = async (c)=>{
+  const sendComment = async (c) => {
     try {
       const comment = c;
       await connection.invoke("sendComment", comment);
@@ -977,224 +970,319 @@ console.log(playerTeamA);
   const [minuteIndex, setMinuteIndex] = useState();
   const [minutesError, setMinutesError] = useState();
 
-  const createMatchDetail =async (playerId,playerInTournamentId, actionId,minutes)=>{
-    console.log(playerInTournamentId +"acmcm" + minuteIndex +cardIndex)
-    if(card == "yellow"){
-      if(cardIndex != minuteIndex ){
+  const createMatchDetail = async (
+    playerId,
+    playerInTournamentId,
+    actionId,
+    minutes
+  ) => {
+    console.log(playerInTournamentId + "acmcm" + minuteIndex + cardIndex);
+    if (card == "yellow") {
+      if (cardIndex != minuteIndex) {
         return;
       }
       actionId = 2;
     }
-    if(card == "red" ){
-      if(cardIndex != minuteIndex ){
+    if (card == "red") {
+      if (cardIndex != minuteIndex) {
         return;
       }
       actionId = 3;
     }
-    const data ={
-  actionMatchId: actionId,
-  actionMinute: `${minutes}`,
-  matchId: idMatch,
-  playerInTournamentId: playerInTournamentId,
-  footballPlayerId: playerId
-    }
-   
-    if(playerInTournamentId == minuteIndex){
-      if(minutes == "" || minutes == undefined || minutes == null){
+    const data = {
+      actionMatchId: actionId,
+      actionMinute: `${minutes}`,
+      matchId: idMatch,
+      playerInTournamentId: playerInTournamentId,
+      footballPlayerId: playerId,
+    };
+
+    if (playerInTournamentId == minuteIndex) {
+      if (minutes == "" || minutes == undefined || minutes == null) {
         setMinutesError("Vui lòng nhập số phút ...");
         return;
       }
-      let response =  saveRecordInMatchDetail(data,idMatch);
-      response.then((res)=>{
-        updateTeamInMatch(actionId);
-        console.log(res.data)
-        if(playerPopup){
-          setPlayerPopup(false);
-          }
-          else{
+      let response = saveRecordInMatchDetail(data, idMatch);
+      response
+        .then((res) => {
+          updateTeamInMatch(actionId);
+          console.log(res.data);
+          if (playerPopup) {
+            setPlayerPopup(false);
+          } else {
             setPlayerPopupB(false);
           }
-          if(playerCardPopup){
+          if (playerCardPopup) {
             setPlayerCardPopup(false);
-            }
-            else{
-              setPlayerCardPopupB(false);
-            }
+          } else {
+            setPlayerCardPopupB(false);
+          }
           setMinuteIndex(0);
           // setMinutes("");
-      })
-    .catch((e)=>{
-      console.log(e);
-    })
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
-    
-  }
+  };
 
-  const updateTeamInMatch =async (actionId) => {
-    try{
-      let tim ={};
+  const updateTeamInMatch = async (actionId) => {
+    try {
+      let tim = {};
       let teamScore = 0;
       let yellowCardNumber = 0;
       let redCardNumber = 0;
-      if( playerPopup || playerCardPopup){
-        tim  = allTeamA[0];
+      if (playerPopup || playerCardPopup) {
+        tim = allTeamA[0];
         teamScore = tim.teamScore;
-        if(scoreA>0){
+        if (scoreA > 0) {
           teamScore = scoreA;
         }
         yellowCardNumber = tim.yellowCardNumber;
-        if(yellowA>0){
+        if (yellowA > 0) {
           yellowCardNumber = yellowA;
         }
-        
+
         redCardNumber = tim.redCardNumber;
-        if(redA>0){
+        if (redA > 0) {
           yellowCardNumber = redA;
         }
       }
-      if( playerPopupB || playerCardPopupB){
+      if (playerPopupB || playerCardPopupB) {
         tim = allTeamB[0];
         teamScore = tim.teamScore;
-        if(scoreB>0){
+        if (scoreB > 0) {
           teamScore = scoreB;
         }
         yellowCardNumber = tim.yellowCardNumber;
-        if(yellowB>0){
+        if (yellowB > 0) {
           yellowCardNumber = yellowB;
         }
-        
+
         redCardNumber = tim.redCardNumber;
-        if(redB>0){
+        if (redB > 0) {
           yellowCardNumber = redB;
         }
       }
-      
-      if(actionId ==1 ){
-        teamScore = teamScore+1;
+
+      if (actionId == 1) {
+        teamScore = teamScore + 1;
       }
-      if(card == "yellow"){
-        yellowCardNumber = yellowCardNumber+1;
+      if (card == "yellow") {
+        yellowCardNumber = yellowCardNumber + 1;
       }
-      if(card == "red" ){
-        redCardNumber = redCardNumber+1;
+      if (card == "red") {
+        redCardNumber = redCardNumber + 1;
       }
       const data = {
-  id: tim.id,
-  teamScore: teamScore,
-  teamScoreLose: tim.teamScoreLose,
-  yellowCardNumber: yellowCardNumber,
-  redCardNumber: redCardNumber,
-  teamInTournamentId: tim.teamInTournamentId,
-  matchId: tim.matchId,
-  result: tim.result,
-  nextTeam: tim.nextTeam,
-  teamName: tim.teamName
-      }
-      const response = await axios.put(`https://afootballleague.ddns.net/api/v1/TeamInMatch?room=${idMatch}`,data);
+        id: tim.id,
+        teamScore: teamScore,
+        teamScoreLose: tim.teamScoreLose,
+        yellowCardNumber: yellowCardNumber,
+        redCardNumber: redCardNumber,
+        teamInTournamentId: tim.teamInTournamentId,
+        matchId: tim.matchId,
+        result: tim.result,
+        nextTeam: tim.nextTeam,
+        teamName: tim.teamName,
+      };
+      const response = await axios.put(
+        `https://afootballleague.ddns.net/api/v1/TeamInMatch?room=${idMatch}`,
+        data
+      );
       await calculateScore();
-    }
-    catch (err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
-  const calculateScore = async()=>{
-    try{
+  const calculateScore = async () => {
+    try {
       let idTour = allTeamA[0].teamInTournament.tournamentId;
-      const response = await axios.put(`https://afootballleague.ddns.net/api/v1/team-in-tournaments/update-score?tournamentId=${idTour}`)
+      const response = await axios.put(
+        `https://afootballleague.ddns.net/api/v1/team-in-tournaments/update-score?tournamentId=${idTour}`
+      );
       console.log(response.data);
-    }
-    catch(err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
   const PopupPlayer = (players) => {
-    const [minutes,setMinutes]=useState();
-     return (
+    const [minutes, setMinutes] = useState();
+    return (
       <div className={styles.popUpPlayerWrap}>
-        <div className = {styles.playerPopup}>
-        <div> 
-          <h2>Chọn cầu thủ ghi bàn </h2>
-          <span className = {styles.close} onClick={() => {
-            if(playerPopup){
-            setPlayerPopup(false);
-            }
-            else{
-              setPlayerPopupB(false);
-            }
-            ;setMinuteIndex(0);setMinutes("")}}>X</span>
-        </div>
-       
-      {players && players.players.playerInTournaments.map((item) =>  
-        <div className ={styles.playerWrap}>
-          <img src={item.playerInTeam.footballPlayer.playerAvatar} alt="" />
-          <span className = {styles.playerName}>{item.playerInTeam.footballPlayer.playerName}</span>
-          {minuteIndex == item.id &&<div className = {styles.minutes}>
-            {/* <p>Số phút ghi bàn</p> */}
-            <input type="number" 
-            placeholder="Số phút ghi bàn"
-            onChange={(e) => {setMinutes(e.target.value); }} value ={minutes}
-            onFocus={(e) => {setMinutesError("");}}/>
-            <p className = "error">{minutesError}</p>
-          </div>}
-          <span className = {styles.choose} onClick={() => {setMinuteIndex(item.id);
-          createMatchDetail(item.playerInTeam.footballPlayerId,item.id,1,minutes);setMinutes("")}}>{minuteIndex==item.id?"Hoàn tất":"Chọn"}</span>
-        </div>
-       )}
-        </div>
-        </div>
-    )
-  } 
-  const [cardIndex, setCardIndex] =useState(0);
-  const PopupPlayerCard = (players,team) => {
-    const [minutes,setMinutes]=useState();
-      return (
-       <div className={styles.popUpPlayerWrap}>
-         <div className = {styles.playerPopup}>
-         <div> 
-           <h2>Chọn cầu thủ phạm lỗi </h2>
-           <span className = {styles.close} onClick={() => {
-            if(playerCardPopup){
-              setPlayerCardPopup(false);
-              }
-              else{
-                setPlayerCardPopupB(false);
-              }
-            setMinuteIndex(0);setMinutes(""); setCardIndex(0); setCard("")}}>X</span>
-         </div>
-        
-       {players && players.players.playerInTournaments.map((item) =>  
-         <div className ={styles.playerWrap}>
-           <img src={item.playerInTeam.footballPlayer.playerAvatar} alt="" />
-           <span className = {styles.playerName}>{item.playerInTeam.footballPlayer.playerName}</span>
-           <div className = {styles.card}>
-            <div className={`${styles.yellow} ${cardIndex == item.id && cardIndex ==minuteIndex &&card == "yellow" && styles.active}`}
-            onClick={() => {setCard("yellow"); setCardIndex(item.id)}}></div>
-            <div className={`${styles.red} ${cardIndex == item.id && cardIndex== minuteIndex && card == "red"&&styles.active}`}
-            onClick={() => {setCard("red"); setCardIndex(item.id)}}></div>
-           </div>
-           {minuteIndex == item.id &&<div className = {styles.minutes}>
-            {/* <p>Số phút ghi bàn</p> */}
-            <input type="number" 
-            placeholder="Nhập số phút "
-            value ={minutes} onChange={(e) => {setMinutes(e.target.value);}}
-            onFocus={(e) => {setMinutesError("")}}/>
-            <p className = "error">{minutesError}</p>
-          </div>}
-           <span className = {styles.choose} onClick={() => {setMinuteIndex(item.id);
-           createMatchDetail(item.playerInTeam.footballPlayerId,item.id,1,minutes); setMinutes("");}}>{minuteIndex==item.id?"Hoàn tất":"Chọn"}</span>
-         </div>
-        )}
-         </div>
-         </div>
-     )
-   } 
-console.log(minuteIndex)
-   useEffect(() =>{
-    console.log(scoreA);
+        <div className={styles.playerPopup}>
+          <div>
+            <h2>Chọn cầu thủ ghi bàn </h2>
+            <span
+              className={styles.close}
+              onClick={() => {
+                if (playerPopup) {
+                  setPlayerPopup(false);
+                } else {
+                  setPlayerPopupB(false);
+                }
+                setMinuteIndex(0);
+                setMinutes("");
+              }}
+            >
+              X
+            </span>
+          </div>
 
-  },[playerPopup])
- 
+          {players &&
+            players.players.playerInTournaments.map((item) => (
+              <div className={styles.playerWrap}>
+                <img
+                  src={item.playerInTeam.footballPlayer.playerAvatar}
+                  alt=""
+                />
+                <span className={styles.playerName}>
+                  {item.playerInTeam.footballPlayer.playerName}
+                </span>
+                {minuteIndex == item.id && (
+                  <div className={styles.minutes}>
+                    {/* <p>Số phút ghi bàn</p> */}
+                    <input
+                      type="number"
+                      placeholder="Số phút ghi bàn"
+                      onChange={(e) => {
+                        setMinutes(e.target.value);
+                      }}
+                      value={minutes}
+                      onFocus={(e) => {
+                        setMinutesError("");
+                      }}
+                    />
+                    <p className="error">{minutesError}</p>
+                  </div>
+                )}
+                <span
+                  className={styles.choose}
+                  onClick={() => {
+                    setMinuteIndex(item.id);
+                    createMatchDetail(
+                      item.playerInTeam.footballPlayerId,
+                      item.id,
+                      1,
+                      minutes
+                    );
+                    setMinutes("");
+                  }}
+                >
+                  {minuteIndex == item.id ? "Hoàn tất" : "Chọn"}
+                </span>
+              </div>
+            ))}
+        </div>
+      </div>
+    );
+  };
+  const [cardIndex, setCardIndex] = useState(0);
+  const PopupPlayerCard = (players, team) => {
+    const [minutes, setMinutes] = useState();
+    return (
+      <div className={styles.popUpPlayerWrap}>
+        <div className={styles.playerPopup}>
+          <div>
+            <h2>Chọn cầu thủ phạm lỗi </h2>
+            <span
+              className={styles.close}
+              onClick={() => {
+                if (playerCardPopup) {
+                  setPlayerCardPopup(false);
+                } else {
+                  setPlayerCardPopupB(false);
+                }
+                setMinuteIndex(0);
+                setMinutes("");
+                setCardIndex(0);
+                setCard("");
+              }}
+            >
+              X
+            </span>
+          </div>
+
+          {players &&
+            players.players.playerInTournaments.map((item) => (
+              <div className={styles.playerWrap}>
+                <img
+                  src={item.playerInTeam.footballPlayer.playerAvatar}
+                  alt=""
+                />
+                <span className={styles.playerName}>
+                  {item.playerInTeam.footballPlayer.playerName}
+                </span>
+                <div className={styles.card}>
+                  <div
+                    className={`${styles.yellow} ${
+                      cardIndex == item.id &&
+                      cardIndex == minuteIndex &&
+                      card == "yellow" &&
+                      styles.active
+                    }`}
+                    onClick={() => {
+                      setCard("yellow");
+                      setCardIndex(item.id);
+                    }}
+                  ></div>
+                  <div
+                    className={`${styles.red} ${
+                      cardIndex == item.id &&
+                      cardIndex == minuteIndex &&
+                      card == "red" &&
+                      styles.active
+                    }`}
+                    onClick={() => {
+                      setCard("red");
+                      setCardIndex(item.id);
+                    }}
+                  ></div>
+                </div>
+                {minuteIndex == item.id && (
+                  <div className={styles.minutes}>
+                    {/* <p>Số phút ghi bàn</p> */}
+                    <input
+                      type="number"
+                      placeholder="Nhập số phút "
+                      value={minutes}
+                      onChange={(e) => {
+                        setMinutes(e.target.value);
+                      }}
+                      onFocus={(e) => {
+                        setMinutesError("");
+                      }}
+                    />
+                    <p className="error">{minutesError}</p>
+                  </div>
+                )}
+                <span
+                  className={styles.choose}
+                  onClick={() => {
+                    setMinuteIndex(item.id);
+                    createMatchDetail(
+                      item.playerInTeam.footballPlayerId,
+                      item.id,
+                      1,
+                      minutes
+                    );
+                    setMinutes("");
+                  }}
+                >
+                  {minuteIndex == item.id ? "Hoàn tất" : "Chọn"}
+                </span>
+              </div>
+            ))}
+        </div>
+      </div>
+    );
+  };
+  console.log(minuteIndex);
+  useEffect(() => {
+    console.log(scoreA);
+  }, [playerPopup]);
+
   return (
     <>
       <Header />
@@ -1205,7 +1293,7 @@ console.log(minuteIndex)
           setPopupUpdateMatch(false);
         }}
       ></div>
-      
+
       {allTeamA != null &&
         allTeamB != null &&
         allTeamA.map((item, index) => (
@@ -1379,27 +1467,50 @@ console.log(minuteIndex)
                 </div>
               ))}
               {allTeamA.map((item, index) => (
-              
                 <div className={styles.match__team}>
-                  { playerPopup && <PopupPlayer players ={playerTeamA} team = "teamA"/>}
-                  { playerCardPopup && <PopupPlayerCard players ={playerTeamA} team = "teamA"/>}
-                  { playerPopupB && <PopupPlayer players ={playerTeamB} team = "teamB"/>}
-                  { playerCardPopupB && <PopupPlayerCard players ={playerTeamB} team = "teamB"/>}  
+                  {playerPopup && (
+                    <PopupPlayer players={playerTeamA} team="teamA" />
+                  )}
+                  {playerCardPopup && (
+                    <PopupPlayerCard players={playerTeamA} team="teamA" />
+                  )}
+                  {playerPopupB && (
+                    <PopupPlayer players={playerTeamB} team="teamB" />
+                  )}
+                  {playerCardPopupB && (
+                    <PopupPlayerCard players={playerTeamB} team="teamB" />
+                  )}
                   <div className={styles.logo}>
                     <img
                       src={item.teamInTournament.team.teamAvatar}
                       alt={item.teamName}
                     />
                     <h2>{item.teamName}</h2>
-                    <div className ={styles.editWrap}>
-                      <button className={styles.editScore} onClick={() => {setPlayerPopup(true);}}>Ghi bàn</button>
-                      <button className = {styles.editCard} onClick={() => {setPlayerCardPopup(true)}}>Thẻ phạt</button>
+                    <div className={styles.editWrap}>
+                      <button
+                        className={styles.editScore}
+                        onClick={() => {
+                          setPlayerPopup(true);
+                        }}
+                      >
+                        Ghi bàn
+                      </button>
+                      <button
+                        className={styles.editCard}
+                        onClick={() => {
+                          setPlayerCardPopup(true);
+                        }}
+                      >
+                        Thẻ phạt
+                      </button>
                     </div>
                   </div>
-                  <div className={styles.score__A}>{scoreA==0?item.teamScore:scoreA}</div>
+                  <div className={styles.score__A}>
+                    {scoreA == 0 ? item.teamScore : scoreA}
+                  </div>
                   <div className={styles.line}>-</div>
                   <div className={styles.score__B}>
-                    {scoreB==0?allTeamB[index].teamScore:scoreB}
+                    {scoreB == 0 ? allTeamB[index].teamScore : scoreB}
                   </div>
                   <div className={styles.logo}>
                     <img
@@ -1407,92 +1518,96 @@ console.log(minuteIndex)
                       alt={allTeamB[index].teamName}
                     />
                     <h2>{allTeamB[index].teamName}</h2>
-                    <div className = {styles.editWrap}>
-                      <button className= {styles.editScore} onClick={() => {setPlayerPopupB(true);}}>Ghi bàn</button>
-                      <button className = {styles.editCard} onClick={() => {setPlayerCardPopupB(true);}}>Thẻ phạt</button>
+                    <div className={styles.editWrap}>
+                      <button
+                        className={styles.editScore}
+                        onClick={() => {
+                          setPlayerPopupB(true);
+                        }}
+                      >
+                        Ghi bàn
+                      </button>
+                      <button
+                        className={styles.editCard}
+                        onClick={() => {
+                          setPlayerCardPopupB(true);
+                        }}
+                      >
+                        Thẻ phạt
+                      </button>
                     </div>
                   </div>
                 </div>
               ))}
               <div className={styles.player__score}>
                 <div className={styles.player__A}>
+                  {detail &&
+                    allTeamA &&
+                    detail.map((item) => (
+                      <>
+                        {item.playerSide == "teamA" && (
+                          <div className={styles.playerAction}>
+                            <div className={styles.player}>
+                              <img
+                                style={{
+                                  width: 30,
+                                  marginRight: 10,
+                                }}
+                                src={
+                                  item.actionMatchId === 1
+                                    ? "/assets/icons/soccer-ball-retina.png"
+                                    : item.actionMatchId === 2
+                                    ? "/assets/icons/yellow-card.png"
+                                    : "/assets/icons/red-card.png"
+                                }
+                                alt="ball"
+                              />
+                              <p>{item.namePlayer}</p>
+                            </div>
 
-                {detail && allTeamA
-               &&detail.map(item =>(
-                <> 
-                {item.playerSide == "teamA"&&
-                  <div className={styles.playerAction}>
-                  <div className={styles.player}>
-                  <img
-                              style={{
-                                width: 30,
-                                marginRight: 10,
-                              }}
-                              src={
-                                item.actionMatchId === 1
-                                  ? "/assets/icons/soccer-ball-retina.png"
-                                  : item.actionMatchId === 2 ? "/assets/icons/yellow-card.png" : 
-                                  "/assets/icons/red-card.png"
-                              }
-                              alt="ball"
-                            />
-                  <p>
-                    {item.namePlayer}
-                    
-                  </p>
-                  </div>
-              
-                  {item.minutesScore.map((itemMin, indexMin) => {
+                            {item.minutesScore.map((itemMin, indexMin) => {
                               return <span key={indexMin}>{itemMin}'</span>;
                             })}
-              
-                  </div>
-}
-                  </>
-               ))
-}
-               
+                          </div>
+                        )}
+                      </>
+                    ))}
                 </div>
                 <div className={styles.logo__ball}>
                   <img src="/assets/icons/soccer-ball-retina.png" alt="ball" />
                 </div>
                 <div className={styles.player__B}>
-                {console.log(playerTeamA)}
-                {detail && allTeamB
-               &&detail.map(item =>( 
-                <> 
-                {item.playerSide == "teamB"&&
-                 <div className={styles.playerAction}>
-                 <div className={styles.player}>
-                 <img
-                             style={{
-                               width: 30,
-                               marginRight: 10,
-                             }}
-                             src={
-                               item.actionMatchId === 1
-                                 ? "/assets/icons/soccer-ball-retina.png"
-                                 : item.actionMatchId === 2 ? "/assets/icons/yellow-card.png" : 
-                                 "/assets/icons/red-card.png"
-                             }
-                             alt="ball"
-                           />
-                 <p>
-                   {item.namePlayer}
-                   
-                 </p>
-                 </div>
-             
-                 {item.minutesScore.map((itemMin, indexMin) => {
-                             return <span key={indexMin}>{itemMin}'</span>;
-                           })}
-             
-                 </div>
-}
-                  </>
-               ))
-}
+                  {detail &&
+                    allTeamB &&
+                    detail.map((item) => (
+                      <>
+                        {item.playerSide == "teamB" && (
+                          <div className={styles.playerAction}>
+                            <div className={styles.player}>
+                              <img
+                                style={{
+                                  width: 30,
+                                  marginRight: 10,
+                                }}
+                                src={
+                                  item.actionMatchId === 1
+                                    ? "/assets/icons/soccer-ball-retina.png"
+                                    : item.actionMatchId === 2
+                                    ? "/assets/icons/yellow-card.png"
+                                    : "/assets/icons/red-card.png"
+                                }
+                                alt="ball"
+                              />
+                              <p>{item.namePlayer}</p>
+                            </div>
 
+                            {item.minutesScore.map((itemMin, indexMin) => {
+                              return <span key={indexMin}>{itemMin}'</span>;
+                            })}
+                          </div>
+                        )}
+                      </>
+                    ))}
                 </div>
               </div>
             </div>
@@ -1525,7 +1640,6 @@ console.log(minuteIndex)
               </Link>
             </div>
             {renderByLink()}
-        
           </>
         ) : (
           <p className={styles.error}>Trận đấu này không tồn tại</p>
@@ -1538,7 +1652,7 @@ console.log(minuteIndex)
         }} />
         <button onClick={(e) =>{e.preventDefault(); joinRoom(room);}}>join</button>
       </form> */}
-      
+
       <Footer />
     </>
   );
