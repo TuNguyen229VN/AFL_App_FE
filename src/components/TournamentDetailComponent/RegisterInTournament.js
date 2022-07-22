@@ -18,6 +18,9 @@ export default function RegisterInTournament(props) {
     postNotificationforTeamManager,
     status,
     setStatus,
+    inTour,
+    numPlayer,
+    teamInTournament
   } = props;
   const [playerInTeam, setPlayerInTeam] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -210,7 +213,9 @@ export default function RegisterInTournament(props) {
           console.error(err);
         });
     });
+    if(!inTour){
     setCheckRegistertour(true);
+    }
     setLoading(false);
     setHideShow(false);
     toast.success("Đăng ký tham gia giải đấu thành công ", {
@@ -240,9 +245,33 @@ export default function RegisterInTournament(props) {
   //   console.log(allPlayer);
   //   setPlayerInTeam(allPlayer);
   // }
+  console.log(teamInTournament);
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    if(inTour){
+      setLoading(true);
+      const getPlayerChoice = getPlayerChoiceRegister();
+      if (getPlayerChoice.length >tourDetail.footballPlayerMaxNumber - numPlayer ) {
+        setLoading(false);
+        toast.error(`Vượt quá cầu thủ giải cho phép`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      return;
+      }
+ 
+      addPlayerInTournament(teamInTournament, getPlayerChoice);
+      setLoading(false);
+    }
+
+    else{
     addTeamInTournament();
+    }
   };
   const onRowClick = () => {
     rowRef.current.focus();
@@ -286,7 +315,7 @@ export default function RegisterInTournament(props) {
               }}
               class="modal-body"
             >
-              {playerInTeam != null &&
+              {playerInTeam != null && !inTour&&
               playerInTeam.length < getNumberInField() ? (
                 <div>
                   <p
@@ -342,8 +371,8 @@ export default function RegisterInTournament(props) {
                         lineHeight: 1.5,
                       }}
                     >
-                      Lưu ý: Chọn ít nhất {getNumberInField()} cầu thủ - tối đa{" "}
-                      {tourDetail.footballPlayerMaxNumber} cầu thủ.
+                      Lưu ý: {!numPlayer?`Chọn ít nhất ${getNumberInField()} cầu thủ - tối đa{" "}
+                      ${tourDetail.footballPlayerMaxNumber} cầu thủ.`:`Chọn tối đa ${tourDetail.footballPlayerMaxNumber - numPlayer} cầu thủ`}
                       <p>
                         Sẽ có vài cầu thủ tham gia đội bóng của bạn nhưng ko có
                         trong danh sách, vì đang thi đấu cho đội bóng khác ở

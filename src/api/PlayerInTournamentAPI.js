@@ -11,7 +11,7 @@ export function getAllPlayerInTournamentByTeamInTournamentIdAPI(id){
     return axios.get(url + afterDefaultURL);
 }
 
-export function deletePlayerInTournamentById(id){
-    const afterDefaultURL = `PlayerInTournament?id=${id}`;
+export function deletePlayerInTournamentById(id,tourId, teamInTourId){
+    const afterDefaultURL = `PlayerInTournament?id=${id}&tourId=${tourId}&teamIntourId=${teamInTourId}`;
     return axios.delete(url + afterDefaultURL)
 }

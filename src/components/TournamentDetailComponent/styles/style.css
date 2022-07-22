@@ -987,3 +987,11 @@
   font-size: 16px;
   cursor: pointer;
 }
+
+.btn-delete{
+  border:none;
+  background-color: #e53445;
+  padding:10px 15px ;
+  border-radius:10px;
+  color:white;
+}

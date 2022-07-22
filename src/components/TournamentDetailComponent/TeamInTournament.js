@@ -28,8 +28,9 @@ function TeamInTournament(props) {
     hideShowDeleteTeamOut,
     setHideShowDeleteTeamOut,
     postNotificationforTeamManager,
+    setCheckRegistertour
   } = props;
-
+   console.log(tourDetail)
   const [active, setactive] = useState(1);
   const [viewList, setViewList] = useState(null);
   const [teamDelete, setTeamDelete] = useState(null);
@@ -704,6 +705,11 @@ function TeamInTournament(props) {
             setViewList={setViewList}
             setHideShow={setHideShowView}
             hideShow={hideShowView}
+            tourDetail={tourDetail} 
+            postNotificationforTeamManager={
+              postNotificationforTeamManager
+            }
+            setCheckRegistertour={setCheckRegistertour}
           />
         </div>
         {loadingAc ? <LoadingAction /> : null}
