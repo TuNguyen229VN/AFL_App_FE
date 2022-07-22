@@ -13,10 +13,12 @@ export default function ModalChangeDateInSchedule(props) {
     setDateUpdate,
     updateDateInMatch,
     teamInUpdate,
+    indexSchedule
   } = props;
-
+  
   const [newStart, setNewStart] = useState(null);
   useEffect(() => {
+    
     // console.log(typeof matchCurrent.matchDate)
     // console.log(typeof new Date().toJSON())
     const dateUpdate = new Date(matchCurrent.matchDate);
@@ -64,6 +66,7 @@ export default function ModalChangeDateInSchedule(props) {
     // }
   }, [matchCurrent.id]);
   const changeMinDate = (data) => {
+    
     if (data !== null) {
       const splitDateTime = data.split(" ");
       return (
@@ -78,6 +81,7 @@ export default function ModalChangeDateInSchedule(props) {
   const changeDate = (data, type) => {
     let splitDateTime = null;
     if (type === "maxDate") {
+      console.log(data);
       const maxTimeSlip = data.split(" ");
       const newDate = new Date(
         maxTimeSlip[0].split("/")[0] +

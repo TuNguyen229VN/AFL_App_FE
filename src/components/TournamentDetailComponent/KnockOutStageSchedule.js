@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import ModalChangeDateInSchedule from "./ModelChangeDateInSchedule";
 import { updateDateInMatchAPI } from "../../api/MatchAPI";
 import { toast } from "react-toastify";
+import { excuteDate } from "./CheckMaxDateSchedule";
 export default function KnockOutStageSchedule(props) {
   const {
     allTeam,
@@ -26,6 +27,8 @@ export default function KnockOutStageSchedule(props) {
   const [dateUpdate, setDateUpdate] = useState(null);
   const [teamInUpdate, setTeamInUpdate] = useState(null);
   const [teamDescription, setTeamDescription] = useState(null);
+  const [indexSchedule, setIndexSchedule] = useState(null);
+  const [findMaxDate, setFindMaxDate] = useState(null);
   useEffect(() => {
     if (allTeam != null) {
       devideRound();
@@ -216,14 +219,103 @@ export default function KnockOutStageSchedule(props) {
           return a.teamName.localeCompare(b.teamName);
         });
       }
-      console.log(desTeam);
 
       setTeamDescription(desTeam);
     }
-
+    const findDate = excuteDate(data, tournamentType, tourDetail);
+    setFindMaxDate(findDate);
     setKnoukoutTeam(data);
   };
-
+  const editDate = (date) => {
+    const newDate = date.toJSON().split("T")[0];
+    const newTime = date.toLocaleTimeString();
+    const fullDate =
+      +newDate.split("-")[1] +
+      "/" +
+      (+newDate.split("-")[2] + 1) +
+      "/" +
+      +newDate.split("-")[0];
+    return fullDate + " " + newTime;
+  };
+  const findStateDate = () => {
+    if (tournamentType === "GroupStage") {
+      if (indexSchedule >= 0 && indexSchedule < tourDetail.groupNumber) {
+        return startDate;
+      } else {
+        let newStartDate = null;
+        for (let i = indexSchedule - 1; i >= tourDetail.groupNumber - 1; i--) {
+          if (findMaxDate[i].maxDate !== null) {
+            newStartDate = findMaxDate[i].maxDate;
+            break;
+          }
+        }
+        if (newStartDate === null) {
+          return endDate;
+        } else {
+          return editDate(newStartDate);
+        }
+      }
+    } else {
+      if (indexSchedule === 0) {
+        return startDate;
+      } else {
+        let newStartDate = null;
+        for (let i = indexSchedule - 1; i >= 0; i--) {
+          if (findMaxDate[i].maxDate !== null) {
+            newStartDate = findMaxDate[i].maxDate;
+            break;
+          }
+        }
+        if (newStartDate === null) {
+          return endDate;
+        } else {
+          return editDate(newStartDate);
+        }
+      }
+    }
+  };
+  const findEndate = () => {
+    //console.log(findMaxDate[3].minDate.toTimeString());
+    if (tournamentType === "GroupStage") {
+      if (indexSchedule === knockoutTeam.length - 1) {
+        return endDate;
+      } else {
+        let endDateNew = null;
+        const index =
+          indexSchedule >= 0 && indexSchedule < tourDetail.groupNumber
+            ? tourDetail.groupNumber
+            : indexSchedule + 1;
+        for (let i = index; i < findMaxDate.length; i++) {
+          if (findMaxDate[i].minDate !== null) {
+            endDateNew = findMaxDate[i].minDate;
+            break;
+          }
+        }
+        if (endDateNew === null) {
+          return endDate;
+        } else {
+          return editDate(endDateNew);
+        }
+      }
+    } else {
+      if (indexSchedule === knockoutTeam.length - 1) {
+        return endDate;
+      } else {
+        let endDateNew = null;
+        for (let i = indexSchedule + 1; i < findMaxDate.length; i++) {
+          if (findMaxDate[i].minDate !== null) {
+            endDateNew = findMaxDate[i].minDate;
+            break;
+          }
+        }
+        if (endDateNew === null) {
+          return endDate;
+        } else {
+          return editDate(endDateNew);
+        }
+      }
+    }
+  };
   const calcAllTeamRoundOne = () => {
     if (
       (allTeam.length % 2 === 0
@@ -335,9 +427,13 @@ export default function KnockOutStageSchedule(props) {
         {teamDescription !== null
           ? teamDescription.map((itemIn, indexIn) => {
               return (
-                <table key={indexIn} style={{
-                  marginBottom:  50 
-                }} className="schedule__table">
+                <table
+                  key={indexIn}
+                  style={{
+                    marginBottom: 50,
+                  }}
+                  className="schedule__table"
+                >
                   <tr>
                     <th colSpan={2}>Bảng đấu - {itemIn.title}</th>
                   </tr>
@@ -491,6 +587,7 @@ export default function KnockOutStageSchedule(props) {
                           lineHeight: 1.6,
                         }}
                         onClick={() => {
+                          setIndexSchedule(index);
                           setHideShow(true);
                           setMatchCurrent(itemSeeds.match);
                           setStatusUpdateDate(false);
@@ -531,8 +628,8 @@ export default function KnockOutStageSchedule(props) {
             hideShow={hideShow}
             setHideShow={setHideShow}
             matchCurrent={matchCurrent}
-            startDate={startDate}
-            endDate={endDate}
+            startDate={findStateDate()}
+            endDate={findEndate()}
             dateUpdate={dateUpdate}
             setDateUpdate={setDateUpdate}
             onChangHandle={onChangHandle}
