@@ -1,22 +1,25 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { getAPI } from "../../api";
-import { getTokenFirebase } from "../../firebase/firebase";
+import { getTokenFirebase, onMessageListener } from "../../firebase/firebase";
 import styles from "./styles/style.module.css";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Link, useNavigate } from "react-router-dom";
-import { async } from "@firebase/util";
+import { set } from "immutable";
+import { toast } from "react-toastify";
+
 function Notification() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const [clickNoti, setNoti] = useState(false);
   const [isMakeConnection, setMakeConnection] = useState(false);
-  const [countNoti, setcountNoti] = useState(0);
   const [notification, setNotification] = useState([]);
   const [loading, setLoading] = useState(false);
   const [chooseOption, setChooseOption] = useState(true);
+  const [countNews, setCountNews] = useState(0);
   const [limit, setLimit] = useState(6);
+  const [check, setCheck] = useState(false);
   window.onclick = () => {
     setNoti(false);
   };
@@ -32,7 +35,7 @@ function Notification() {
     response
       .then((res) => {
         setNotification(res.data.notifications);
-        setcountNoti(res.data.countUnRead);
+        setCountNews(res.data.countNew);
         setLoading(false);
       })
       .catch((err) => {
@@ -74,8 +77,45 @@ function Notification() {
     }
 
     tokenFunc();
+  }, [isMakeConnection]);
+
+  onMessageListener()
+    .then((payload) => {
+      // eslint-disable-next-line no-console
+      console.log(payload);
+      setCheck(!check);
+      toast(CustomToastWithLink(payload), {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    })
+    // eslint-disable-next-line no-console
+    .catch((err) => console.log("failed: ", err));
+
+  useEffect(() => {
     getNotification();
-  }, [isMakeConnection, limit, clickNoti, chooseOption]);
+  }, [limit, clickNoti, chooseOption, check]);
+
+  const CustomToastWithLink = (item) => (
+    <div>
+      <div
+        className={styles.noti__link1}
+      >
+        <div className={styles.content__text1}>
+          <p className={styles.time1}>{item.notification.title}</p>
+          <p>{item.notification.body}</p>
+        </div>
+        <div className={styles.content__img}>
+          <div className={styles.circle1}></div>
+        </div>
+      </div>
+    </div>
+  );
 
   const [height, setHeight] = useState(0);
   const infiniteScroll = (event, clickNoti, notification) => {
@@ -136,24 +176,44 @@ function Notification() {
       console.error(error.response);
     }
   };
+
+  const updateNewsCount = async (e, clickNoti) => {
+    e.preventDefault();
+    if (!clickNoti) {
+      try {
+        const response = await axios.post(
+          `https://afootballleague.ddns.net/api/v1/notifications/update-old-notification?userId=${user.userVM.id}`,
+          {
+            headers: { "content-type": "multipart/form-data" },
+          }
+        );
+
+        if (response.status === 200) {
+        }
+      } catch (error) {
+        console.error(error.response);
+      }
+    }
+  };
   return (
     <div>
       <div
         className={styles.noti}
         onClick={(e) => {
           e.stopPropagation();
-          setNoti((clickNoti) => !clickNoti);
+          setNoti(!clickNoti);
+          updateNewsCount(e, clickNoti);
           // updateNoti(e, clickNoti, notification);
         }}
       >
-        {countNoti !== 0 ? (
+        {countNews !== 0 ? (
           <div className={styles.noti__number}>
-            {countNoti > 9 ? "9+" : countNoti}
+            {countNews > 9 ? "9+" : countNews}
           </div>
         ) : null}
         <div
           className={
-            countNoti === 0
+            countNews === 0
               ? styles.noti__img
               : `${styles.noti__img} ${styles.ring__bell}`
           }

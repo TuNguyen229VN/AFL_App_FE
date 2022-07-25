@@ -1,8 +1,8 @@
 // Scripts for firebase and firebase messaging
 // eslint-disable-next-line no-undef
 importScripts(
-  'https://www.gstatic.com/firebasejs/9.7.0/firebase-app-compat.js',
-  'https://www.gstatic.com/firebasejs/9.7.0/firebase-messaging-compat.js'
+  'https://www.gstatic.com/firebasejs/9.8.0/firebase-app-compat.js',
+  'https://www.gstatic.com/firebasejs/9.8.0/firebase-messaging-compat.js'
 );
 
 // Initialize the Firebase app in the service worker by passing the generated config
