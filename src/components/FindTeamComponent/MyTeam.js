@@ -88,7 +88,7 @@ const MyTournamemts = () => {
 
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
-    getTournament(contentSearch, currentPage, "NAME", contentSearch);
+    getTournament(contentSearch, data.selected + 1, "NAME", contentSearch);
     //setCheck(!check);
   };
 
