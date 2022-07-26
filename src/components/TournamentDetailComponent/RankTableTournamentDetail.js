@@ -56,7 +56,9 @@ function RankTableTournamentDetail(props) {
           return (
             teamB.point - teamA.point ||
             teamB.differentPoint - teamA.differentPoint ||
-            teamB.winScoreNumber - teamA.winScoreNumber
+            teamB.winScoreNumber - teamA.winScoreNumber ||
+            teamA.totalRedCard - teamB.totalRedCard ||
+            teamA.totalYellowCard - teamB.totalYellowCard
           );
         });
       }

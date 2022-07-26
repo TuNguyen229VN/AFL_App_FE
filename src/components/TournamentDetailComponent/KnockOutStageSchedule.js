@@ -21,7 +21,7 @@ export default function KnockOutStageSchedule(props) {
     statusUpdateDate,
     tourDetail,
   } = props;
-
+  console.log(groupNumber);
   const [matchCurrent, setMatchCurrent] = useState(null);
   const [knockoutTeam, setKnoukoutTeam] = useState(null);
   const [dateUpdate, setDateUpdate] = useState(null);
@@ -222,8 +222,11 @@ export default function KnockOutStageSchedule(props) {
 
       setTeamDescription(desTeam);
     }
-    const findDate = excuteDate(data, tournamentType, tourDetail);
-    setFindMaxDate(findDate);
+    if (typeView === "result") {
+      const findDate = excuteDate(data, tournamentType, tourDetail);
+      setFindMaxDate(findDate);
+    }
+
     setKnoukoutTeam(data);
   };
   const editDate = (date) => {
