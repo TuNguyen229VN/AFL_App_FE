@@ -164,7 +164,7 @@ function Notification() {
 
       if (response.status === 200) {
         setLimit(limit);
-        if (notification.teamId === 0) {
+        if (notification.teamId !== 0) {
           navigate(`/teamDetail/${notification.teamId}/inforTeamDetail`);
         } else {
           navigate(
