@@ -54,7 +54,6 @@ export default function DetailInMatch(props) {
   }, [typeDetail, statusUpdate === false]);
 
   const coverMatchDetail = () => {
-    
     if (matchDetail !== null) {
       const newMatchDetail = [];
       if (typeDetail === "score") {
@@ -267,13 +266,11 @@ export default function DetailInMatch(props) {
           footballPlayerId: valueObj.id,
         });
       } else {
-        if (type === "object"){
+        if (type === "object") {
           newDetail[findIndex].playerInTournamentId =
-          valueObj.playerInTournamentId;
+            valueObj.playerInTournamentId;
           newDetail[findIndex].footballPlayerId = valueObj.id;
-        }
-          
-        else newDetail[findIndex].actionMinute = valueObj + "";
+        } else newDetail[findIndex].actionMinute = valueObj + "";
       }
       setDetail(newDetail);
     } else {
@@ -306,7 +303,13 @@ export default function DetailInMatch(props) {
     <div>
       <div
         id="exampleModal"
-        className={hideShow ? "popup__player active" : "popup__player"}
+        className={
+          hideShow
+            ? hideShowDeny
+              ? "popup__player zindex"
+              : "popup__player active"
+            : "popup__player"
+        }
       >
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -380,9 +383,6 @@ export default function DetailInMatch(props) {
                 </div>
               </div>
               <div class="modal-footer">
-                <div
-                  className={hideShowDeny ? "overlay active" : "overlay"}
-                ></div>
                 <button
                   type="button"
                   class="btn btn-secondary"

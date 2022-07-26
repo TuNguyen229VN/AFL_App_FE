@@ -1441,6 +1441,7 @@ function Match() {
                 onClick={() =>
                   navigate(`/detailMatch/${idMatch}`, {
                     state: {
+                      hostTournamentId: location.state.hostTournamentId,
                       tourDetail: location.state.tourDetail,
                     },
                   })
@@ -1613,6 +1614,9 @@ function Match() {
             </div>
             <div className={styles.match__menu}>
               <Link
+                state={{
+                  tourDetail: location.state.tourDetail,
+                }}
                 to={`/match/${idMatch}/matchDetail`}
                 className={
                   activeTeamDetail === `/match/${idMatch}/matchDetail`
@@ -1626,6 +1630,9 @@ function Match() {
                 Thống kê
               </Link>
               <Link
+                state={{
+                  tourDetail: location.state.tourDetail,
+                }}
                 to={`/match/${idMatch}/livestream`}
                 className={
                   activeTeamDetail === `/match/${idMatch}/livestream`

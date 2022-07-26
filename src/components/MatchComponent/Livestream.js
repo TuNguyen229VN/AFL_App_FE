@@ -168,7 +168,7 @@ function Livestream(data) {
           {data.message.length > 0 &&
             data.message.map((m) => (
               <div className={styles.one__comment}>
-                <img src={m.user.avatar} alt="a" />
+                <img src={m.user.avatar} alt={m.user.username} />
                 <div>
                   <p className={styles.name}>{m.user.username}</p>
                   <p>{m.comment}</p>

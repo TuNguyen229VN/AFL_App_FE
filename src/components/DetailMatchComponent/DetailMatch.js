@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./style/style.css";
+import styles from "./style/style.module.css";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import {
   getTeamInMatchByMatchIdAPI,
@@ -28,6 +28,7 @@ export default function DetailMatch(props) {
 
   const location = useLocation();
   const tourDetail = location.state.tourDetail;
+  const hostTournamentId = location.state.hostTournamentId;
   const [teamA, setTeamA] = useState(null);
   const [teamB, setTeamB] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -338,51 +339,71 @@ export default function DetailMatch(props) {
   return (
     <div>
       <Header />
-      <div className="detailMatch">
-        <h1 className="titleDetail">
-          Chi tiết trận đấu của{" "}
-          {tourDetail !== null ? tourDetail.tournamentName : null}
-        </h1>
-        <p className="fight">{teamA !== null ? teamA.match.fight : null}</p>
-        <p className="fight">
-          {teamA !== null && teamB !== null
-            ? teamA.teamName + " - " + teamB.teamName
-            : null}
-        </p>
-        <div>
-          <p className="fight">Tỉ số chung cuộc</p>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+      <div className={styles.detailMatch}>
+        <div className={styles.linkOption}>
+          <Link to={`/findTournaments`} replace className={styles.linkBack}>
+            Các giải đấu
+          </Link>
+          <span className={styles.sw}>{`>>`}</span>
+          <Link
+            to={`/tournamentDetail/${tourDetail.id}/scheduleTournamentDetail`}
+            className={styles.linkBack}
           >
-            <label
-              style={{
-                marginRight: 20,
-              }}
-              htmlFor="scoreA"
-              className="fight"
-            >
+            Lịch thi đấu
+          </Link>
+          <span className={styles.sw}>{`>>`}</span>
+          <Link
+            to={`/match/${idMatch}/matchDetail`}
+            state={{ hostTournamentId, tourDetail }}
+            className={styles.linkBack}
+          >
+            Trận đấu
+          </Link>
+          <span className={styles.sw}>{`>>`}</span>
+          <Link
+            to={`/detailMatch/${idMatch}`}
+            state={{ hostTournamentId, tourDetail }}
+            className={styles.linkBack}
+          >
+            Cập nhật tỉ số {teamA !== null ? teamA.match.fight : null}
+          </Link>
+        </div>
+        <h1 className={styles.titleDetail}>
+          Cập nhật tỉ số giải{" "}
+          {tourDetail !== null ? tourDetail.tournamentName : null} -{" "}
+          {teamA !== null ? teamA.match.fight : null}
+        </h1>
+        <div className={styles.teamName}>
+          {teamA !== null && teamB !== null ? (
+            <>
+              <p>{teamA.teamName}</p>
+              <p className={styles.lineDash}></p>
+              <p> {teamB.teamName}</p>
+            </>
+          ) : null}
+        </div>
+        <div>
+          <p className={styles.titleMin}>
+            <img src="/assets/icons/soccer-ball-retina.png" alt="ball" />
+            Tỉ số chung cuộc
+          </p>
+          <div className={styles.wrapUpdateScore}>
+            <label htmlFor="scoreA" className="fight">
               {teamA !== null ? teamA.teamName : null}
             </label>
             <input
               name="scoreA"
               value={scoreA === null ? "" : scoreA}
               id="scoreA"
-              className="btnInput"
+              className={styles.btnInput}
               onChange={onChangeHandler}
             />
-            -
+               <p className={styles.lineDash}></p>
             <input
-              style={{
-                marginLeft: 20,
-              }}
               id="scoreB"
               name="scoreB"
               value={scoreB === null ? "" : scoreB}
-              className="btnInput"
+              className={styles.btnInput}
               onChange={onChangeHandler}
             />
             <label htmlFor="scoreB" className="fight">
@@ -392,9 +413,6 @@ export default function DetailMatch(props) {
             scoreB !== null &&
             ((scoreA + "").length > 0 || (scoreB + "").length > 0) ? (
               <div
-                style={{
-                  marginLeft: 30,
-                }}
                 className="btnAccept"
               >
                 {/* <button
@@ -410,7 +428,7 @@ export default function DetailMatch(props) {
           </div>
           {(scoreA + "").length > 0 && (scoreB + "").length > 0 ? (
             <p
-              className="deitalScoreFootball"
+            className={styles.deitalScoreFootball}
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("score");
@@ -422,21 +440,12 @@ export default function DetailMatch(props) {
           ) : null}
         </div>
         <div>
-          <p className="fight">Tổng số thẻ vàng</p>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <label
-              style={{
-                marginRight: 20,
-              }}
-              htmlFor="yellowA"
-              className="fight"
-            >
+          <p className={styles.titleMin}>
+            <img src="/assets/icons/yellow-card.png" alt="yellow" />
+            Tổng số thẻ vàng
+          </p>
+          <div className={styles.wrapUpdateScore}>
+            <label htmlFor="yellowA" className="fight">
               {teamA !== null ? teamA.teamName : null}
             </label>
             <input
@@ -444,18 +453,15 @@ export default function DetailMatch(props) {
               name="yellowA"
               value={yellowA === null ? "" : yellowA}
               onChange={onChangeHandler}
-              className="btnInput"
+              className={styles.btnInput}
             />
-            -
+             <p className={styles.lineDash}></p>
             <input
-              style={{
-                marginLeft: 20,
-              }}
               id="yellowB"
               name="yellowB"
               value={yellowB === null ? "" : yellowB}
               onChange={onChangeHandler}
-              className="btnInput"
+              className={styles.btnInput}
             />
             <label htmlFor="yellowB" className="fight">
               {teamB !== null ? teamB.teamName : null}
@@ -465,9 +471,6 @@ export default function DetailMatch(props) {
             (yellowA + "").length > 0 &&
             (yellowB + "").length > 0 ? (
               <div
-                style={{
-                  marginLeft: 30,
-                }}
                 className="btnAccept"
               >
                 {/* <button
@@ -483,7 +486,7 @@ export default function DetailMatch(props) {
           </div>
           {(yellowA + "").length > 0 && (yellowB + "").length > 0 ? (
             <p
-              className="deitalScoreFootball"
+              className={styles.deitalScoreFootball}
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("yellow");
@@ -495,37 +498,26 @@ export default function DetailMatch(props) {
           ) : null}
         </div>
         <div>
-          <p className="fight">Tổng số thẻ đỏ</p>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <label
-              style={{
-                marginRight: 20,
-              }}
-              htmlFor="redA"
-              className="fight"
-            >
+          <p className={styles.titleMin}>
+            {" "}
+            <img src="/assets/icons/red-card.png" alt="red" />
+            Tổng số thẻ đỏ
+          </p>
+          <div className={styles.wrapUpdateScore}>
+            <label htmlFor="redA" className="fight">
               {teamA !== null ? teamA.teamName : null}
             </label>
             <input
               id="redA"
-              className="btnInput"
+              className={styles.btnInput}
               name="redA"
               value={redA === null ? "" : redA}
               onChange={onChangeHandler}
             />
-            -
+              <p className={styles.lineDash}></p>
             <input
-              style={{
-                marginLeft: 20,
-              }}
               id="redB"
-              className="btnInput"
+              className={styles.btnInput}
               name="redB"
               value={redB === null ? "" : redB}
               onChange={onChangeHandler}
@@ -537,12 +529,7 @@ export default function DetailMatch(props) {
             redB !== null &&
             (redA + "").length > 0 &&
             (redB + "").length > 0 ? (
-              <div
-                style={{
-                  marginLeft: 30,
-                }}
-                className="btnAccept"
-              >
+              <div className="btnAccept">
                 {/* <button
                   className="cancleCreate"
                   onClick={() => {
@@ -556,7 +543,7 @@ export default function DetailMatch(props) {
           </div>
           {(redA + "").length > 0 && (redB + "").length > 0 ? (
             <p
-              className="deitalScoreFootball"
+              className={styles.deitalScoreFootball}
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("red");
@@ -577,7 +564,7 @@ export default function DetailMatch(props) {
         updateScoreInMatch={updateScoreInMatch}
         matchDetail={
           teamA !== null && teamB !== null
-            ? teamA.teamScore + "-" + teamB.teamScore === scoreA + "-" +scoreB
+            ? teamA.teamScore + "-" + teamB.teamScore === scoreA + "-" + scoreB
               ? matchDetail
               : null
             : null
