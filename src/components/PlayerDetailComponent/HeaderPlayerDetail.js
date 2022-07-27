@@ -131,7 +131,7 @@ function HeaderPlayerDetail() {
     response
       .then((res) => {
         if (res.status === 200) {
-          postNotificationforTeamManager(+playerId, teamId, "teamManager")
+          postNotificationforTeamManager(+playerId, teamId, "teamManager");
         }
       })
       .catch((err) => {
@@ -244,7 +244,6 @@ function HeaderPlayerDetail() {
     }
   };
   const sendMailPlayerAccept = (playerId, teamId) => {
-    
     const response = PlayerAcceptAPI(+playerId, teamId);
     response
       .then((res) => {
@@ -632,55 +631,83 @@ function HeaderPlayerDetail() {
                       <div className={styles.checkbox}>
                         <p>
                           <input
+                            className={styles.radio__input}
                             type="radio"
                             id="test1"
                             name="radio-group"
                             value={"Cầu thủ giả mạo"}
                             onChange={onChangeHandler}
                           />
-                          <label htmlFor="test1">Cầu thủ giả mạo</label>
+                          <label
+                            htmlFor="test1"
+                            className={styles.radio__label}
+                          >
+                            Cầu thủ giả mạo
+                          </label>
                         </p>
                         <p>
                           <input
+                            className={styles.radio__input}
                             type="radio"
                             id="test2"
                             name="radio-group"
                             value={"Tên cầu thủ không hợp lệ"}
                             onChange={onChangeHandler}
                           />
-                          <label htmlFor="test2">
+                          <label
+                            htmlFor="test2"
+                            className={styles.radio__label}
+                          >
                             Tên cầu thủ không hợp lệ
                           </label>
                         </p>
                         <p>
                           <input
+                            className={styles.radio__input}
                             type="radio"
                             id="test3"
                             name="radio-group"
                             value={"Quấy rối, bắt nạt"}
                             onChange={onChangeHandler}
                           />
-                          <label htmlFor="test3">Quấy rối, bắt nạt</label>
+                          <label
+                            htmlFor="test3"
+                            className={styles.radio__label}
+                          >
+                            Quấy rối, bắt nạt
+                          </label>
                         </p>
                         <p>
                           <input
+                            className={styles.radio__input}
                             type="radio"
                             id="test4"
                             name="radio-group"
                             value={"Nội dung không phù hợp"}
                             onChange={onChangeHandler}
                           />
-                          <label htmlFor="test4">Nội dung không phù hợp</label>
+                          <label
+                            htmlFor="test4"
+                            className={styles.radio__label}
+                          >
+                            Nội dung không phù hợp
+                          </label>
                         </p>
                         <p>
                           <input
+                            className={styles.radio__input}
                             type="radio"
                             id="test5"
                             name="radio-group"
                             value={"Lý do khác"}
                             onChange={onChangeHandler}
                           />
-                          <label htmlFor="test5">Lý do khác:</label>
+                          <label
+                            htmlFor="test5"
+                            className={styles.radio__label}
+                          >
+                            Lý do khác:
+                          </label>
                         </p>
                       </div>
                       <p className="error errRp">{contentReport.error}</p>

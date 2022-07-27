@@ -493,57 +493,62 @@ function HeaderTeamDetail() {
                         <div className={styles.checkbox}>
                           <p>
                             <input
+                             className={styles.radio__input}
                               type="radio"
                               id="test1"
                               name="radio-group"
                               value={"Đội bóng giả mạo"}
                               onChange={onChangeHandler}
                             />
-                            <label htmlFor="test1">Đội bóng giả mạo</label>
+                            <label htmlFor="test1"  className={styles.radio__label}>Đội bóng giả mạo</label>
                           </p>
                           <p>
                             <input
+                             className={styles.radio__input}
                               type="radio"
                               id="test2"
                               name="radio-group"
                               value={"Tên đội bóng không hợp lệ"}
                               onChange={onChangeHandler}
                             />
-                            <label htmlFor="test2">
+                            <label htmlFor="test2"  className={styles.radio__label}>
                               Tên đội bóng không hợp lệ
                             </label>
                           </p>
                           <p>
                             <input
+                             className={styles.radio__input}
                               type="radio"
                               id="test3"
                               name="radio-group"
                               value={"Quấy rối, bắt nạt"}
                               onChange={onChangeHandler}
                             />
-                            <label htmlFor="test3">Quấy rối, bắt nạt</label>
+                            <label htmlFor="test3"  className={styles.radio__label}>Quấy rối, bắt nạt</label>
                           </p>
                           <p>
                             <input
+                             className={styles.radio__input}
                               type="radio"
                               id="test4"
                               name="radio-group"
                               value={"Nội dung không phù hợp"}
                               onChange={onChangeHandler}
                             />
-                            <label htmlFor="test4">
+                            <label htmlFor="test4"  className={styles.radio__label}>
                               Nội dung không phù hợp
                             </label>
                           </p>
                           <p>
                             <input
+                             className={styles.radio__input}
                               type="radio"
                               id="test5"
                               name="radio-group"
                               value={"Lý do khác"}
                               onChange={onChangeHandler}
                             />
-                            <label htmlFor="test5">Lý do khác:</label>
+                            <label htmlFor="test5"  className={styles.radio__label}>Lý do khác:</label>
                           </p>
                         </div>
                         <p className="error errRp">{contentReport.error}</p>

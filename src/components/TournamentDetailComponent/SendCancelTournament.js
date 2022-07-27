@@ -185,53 +185,58 @@ function SendCancelTournament(props) {
         <div className={styles.checkbox}>
           <p>
             <input
+             className={styles.radio__input}
               type="radio"
               id="test1"
               name="radio-group"
               value={"Số lượng đội bóng tham gia không đủ"}
               onChange={onChangeHandler}
             />
-            <label htmlFor="test1">Số lượng đội bóng tham gia không đủ</label>
+            <label htmlFor="test1" className={styles.radio__label}>Số lượng đội bóng tham gia không đủ</label>
           </p>
           <p>
             <input
+             className={styles.radio__input}
               type="radio"
               id="test2"
               name="radio-group"
               value={"Kinh phí tài trợ không đáp ứng đủ cho giải đấu"}
               onChange={onChangeHandler}
             />
-            <label htmlFor="test2">Kinh phí tài trợ không đáp ứng đủ cho giải đấu</label>
+            <label htmlFor="test2" className={styles.radio__label}>Kinh phí tài trợ không đáp ứng đủ cho giải đấu</label>
           </p>
           <p>
             <input
+             className={styles.radio__input}
               type="radio"
               id="test3"
               name="radio-group"
               value={"Ảnh hưởng dịch bệnh covid"}
               onChange={onChangeHandler}
             />
-            <label htmlFor="test3">Ảnh hưởng dịch bệnh covid</label>
+            <label htmlFor="test3" className={styles.radio__label}>Ảnh hưởng dịch bệnh covid</label>
           </p>
           <p>
             <input
+             className={styles.radio__input}
               type="radio"
               id="test4"
               name="radio-group"
               value={"Sân bãi không có để đáp ứng giải đấu"}
               onChange={onChangeHandler}
             />
-            <label htmlFor="test4">Sân bãi không có để đáp ứng giải đấu</label>
+            <label htmlFor="test4" className={styles.radio__label}>Sân bãi không có để đáp ứng giải đấu</label>
           </p>
           <p>
             <input
+             className={styles.radio__input}
               type="radio"
               id="test5"
               name="radio-group"
               value={"Lý do khác"}
               onChange={onChangeHandler}
             />
-            <label htmlFor="test5">Lý do khác:</label>
+            <label htmlFor="test5" className={styles.radio__label}>Lý do khác:</label>
           </p>
           <p className="error errRp">{contentReport.error}</p>
           <div>

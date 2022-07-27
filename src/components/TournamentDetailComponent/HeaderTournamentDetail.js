@@ -1004,112 +1004,122 @@ function HeaderTournamentDetail() {
                     <div className={styles.checkbox}>
                       <p>
                         <input
+                           className={styles.radio__input}
                           type="radio"
                           id="test1"
                           name="radio-group"
                           value={"Giải đấu giả mạo"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test1">Giải đấu giả mạo</label>
+                        <label htmlFor="test1" className={styles.radio__label}>Giải đấu giả mạo</label>
                       </p>
                       <p>
                         <input
+                           className={styles.radio__input}
                           type="radio"
                           id="test2"
                           name="radio-group"
                           value={"Tên giải đấu không hợp lệ"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test2">Tên giải đấu không hợp lệ</label>
+                        <label htmlFor="test2" className={styles.radio__label}>Tên giải đấu không hợp lệ</label>
                       </p>
                       <p>
                         <input
+                           className={styles.radio__input}
                           type="radio"
                           id="test3"
                           name="radio-group"
                           value={"Quấy rối, bắt nạt"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test3">Quấy rối, bắt nạt</label>
+                        <label htmlFor="test3" className={styles.radio__label}>Quấy rối, bắt nạt</label>
                       </p>
                       <p>
                         <input
+                           className={styles.radio__input}
                           type="radio"
                           id="test4"
                           name="radio-group"
                           value={"Nội dung không phù hợp"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test4">Nội dung không phù hợp</label>
+                        <label htmlFor="test4" className={styles.radio__label}>Nội dung không phù hợp</label>
                       </p>
                       <p>
                         <input
+                           className={styles.radio__input}
                           type="radio"
                           id="test5"
                           name="radio-group"
                           value={"Lý do khác"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test5">Lý do khác:</label>
+                        <label htmlFor="test5" className={styles.radio__label}>Lý do khác:</label>
                       </p>
                     </div>
                   ) : (
                     <div className={styles.checkbox}>
                       <p>
                         <input
+                           className={styles.radio__input}
                           type="radio"
                           id="test1"
                           name="radio-group"
                           value={"Giải đấu giả mạo"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test1">Giải đấu giả mạo</label>
+                        <label htmlFor="test1" className={styles.radio__label}>Giải đấu giả mạo</label>
                       </p>
                       <p>
                         <input
+                           className={styles.radio__input}
                           type="radio"
                           id="test2"
                           name="radio-group"
                           value={"Tên giải đấu không hợp lệ"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test2">
+                        <label htmlFor="test2" className={styles.radio__label}>
                           Thời gian giải đấu đã thay đổi
                         </label>
                       </p>
                       <p>
                         <input
+                           className={styles.radio__input}
                           type="radio"
                           id="test3"
                           name="radio-group"
                           value={"Quấy rối, bắt nạt"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test3">
+                        <label htmlFor="test3" className={styles.radio__label}>
                           Hình thức giải đấu giải đấu đã thay đổi
                         </label>
                       </p>
                       <p>
                         <input
+                           className={styles.radio__input}
                           type="radio"
                           id="test4"
                           name="radio-group"
                           value={"Nội dung không phù hợp"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test4">
+                        <label htmlFor="test4" className={styles.radio__label}>
                           Tìm được giải đấu khác phù hợp hơn
                         </label>
                       </p>
                       <p>
                         <input
+                           className={styles.radio__input}
                           type="radio"
                           id="test5"
                           name="radio-group"
                           value={"Lý do khác"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test5">Lý do khác:</label>
+                        <label htmlFor="test5" className={styles.radio__label}>Lý do khác:</label>
                       </p>
                     </div>
                   )}

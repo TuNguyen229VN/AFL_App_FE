@@ -12,6 +12,7 @@ import DateTimePicker from "react-datetime-picker";
 import useAuthListener from "../../hooks/user_auth";
 import "firebase/compat/auth";
 import LoadingAction from "../LoadingComponent/LoadingAction";
+import { onMessageListener } from "../../firebase/firebase";
 function Profile() {
   const [value, onChange] = useState(new Date());
   const [loading, setLoading] = useState(false);
@@ -74,6 +75,15 @@ function Profile() {
     getMyPromote();
     getMyAccount();
   }, [check]);
+
+  onMessageListener()
+    .then((payload) => {
+      // eslint-disable-next-line no-console
+      console.log(payload);
+      setCheck(!check);
+    })
+    // eslint-disable-next-line no-console
+    .catch((err) => console.log("failed: ", err));
   const [role, setRole] = useState("");
   const [email, setEmail] = useState({ value: "", error: "" });
   const [username, setUsername] = useState({
@@ -756,8 +766,8 @@ function Profile() {
             <div className={styles.text}>
               <label htmlFor="dob" autoComplete="off">
                 Ngày sinh
-              </label> 
-               <input
+              </label>
+              <input
                 type="date"
                 id="dob"
                 value={dob.value}
@@ -766,9 +776,8 @@ function Profile() {
                 placeholder="dd-mm-yyyy"
                 max={date}
                 name="dob"
-                
               />
-                {/* <DateTimePicker onChange={onChange} value={value} className={styles.datetimepicker} calendarClassName={styles.calendar}/> */}
+              {/* <DateTimePicker onChange={onChange} value={value} className={styles.datetimepicker} calendarClassName={styles.calendar}/> */}
             </div>
             <div className={styles.text}>
               <label htmlFor="bio">Mô tả </label>
@@ -938,7 +947,7 @@ function Profile() {
           </p>
         ) : null}
         {/* <div className={styles.profile__delete}> */}
-          {/* <div className={styles.delete__title}>Xóa tài khoản</div>
+        {/* <div className={styles.delete__title}>Xóa tài khoản</div>
           <div className={styles.delete__wrap}>
             <p>
               Hãy nhớ rằng khi xóa tài khoản thì tất cả thông tin về tài khoản,
