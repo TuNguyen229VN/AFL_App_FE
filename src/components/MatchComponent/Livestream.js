@@ -19,6 +19,7 @@ function Livestream(data) {
   console.log(rtcProps)
   const callbacks = {
     EndCall: () => setVideocall(false),
+    PinnedVideo:()=>console.log("s")
   };
 
   const styleProps={

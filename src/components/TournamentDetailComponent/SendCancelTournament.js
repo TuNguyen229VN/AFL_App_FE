@@ -39,7 +39,7 @@ function SendCancelTournament(props) {
           : contentCheckbox.value,
       userId: props.data.userId,
       tournamentId: props.data.tournamentId,
-      status: "Host chưa duyệt",
+      status: "Xin hủy giải",
     };
     console.log(data)
     try {
