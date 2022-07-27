@@ -35,6 +35,7 @@ import { toast } from "react-toastify";
 import { getUserByIdAPI } from "../../api/User";
 import CountDown from "./CountDown";
 import postNotifacation from "../../api/NotificationAPI";
+import SendCancelTournament from "./SendCancelTournament";
 function HeaderTournamentDetail() {
   const now = new Date().getTime();
   const { idTour } = useParams();
@@ -59,7 +60,7 @@ function HeaderTournamentDetail() {
     value: "",
     error: "",
   });
-  const [status,setStatus] = useState(false);
+  const [status, setStatus] = useState(false);
   let navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [allTeam, setAllTeam] = useState(null);
@@ -600,7 +601,7 @@ function HeaderTournamentDetail() {
         }
       } catch (error) {
         setLoadingAc(false);
-        toast.error(error.response.data.message, {
+        toast.error(error.response.data, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -738,38 +739,47 @@ function HeaderTournamentDetail() {
                   user.userVM.roleId !== 1 ? (
                     <>
                       {user.userVM.id === tourDetail.userId ? (
-                        <Link
-                          to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
-                          state={{
-                            id: tourDetail.id,
-                            address: tourDetail.footballFieldAddress,
-                            lengthTeamPaticipate:
-                              tourDetail.numberTeamInTournament,
-                            allTeam: allTeam,
-                            tourDetail: tourDetail,
-                          }}
-                          className="btn_UpdateTournament"
-                          style={{
-                            padding: "20px 50px",
-                            marginLeft: 75,
-                            fontWeight: 600,
-                            fontFamily: "Mulish-Bold",
-                            borderRadius: 5,
-                            backgroundColor: "#D7FC6A",
-                            border: 1,
-                            borderColor: "#D7FC6A",
-                            transition: "0.5s",
-                            position: "absolute",
-                            top: 365,
-                          }}
-                          // onClick={() => {
-                          //   updateClick(,)
-                          // }}
-                        >
-                          {" "}
-                          <i class="fa-solid fa-pen-to-square" />
-                          Chỉnh sửa giải đấu
-                        </Link>
+                        <>
+                          <Link
+                            to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
+                            state={{
+                              id: tourDetail.id,
+                              address: tourDetail.footballFieldAddress,
+                              lengthTeamPaticipate:
+                                tourDetail.numberTeamInTournament,
+                              allTeam: allTeam,
+                              tourDetail: tourDetail,
+                            }}
+                            className="btn_UpdateTournament"
+                            style={{
+                              padding: "20px 50px",
+                              marginLeft: 75,
+                              fontWeight: 600,
+                              fontFamily: "Mulish-Bold",
+                              borderRadius: 5,
+                              backgroundColor: "#D7FC6A",
+                              border: 1,
+                              borderColor: "#D7FC6A",
+                              transition: "0.5s",
+                              position: "absolute",
+                              top: 365,
+                            }}
+                            // onClick={() => {
+                            //   updateClick(,)
+                            // }}
+                          >
+                            <i class="fa-solid fa-pen-to-square" /> Chỉnh sửa
+                            giải đấu
+                          </Link>
+                          {tourDetail.statusTnm !== "Kết thúc" ? (
+                            <SendCancelTournament
+                              data={{
+                                userId: user.userVM.id,
+                                tournamentId: idTour,
+                              }}
+                            />
+                          ) : null}
+                        </>
                       ) : tourDetail.mode !== "PRIVATE" &&
                         new Date().getTime() <=
                           new Date(tourDetail.registerEndDate).getTime() &&
