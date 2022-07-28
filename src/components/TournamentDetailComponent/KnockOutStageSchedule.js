@@ -550,9 +550,9 @@ export default function KnockOutStageSchedule(props) {
                     )}
 
                     <td>
-                      <span className="score">{itemSeeds.teams[0].score}</span>
+                      <span className="score">{itemSeeds.teams[0].score !== null ? itemSeeds.teams[0].score : 0}</span>
                       <span className="score"> - </span>
-                      <span className="score">{itemSeeds.teams[1].score}</span>
+                      <span className="score">{itemSeeds.teams[1].score !== null ? itemSeeds.teams[1].score : 0}</span>
                     </td>
                     {itemSeeds.teams[1].team !== null ? (
                       <td>

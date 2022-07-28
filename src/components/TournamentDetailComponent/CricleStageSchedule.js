@@ -241,9 +241,9 @@ export default function CricleStageSchedule(props) {
               )}
 
               <td>
-                <span className="score">{item.teamScore}</span>
+                <span className="score">{item.teamScore !== null ? item.teamScore : 0}</span>
                 <span className="score"> - </span>
-                <span className="score">{allTeamB[index].teamScore}</span>
+                <span className="score">{allTeamB[index].teamScore !== null ? allTeamB[index].teamScore : 0}</span>
               </td>
               {allTeamB[index].teamInTournament.team ? (
                 <td>
