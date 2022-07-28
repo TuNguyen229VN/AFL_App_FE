@@ -21,7 +21,8 @@ function Match() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-
+  
+  
   const [guestId, setGuestId] = useState(localStorage.getItem("guestId"));
   const inputRef = useRef(null);
   // location.state.hostTournamentId
@@ -1443,6 +1444,7 @@ function Match() {
                     state: {
                       hostTournamentId: location.state.hostTournamentId,
                       tourDetail: location.state.tourDetail,
+                      indexMatch: location.state.index
                     },
                   })
                 }

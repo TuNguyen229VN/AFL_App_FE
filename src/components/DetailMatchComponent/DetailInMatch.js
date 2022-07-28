@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ModalDenyMatchDetail from "./ModalDenyMatchDetail";
-
+import { updateNextTeamInRoundAPI } from "../../api/TeamInMatchAPI";
 export default function DetailInMatch(props) {
   const {
     hideShow,
@@ -18,6 +18,7 @@ export default function DetailInMatch(props) {
     statusUpdate,
     setStatusUpdate,
     tourDetail,
+    indexMatch
   } = props;
 
   const [detail, setDetail] = useState([]);
@@ -288,15 +289,31 @@ export default function DetailInMatch(props) {
       ]);
     }
   };
-  const onSubmitHandler = (e) => {
+  const updateNextTeamInNextRound = () => {
+   
+    try {
+      const data = {
+        tournamentId: tourDetail.id,
+        matchId: tourDetail.tournamentTypeId === 1 ? idMatch : indexMatch < tourDetail.groupNumber ? 0 : idMatch,
+      };
+      const response = updateNextTeamInRoundAPI(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
     for (let item of detail) {
       delete item.id;
     }
-    updateScoreInMatch(
+    await updateScoreInMatch(
       detail,
       typeDetail === "score" ? 1 : typeDetail === "yellow" ? 2 : 3
     );
+    if (tourDetail.tournamentTypeId !== 2) {
+      updateNextTeamInNextRound();
+    }
+
     setNewMatchDetail(null);
   };
   return (
