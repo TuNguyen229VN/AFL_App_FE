@@ -27,7 +27,10 @@
   align-items: center;
   user-select: none;
 }
-
+.tournamnet__text{
+  width: calc(100% - 350px);
+  line-height: 1.1;
+}
 .my__tournament .item__tournament:hover h2 {
   color: var(--green-bold);
 }
@@ -50,11 +53,11 @@
   height: 250px;
   border: 1px solid var(--blue-black);
 }
-.my__tournament .tournament__img img{
-    transition: 0.3s;
-    min-height: 100%;
-    min-width: 100%;
-    object-fit: cover;
+.my__tournament .tournament__img img {
+  transition: 0.3s;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 .item__tournament .man {
   font-size: 18px;
@@ -87,10 +90,10 @@
   color: green;
   border-radius: 5px;
 }
-.item__tournament .red{
+.item__tournament .red {
   color: #ea6061;
 }
-.item__tournament .grey{
+.item__tournament .grey {
   color: #828282;
   border: 1px dashed #828282;
 }
@@ -111,22 +114,22 @@
   transition: 0.3s;
 }
 
-.titleNoContent{
-    margin-top: 50px;
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 50px;
+.titleNoContent {
+  margin-top: 50px;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
-.createnow{
-    display: block;
-    color: var(--blue-black);
-    margin-top: 20px;
+.createnow {
+  display: block;
+  color: var(--blue-black);
+  margin-top: 20px;
 }
 
-.createnow:hover{
-    text-decoration: underline;
-    color: var(--blue-black);
+.createnow:hover {
+  text-decoration: underline;
+  color: var(--blue-black);
 }
 
 /* PagingTournament */
@@ -141,27 +144,28 @@
   justify-content: center;
 }
 
-.pagelink{
+.pagelink {
   color: var(--black-text);
   display: inline-block;
   padding: 10px 15px;
   user-select: none;
 }
 
-.pageItem:hover .pagelink{
+.pageItem:hover .pagelink {
   color: var(--black-text);
 }
-.pageItem{
+.pageItem {
   margin-top: 15px;
   margin-left: 20px;
   border: 1px solid #ccc;
   font-size: 16px;
   width: max-content;
   transition: 0.5s;
-cursor: pointer;
+  cursor: pointer;
 }
 
-.pageItem.active,.pageItem:hover{
+.pageItem.active,
+.pageItem:hover {
   background-color: var(--green-bold);
   color: var(--black-text);
   border: 1px solid transparent;
@@ -173,14 +177,14 @@ cursor: pointer;
  * Dot Shuttle
  * ==============================================
  */
- .col_3{
+.col_3 {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   top: -2px;
- }
+}
 
- .dot_shuttle {
+.dot_shuttle {
   position: relative;
   left: -5px;
   width: 8px;
@@ -192,8 +196,9 @@ cursor: pointer;
   /* filter: blur(2px); */
 }
 
-.dot_shuttle::before, .dot_shuttle::after {
-  content: '';
+.dot_shuttle::before,
+.dot_shuttle::after {
+  content: "";
   display: inline-block;
   position: absolute;
   top: 0;
@@ -228,14 +233,14 @@ cursor: pointer;
   }
 }
 
-.col_2{
+.col_2 {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   top: -2px;
- }
+}
 
- .dot_shuttle2 {
+.dot_shuttle2 {
   position: relative;
   left: -5px;
   width: 8px;
@@ -247,8 +252,9 @@ cursor: pointer;
   /* filter: blur(2px); */
 }
 
-.dot_shuttle2::before, .dot_shuttle2::after {
-  content: '';
+.dot_shuttle2::before,
+.dot_shuttle2::after {
+  content: "";
   display: inline-block;
   position: absolute;
   top: 0;
@@ -267,5 +273,3 @@ cursor: pointer;
 .dot_shuttle2::after {
   left: 20px;
 }
-
- 

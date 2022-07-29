@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Link,useParams  } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import Loading from "../LoadingComponent/Loading";
 import styles from "./styles/style.module.css";
 import { getAPI } from "../../api";
@@ -7,7 +7,7 @@ function MyTournamentInPlayer() {
   const [loading, setLoading] = useState(false);
   const [tournament, setTournament] = useState([]);
   const [pageIndex, setPageIndex] = useState(1);
-  const [numPage,setNumPage] = useState(0);
+  const [numPage, setNumPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const { idPlayer } = useParams();
   const getTournament = () => {
@@ -17,7 +17,7 @@ function MyTournamentInPlayer() {
     const response = getAPI(afterURL);
     response
       .then((res) => {
-        setNumPage(Math.ceil(res.data.tournaments.length/10));
+        setNumPage(Math.ceil(res.data.tournaments.length / 10));
         setTournament(res.data.tournaments);
         setLoading(false);
       })
@@ -72,14 +72,14 @@ function MyTournamentInPlayer() {
   };
   return (
     <div className={styles.my__tournament}>
-    <h2 className={styles.title}>Danh sách giải đấu của bạn</h2>
-    <div className={styles.list__tournament}>
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className={styles.tournament}>
-          {tournament.length > 0
-            ? tournament.map((tour) => (
+      <h2 className={styles.title}>Danh sách giải đấu của bạn</h2>
+      <div className={styles.list__tournament}>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div>
+            {tournament.length > 0 ? (
+              tournament.map((tour) => (
                 <Link
                   to={`/tournamentDetail/${tour.id}/inforTournamentDetail`}
                   className={styles.item__tournament}
@@ -90,24 +90,21 @@ function MyTournamentInPlayer() {
                       alt={tour.tournamentName}
                     />
                   </div>
+                  <div className={styles.details}>Xem chi tiết</div>
                   <div className={styles.tournamnet__text}>
                     <h2>{tour.tournamentName}</h2>
                     <div className={styles.man}>
-                    <i class="fa-solid fa-bullhorn"></i>
-                      <span className={styles.sub__title}>
-                        Chế độ:{" "}
-                      </span>
+                      <i class="fa-solid fa-bullhorn"></i>
+                      <span className={styles.sub__title}>Chế độ: </span>
                       <span className={styles.text_field}>
-                       {tour.mode==="PRIVATE"?"Riêng tư":"Công khai"}
+                        {tour.mode === "PRIVATE" ? "Riêng tư" : "Công khai"}
                       </span>
                     </div>
                     <div className={styles.man}>
                       <i>
-                        <img src="/public/assets/icons/join.png" alt="join"/>
+                        <img src="/assets/icons/join.png" alt="join" />
                       </i>
-                      <span className={styles.sub__title}>
-                        Đội tham gia:{" "}
-                      </span>
+                      <span className={styles.sub__title}>Đội tham gia: </span>
                       <span className={styles.text_field}>
                         {" "}
                         {tour.numberTeamInTournament} /{" "}
@@ -126,7 +123,9 @@ function MyTournamentInPlayer() {
                     <div className={styles.man}>
                       <i className="fas fa-solid fa-location-dot"></i>
                       <span className={styles.sub__title}>Địa điểm: </span>
-                      <span className={`${styles.text_field} ${styles.address}`}>
+                      <span
+                        className={`${styles.text_field} ${styles.address}`}
+                      >
                         {tour.footballFieldAddress}
                       </span>
                     </div>
@@ -140,25 +139,68 @@ function MyTournamentInPlayer() {
                         {formatDate(tour.tournamentEndDate)}{" "}
                       </span>
                     </div>
-                    <div className={styles.status}>
-                    {tour.status === true ? "Đang diễn ra" : "Đã kết thúc"}
+                    <div
+                      className={
+                        tour.statusTnm === "Đang diễn ra"
+                          ? styles.status
+                          : tour.statusTnm === "Kết thúc"
+                          ? `${styles.status} ${styles.red}`
+                          : `${styles.status} ${styles.grey}`
+                      }
+                    >
+                      {/* {tour.status === true ? "Đang diễn ra" : "Đã kết thúc"} */}
+                      {tour.statusTnm}
+                      {tour.statusTnm === "Đang diễn ra" ? (
+                        <div className={styles.col_3}>
+                          <div
+                            className={styles.snippet}
+                            data-title=".dot-shuttle"
+                          >
+                            <div className={styles.stage}>
+                              <div className={styles.dot_shuttle}></div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : tour.statusTnm === "Kết thúc" ? (
+                        <div className={styles.col_2}>
+                          <div
+                            className={styles.snippet2}
+                            data-title=".dot-shuttle"
+                          >
+                            <div className={styles.stage2}>
+                              <div className={styles.dot_shuttle2}></div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
-                  </div>
-                  </Link>
-              
-              )): null}
-          {pageIndex<numPage?<button className="btnLoadMore" onClick={e =>{setPageIndex(pageIndex => pageIndex+1);
-              setLimit(limit => limit+10);  e.preventDefault();}}>Xem Thêm</button>:""}
-        </div>
-      )}
-      {tournament.length <= 0 ? (
-        <h1 className={styles.titleNoContent}>
-          Bạn chưa tham gia giải đấu nào
-        </h1>
-      ) : null}
+                </Link>
+              ))
+            ) : (
+              <h1 className={styles.titleNoContent}>
+                Bạn chưa tham gia giải đấu nào
+              </h1>
+            )}
+            {pageIndex < numPage ? (
+              <button
+                className="btnLoadMore"
+                onClick={(e) => {
+                  setPageIndex((pageIndex) => pageIndex + 1);
+                  setLimit((limit) => limit + 10);
+                  e.preventDefault();
+                }}
+              >
+                Xem Thêm
+              </button>
+            ) : (
+              ""
+            )}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-  )
+  );
 }
 
-export default MyTournamentInPlayer
+export default MyTournamentInPlayer;

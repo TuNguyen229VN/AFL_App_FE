@@ -2,13 +2,13 @@
   margin-top: 40px;
 }
 
- .title {
+.my__tournament .title {
   font-size: 24px;
   font-family: "Mulish-Bold";
   text-transform: uppercase;
 }
 
- .title::after {
+.my__tournament .title::after {
   display: block;
   content: "";
   height: 4px;
@@ -21,20 +21,22 @@
   position: relative;
   display: flex;
   color: var(--blue-black);
-  border-radius: 5px;
+  column-gap: 100px;
+  padding-bottom: 30px;
   align-items: center;
   user-select: none;
-  box-shadow: 0px 0px 5px 1px rgba(97, 87, 87, 0.83);
-  -webkit-box-shadow: 0px 0px 5px 1px rgba(97, 87, 87, 0.83);
-  -moz-box-shadow: 0px 0px 5px 1px rgba(97, 87, 87, 0.83);
-  transform: scale(1);
-  transition: all 0.3s;
 }
-
-.my__tournament .item__tournament:hover {
-  transform: scale(1.02);
+.tournamnet__text{
+  width: calc(100% - 350px);
+  line-height: 1.1;
 }
-
+.my__tournament .item__tournament:hover h2 {
+  color: var(--green-bold);
+}
+.my__tournament .item__tournament:hover .details {
+  opacity: 1;
+  visibility: visible;
+}
 .my__tournament .item__tournament:not(:last-child) {
   margin-bottom: 50px;
   border-bottom: 2px solid #ccc;
@@ -44,15 +46,17 @@
   font-family: "Mulish-Bold";
 }
 .item__tournament .tournament__img {
-  margin-right: 50px;
+  width: 350px;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 250px;
+  border: 1px solid var(--blue-black);
 }
 .my__tournament .tournament__img img {
-  max-height: unset;
-  max-width: unset;
-  object-fit: cover;
-  width: 300px !important;
+  transition: 0.3s;
   height: 100%;
-  border-radius: 5px;
+  width: 100%;
+  object-fit: cover;
 }
 .item__tournament .man {
   font-size: 18px;
@@ -62,6 +66,7 @@
 .item__tournament .sub__title {
   margin-right: 10px;
   margin-left: 20px;
+  width: 160px;
   display: inline-block;
 }
 
@@ -74,16 +79,39 @@
 }
 
 .item__tournament .status {
-  background-color: var(--green-bold);
+  top: 0;
   padding: 10px;
   height: max-content;
   width: 120px;
   position: absolute;
   right: 0;
-  top: 10px;
+  text-align: center;
+  font-family: "Mulish-Bold";
+  color: green;
+  border-radius: 5px;
+}
+.item__tournament .red {
+  color: #ea6061;
+}
+.item__tournament .grey {
+  color: #828282;
+  border: 1px dashed #828282;
+}
+.details {
+  background-color: var(--green-bold);
+  padding: 20px;
+  height: max-content;
+  width: max-content;
+  position: absolute;
   text-align: center;
   font-family: "Mulish-Bold";
   border-radius: 5px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
 }
 
 .titleNoContent {
@@ -103,7 +131,6 @@
   text-decoration: underline;
   color: var(--blue-black);
 }
-
 .address {
   line-height: 1.6;
 }
@@ -160,4 +187,254 @@
   opacity: 1;
   -webkit-transform: scale(1);
   transform: scale(1);
+}
+
+/* =============Achieve Tournament Detail============== */
+.achievementTournamnet {
+  margin-top: 40px;
+}
+
+.titleAchieve {
+  font-family: "Mulish-Bold";
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.titleAchieve::after {
+  display: block;
+  content: "";
+  height: 3px;
+  background-color: var(--blue-black);
+  width: 200px;
+  margin-top: 10px;
+}
+
+.wrapcontent {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.wrapcontentflex {
+  display: flex;
+  justify-content: space-between;
+}
+.content_item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  column-gap: 15px;
+}
+
+.achiveImg {
+  width: 50px;
+  height: 50px;
+}
+
+.content_item p {
+  font-size: 22px;
+  font-family: "Mulish-Bold";
+}
+
+.content_item .avt {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+.content_item a {
+  font-size: 22px;
+}
+
+.content_item a:hover {
+  text-decoration: underline;
+  color: var(--blue-black);
+}
+
+.tableAchieve {
+  width: 100%;
+}
+
+.tableAchieve tr:first-child{
+    background-color: var(--blue-black);
+    color: var(--white-text);
+}
+.tableAchieve th {
+  font-family: "Mulish-Bold";
+  padding: 30px 15px;
+  font-size: 18px;
+}
+
+.tableAchieve th i{
+    cursor: pointer;
+    margin-left: 5px;
+}
+.tableAchieve tr {
+  text-align: center;
+  position: relative;
+}
+
+.tableAchieve tr:after {
+  background-color: var(--blue-black);
+  bottom: 1px;
+  content: "";
+  display: block;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.tableAchieve td {
+  padding: 30px 15px;
+  align-items: center;
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+.tablePlayerName {
+  position: relative;
+}
+.tablePlayerName p {
+  position: absolute;
+  top: 10px;
+  left: 70px;
+  background-color: #5fe37d;
+  width: max-content;
+  font-size: 18px;
+  padding: 6px;
+  color: var(--white-text);
+  font-family: "Mulish-Bold";
+  border-radius: 50%;
+}
+
+.tablePlayerName img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tableAchieve a:hover {
+  color: var(--blue-black);
+  text-decoration: underline;
+}
+
+.titleAchieve1 {
+  margin-top: 60px;
+}
+
+.tableTeamName {
+  display: flex;
+  align-items: center;
+  column-gap: 25px;
+  justify-content: center;
+}
+
+.tableTeamName img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tableAchieve tr:nth-child(even) {
+  background-color: #f3f3f3;
+}
+
+
+
+.col_3{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -2px;
+ }
+
+ .dot_shuttle {
+  position: relative;
+  left: -5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 6px;
+  background-color: green;
+  color: transparent;
+  margin: -1px 0;
+  /* filter: blur(2px); */
+}
+
+.dot_shuttle::before, .dot_shuttle::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 6px;
+  background-color: green;
+  color: transparent;
+  /* filter: blur(2px); */
+}
+
+.dot_shuttle::before {
+  left: 5px;
+  animation: dotShuttle 2s infinite ease-out;
+}
+
+.dot_shuttle::after {
+  left: 20px;
+}
+
+@keyframes dotShuttle {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-30px);
+  }
+  75% {
+    transform: translateX(30px);
+  }
+}
+
+.col_2{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -2px;
+ }
+
+ .dot_shuttle2 {
+  position: relative;
+  left: -5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 6px;
+  background-color: #ea6061;
+  color: transparent;
+  margin: -1px 0;
+  /* filter: blur(2px); */
+}
+
+.dot_shuttle2::before, .dot_shuttle2::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 6px;
+  background-color: #ea6061;
+  color: transparent;
+  /* filter: blur(2px); */
+}
+
+.dot_shuttle2::before {
+  left: 10px;
+}
+
+.dot_shuttle2::after {
+  left: 20px;
 }

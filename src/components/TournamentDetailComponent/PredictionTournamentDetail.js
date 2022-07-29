@@ -204,7 +204,7 @@ setActivePopup(false);
                 <span className="score"> - </span>
                 <span className="score">{match.predict&&match.predict.teamBscore}</span>
               </td>
-              <td>
+              <td className="khongin">
                 <img
                   src={match.teamInMatches[1].teamInTournament.team.teamAvatar}
                   alt="gallery_item"
