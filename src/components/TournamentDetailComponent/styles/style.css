@@ -943,6 +943,7 @@
   font-family: "Mulish-Bold";
   border-radius: 5px;
   transition: 0.5s;
+  width: 120px;
 }
 
 .HeaderTeamDetail .report:hover {

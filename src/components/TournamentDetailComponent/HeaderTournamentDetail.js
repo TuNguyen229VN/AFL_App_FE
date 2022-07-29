@@ -36,6 +36,7 @@ import { getUserByIdAPI } from "../../api/User";
 import CountDown from "./CountDown";
 import postNotifacation from "../../api/NotificationAPI";
 import SendCancelTournament from "./SendCancelTournament";
+import AchievementTournamnetDetail from "./AchievementTournamnetDetail";
 function HeaderTournamentDetail() {
   const now = new Date().getTime();
   const { idTour } = useParams();
@@ -206,6 +207,11 @@ function HeaderTournamentDetail() {
       activeTeamDetail === `/tournamentDetail/${idTour}/commentTournamentDetail`
     ) {
       return <CommentTournamentDetail />;
+    }
+    if (
+      activeTeamDetail === `/tournamentDetail/${idTour}/achievementTournamentDetail`
+    ) {
+      return <AchievementTournamnetDetail />;
     }
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/newsTournamentDetail`
@@ -1283,6 +1289,22 @@ function HeaderTournamentDetail() {
                   }
                 >
                   Dự đoán
+                </Link>
+                <Link
+                  to={`/tournamentDetail/${idTour}/achievementTournamentDetail`}
+                  className={
+                    activeTeamDetail ===
+                    `/tournamentDetail/${idTour}/achievementTournamentDetail`
+                      ? "active"
+                      : ""
+                  }
+                  onClick={() =>
+                    setActiveTeamDetail(
+                      `/tournamentDetail/${idTour}/achievementTournamentDetail`
+                    )
+                  }
+                >
+                  Thống kê
                 </Link>
                 <Link
                   to={`/tournamentDetail/${idTour}/commentTournamentDetail`}

@@ -1,87 +1,86 @@
-.countdown{
-    margin-top: 20px;
-    background-color: var(--green-bold);
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
+.countdown {
+  margin-top: 20px;
+  background-color: var(--green-bold);
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
 }
 
-.countdown .title{
-    font-size: 28px;
-    font-family: "Mulish-Bold";
+.countdown .title {
+  font-size: 28px;
+  font-family: "Mulish-Bold";
 }
 
-.countdown_wrap{
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 60px;
+.countdown_wrap {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 60px;
 }
 
-.time{
-    font-family: "Mulish-Bold";
-    font-size: 24px;
-    margin-bottom: 10px;
-    letter-spacing: 1.1px;
+.time {
+  font-family: "Mulish-Bold";
+  font-size: 24px;
+  margin-bottom: 10px;
+  letter-spacing: 1.1px;
 }
 
-.text{
-    text-transform: uppercase;
+.text {
+  text-transform: uppercase;
 }
 
-.checkbox{
-    margin-bottom: 30px;
+.checkbox {
+  margin-bottom: 30px;
 }
 .radio__input:checked,
 .radio__input:not(:checked) {
-    position: absolute;
-    left: -9999px;
+  position: absolute;
+  left: -9999px;
 }
 .radio__input:checked + .radio__label,
-.radio__input:not(:checked) + .radio__label
-{
-    position: relative;
-    padding-left: 28px;
-    cursor: pointer;
-    line-height: 20px;
-    display: inline-block;
-    color: #666;
+.radio__input:not(:checked) + .radio__label {
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  line-height: 20px;
+  display: inline-block;
+  color: #666;
 }
 .radio__input:checked + .radio__label:before,
 .radio__input:not(:checked) + .radio__label:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 18px;
-    height: 18px;
-    border: 1px solid #ddd;
-    border-radius: 100%;
-    background: #fff;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ddd;
+  border-radius: 100%;
+  background: #fff;
 }
 .radio__input:checked + .radio__label:after,
 .radio__input:not(:checked) + .radio__label:after {
-    content: '';
-    width: 12px;
-    height: 12px;
-    background: var(--blue-black);
-    position: absolute;
-    top: 2.8px;
-    left: 3.2px;
-    border-radius: 100%;
-    -webkit-transition: all 0.2s ease;
-    transition: all 0.2s ease;
+  content: "";
+  width: 12px;
+  height: 12px;
+  background: var(--blue-black);
+  position: absolute;
+  top: 2.8px;
+  left: 3.2px;
+  border-radius: 100%;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 .radio__input:not(:checked) + .radio__label:after {
-    opacity: 0;
-    -webkit-transform: scale(0);
-    transform: scale(0);
+  opacity: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
 }
 .radio__input:checked + .radio__label:after {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    transform: scale(1);
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
 }
 
 /* checkbox */
@@ -140,3 +139,151 @@
     display: flex;
 } */
 
+/* =============Achieve Tournament Detail============== */
+.achievementTournamnet {
+  margin-top: 40px;
+}
+
+.titleAchieve {
+  font-family: "Mulish-Bold";
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.titleAchieve::after {
+  display: block;
+  content: "";
+  height: 3px;
+  background-color: var(--blue-black);
+  width: 200px;
+  margin-top: 10px;
+}
+
+.wrapcontent {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.wrapcontentflex {
+  display: flex;
+  justify-content: space-between;
+}
+.content_item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  column-gap: 15px;
+}
+
+.achiveImg {
+  width: 50px;
+  height: 50px;
+}
+
+.content_item p {
+  font-size: 22px;
+  font-family: "Mulish-Bold";
+}
+
+.content_item .avt {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+.content_item a {
+  font-size: 22px;
+}
+
+.content_item a:hover {
+  text-decoration: underline;
+  color: var(--blue-black);
+}
+
+.tableAchieve {
+  width: 100%;
+}
+
+.tableAchieve th {
+  font-family: "Mulish-Bold";
+  padding: 30px 15px;
+  font-size: 18px;
+}
+
+.tableAchieve th i{
+    cursor: pointer;
+    margin-left: 5px;
+}
+.tableAchieve tr {
+  text-align: center;
+  position: relative;
+}
+
+.tableAchieve tr:after {
+  background-color: var(--blue-black);
+  bottom: 1px;
+  content: "";
+  display: block;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.tableAchieve td {
+  padding: 30px 15px;
+  align-items: center;
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+.tablePlayerName {
+  position: relative;
+}
+.tablePlayerName p {
+  position: absolute;
+  top: 10px;
+  left: 70px;
+  background-color: #5fe37d;
+  width: max-content;
+  font-size: 18px;
+  padding: 6px;
+  color: var(--white-text);
+  font-family: "Mulish-Bold";
+  border-radius: 50%;
+}
+
+.tablePlayerName img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tableAchieve a:hover {
+  color: var(--blue-black);
+  text-decoration: underline;
+}
+
+.titleAchieve1 {
+  margin-top: 60px;
+}
+
+.tableTeamName {
+  display: flex;
+  align-items: center;
+  column-gap: 25px;
+  justify-content: center;
+}
+
+.tableTeamName img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tableAchieve tr:nth-child(even) {
+  background-color: #f3f3f3;
+}

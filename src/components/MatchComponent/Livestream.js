@@ -23,7 +23,7 @@ function Livestream(data) {
   };
 
   const styleProps={
-    localBtnContainer: {display:"none"}
+    // localBtnContainer: {display:"none"}
   }
 
   //   function joinChannel(role) {
@@ -155,6 +155,7 @@ function Livestream(data) {
       <button onClick={() => leaveEventAudience("audience")}>
           Leave Event Audience
         </button> */}
+        <p onClick={()=>{setisPinned(!isPinned)}}>Change layout</p>
       <div className={styles.video} id="local_stream">
         {videocall ? (
           <div style={{ display: "flex", width: "853px", height: "480px" }}>

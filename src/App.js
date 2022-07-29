@@ -115,6 +115,11 @@ function App() {
           />
           <Route
             exact
+            path="/tournamentDetail/:idTour/achievementTournamentDetail"
+            element={<HeaderTournamentDetail />}
+          />
+          <Route
+            exact
             path="/tournamentDetail/:idTour/commentTournamentDetail"
             element={<HeaderTournamentDetail />}
           />
