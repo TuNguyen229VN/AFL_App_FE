@@ -343,8 +343,9 @@ export default function KnockOutStageSchedule(props) {
   const updateDateInMatch = (dataMatch) => {
     const data = {
       ...dataMatch,
-      matchDate: dateUpdate,
+      matchDate: changeDateUp(dateUpdate.toJSON()),
     };
+    console.log(data);
     const response = updateDateInMatchAPI(data);
     response
       .then((res) => {
@@ -403,11 +404,27 @@ export default function KnockOutStageSchedule(props) {
   const rounds = knockoutTeam != null ? [...knockoutTeam] : null;
   const changeDate = (data) => {
     const splitDateTime = data.split("T");
-    const numberHour = +splitDateTime[1].split(":")[0] + 7;
+    const numberHour = +splitDateTime[1].split(":")[0] + 0;
     return (
       splitDateTime[0].split("-")[2] +
       "-" +
       splitDateTime[0].split("-")[1] +
+      "-" +
+      splitDateTime[0].split("-")[0] +
+      " " +
+      numberHour +
+      ":" +
+      splitDateTime[1].split(":")[1]
+    );
+  };
+
+  const changeDateUp = (data) => {
+    const splitDateTime = data.split("T");
+    const numberHour = +splitDateTime[1].split(":")[0] + 7;
+    return (
+      splitDateTime[0].split("-")[1] +
+      "-" +
+      splitDateTime[0].split("-")[2] +
       "-" +
       splitDateTime[0].split("-")[0] +
       " " +
@@ -551,9 +568,17 @@ export default function KnockOutStageSchedule(props) {
                     )}
 
                     <td>
-                      <span className="score">{itemSeeds.teams[0].score !== null ? itemSeeds.teams[0].score : 0}</span>
+                      <span className="score">
+                        {itemSeeds.teams[0].score !== null
+                          ? itemSeeds.teams[0].score
+                          : 0}
+                      </span>
                       <span className="score"> - </span>
-                      <span className="score">{itemSeeds.teams[1].score !== null ? itemSeeds.teams[1].score : 0}</span>
+                      <span className="score">
+                        {itemSeeds.teams[1].score !== null
+                          ? itemSeeds.teams[1].score
+                          : 0}
+                      </span>
                     </td>
                     {itemSeeds.teams[1].team !== null ? (
                       <td>
@@ -581,8 +606,11 @@ export default function KnockOutStageSchedule(props) {
                       </td>
                     )}
                     {user != undefined &&
-                    user.userVM.id === hostTournamentId &&
-                    checkDate(endDate, itemSeeds.match.matchDate) ? (
+                      user.userVM.id === hostTournamentId &&
+                      (new Date(endDate).getTime() > new Date().getTime() &&
+                      itemSeeds.match.matchDate === null) ||
+                    (new Date(endDate).getTime() > new Date().getTime() &&
+                    new Date(itemSeeds.match.matchDate).getTime() > new Date().getTime()) ? (
                       <td
                         style={{
                           cursor: "pointer",
@@ -612,8 +640,7 @@ export default function KnockOutStageSchedule(props) {
                         {" "}
                         <Link
                           to={`/match/${itemSeeds.match.id}/matchDetail`}
-                          state={{ hostTournamentId, tourDetail,index }}
-                          
+                          state={{ hostTournamentId, tourDetail, index }}
                         >
                           Chi tiết
                         </Link>

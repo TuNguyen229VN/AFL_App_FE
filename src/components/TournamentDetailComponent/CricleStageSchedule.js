@@ -107,11 +107,25 @@ export default function CricleStageSchedule(props) {
   const onChangHandle = (e) => {
     setDateUpdate(e.target.value);
   };
-
+  const changeDateUp = (data) => {
+    const splitDateTime = data.split("T");
+    const numberHour = +splitDateTime[1].split(":")[0] + 7;
+    return (
+      splitDateTime[0].split("-")[1] +
+      "-" +
+      splitDateTime[0].split("-")[2] +
+      "-" +
+      splitDateTime[0].split("-")[0] +
+      " " +
+      numberHour +
+      ":" +
+      splitDateTime[1].split(":")[1]
+    );
+  };
   const updateDateInMatch = (dataMatch) => {
     const data = {
       ...dataMatch,
-      matchDate: dateUpdate,
+      matchDate: changeDateUp(dateUpdate.toJSON()),
     };
     const response = updateDateInMatchAPI(data);
     response
@@ -168,10 +182,10 @@ export default function CricleStageSchedule(props) {
   };
   const changeDate = (data) => {
     const splitDateTime = data.split("T");
-    const numberHour =
-      +splitDateTime[1].split(":")[0] + 7 > 24
-        ? +splitDateTime[1].split(":")[0] + 7 - 24
-        : +splitDateTime[1].split(":")[0] + 7;
+    // const numberHour =
+    //   +splitDateTime[1].split(":")[0] + 7 > 24
+    //     ? +splitDateTime[1].split(":")[0] + 7 - 24
+    //     : +splitDateTime[1].split(":")[0] + 7;
 
     return (
       splitDateTime[0].split("-")[2] +
@@ -180,7 +194,7 @@ export default function CricleStageSchedule(props) {
       "-" +
       splitDateTime[0].split("-")[0] +
       " " +
-      numberHour +
+      splitDateTime[1].split(":")[0] +
       ":" +
       splitDateTime[1].split(":")[1]
     );
@@ -241,9 +255,15 @@ export default function CricleStageSchedule(props) {
               )}
 
               <td>
-                <span className="score">{item.teamScore !== null ? item.teamScore : 0}</span>
+                <span className="score">
+                  {item.teamScore !== null ? item.teamScore : 0}
+                </span>
                 <span className="score"> - </span>
-                <span className="score">{allTeamB[index].teamScore !== null ? allTeamB[index].teamScore : 0}</span>
+                <span className="score">
+                  {allTeamB[index].teamScore !== null
+                    ? allTeamB[index].teamScore
+                    : 0}
+                </span>
               </td>
               {allTeamB[index].teamInTournament.team ? (
                 <td>
@@ -273,8 +293,12 @@ export default function CricleStageSchedule(props) {
               )}
 
               {user != undefined &&
-              user.userVM.id === hostTournamentId &&
-              checkDate(endDate, item.match.matchDate) === true ? (
+                user.userVM.id === hostTournamentId &&
+                (new Date(endDate).getTime() > new Date().getTime() &&
+                item.match.matchDate === null) ||
+              (new Date(endDate).getTime() > new Date().getTime() &&
+                new Date(item.match.matchDate).getTime() >
+                  new Date().getTime()) ? (
                 <td
                   onClick={() => {
                     setHideShow(true);

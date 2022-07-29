@@ -12,8 +12,8 @@ export default function ModalChangeDateInSchedule(props) {
     dateUpdate,
     setDateUpdate,
     updateDateInMatch,
-    teamInUpdate,
-    indexSchedule
+    teamInUpdate
+    
   } = props;
   
   const [newStart, setNewStart] = useState(null);
@@ -110,10 +110,7 @@ export default function ModalChangeDateInSchedule(props) {
       );
     } else {
       splitDateTime = data.split("T");
-      const numberHour =
-      +splitDateTime[1].split(":")[0] + 7 > 24
-        ? +splitDateTime[1].split(":")[0] + 7 - 24
-        : +splitDateTime[1].split(":")[0] + 7;
+      
       return (
         splitDateTime[0].split("-")[2] +
         "-" +
@@ -121,7 +118,7 @@ export default function ModalChangeDateInSchedule(props) {
         "-" +
         splitDateTime[0].split("-")[0] +
         " " +
-        numberHour +
+        splitDateTime[1].split(":")[0] +
         ":" +
         splitDateTime[1].split(":")[1]
       );
