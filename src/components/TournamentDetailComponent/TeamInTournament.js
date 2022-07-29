@@ -28,9 +28,9 @@ function TeamInTournament(props) {
     hideShowDeleteTeamOut,
     setHideShowDeleteTeamOut,
     postNotificationforTeamManager,
-    setCheckRegistertour
+    setCheckRegistertour,
   } = props;
-   console.log(tourDetail)
+  console.log(tourDetail);
   const [active, setactive] = useState(1);
   const [viewList, setViewList] = useState(null);
   const [teamDelete, setTeamDelete] = useState(null);
@@ -304,7 +304,9 @@ function TeamInTournament(props) {
                                 // setIdDelete(item.idPlayerInTeam);
                                 // setDeleteSuccessFul(false);
                                 setHideShowDeleteTeamOut(true);
-                                setIdTeamDelete(item.teamInTournament.id + "-" + item.id);
+                                setIdTeamDelete(
+                                  item.teamInTournament.id + "-" + item.id
+                                );
                               }}
                             >
                               <i class="fa-solid fa-trash"></i>Xóa đội bóng khỏi
@@ -314,12 +316,13 @@ function TeamInTournament(props) {
                         </div>
                       ) : null}
 
-                      {/* <Link
+                      <Link
                         to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
-                      >   */}
-                      <div className="avt">
-                        <img src={item.teamAvatar} alt="team" />
-                      </div>
+                      >
+                        <div className="avt">
+                          <img src={item.teamAvatar} alt="team" />
+                        </div>
+                      </Link>
                       <div className="des">
                         <p className="namePlayer">
                           <span>Tên đội:</span>
@@ -344,7 +347,8 @@ function TeamInTournament(props) {
                             textDecoration: "underline",
                             cursor: "pointer",
                           }}
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setViewList(item.teamInTournament);
                             setHideShowView(true);
                           }}
@@ -352,7 +356,6 @@ function TeamInTournament(props) {
                           Danh sách cầu thủ đăng ký
                         </p>
                       </div>
-                      {/* </Link> */}
                     </div>
                   );
                 })
@@ -599,12 +602,13 @@ function TeamInTournament(props) {
                       return (
                         <form onSubmit={onSubmitHandler}>
                           <div key={index} className="listPlayer__item">
-                            {/* <Link
-                        to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
-                      >   */}
-                            <div className="avt">
-                              <img src={item.teamAvatar} alt="team" />
-                            </div>
+                            <Link
+                              to={`/teamDetail/${item.id}/inforTeamDetail`}
+                            >
+                              <div className="avt">
+                                <img src={item.teamAvatar} alt="team" />
+                              </div>
+                            </Link>
                             <div className="des">
                               <p className="namePlayer">
                                 <span>Tên đội:</span>
@@ -642,7 +646,6 @@ function TeamInTournament(props) {
                                 <p className="buttonThamGia">Đã tham gia</p>
                               ) : null}
                             </div>
-                            {/* </Link> */}
                           </div>
                         </form>
                       );
@@ -705,10 +708,8 @@ function TeamInTournament(props) {
             setViewList={setViewList}
             setHideShow={setHideShowView}
             hideShow={hideShowView}
-            tourDetail={tourDetail} 
-            postNotificationforTeamManager={
-              postNotificationforTeamManager
-            }
+            tourDetail={tourDetail}
+            postNotificationforTeamManager={postNotificationforTeamManager}
             setCheckRegistertour={setCheckRegistertour}
           />
         </div>
