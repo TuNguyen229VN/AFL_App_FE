@@ -82,7 +82,6 @@ function Match() {
           }
           return accumulator;
         }, []);
-
         setAllTeamA(teamA);
         setAllTeamB(teamB);
         setScoreTeamA({ value: res.data.teamsInMatch[0].teamScore });
@@ -276,7 +275,6 @@ function Match() {
     setDetailTeamB(playerScoreB);
   };
 
-  console.log(detailTeamA);
   // const getAllPlayerByTeamIdA = (teamId, teamInTournamentId) => {
   //   setLoading(true);
   //   const response = getAllPlayerByTeamIdAPI(teamId);
@@ -364,8 +362,6 @@ function Match() {
       });
   };
 
-  console.log(playerTeamA);
-
   const [players, setPlayers] = useState([]);
   const getPlayer = (id, team) => {
     let response = getAllPlayerInTournamentByTeamInTournamentIdAPI(id);
@@ -412,16 +408,17 @@ function Match() {
   };
 
   const getStatusMatch = (matchStatus) => {
-    if (matchStatus === "Not start") {
-      return <p style={{ fontStyle: "italic" }}>Chưa diễn ra</p>;
-    } else if (matchStatus === "Start") {
-      return <p style={{ color: "green" }}>Đã diễn ra</p>;
+    if (matchStatus === "Chưa bắt đầu") {
+      return <p style={{ fontStyle: "italic" }}>{matchStatus}</p>;
+    } else if (matchStatus === "Đang diễn ra") {
+      return <p style={{ color: "green" }}>{matchStatus}</p>;
     } else {
-      return <p style={{ color: "red" }}>Đã kết thúc</p>;
+      return <p style={{ color: "red" }}>{matchStatus}</p>;
     }
   };
 
   const formatDateTime = (date) => {
+    console.log(date)
     const day = new Date(date);
     return (
       String(day.getDate()).padStart(2, "0") +
@@ -1279,9 +1276,8 @@ function Match() {
       </div>
     );
   };
-  console.log(minuteIndex);
   useEffect(() => {
-    console.log(scoreA);
+    // console.log(scoreA);
   }, [playerPopup]);
 
   return (

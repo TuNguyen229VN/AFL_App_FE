@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles/style.css";
-
+import styles from "./styles/style.module.css"
 function ReportTeamDetail() {
   return (
     <>     
@@ -50,6 +50,83 @@ function ReportTeamDetail() {
             </div>
           </div>
         </div>
+        <p className={`${styles.titleAchieve} ${styles.titleAchieve1}`}>
+        Thống kê chi tiết từng giải
+      </p>
+      <div className={styles.wrapcontent}>
+        <table className={styles.tableAchieve}>
+          <tr>
+            <th>#</th>
+            <th>
+              Tên giải <i class="fa-solid fa-sort"></i>
+            </th>
+            <th>
+              Thành tích
+            </th>
+            <th>
+              T-H-B <i class="fa-solid fa-sort"></i>
+            </th>
+            <th>
+              Số bàn thắng <i class="fa-solid fa-sort"></i>
+            </th>
+            <th>
+              Số bàn thua <i class="fa-solid fa-sort"></i>
+            </th>
+            <th>
+              Thẻ vàng <i class="fa-solid fa-sort"></i>
+            </th>
+            <th>
+              Thẻ đỏ <i class="fa-solid fa-sort"></i>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>
+              <a href="#" className={styles.tableTeamName}>
+                <img
+                  src="/assets/img/homepage/tourn2.png"
+                  alt="tour"
+                  className={styles.avt}
+                />
+                <p>Peter Tèo</p>
+              </a>
+            </td>
+            <td>
+              <p>Vô địch</p>
+            </td>
+            <td>
+              <p>2-0-1</p>
+            </td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>
+              <a href="#" className={styles.tableTeamName}>
+                <img
+                  src="/assets/img/homepage/tourn2.png"
+                  alt="tour"
+                  className={styles.avt}
+                />
+                <p>Peter Tèo</p>
+              </a>
+            </td>
+            <td>
+              <p>N/A</p>
+            </td>
+            <td>
+              <p>2-0-1</p>
+            </td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+        </table>
+      </div>
       </div>
     </>
   );

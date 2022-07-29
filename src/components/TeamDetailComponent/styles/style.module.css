@@ -51,3 +51,157 @@
     -webkit-transform: scale(1);
     transform: scale(1);
 }
+
+/* =============Achieve Tournament Detail============== */
+.achievementTournamnet {
+    margin-top: 40px;
+  }
+  
+  .titleAchieve {
+    font-family: "Mulish-Bold";
+    font-size: 24px;
+    text-transform: uppercase;
+  }
+  
+  .titleAchieve::after {
+    display: block;
+    content: "";
+    height: 3px;
+    background-color: var(--blue-black);
+    width: 200px;
+    margin-top: 10px;
+  }
+  
+  .wrapcontent {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .wrapcontentflex {
+    display: flex;
+    justify-content: space-between;
+  }
+  .content_item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    column-gap: 15px;
+  }
+  
+  .achiveImg {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .content_item p {
+    font-size: 22px;
+    font-family: "Mulish-Bold";
+  }
+  
+  .content_item .avt {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+  
+  .content_item a {
+    font-size: 22px;
+  }
+  
+  .content_item a:hover {
+    text-decoration: underline;
+    color: var(--blue-black);
+  }
+  
+  .tableAchieve {
+    width: 100%;
+  }
+  
+  .tableAchieve tr:first-child{
+      background-color: var(--blue-black);
+      color: var(--white-text);
+  }
+  .tableAchieve th {
+    font-family: "Mulish-Bold";
+    padding: 30px 15px;
+    font-size: 18px;
+  }
+  
+  .tableAchieve th i{
+      cursor: pointer;
+      margin-left: 5px;
+  }
+  .tableAchieve tr {
+    text-align: center;
+    position: relative;
+  }
+  
+  .tableAchieve tr:after {
+    background-color: var(--blue-black);
+    bottom: 1px;
+    content: "";
+    display: block;
+    height: 1px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
+  
+  .tableAchieve td {
+    padding: 30px 15px;
+    align-items: center;
+    font-size: 18px;
+    vertical-align: middle;
+  }
+  
+  .tablePlayerName {
+    position: relative;
+  }
+  .tablePlayerName p {
+    position: absolute;
+    top: 10px;
+    left: 70px;
+    background-color: #5fe37d;
+    width: max-content;
+    font-size: 18px;
+    padding: 6px;
+    color: var(--white-text);
+    font-family: "Mulish-Bold";
+    border-radius: 50%;
+  }
+  
+  .tablePlayerName img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .tableAchieve a:hover {
+    color: var(--blue-black);
+    text-decoration: underline;
+  }
+  
+  .titleAchieve1 {
+    margin-top: 60px;
+  }
+  
+  .tableTeamName {
+    display: flex;
+    align-items: center;
+    column-gap: 25px;
+    justify-content: center;
+  }
+  
+  .tableTeamName img {
+    width: 55px !important;
+    height: 55px !important;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .tableAchieve tr:nth-child(even) {
+    background-color: #f3f3f3;
+  }
+  
