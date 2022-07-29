@@ -547,14 +547,11 @@ const MyTournamemts = () => {
                 }
               })
             ) : (
-              <div></div>
+              <h1 className={styles.titleNoContent}>
+                Không tìm thấy giải đấu phù hợp
+              </h1>
             )}
           </div>
-          {tournaments.length <= 0 ? (
-            <h1 className={styles.titleNoContent}>
-              Không tìm thấy giải đấu phù hợp
-            </h1>
-          ) : null}
         </div>
 
         {/* Paging */}

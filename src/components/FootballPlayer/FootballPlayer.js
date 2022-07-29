@@ -10,6 +10,7 @@ import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import { Link } from "react-router-dom";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import { getAllFootballPlayerAPI } from "../../api/FootballPlayer";
+import Loading from "../LoadingComponent/Loading";
 export default function FootballPlayer() {
   AOS.init();
   const tour = gsap.timeline();
@@ -22,7 +23,7 @@ export default function FootballPlayer() {
   const [listFootballPlayer, setListFootballPlayer] = useState(null);
   useEffect(() => {
     getAllFootballPlayer();
-  }, [nameFootballSearch,genderSearch, positionSearch, currentPage]);
+  }, [nameFootballSearch, genderSearch, positionSearch, currentPage]);
   const getAllFootballPlayer = () => {
     setLoading(true);
     const dataSearch = `football-player-name=${nameFootballSearch}&gender=${genderSearch}&position=${positionSearch}`;
@@ -42,11 +43,11 @@ export default function FootballPlayer() {
       });
   };
   const changePosition = (data) => {
-    if(data === "goalkeeper") return "Thủ môn";
-    else if(data === "defender") return "Hậu vệ";
-    else if(data === "midfielder") return "Tiền vệ";
+    if (data === "goalkeeper") return "Thủ môn";
+    else if (data === "defender") return "Hậu vệ";
+    else if (data === "midfielder") return "Tiền vệ";
     else return "Tiền đạo";
-  }
+  };
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
 
@@ -153,45 +154,51 @@ export default function FootballPlayer() {
           <h1 className={styles.titleListTour}>Các cầu thủ</h1>
           <div className={styles.listTour}>
             {loading ? (
-              <LoadingAction />
-            ) : listFootballPlayer != null ? 
-              listFootballPlayer.length > 0 ?
-            (
-              listFootballPlayer.map((item, index) => {
-                return (
-                  <div key={item.id}>
-                    <Link to={`/playerDetail/${item.id}/myTeamInPlayer`} className={styles.team} key={item.id}>
-                      <div className={styles.tournamentImgAd}>
-                        <img
-                          className={styles.teamImg}
-                          src={item.playerAvatar}
-                          alt="myItem"
-                        />
-                      </div>
-                      <div className={styles.tournamentInfor}>
-                      
-                        <h1 className={styles.tournamentName}>
-                          {item.playerName}
-                        </h1>
-                        <p className={styles.type}>
-                          {item.userVM.email}
-                        </p>
-                        <p className={styles.type}>
-                          {item.userVM.phone}
-                        </p>
-                        <p className={styles.type}>
-                          {item.userVM.gender  === "Male" ? "Nam" : "Nữ"} | {changePosition(item.position)}
-                        </p>                        
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })
-            ) : <p style={{
-              fontWeight: 700,
-              fontSize: 24,
-              marginBottom: 50
-            }}>Không tìm thấy cầu thủ</p> : null}
+              <Loading />
+            ) : listFootballPlayer != null ? (
+              listFootballPlayer.length > 0 ? (
+                listFootballPlayer.map((item, index) => {
+                  return (
+                    <div key={item.id}>
+                      <Link
+                        to={`/playerDetail/${item.id}/myTeamInPlayer`}
+                        className={styles.team}
+                        key={item.id}
+                      >
+                        <div className={styles.tournamentImgAd}>
+                          <img
+                            className={styles.teamImg}
+                            src={item.playerAvatar}
+                            alt="myItem"
+                          />
+                        </div>
+                        <div className={styles.tournamentInfor}>
+                          <h1 className={styles.tournamentName}>
+                            {item.playerName}
+                          </h1>
+                          <p className={styles.type}>{item.userVM.email}</p>
+                          <p className={styles.type}>{item.userVM.phone}</p>
+                          <p className={styles.type}>
+                            {item.userVM.gender === "Male" ? "Nam" : "Nữ"} |{" "}
+                            {changePosition(item.position)}
+                          </p>
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })
+              ) : (
+                <p
+                  style={{
+                    fontWeight: 700,
+                    fontSize: 24,
+                    marginBottom: 50,
+                  }}
+                >
+                  Không tìm thấy cầu thủ
+                </p>
+              )
+            ) : null}
           </div>
         </div>
         {listFootballPlayer != null && listFootballPlayer.length > 0 ? (

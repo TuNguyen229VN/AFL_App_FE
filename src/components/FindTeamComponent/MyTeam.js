@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import Loading from "../LoadingComponent/Loading";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import { getAPI } from "../../api/index";
+import LoadingAction from "../LoadingComponent/LoadingAction";
 const MyTournamemts = () => {
   AOS.init();
   const tour = gsap.timeline();
@@ -181,7 +182,7 @@ const MyTournamemts = () => {
               />
             </div>
             {loading ? (
-              <Loading />
+              <LoadingAction />
             ) : (
               <div className={styles.selectOp}>
                 <select

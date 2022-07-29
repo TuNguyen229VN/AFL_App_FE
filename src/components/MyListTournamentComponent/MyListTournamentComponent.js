@@ -98,136 +98,139 @@ function MyListTournamentComponent() {
             <Loading />
           ) : (
             <div>
-              {tournament.length > 0
-                ? tournament.map((tour) => (
-                    <Link
-                      to={`/tournamentDetail/${tour.id}/inforTournamentDetail`}
-                      className={styles.item__tournament}
+              {tournament.length > 0 ? (
+                tournament.map((tour) => (
+                  <Link
+                    to={`/tournamentDetail/${tour.id}/inforTournamentDetail`}
+                    className={styles.item__tournament}
+                  >
+                    <div className={styles.details}>Xem chi tiết</div>
+                    <div className={styles.tournament__img}>
+                      <img
+                        src={tour.tournamentAvatar}
+                        alt={tour.tournamentName}
+                      />
+                    </div>
+                    <div className={styles.tournamnet__text}>
+                      <h2>{tour.tournamentName}</h2>
+                      <div className={styles.man}>
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span className={styles.sub__title}>Chế độ: </span>
+                        <span className={styles.text_field}>
+                          {tour.mode === "PRIVATE" ? "Riêng tư" : "Công khai"}
+                        </span>
+                      </div>
+                      <div className={styles.man}>
+                        <i>
+                          <img src="./assets/icons/join.png" alt="join" />
+                        </i>
+                        <span className={styles.sub__title}>
+                          Đội tham gia:{" "}
+                        </span>
+                        <span className={styles.text_field}>
+                          {" "}
+                          {tour.numberTeamInTournament} /{" "}
+                          {tour.footballTeamNumber} đội
+                        </span>
+                      </div>
+                      <div className={styles.man}>
+                        <i className="fas fa-solid fa-font-awesome"></i>
+                        <span className={styles.sub__title}>Hình thức: </span>
+                        <span className={styles.text_field}>
+                          {" "}
+                          {getType(tour.tournamentTypeId)}{" "}
+                          {getFeild(tour.footballFieldTypeId)}
+                        </span>
+                      </div>
+                      <div className={styles.man}>
+                        <i className="fas fa-solid fa-location-dot"></i>
+                        <span className={styles.sub__title}>Địa điểm: </span>
+                        <span className={styles.text_field}>
+                          {tour.footballFieldAddress}
+                        </span>
+                      </div>
+                      <div className={styles.man}>
+                        <i className="fa-solid fa-calendar-days"></i>
+                        <span className={styles.sub__title}>
+                          Thời gian diễn ra:{" "}
+                        </span>
+                        <span className={styles.text_field}>
+                          {formatDate(tour.tournamentStartDate)} -{" "}
+                          {formatDate(tour.tournamentEndDate)}{" "}
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className={
+                        tour.statusTnm === "Đang diễn ra"
+                          ? styles.status
+                          : tour.statusTnm === "Kết thúc"
+                          ? `${styles.status} ${styles.red}`
+                          : `${styles.status} ${styles.grey}`
+                      }
                     >
-                      <div className={styles.details}>Xem chi tiết</div>
-                      <div className={styles.tournament__img}>
-                        <img
-                          src={tour.tournamentAvatar}
-                          alt={tour.tournamentName}
-                        />
-                      </div>
-                      <div className={styles.tournamnet__text}>
-                        <h2>{tour.tournamentName}</h2>
-                        <div className={styles.man}>
-                          <i class="fa-solid fa-bullhorn"></i>
-                          <span className={styles.sub__title}>Chế độ: </span>
-                          <span className={styles.text_field}>
-                            {tour.mode === "PRIVATE" ? "Riêng tư" : "Công khai"}
-                          </span>
-                        </div>
-                        <div className={styles.man}>
-                          <i>
-                            <img src="./assets/icons/join.png" alt="join" />
-                          </i>
-                          <span className={styles.sub__title}>
-                            Đội tham gia:{" "}
-                          </span>
-                          <span className={styles.text_field}>
-                            {" "}
-                            {tour.numberTeamInTournament} /{" "}
-                            {tour.footballTeamNumber} đội
-                          </span>
-                        </div>
-                        <div className={styles.man}>
-                          <i className="fas fa-solid fa-font-awesome"></i>
-                          <span className={styles.sub__title}>Hình thức: </span>
-                          <span className={styles.text_field}>
-                            {" "}
-                            {getType(tour.tournamentTypeId)}{" "}
-                            {getFeild(tour.footballFieldTypeId)}
-                          </span>
-                        </div>
-                        <div className={styles.man}>
-                          <i className="fas fa-solid fa-location-dot"></i>
-                          <span className={styles.sub__title}>Địa điểm: </span>
-                          <span className={styles.text_field}>
-                            {tour.footballFieldAddress}
-                          </span>
-                        </div>
-                        <div className={styles.man}>
-                          <i className="fa-solid fa-calendar-days"></i>
-                          <span className={styles.sub__title}>
-                            Thời gian diễn ra:{" "}
-                          </span>
-                          <span className={styles.text_field}>
-                            {formatDate(tour.tournamentStartDate)} -{" "}
-                            {formatDate(tour.tournamentEndDate)}{" "}
-                          </span>
-                        </div>
-                      </div>
-                      <div
-                        className={
-                          tour.statusTnm === "Đang diễn ra"
-                            ? styles.status
-                            : (tour.statusTnm === "Kết thúc"?`${styles.status} ${styles.red}`:`${styles.status} ${styles.grey}`)
-                        }
-                      >
-                        {/* {tour.status === true ? "Đang diễn ra" : "Đã kết thúc"} */}
-                        {tour.statusTnm}
-                        {tour.statusTnm === "Đang diễn ra" ? (
-                          <div className={styles.col_3}>
-                            <div
-                              className={styles.snippet}
-                              data-title=".dot-shuttle"
-                            >
-                              <div className={styles.stage}>
-                                <div className={styles.dot_shuttle}></div>
-                              </div>
+                      {/* {tour.status === true ? "Đang diễn ra" : "Đã kết thúc"} */}
+                      {tour.statusTnm}
+                      {tour.statusTnm === "Đang diễn ra" ? (
+                        <div className={styles.col_3}>
+                          <div
+                            className={styles.snippet}
+                            data-title=".dot-shuttle"
+                          >
+                            <div className={styles.stage}>
+                              <div className={styles.dot_shuttle}></div>
                             </div>
                           </div>
-                        ) : tour.statusTnm === "Kết thúc" ? (
-                          <div className={styles.col_2}>
-                            <div
-                              className={styles.snippet2}
-                              data-title=".dot-shuttle"
-                            >
-                              <div className={styles.stage2}>
-                                <div className={styles.dot_shuttle2}></div>
-                              </div>
+                        </div>
+                      ) : tour.statusTnm === "Kết thúc" ? (
+                        <div className={styles.col_2}>
+                          <div
+                            className={styles.snippet2}
+                            data-title=".dot-shuttle"
+                          >
+                            <div className={styles.stage2}>
+                              <div className={styles.dot_shuttle2}></div>
                             </div>
                           </div>
-                        ) : null}
-                      </div>
-                    </Link>
-                  ))
-                : null}
-              <div className={styles.pagingTournament}>
-                <ReactPaginate
-                  previousLabel={"Trang trước"}
-                  nextLabel={"Trang sau"}
-                  containerClassName="pagination"
-                  activeClassName={styles.active}
-                  pageClassName={styles.pageItem}
-                  nextClassName={styles.pageItem}
-                  previousClassName={styles.pageItem}
-                  breakLabel={"..."}
-                  pageCount={Math.ceil(count / 5)}
-                  marginPagesDisplayed={3}
-                  onPageChange={handlePageClick}
-                  pageLinkClassName={styles.pagelink}
-                  previousLinkClassName={styles.pagelink}
-                  nextLinkClassName={styles.pagelink}
-                  breakClassName={styles.pageItem}
-                  breakLinkClassName={styles.pagelink}
-                  forcePage={pageNumber}
-                  pageRangeDisplayed={2}
-                />
-              </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <h1 className={styles.titleNoContent}>
+                  Bạn chưa tổ chức giải đấu nào
+                  <Link to="/createTournament" className={styles.createnow}>
+                    {`-> `}Tạo giải đấu ngay
+                  </Link>
+                </h1>
+              )}
+              {tournament.length > 0 ? (
+                <div className={styles.pagingTournament}>
+                  <ReactPaginate
+                    previousLabel={"Trang trước"}
+                    nextLabel={"Trang sau"}
+                    containerClassName="pagination"
+                    activeClassName={styles.active}
+                    pageClassName={styles.pageItem}
+                    nextClassName={styles.pageItem}
+                    previousClassName={styles.pageItem}
+                    breakLabel={"..."}
+                    pageCount={Math.ceil(count / 5)}
+                    marginPagesDisplayed={3}
+                    onPageChange={handlePageClick}
+                    pageLinkClassName={styles.pagelink}
+                    previousLinkClassName={styles.pagelink}
+                    nextLinkClassName={styles.pagelink}
+                    breakClassName={styles.pageItem}
+                    breakLinkClassName={styles.pagelink}
+                    forcePage={pageNumber}
+                    pageRangeDisplayed={2}
+                  />
+                </div>
+              ) : null}
             </div>
           )}
-          {tournament.length <= 0 ? (
-            <h1 className={styles.titleNoContent}>
-              Bạn chưa tổ chức giải đấu nào
-              <Link to="/createTournament" className={styles.createnow}>
-                {`-> `}Tạo giải đấu ngay
-              </Link>
-            </h1>
-          ) : null}
         </div>
       </div>
       <Footer />
