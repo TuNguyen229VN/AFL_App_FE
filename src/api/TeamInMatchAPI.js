@@ -20,3 +20,8 @@ export function updateTeamInMatch(data){
  const afterDefaultUrl = `TeamInMatch`;
  return axios.put(url + afterDefaultUrl , data);
 }
+
+export function updateNextTeamInRoundAPI(data){
+  const afterDefaultUrl = `TeamInMatch/update-next-team-in-match`;
+  return axios.put(url + afterDefaultUrl , data);
+}

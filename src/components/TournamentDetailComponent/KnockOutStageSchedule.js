@@ -416,6 +416,7 @@ export default function KnockOutStageSchedule(props) {
       splitDateTime[1].split(":")[1]
     );
   };
+
   return knockoutTeam !== null ? (
     typeView === "diagram" ? (
       <div
@@ -550,9 +551,9 @@ export default function KnockOutStageSchedule(props) {
                     )}
 
                     <td>
-                      <span className="score">{itemSeeds.teams[0].score}</span>
+                      <span className="score">{itemSeeds.teams[0].score !== null ? itemSeeds.teams[0].score : 0}</span>
                       <span className="score"> - </span>
-                      <span className="score">{itemSeeds.teams[1].score}</span>
+                      <span className="score">{itemSeeds.teams[1].score !== null ? itemSeeds.teams[1].score : 0}</span>
                     </td>
                     {itemSeeds.teams[1].team !== null ? (
                       <td>
@@ -611,7 +612,8 @@ export default function KnockOutStageSchedule(props) {
                         {" "}
                         <Link
                           to={`/match/${itemSeeds.match.id}/matchDetail`}
-                          state={{ hostTournamentId, tourDetail }}
+                          state={{ hostTournamentId, tourDetail,index }}
+                          
                         >
                           Chi tiết
                         </Link>

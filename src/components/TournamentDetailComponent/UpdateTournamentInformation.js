@@ -332,7 +332,7 @@ const UpdateTournamentInformation = () => {
             tournamentAvatar: imgTournament.value,
             description: descriptionText,
             matchMinutes: +timeDuration.value,
-            footballTeamNumber: teamPaticipate.value,
+            footballTeamNumber: +teamPaticipate.value,
             footballPlayerMaxNumber: minimunPlayerInTournament.value,
             status: true,
             groupNumber: +groupNumber.value,
@@ -340,7 +340,7 @@ const UpdateTournamentInformation = () => {
             TournamentTypeEnum: competitionFormat.value,
             TournamentFootballFieldTypeEnum: typeFootballField.value,
           };
-          // console.log(data);
+           console.log(data);
           const response = await updateTournamentInfoAPI(data);
           if (response.status === 200) {
             if (typeNoti !== "hasTeam") {
@@ -1206,7 +1206,7 @@ const UpdateTournamentInformation = () => {
                     min={startTime.value}
                     // disabled={(new Date(closeRegister.value).getTime() <=
                     //   new Date().getTime()) && startTime.value != null ? "" : "disable"}
-                    // onChange={onChangeHandler}
+                     onChange={onChangeHandler}
                   />
                 </div>
               </div>

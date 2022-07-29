@@ -25,7 +25,7 @@ function ScheduleTournamentDetail(props) {
   const [statusUpdateDate, setStatusUpdateDate] = useState(false);
   useEffect(() => {
     getAllTeamInMatch();
-  }, [tourDetailId, statusUpdateDate === true]);
+  }, [tourDetailId, statusUpdateDate === true, active]);
   const getAllTeamInMatch = () => {
     setLoading(true);
     const response = getTeamInMatchByTourId(tourDetailId);

@@ -206,6 +206,7 @@ function ListPlayer(props) {
                   onClick={() => {
                     setactive("Cầu thủ");
                     setNamePlayer("");
+                    setCurrentPage(1);
                   }}
                 >
                   Cầu thủ
@@ -216,6 +217,7 @@ function ListPlayer(props) {
                   onClick={() => {
                     setactive("Chờ duyệt");
                     setNamePlayer("");
+                    setCurrentPage(1);
                   }}
                 >
                   Chờ duyệt
@@ -225,6 +227,7 @@ function ListPlayer(props) {
                   onClick={() => {
                     setactive("Chiêu mộ");
                     setNamePlayer("");
+                    setCurrentPage(1);
                   }}
                 >
                   Chiêu mộ
