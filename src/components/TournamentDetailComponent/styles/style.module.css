@@ -205,6 +205,10 @@
   width: 100%;
 }
 
+.tableAchieve tr:first-child{
+    background-color: var(--blue-black);
+    color: var(--white-text);
+}
 .tableAchieve th {
   font-family: "Mulish-Bold";
   padding: 30px 15px;

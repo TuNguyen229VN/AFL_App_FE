@@ -84,7 +84,9 @@ function AchievementTournamnetDetail() {
       <div className={styles.wrapcontent}>
         <table className={styles.tableAchieve}>
           <tr>
-            <th>#</th>
+            <th>
+              # 
+            </th>
             <th>
               Tên đội <i class="fa-solid fa-sort"></i>
             </th>
