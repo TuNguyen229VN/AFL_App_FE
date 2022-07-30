@@ -54,7 +54,7 @@ const UpdateTournamentInformation = () => {
       )
     )
   );
-  const [typeNoti, setTypeNoti] = useState("hasTeam");
+  const [typeNoti, setTypeNoti] = useState("default");
   const descriptionText = draftToHtml(
     convertToRaw(editorState.getCurrentContent())
   );
@@ -344,7 +344,7 @@ const UpdateTournamentInformation = () => {
           const response = await updateTournamentInfoAPI(data);
           if (response.status === 200) {
             
-            if (typeNoti !== "hasTeam") {
+            if (typeNoti !== "hasTeam" || typeNoti !== "default") {
               createGenerateTable(response.data.id);
             }
             const intitalState = {
