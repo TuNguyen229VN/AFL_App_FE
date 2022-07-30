@@ -1,9 +1,57 @@
-import React from "react";
+import React,{ useEffect, useState } from "react";
 import styles from "./styles/style.module.css";
+import { Link } from "react-router-dom";
+import LoadingAction from "../LoadingComponent/LoadingAction";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 function AchivementInPlayer() {
+
+  const { idPlayer } = useParams();
+  const [result, setResult] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [statistic, setStatistic] = useState({});
+  const [champion, setChampion] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [third, setThird] = useState(0);
+
+  useEffect(() => {
+    getResult();
+  },[])
+
+  const getResult =async () =>{
+    try{
+      setLoading(true);
+      let one = 0;
+      let two = 0;
+      let three = 0;
+      const response =  await axios.get(`https://afootballleague.ddns.net/api/v1/tournament-results?footballPlayerId=${idPlayer}&page-offset=1&limit=5`)
+      for(let i = 0; i < response.data.tournamentResults.length;i++){
+        if(response.data.tournamentResults[i].prize == "Champion"){
+            one+=1
+        }
+        if(response.data.tournamentResults[i].prize == "second"){
+          two+=1
+      }
+      if(response.data.tournamentResults[i].prize == "third"){
+        three+=1
+    }
+      }
+      console.log(response.data.tournamentResults)
+      setChampion(one);
+      setSeconds(two);
+      setThird(three);
+      setResult(response.data.tournamentResults);
+      setLoading(false);
+    }
+    catch(err){
+      setLoading(false);
+    }
+  }
+
+
   return (
     <div className={styles.achievementTournamnet}>
-      <p className={styles.titleAchieve}>Thành tích giải đấu</p>
+      <p className={styles.titleAchieve}>Thành tích Cá nhân</p>
       <div className={`${styles.wrapcontent} ${styles.wrapcontentflex}`}>
         <div className={styles.content_item}>
           <img
@@ -12,7 +60,7 @@ function AchivementInPlayer() {
             className={styles.achiveImg}
           />
           <p>Vô địch:</p>
-          <p>1</p>
+          <p>{champion}</p>
         </div>
         <div className={styles.content_item}>
           <img
@@ -21,7 +69,7 @@ function AchivementInPlayer() {
             className={styles.achiveImg}
           />
           <p>Á quân:</p>
-          <p>1</p>
+          <p>{seconds}</p>
         </div>
         <div className={styles.content_item}>
           <img
@@ -30,7 +78,7 @@ function AchivementInPlayer() {
             className={styles.achiveImg}
           />
           <p>Hạng ba:</p>
-          <p>1</p>
+          <p>{third}</p>
         </div>
       </div>
       <p className={`${styles.titleAchieve}`}>Chi tiết từng giải đấu</p>
@@ -43,38 +91,37 @@ function AchivementInPlayer() {
             </th>
             <th>Thành tích</th>
           </tr>
+          { result.length>0&&result.map((item, index) =>(
+          <>
+          {item.prize!= "Top Goal"&&
           <tr>
-            <td>1</td>
+            <td>{index + 1}</td>
             <td>
-              <a href="#" className={styles.tableTeamName}>
+              {/* <a href="#" className={styles.tableTeamName}>
                 <img
                   src="/assets/img/homepage/tourn2.png"
                   alt="tour"
                   className={styles.avt}
                 />
                 <p>Peter Tèo</p>
-              </a>
-            </td>
-            <td>
-              <p>Vô địch</p>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>
-              <a href="#" className={styles.tableTeamName}>
-                <img
-                  src="/assets/img/homepage/tourn2.png"
+              </a> */}
+              <Link className={styles.tableTeamName}
+                        to={`/tournamentDetail/${item.tournamentId}/achievementTournamentDetail`}
+                      >
+                       <img
+                  src={item.tournament.tournamentAvatar}
                   alt="tour"
                   className={styles.avt}
                 />
-                <p>Peter Tèo</p>
-              </a>
+               <p>{item.tournament.tournamentName}</p>
+                      </Link>
             </td>
             <td>
-              <p>Á quân</p>
+              <p>{item.prize == "Champion"?"Vô địch":""}{item.prize == "second"?"Hạng nhì":""}{item.prize == "thỉd"?"Hạng ba":""}</p>
             </td>
-          </tr>
+          </tr>}
+          </>
+          ))}
         </table>
       </div>
       <p className={`${styles.titleAchieve} ${styles.titleAchieve1}`}>
@@ -90,36 +137,56 @@ function AchivementInPlayer() {
             <th>Đội thi đấu</th>
             <th>Số bàn ghi được</th>
           </tr>
-          <tr>
-            <td>1</td>
+          { result.length>0&&result.map((item, index) =>(
+          <>
+            {item.prize== "Top Goal"&&<tr>
+            <td>{index+1}</td>
             <td>
-              <a href="#" className={styles.tableTeamName}>
+              {/* <a href="#" className={styles.tableTeamName}>
                 <img
                   src="/assets/img/homepage/tourn2.png"
                   alt="tour"
                   className={styles.avt}
                 />
                 <p>Vui hè</p>
-              </a>
+              </a> */}
+              <Link className={styles.tableTeamName}
+                        to={`/tournamentDetail/${item.tournamentId}/achievementTournamentDetail`}
+                      >
+                       <img
+                  src={item.tournament.tournamentAvatar}
+                  alt="tour"
+                  className={styles.avt}
+                />
+               <p>{item.tournament.tournamentName}</p>
+                      </Link>
             </td>
             <td>
-              <a href="#">Peter Tèo</a>
+              <a href="#">{item.footballPlayer.playerName}</a>
             </td>
             <td className={styles.tablePlayerName}>
               <img
-                src="/assets/img/homepage/tourn2.png"
+                src={item.footballPlayer.playerAvatar}
                 alt="tour"
                 className={styles.avt}
               />
-              <p>09</p>
+              <p>{item.clothesNumber}</p>
             </td>
             <td>
-              <a href="#">FC Hà Nội</a>
+              {/* <a href="#">FC Hà Nội</a> */}
+              <Link
+                        to={`/teamDetail/${item.team.id}/inforTeamDetail`}
+                      >
+                      {item.team.teamName}
+                      </Link>
             </td>
-            <td>10</td>
-          </tr>
+            <td>{item.totalWinScrore}</td>
+          </tr>}
+          </>
+          ))}
         </table>
       </div>
+      {loading ? <LoadingAction /> : null}
     </div>
   );
 }

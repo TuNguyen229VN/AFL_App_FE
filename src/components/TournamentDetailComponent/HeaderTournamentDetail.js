@@ -211,7 +211,7 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/achievementTournamentDetail`
     ) {
-      return <AchievementTournamnetDetail />;
+      return <AchievementTournamnetDetail tour idTour= {idTour}/>;
     }
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/newsTournamentDetail`
