@@ -157,6 +157,7 @@ function RankTableTournamentDetail(props) {
                     <th>Hòa</th>
                     <th>Bại</th>
                     <th>Hiệu số</th>
+                    <th>TBT</th>
                     <th>Thẻ vàng/Thẻ đỏ</th>
                     <th>Điểm</th>
                   </tr>
@@ -174,6 +175,11 @@ function RankTableTournamentDetail(props) {
                         <td>{item !== null ? item.numberOfDraw : 0}</td>
                         <td>{item !== null ? item.numberOfLose : 0}</td>
                         <td>{item !== null ? item.differentPoint : 0}</td>
+                        <td>
+                          {item !== null
+                            ? `${item.winScoreNumber}`
+                            : 0}
+                        </td>
                         <td>
                           {item !== null
                             ? `${item.totalYellowCard}/${item.totalRedCard}`
