@@ -108,7 +108,9 @@ function RankTableTournamentDetail(props) {
           return (
             teamB.point - teamA.point ||
             teamB.differentPoint - teamA.differentPoint ||
-            teamB.winScoreNumber - teamA.winScoreNumber
+            teamB.winScoreNumber - teamA.winScoreNumber ||
+            teamA.totalRedCard - teamB.totalRedCard ||
+            teamA.totalYellowCard - teamB.totalYellowCard
           );
         });
         for (let j = 0; j < tableName[i].numberTeam; j++) {
@@ -155,6 +157,7 @@ function RankTableTournamentDetail(props) {
                     <th>Hòa</th>
                     <th>Bại</th>
                     <th>Hiệu số</th>
+                    <th>TBT</th>
                     <th>Thẻ vàng/Thẻ đỏ</th>
                     <th>Điểm</th>
                   </tr>
@@ -172,6 +175,11 @@ function RankTableTournamentDetail(props) {
                         <td>{item !== null ? item.numberOfDraw : 0}</td>
                         <td>{item !== null ? item.numberOfLose : 0}</td>
                         <td>{item !== null ? item.differentPoint : 0}</td>
+                        <td>
+                          {item !== null
+                            ? `${item.winScoreNumber}`
+                            : 0}
+                        </td>
                         <td>
                           {item !== null
                             ? `${item.totalYellowCard}/${item.totalRedCard}`

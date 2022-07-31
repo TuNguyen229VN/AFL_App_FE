@@ -10,6 +10,7 @@ import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import { getAPI } from "../../api";
 import app from "../../firebase/firebase";
+import { ToastContainer, toast } from "react-toastify";
 function Login() {
   const [checkLoading, setCheckLoading] = useState(false);
   // const firebaseConfig = {
@@ -106,11 +107,22 @@ function Login() {
       if (err.response.data === "Tài khoản không tồn tại") {
         setUserNameErr(err.response.data);
         setPasswordErr("");
+        return;
       }
       if (err.response.data === "Sai mật khẩu") {
         setUserNameErr("");
         setPasswordErr(err.response.data);
+        return;
       }
+      toast.error(`${err.response.data}`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 

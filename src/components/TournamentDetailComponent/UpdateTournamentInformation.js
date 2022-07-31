@@ -54,7 +54,7 @@ const UpdateTournamentInformation = () => {
       )
     )
   );
-  const [typeNoti, setTypeNoti] = useState("Noteam");
+  const [typeNoti, setTypeNoti] = useState("default");
   const descriptionText = draftToHtml(
     convertToRaw(editorState.getCurrentContent())
   );
@@ -340,10 +340,11 @@ const UpdateTournamentInformation = () => {
             TournamentTypeEnum: competitionFormat.value,
             TournamentFootballFieldTypeEnum: typeFootballField.value,
           };
-           console.log(data);
+           
           const response = await updateTournamentInfoAPI(data);
           if (response.status === 200) {
-            if (typeNoti !== "hasTeam") {
+            
+            if (typeNoti !== "hasTeam" || typeNoti !== "default") {
               createGenerateTable(response.data.id);
             }
             const intitalState = {
@@ -470,6 +471,7 @@ const UpdateTournamentInformation = () => {
         console.error(err);
       });
   };
+
   const createGenerateTable = (id) => {
     const response = createSchedule(id);
     response
