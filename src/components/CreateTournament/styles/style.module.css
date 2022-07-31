@@ -131,6 +131,7 @@ input:focus {
 .type_knockout,
 .type_circle,
 .type_table {
+  position: relative;
   width: 100%;
   border: 1px solid black;
   height: 300px;
@@ -139,6 +140,15 @@ input:focus {
   align-items: center;
 }
 
+.type_knockout img,
+.type_circle img,
+.type_table img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+}
 .img_type_footballField input {
   display: none;
 }
@@ -380,4 +390,201 @@ input:focus {
   background-color: var(--blue-black);
   opacity: 1;
   height: 5px;
+}
+
+.wrapStage {
+  width: 25%;
+}
+
+.select_lengthTeam {
+  margin-left: 0px !important;
+  padding: 10px 20px;
+  margin-top: 0px;
+  width: 488.44px;
+}
+
+.location {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 65px;
+  width: 100%;
+}
+.luuytype {
+  margin: 20px 0px;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.1;
+}
+/* =======Reponsive========== */
+@media only screen and (max-width: 1279px) {
+}
+
+@media only screen and (max-width: 1190px) {
+  .wrapAvt {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border: 1px solid var(--blue-black);
+  }
+  .createTournament_row1 {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    margin-bottom: 30px;
+    justify-content: initial;
+    column-gap: 10px;
+  }
+  .createTournament_row1_col2 {
+    margin-right: 30px;
+  }
+  .createTournament_img,
+  .createTournament_row1_col2,
+  .createTournament_row1_col3 {
+    width: 100%;
+  }
+  .btnUploadImg_createTournament {
+    padding: 10px 10px;
+  }
+  .img_type_footballField .wrapStage {
+    width: 30%;
+  }
+  .createTeam_btn {
+    padding: 10px 5px;
+    width: 130px;
+    text-align: center;
+    font-family: "Mulish-Bold";
+    font-size: 18px;
+    background-color: var(--blue-black);
+    transition: 0.5s;
+    color: var(--white-text);
+    cursor: pointer;
+    user-select: none;
+    border: 0;
+    height: 55px;
+    outline: none;
+    border-radius: 5px;
+    margin-left: 10px;
+  }
+
+  .cancleCreate {
+    padding: 10px 5px;
+    height: 55px;
+    width: 130px;
+    text-align: center;
+    font-family: "Mulish-Bold";
+    font-size: 18px;
+    background-color: #bf0e51;
+    color: var(--white-text);
+    cursor: pointer;
+    user-select: none;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .createTournament_row1 {
+    width: 100%;
+    margin-top: 25px;
+    display: block;
+    flex-direction: column;
+    margin-bottom: 30px;
+  }
+  .createTournament_row1_col2 > div,
+  .createTournament_row1_col3 > div {
+    margin-bottom: 20px;
+  }
+  .wrapAvt {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .createTournament_row1 {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: initial;
+    column-gap: 10px;
+  }
+  .wrapStage {
+    width: 20%;
+    height: 100px;
+    margin-bottom: 20px;
+  }
+  .type_knockout,
+  .type_circle,
+  .type_table {
+    width: 100%;
+    border: 1px solid black;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .select_lengthTeam {
+    width: 100%;
+  }
+  .createTournament_row4 {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+  .createTournament_row4_col1 {
+    width: 100%;
+    height: initial;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .createTournament_row4_col2 {
+    width: 100%;
+    height: initial;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .createTournament_row4_col2 > div {
+    margin-bottom: 20px;
+  }
+  .description_tournament {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .descTeam {
+    height: 300px;
+  }
+  .location {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  .optionBtn {
+    margin-top: 0px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .createTournament {
+    font-size: 14px;
+  }
+  .createTeam_btn {
+    width: 100px;
+    font-size: 14px;
+  }
+
+  .cancleCreate {
+    width: 100px;
+    font-size: 14px;
+  }
+  .luuytype {
+    margin: 20px 0px;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.1;
+  }
 }

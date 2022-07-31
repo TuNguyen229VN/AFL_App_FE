@@ -121,18 +121,10 @@ a{
     cursor: pointer;
   }
   
-  .selectArea {
-    width: max-content;
+  .selectArea,.typeFootball, .sortTour  {
+    width:170px;
   }
-  
-  .typeFootball {
-    width: max-content;
-  }
-  
-  .sortTour {
-    width: max-content;
-  }
-  
+
   .btnResetFind {
   width: 120px;
   transition: 0.5s;
@@ -394,125 +386,185 @@ a{
   }
   /* End PagingTournament */
   
-  /* @media only screen and (max-width: 900px) {
-    
-  } */
-  
-  @media only screen and (max-width: 399px) and (min-width: 380px) {
-    .findTournaments {
-      left: 5%;
-      top: 30%;
-      width: 365px;
-    }
-    .selectOp {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 25px;
-      justify-content: space-between;
-    }
-    .titleFindTour {
-      font-size: 20px;
-    }
-    .desFindTour {
-      font-size: 14px;
-      margin: 8px 0px;
-    }
-    .selectArea {
-      margin-bottom: 20px;
-    }
-    .btnResetFind {
-      margin-right: 105px;
-    }
+ /* =================Reponsive=============== */
+ @media only screen and (max-width: 1279px) {
+  .myTourImg {
+    position: relative;
+    overflow: initial;
+    height: 200px;
+    padding-bottom: 65%;
   }
-  
-  @media only screen and (max-width: 600px) and (min-width: 400px) {
-    .findTournaments {
-      left: 5%;
-      top: 30%;
-      width: 385px;
-    }
-    .titleFindTour {
-      font-size: 20px;
-    }
-    .desFindTour {
-      font-size: 14px;
-      margin: 8px 0px;
-    }
-    .inputNameTour {
-      width: 210px;
-      padding: 5px 10px;
-    }
-    .btnFindTour {
-      padding: 7px 10px;
-    }
-    .selectOp {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 25px;
-      justify-content: space-between;
-    }
-    .selectArea {
-      margin-bottom: 20px;
-    }
-    .listTour {
-      width: 51%;
-    }
-    .btnResetFind {
-      margin-right: 105px;
-    }
+
+  .img_mytour {
+    min-width: 100%;
+    min-height: 100%;
+    position: absolute;
+    image-rendering: pixelated;
+    object-fit: cover;
+    user-select: none;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
   }
-  
-  @media only screen and (max-width: 900px) and (min-width: 601px) {
-    .listTour {
-      grid-template-columns: repeat(1, 500px);
-      grid-template-rows: auto;
-      gap: 30px;
-    }
-  
-    .listTournament {
-      padding: 0 50px;
-    }
-    .findTournaments {
-      left: 10%;
-      top: 25%;
-      width: 400px;
-    }
-    .titleFindTour {
-      font-size: 24px;
-    }
-    .desFindTour {
-      font-size: 16px;
-      margin: 8px 0px;
-    }
-    .findInfo {
-      display: inline-block;
-    }
-    .selectOp {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 25px;
-    }
-    .selectArea {
-      margin-bottom: 20px;
-    }
-    .listTour {
-      width: 39%;
-    }
-    .btnResetFind {
-      margin-right: 105px;
-    }
+  .tournamentName {
+    margin-bottom: 8px;
+    font-family: "Mulish-Bold";
+    font-size: 22px;
   }
-  
-  /* @media only screen and (max-width: 900px) {
-    .findTournaments{
-      left: 10%;
-      top: 30%;
-    }
-    .titleFindTour{
-      font-size: 28px;
-    }
-    .desFindTour{
-      font-size: 16px;
-    }
-  } */
-  
+  .titleFindTour {
+    font-size: 35px;
+  }
+}
+
+@media only screen and (max-width: 1190px) {
+  .myTourImg {
+    position: relative;
+    overflow: initial;
+    height: 200px;
+    padding-bottom: 40%;
+  }
+  .listTournament {
+    padding: 0 50px;
+  }
+  .selectOp {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .listTour {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    gap: 30px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .myTourImg {
+    position: relative;
+    overflow: initial;
+    height: 200px;
+    padding-bottom: 55%;
+  }
+  .listTournament {
+    padding: 0 30px;
+  }
+  .titleListTour {
+    font-size: 35px;
+  }
+  .selectOp {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .inputNameTour {
+    font-size: 18px;
+    width: 320px;
+    padding: 10px 15px;
+    outline: none;
+    border: none;
+    height: 100%;
+    font-size: 18px;
+  }
+  .btnFindTour {
+    font-size: 18px;
+    padding: 10px 15px;
+    width: 130px;
+  }
+  .tournamentName {
+    margin-bottom: 8px;
+    font-family: "Mulish-Bold";
+    font-size: 20px;
+    height: 23px;
+  }
+  .titleFindTour {
+    font-size: 30px;
+  }
+  .findWrap {
+    height: 40px;
+    display: flex;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .desFindTour {
+    font-size: 16px;
+    line-height: 1.1;
+    text-align: left;
+    color: var(--white-text);
+    margin: 10px 0px;
+    width: 290px;
+  }
+  .titleListTour {
+    font-size: 30px;
+  }
+  .myTourImg {
+    position: relative;
+    overflow: initial;
+    height: 300px;
+    padding-bottom: 100%;
+  }
+  .selectArea,
+  .typeFootball,
+  .sortTour {
+    width: 160px;
+    font-size: 14px;
+  }
+
+  .selectOp {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .findTournaments {
+    /* width: 900px;
+    height: 270px; */
+    width: 100%;
+    text-align: left;
+    position: absolute;
+    top: 120px;
+    /* /* bottom: 30%; */
+    left: 0%;
+    padding: 15px;
+  }
+  .btnFindTour {
+    font-size: 16px;
+    padding: 10px 15px;
+    width: 100px;
+  }
+  .inputNameTour {
+    font-size: 18px;
+    width: 250px;
+    padding: 10px 15px;
+    outline: none;
+    border: none;
+    height: 100%;
+    font-size: 16px;
+  }
+  .listTour {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: auto;
+    gap: 30px;
+  }
+
+  .pagingTournament {
+    width: max-content;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pageItem {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+  .pageItem:first-child,.pageItem:last-child {
+   display: none;
+  }
+}
+

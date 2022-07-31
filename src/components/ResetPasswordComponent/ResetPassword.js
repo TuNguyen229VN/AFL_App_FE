@@ -359,7 +359,7 @@ function ResetPassword() {
           {changePassword ? (
             <form onSubmit={onSubmitHandler} className={styles.changePass}>
               <h4>Đổi mật khẩu mới</h4>
-              <div>
+              <div className={styles.wrapLog}>
                 <img src="/assets/icons/lock-icon.svg" alt="lock" />
                 <input
                   type={passwordShown ? "text" : "password"}

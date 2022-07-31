@@ -171,7 +171,7 @@
   cursor: pointer;
 }
 
-.content__text{
+.content__text {
   font-family: "Mulish-Regular";
 }
 
@@ -201,11 +201,11 @@
   margin-left: 25px;
 }
 
-.noti__link1{
-height: 80px;
+.noti__link1 {
+  height: 80px;
 }
 
-.content__text1{
+.content__text1 {
   font-family: "Mulish-Regular";
 }
 
@@ -216,7 +216,7 @@ height: 80px;
   font-family: "Mulish-Regular";
 }
 
- .content__text1 p:last-child {
+.content__text1 p:last-child {
   margin-top: 10px;
   line-height: 1.1;
   width: 220px;
@@ -238,4 +238,85 @@ height: 80px;
   position: absolute;
   right: 12px;
   top: 50%;
+}
+
+@media only screen and (max-width: 1279px) {
+}
+
+@media only screen and (max-width: 1190px) {
+  .noti {
+    position: relative;
+    margin-right: 40px;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+}
+@media only screen and (max-width: 768px) {
+  .noti .noti__number {
+    position: absolute;
+    font-size: 9px;
+    /* font-family: "Mulish-Regular"; */
+    width: max-content;
+    background-color: var(--green-bold);
+    z-index: 2;
+    padding: 5px;
+    left: 15px;
+    top: -10px;
+    border-radius: 50%;
+    color: var(--blue-black);
+  }
+
+  
+}
+@media only screen and (max-width: 480px) {
+  .noti {
+    position: relative;
+    margin-right: 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .noti .noti__img img {
+    width: 25px;
+    height: 25px;
+    filter: invert(1);
+  }
+  .noti__content {
+    top: 55px;
+    position: absolute;
+    background-color: #fff;
+    right: 0px;
+    border-radius: 5px;
+    width: 300px;
+    font-size: 16px;
+    max-height: calc(100vh - 250px);
+  }
+
+  .choose__text{
+    font-size: 16px;
+  }
+
+  .option__text{
+    font-size: 16px;
+  }
+  .noti__content .noti__link {
+    padding: 15px 10px;
+    display: flex;
+    column-gap: 5px;
+    align-items: center;
+    color: var(--blue-black);
+    border-bottom: 1px solid #ccc;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+  .circle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #0078d4;
+  }
+  .noti__content .content__img {
+    margin-left: -15px;
+    width: max-content;
+  }
 }

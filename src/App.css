@@ -242,4 +242,9 @@ table {
   width: auto;
   padding: 2px;
 }
-
+@media only screen and (max-width: 1190px) {
+  .rdw-editor-toolbar {
+    height: initial;
+  }
+  
+}

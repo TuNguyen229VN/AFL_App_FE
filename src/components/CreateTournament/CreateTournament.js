@@ -454,18 +454,18 @@ const CreateTournament = () => {
           value: "",
           error: null,
         });
-        if(value !== "GroupStage"){
+        if (value !== "GroupStage") {
           setGroupNumber({
             value: "-1",
             error: null,
           });
-        }else{
+        } else {
           setGroupNumber({
             value: "2",
             error: null,
           });
         }
-        
+
         setCompetitionFormat({
           ...competitionFormat,
           value,
@@ -546,11 +546,7 @@ const CreateTournament = () => {
           <div>
             <div>
               <h1 className={styles.createTournament_title}>Tạo giải đấu</h1>
-              <hr
-                width={100}
-                size={10}
-                className={styles.hr}
-              />
+              <hr width={100} size={10} className={styles.hr} />
             </div>
             <div
               style={{
@@ -783,10 +779,12 @@ const CreateTournament = () => {
                     id="timeCloseRegister"
                     type="date"
                     name="closeRegister"
-                    value={closeRegister.value == null ? "" : closeRegister.value}
+                    value={
+                      closeRegister.value == null ? "" : closeRegister.value
+                    }
                     onChange={onChangeHandler}
                     disabled={status === 0 ? "" : "disable"}
-                    min={new Date().toJSON().split('T')[0]}
+                    min={new Date().toJSON().split("T")[0]}
                   />
                 </div>
 
@@ -820,7 +818,11 @@ const CreateTournament = () => {
                     className={styles.timeStart_input}
                     id="startTime"
                     type="date"
-                    min={status === 0 ? closeRegister.value : new Date().toJSON().split('T')[0]}
+                    min={
+                      status === 0
+                        ? closeRegister.value
+                        : new Date().toJSON().split("T")[0]
+                    }
                     name="startTime"
                     value={startTime.value === null ? "" : startTime.value}
                     disabled={
@@ -975,14 +977,7 @@ const CreateTournament = () => {
                   </select>
                 </div>
                 <div className={styles.fieldSoccer}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      marginBottom: 65,
-                      width: "100%",
-                    }}
-                  >
+                  <div className={styles.location}>
                     <label
                       className={styles.createTournament_img_title}
                       htmlFor="provice"
@@ -1012,14 +1007,7 @@ const CreateTournament = () => {
                     </select>
                   </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      marginBottom: 65,
-                      width: "100%",
-                    }}
-                  >
+                  <div className={styles.location}>
                     <label
                       className={styles.createTournament_img_title}
                       htmlFor="districts"
@@ -1049,14 +1037,7 @@ const CreateTournament = () => {
                     </select>
                   </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      marginBottom: 65,
-                      width: "100%",
-                    }}
-                  >
+                  <div className={styles.location}>
                     <label
                       className={styles.createTournament_img_title}
                       htmlFor="wards"
@@ -1126,7 +1107,7 @@ const CreateTournament = () => {
               </div>
             </div>
             <div className={styles.optionBtn}>
-            <input
+              <input
                 type="button"
                 className={styles.cancleCreate}
                 onClick={() => {

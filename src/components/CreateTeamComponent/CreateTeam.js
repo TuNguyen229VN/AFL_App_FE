@@ -402,9 +402,7 @@ const CreateTeam = () => {
       <Header />
 
       <form onSubmit={onSubmitHandler}>
-        <div
-          className={styles.create__team}
-        >
+        <div className={styles.create__team}>
           <h2 className={styles.title}>Tạo đội bóng</h2>
           <p className={styles.avt}>Hình đội bóng</p>
           <div className={styles.main__team}>
@@ -651,20 +649,8 @@ const CreateTeam = () => {
         </div>
       </div> */}
           <p className={`${styles.avt} ${styles.line3}`}>Khu vực đội bóng</p>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                marginBottom: 65,
-                width: "30%",
-              }}
-            >
+          <div className={styles.location}>
+            <div className={styles.wrapLocation}>
               <label
                 className={styles.createTournament_img_title}
                 htmlFor="provice"
@@ -672,9 +658,7 @@ const CreateTeam = () => {
                 Thành phố/Tỉnh{" "}
               </label>
               <select
-                style={{
-                  padding: "10px 5px",
-                }}
+                className={styles.selectLocation}
                 name="provice"
                 required
                 onChange={onChangeHandler}
@@ -695,14 +679,7 @@ const CreateTeam = () => {
               </select>
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                marginBottom: 65,
-                width: "30%",
-              }}
-            >
+            <div className={styles.wrapLocation}>
               <label
                 className={styles.createTournament_img_title}
                 htmlFor="districts"
@@ -711,9 +688,7 @@ const CreateTeam = () => {
               </label>
               <select
                 required
-                style={{
-                  padding: "10px 5px",
-                }}
+                className={styles.selectLocation}
                 name="districts"
                 onChange={onChangeHandler}
                 value={districSearch}
@@ -733,14 +708,7 @@ const CreateTeam = () => {
               </select>
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                marginBottom: 65,
-                width: "30%",
-              }}
-            >
+            <div className={styles.wrapLocation}>
               <label
                 className={styles.createTournament_img_title}
                 htmlFor="wards"
@@ -748,9 +716,7 @@ const CreateTeam = () => {
                 Phường/Xã
               </label>
               <select
-                style={{
-                  padding: "10px 5px",
-                }}
+                className={styles.selectLocation}
                 name="wards"
                 onChange={onChangeHandler}
                 required

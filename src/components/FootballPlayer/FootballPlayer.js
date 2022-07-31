@@ -118,34 +118,83 @@ export default function FootballPlayer() {
               className={styles.selectOp}
             >
               <select
-                style={{
-                  backgroundColor: "black",
-                }}
                 onChange={onChangeHandler}
                 value={genderSearch}
                 name="gender"
                 className={styles.sortTour}
               >
-                <option value="">Giới tính</option>
-                <option value="Male">Nam</option>
-                <option value="Female">Nữ</option>
+                <option
+                  value=""
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                >
+                  Giới tính
+                </option>
+                <option
+                  value="Male"
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                >
+                  Nam
+                </option>
+                <option
+                  value="Female"
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                >
+                  Nữ
+                </option>
               </select>
               <select
-                style={{
-                  backgroundColor: "black",
-                }}
                 onChange={onChangeHandler}
                 value={positionSearch}
                 name="position"
                 className={styles.sortTour}
               >
-                <option value="" selected>
+                <option
+                  value=""
+                  selected
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                >
                   Vị trí
                 </option>
-                <option value="goalkeeper">Thủ môn</option>
-                <option value="defender">Hậu vệ</option>
-                <option value="midfielder">Tiền vệ</option>
-                <option value="striker">Tiền đạo</option>
+                <option
+                  value="goalkeeper"
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                >
+                  Thủ môn
+                </option>
+                <option
+                  value="defender"
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                >
+                  Hậu vệ
+                </option>
+                <option
+                  value="midfielder"
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                >
+                  Tiền vệ
+                </option>
+                <option
+                  value="striker"
+                  style={{
+                    backgroundColor: "black",
+                  }}
+                >
+                  Tiền đạo
+                </option>
               </select>
             </div>
           </form>

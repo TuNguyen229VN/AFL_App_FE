@@ -91,7 +91,7 @@ const TournamentHome = () => {
                 </p>
                 <div className="torunament__another">
                   <div className="join">
-                    <img src="./assets/icons/join.png" alt="join" />
+                    <img src="/assets/icons/join.png" alt="join" />
                     <div className="join__text">{tour.numberTeamInTournament}</div>
                   </div>
                   <div className="heart__shape active"></div>
