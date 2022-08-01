@@ -344,7 +344,7 @@ const UpdateTournamentInformation = () => {
           const response = await updateTournamentInfoAPI(data);
           if (response.status === 200) {
             
-            if (typeNoti !== "hasTeam" || typeNoti !== "default") {
+            if (typeNoti !== "hasTeam" || typeNoti === "default") {
               createGenerateTable(response.data.id);
             }
             const intitalState = {

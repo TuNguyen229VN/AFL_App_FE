@@ -8,6 +8,8 @@ import axios from "axios";
 import { getAPI } from "../../api";
 import ReactPaginate from "react-paginate";
 function GalleryTournamentDetail(data) {
+  const {tourDetail} = data;
+  
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
@@ -248,7 +250,7 @@ function GalleryTournamentDetail(data) {
         <h2 className="title">Hình Ảnh</h2>
         {user !== null ? (
           <>
-            {user.userVM.id === data.idTour ? (
+            {user.userVM.id === data.idTour && tourDetail.status === true && tourDetail.statusTnm !== "Kết thúc" ? (
               <div className="cmtInput">
                 <button
                   className="thongbao__btn"

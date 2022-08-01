@@ -36,21 +36,21 @@ const MyTournamemts = () => {
       //console.log(anotherSearch);
       let afterDefaultURL = null;
       if (anotherSearch === null) {
-        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=&tournament-type=&tournament-gender=&tournament-football-type=&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=&tournament-type=&tournament-gender=&tournament-football-type=&order-by=${orderBy}&status=true&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "MODE") {
-        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${value}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${value}&tournament-type=${tourType}&tournament-gender=${gender}&status=true&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "TOURTYPE") {
-        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${value}&tournament-gender=${gender}&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${value}&tournament-gender=${gender}&status=true&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "FIELDTYPE") {
-        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${value}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&status=true&tournament-football-type=${value}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "GENDER") {
         console.log("Gender" + value);
-        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${value}&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${value}&status=true&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "NAME") {
-        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&status=true&tournament-football-type=${footballField}&order-by=${orderBy}&order-type=${orderType}&page-offset=${currentPage}&limit=8`;
       } else if (anotherSearch === "SORT") {
         const fullOrder = value.split("-");
-        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&tournament-football-type=${footballField}&order-by=${fullOrder[0]}&order-type=${fullOrder[1]}&page-offset=${currentPage}&limit=8`;
+        afterDefaultURL = `tournaments?tournament-name=${nameFind}&tournament-mode=${mode}&tournament-type=${tourType}&tournament-gender=${gender}&status=true&tournament-football-type=${footballField}&order-by=${fullOrder[0]}&order-type=${fullOrder[1]}&page-offset=${currentPage}&limit=8`;
       }
       const res = await getAPI(afterDefaultURL);
       if (res.status === 200) {

@@ -143,7 +143,7 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/galleryTournamentDetail`
     ) {
-      return <GalleryTournamentDetail idTour={tourDetail.userId} />;
+      return <GalleryTournamentDetail idTour={tourDetail.userId} tourDetail={tourDetail} />;
     }
     if (
       activeTeamDetail ===
@@ -209,9 +209,10 @@ function HeaderTournamentDetail() {
       return <CommentTournamentDetail />;
     }
     if (
-      activeTeamDetail === `/tournamentDetail/${idTour}/achievementTournamentDetail`
+      activeTeamDetail ===
+      `/tournamentDetail/${idTour}/achievementTournamentDetail`
     ) {
-      return <AchievementTournamnetDetail tour idTour= {idTour}/>;
+      return <AchievementTournamnetDetail tour idTour={idTour} />;
     }
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/newsTournamentDetail`
@@ -220,6 +221,7 @@ function HeaderTournamentDetail() {
         <NewsTournamentDetail
           postNotificationforTeamManager={postNotificationforTeamManager}
           idTour={tourDetail.userId}
+          tourDetail={tourDetail}
           allTeam={allTeam}
         />
       );
@@ -744,7 +746,9 @@ function HeaderTournamentDetail() {
                   tourDetail != null &&
                   user.userVM.roleId !== 1 ? (
                     <>
-                      {user.userVM.id === tourDetail.userId ? (
+                      {user.userVM.id === tourDetail.userId &&
+                      tourDetail.status == true &&
+                      tourDetail.statusTnm === "Chuẩn bị" ? (
                         <>
                           <Link
                             to={`/tournamentDetail/${tourDetail.id}/inforTournamentDetail/update-tournament-detail`}
@@ -777,7 +781,7 @@ function HeaderTournamentDetail() {
                             <i class="fa-solid fa-pen-to-square" /> Chỉnh sửa
                             giải đấu
                           </Link>
-                          {tourDetail.statusTnm !== "Kết thúc" ? (
+                          {tourDetail.status === true && tourDetail.statusTnm !== "Kết thúc" ? (
                             <SendCancelTournament
                               data={{
                                 userId: user.userVM.id,
@@ -787,10 +791,14 @@ function HeaderTournamentDetail() {
                           ) : null}
                         </>
                       ) : tourDetail.mode !== "PRIVATE" &&
+                        tourDetail.status == true &&
+                        tourDetail.statusTnm === "Chuẩn bị" &&
                         new Date().getTime() <=
                           new Date(tourDetail.registerEndDate).getTime() &&
                         checkPaticipate === false &&
-                        user.teamInfo !== null ? (
+                        user.teamInfo !== null &&
+                        tourDetail.numberTeamInTournament <
+                          tourDetail.footballTeamNumber ? (
                         <div>
                           <div
                             className={hideShow ? "overlay active" : "overlay"}
@@ -1010,76 +1018,88 @@ function HeaderTournamentDetail() {
                     <div className={styles.checkbox}>
                       <p>
                         <input
-                           className={styles.radio__input}
+                          className={styles.radio__input}
                           type="radio"
                           id="test1"
                           name="radio-group"
                           value={"Giải đấu giả mạo"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test1" className={styles.radio__label}>Giải đấu giả mạo</label>
+                        <label htmlFor="test1" className={styles.radio__label}>
+                          Giải đấu giả mạo
+                        </label>
                       </p>
                       <p>
                         <input
-                           className={styles.radio__input}
+                          className={styles.radio__input}
                           type="radio"
                           id="test2"
                           name="radio-group"
                           value={"Tên giải đấu không hợp lệ"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test2" className={styles.radio__label}>Tên giải đấu không hợp lệ</label>
+                        <label htmlFor="test2" className={styles.radio__label}>
+                          Tên giải đấu không hợp lệ
+                        </label>
                       </p>
                       <p>
                         <input
-                           className={styles.radio__input}
+                          className={styles.radio__input}
                           type="radio"
                           id="test3"
                           name="radio-group"
                           value={"Quấy rối, bắt nạt"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test3" className={styles.radio__label}>Quấy rối, bắt nạt</label>
+                        <label htmlFor="test3" className={styles.radio__label}>
+                          Quấy rối, bắt nạt
+                        </label>
                       </p>
                       <p>
                         <input
-                           className={styles.radio__input}
+                          className={styles.radio__input}
                           type="radio"
                           id="test4"
                           name="radio-group"
                           value={"Nội dung không phù hợp"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test4" className={styles.radio__label}>Nội dung không phù hợp</label>
+                        <label htmlFor="test4" className={styles.radio__label}>
+                          Nội dung không phù hợp
+                        </label>
                       </p>
                       <p>
                         <input
-                           className={styles.radio__input}
+                          className={styles.radio__input}
                           type="radio"
                           id="test5"
                           name="radio-group"
                           value={"Lý do khác"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test5" className={styles.radio__label}>Lý do khác:</label>
+                        <label htmlFor="test5" className={styles.radio__label}>
+                          Lý do khác:
+                        </label>
                       </p>
                     </div>
                   ) : (
                     <div className={styles.checkbox}>
                       <p>
                         <input
-                           className={styles.radio__input}
+                          className={styles.radio__input}
                           type="radio"
                           id="test1"
                           name="radio-group"
                           value={"Giải đấu giả mạo"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test1" className={styles.radio__label}>Giải đấu giả mạo</label>
+                        <label htmlFor="test1" className={styles.radio__label}>
+                          Giải đấu giả mạo
+                        </label>
                       </p>
                       <p>
                         <input
-                           className={styles.radio__input}
+                          className={styles.radio__input}
                           type="radio"
                           id="test2"
                           name="radio-group"
@@ -1092,7 +1112,7 @@ function HeaderTournamentDetail() {
                       </p>
                       <p>
                         <input
-                           className={styles.radio__input}
+                          className={styles.radio__input}
                           type="radio"
                           id="test3"
                           name="radio-group"
@@ -1105,7 +1125,7 @@ function HeaderTournamentDetail() {
                       </p>
                       <p>
                         <input
-                           className={styles.radio__input}
+                          className={styles.radio__input}
                           type="radio"
                           id="test4"
                           name="radio-group"
@@ -1118,14 +1138,16 @@ function HeaderTournamentDetail() {
                       </p>
                       <p>
                         <input
-                           className={styles.radio__input}
+                          className={styles.radio__input}
                           type="radio"
                           id="test5"
                           name="radio-group"
                           value={"Lý do khác"}
                           onChange={onChangeHandler}
                         />
-                        <label htmlFor="test5" className={styles.radio__label}>Lý do khác:</label>
+                        <label htmlFor="test5" className={styles.radio__label}>
+                          Lý do khác:
+                        </label>
                       </p>
                     </div>
                   )}

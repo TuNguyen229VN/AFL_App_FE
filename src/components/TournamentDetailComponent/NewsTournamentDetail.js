@@ -6,7 +6,7 @@ import { getAPI } from "../../api";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import ReactPaginate from "react-paginate";
 function NewsTournamentDetail(data,props) {
-  const {allTeam,postNotificationforTeamManager} = data;
+  const {allTeam,postNotificationforTeamManager,tourDetail} = data;
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
@@ -492,7 +492,7 @@ function NewsTournamentDetail(data,props) {
         </div>
         {user !== null ? (
           <>
-            {user.userVM.id === data.idTour ? (
+            {user.userVM.id === data.idTour && tourDetail.status === true && tourDetail.statusTnm !== "Kết thúc" ? (
               <div className="cmtInput">
                 <button
                   className="thongbao__btn"
