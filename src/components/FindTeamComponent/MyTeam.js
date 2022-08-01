@@ -58,7 +58,7 @@ const MyTournamemts = () => {
       const res = await getAPI(afterURLDefault);
 
       if (res.status === 200) {
-        console.log(res.data)
+        console.log(res.data);
         setTeams(res.data.teams);
         setLoading(false);
         setCount(res.data.countList);
@@ -186,35 +186,58 @@ const MyTournamemts = () => {
             ) : (
               <div className={styles.selectOp}>
                 <select
-                  style={{
-                    backgroundColor: "black",
-                  }}
                   onChange={onChangeHandler}
                   name="provice"
                   value={proviceSearch}
                   className={styles.selectArea}
                 >
-                  <option value="default">Tỉnh/Thành phố</option>
+                  <option
+                    value="default"
+                    style={{
+                      backgroundColor: "black",
+                    }}
+                  >
+                    Tỉnh/Thành phố
+                  </option>
                   {provice !== null
                     ? provice.map((iteam, index) => {
-                        return <option value={iteam.name}>{iteam.name}</option>;
+                        return (
+                          <option
+                            value={iteam.name}
+                            style={{
+                              backgroundColor: "black",
+                            }}
+                          >
+                            {iteam.name}
+                          </option>
+                        );
                       })
                     : null}
                 </select>
                 <select
-                  style={{
-                    backgroundColor: "black",
-                  }}
                   onChange={onChangeHandler}
                   value={districSearch}
                   name="districts"
                   className={styles.typeFootball}
                 >
-                  <option value="default">Quận/Huyện</option>
+                  <option
+                    value="default"
+                    style={{
+                      backgroundColor: "black",
+                    }}
+                  >
+                    Quận/Huyện
+                  </option>
                   {proviceSearch !== ""
                     ? districs.map((item, index) => {
                         return (
-                          <option key={index} value={item.name}>
+                          <option
+                            key={index}
+                            value={item.name}
+                            style={{
+                              backgroundColor: "black",
+                            }}
+                          >
                             {item.name}
                           </option>
                         );
@@ -222,17 +245,35 @@ const MyTournamemts = () => {
                     : null}
                 </select>
                 <select
-                  style={{
-                    backgroundColor: "black",
-                  }}
                   onChange={onChangeHandler}
                   value={gender}
                   name="gender"
                   className={styles.sortTour}
                 >
-                  <option value="default">Giới tính</option>
-                  <option value="Male">Nam</option>
-                  <option value="Female">Nữ</option>
+                  <option
+                    value="default"
+                    style={{
+                      backgroundColor: "black",
+                    }}
+                  >
+                    Giới tính
+                  </option>
+                  <option
+                    value="Male"
+                    style={{
+                      backgroundColor: "black",
+                    }}
+                  >
+                    Nam
+                  </option>
+                  <option
+                    value="Female"
+                    style={{
+                      backgroundColor: "black",
+                    }}
+                  >
+                    Nữ
+                  </option>
                 </select>
               </div>
             )}

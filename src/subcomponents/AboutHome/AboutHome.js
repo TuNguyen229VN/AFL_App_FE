@@ -40,7 +40,7 @@ function AboutHome() {
       >
         <div className="about__list-item">
           <div className="about__img">
-            <img src="/assets/img/homepage/pic-1.png" alt="dev" />
+            <img src="/assets/img/homepage/turv2.jpg" alt="dev" />
           </div>
           <div className="about__text">
             <img
@@ -60,7 +60,7 @@ function AboutHome() {
         </div>
         <div className="about__list-item">
           <div className="about__img">
-            <img src="/assets/img/homepage/pic-2.png" alt="dev" />
+            <img src="/assets/img/homepage/anhrv2.jpg" alt="dev" />
           </div>
           <div className="about__text">
             <img
@@ -81,7 +81,7 @@ function AboutHome() {
         </div>
         <div className="about__list-item">
           <div className="about__img">
-            <img src="/assets/img/homepage/pic-3.png" alt="dev" />
+            <img src="/assets/img/homepage/khoarv2.jpg" alt="dev" />
           </div>
           <div className="about__text">
             <img
@@ -101,7 +101,7 @@ function AboutHome() {
         </div>
         <div className="about__list-item">
           <div className="about__img">
-            <img src="/assets/img/homepage/pic-4.png" alt="dev" />
+            <img src="/assets/img/homepage/tamrv2.jpg" alt="dev" />
           </div>
           <div className="about__text">
             <img

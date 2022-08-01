@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./styles/style.css";
 import Flickity from "react-flickity-component";
+import { Link } from "react-router-dom";
 
 var dots=0;
 const flickityOptions = {
@@ -77,12 +78,12 @@ const Slider = () => {
               các giải đấu nổi tiếng thế giới như Premier League, Champions
               League, World Cup ...
             </p>
-            <a href="#" className="btn --button-main">
+            <Link to={"/createTournament"} className="btn --button-main">
               <p>Tạo giải đấu cho riêng mình</p>
               <i>
                 <img src="/assets/icons/longArrow.svg" alt="arrow2" />
               </i>
-            </a>
+            </Link>
           </div>
           <div className="slider__item-gallery">
             <div className="slider_item-img">
@@ -109,12 +110,12 @@ const Slider = () => {
               các giải đấu nổi tiếng thế giới như Premier League, Champions
               League, World Cup ...
             </p>
-            <a href="#" className="btn --button-main">
+            <Link to={"/createTeam"} className="btn --button-main">
               <p>Tạo đội bóng cho riêng mình</p>
               <i>
                 <img src="/assets/icons/longArrow.svg" alt="arrow2" />
               </i>
-            </a>
+            </Link>
           </div>
           <div className="slider__item-gallery">
             <div className="slider_item-img">

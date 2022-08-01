@@ -242,7 +242,7 @@ function Login() {
           </div>
           <form action="" method="POST" className={styles.login__form}>
             <h4>Đăng nhập</h4>
-            <div>
+            <div className={styles.wrapLog}>
               <img src="/assets/icons/mail-icon.svg" alt="lock" />
               <input
                 type="text"
@@ -254,7 +254,7 @@ function Login() {
               />
             </div>
             <p className={styles.error}>{userNameErr}</p>
-            <div>
+            <div className={styles.wrapLog}>
               <img src="/assets/icons/lock-icon.svg" alt="lock" />
               <input
                 type={passwordShown ? "text" : "password"}

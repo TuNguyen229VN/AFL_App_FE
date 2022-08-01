@@ -54,7 +54,7 @@ const TeamHome = () => {
                 </p>
                 <div className="torunament__another">
                   <div className="join">
-                    <img src="./assets/icons/join.png" alt="join" />
+                    <img src="/assets/icons/join.png" alt="join" />
                     <div className="join__text">{team.numberPlayerInTeam}</div>
                   </div>
                 </div>

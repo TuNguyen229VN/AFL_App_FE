@@ -2,18 +2,19 @@ import React from "react";
 import styles from "./styles/style.module.css";
 
 const CompetitionFormat = (props) => {
-  const { onChangeHandler, competitionFormat, teamPaticipate, groupNumber, lengthTeamPaticipate } =
-    props;
-    
+  const {
+    onChangeHandler,
+    competitionFormat,
+    teamPaticipate,
+    groupNumber,
+    lengthTeamPaticipate,
+  } = props;
+
   return (
     <div className={styles.createTournament_row2}>
       <h1 className={styles.createTournament_img_title}>Hình thức thi đấu</h1>
       <div className={styles.img_type_footballField}>
-        <div
-          style={{
-            width: "25%",
-          }}
-        >
+        <div className={styles.wrapStage}>
           <label htmlFor="circle">
             <div
               className={styles.type_circle}
@@ -45,11 +46,7 @@ const CompetitionFormat = (props) => {
             checked={competitionFormat.value === "CircleStage" ? true : false}
           ></input>
         </div>
-        <div
-          style={{
-            width: "25%",
-          }}
-        >
+        <div className={styles.wrapStage}>
           <label htmlFor="knockout">
             <div
               className={styles.type_knockout}
@@ -82,11 +79,7 @@ const CompetitionFormat = (props) => {
           ></input>
         </div>
 
-        <div
-          style={{
-            width: "25%",
-          }}
-        >
+        <div className={styles.wrapStage}>
           <label htmlFor="table">
             <div
               className={styles.type_table}
@@ -121,14 +114,7 @@ const CompetitionFormat = (props) => {
       </div>
       <div>
         <div className={styles.lengthTeam}>
-          <p
-            style={{
-              margin: "20px 0",
-              fontWeight: 600,
-              fontStyle: "italic",
-              fontSize: 18,
-            }}
-          >
+          <p className={styles.luuytype}>
             Lưu ý{" "}
             {competitionFormat.value === "CircleStage"
               ? " đối với hình thức vòng tròn tối thiểu phải có 3 đội và tối đa là 8 đội"
@@ -163,34 +149,19 @@ const CompetitionFormat = (props) => {
           </div>
 
           <input
-            style={{
-              marginLeft: 0,
-              padding: "10px 20px",
-              marginTop: 0,
-              width: 488.44,
-            }}
             className={styles.select_lengthTeam}
             id="select_lengthTeam"
             name="teamPaticipate"
             value={teamPaticipate.value}
             placeholder="Nhập số đội tham gia"
             onChange={onChangeHandler}
-            
           />
         </div>
       </div>
       {competitionFormat.value === "GroupStage" ? (
         <div>
           {teamPaticipate.value >= 6 && teamPaticipate.value < 12 ? (
-            <p
-              style={{
-                margin: "20px 0",
-                fontWeight: 600,
-                fontStyle: "italic",
-                fontSize: 18,
-                lineHeight: 1.5,
-              }}
-            >
+            <p className={styles.luuytype}>
               Lưu ý đối với {teamPaticipate.value} đội tham gia, thì hệ thống
               chúng tôi sẽ chia làm 2 bảng A-B,{" "}
               {teamPaticipate.value % 2 === 0
@@ -204,15 +175,7 @@ const CompetitionFormat = (props) => {
               tiếp{" "}
             </p>
           ) : teamPaticipate.value >= 12 && teamPaticipate.value <= 16 ? (
-            <p
-              style={{
-                margin: "20px 0",
-                fontWeight: 600,
-                fontStyle: "italic",
-                fontSize: 18,
-                lineHeight: 1.5,
-              }}
-            >
+            <p className={styles.luuytype}>
               Lưu ý đối với {teamPaticipate.value} đội tham gia, thì hệ thống
               chúng tôi cho bạn chọn 2 loại đó là chia bảng làm 2 hoặc là 4
             </p>
@@ -257,7 +220,9 @@ const CompetitionFormat = (props) => {
                   marginBottom: 20,
                 }}
               >
-                <option value="2" selected>2</option>
+                <option value="2" selected>
+                  2
+                </option>
                 <option value="4">4</option>
               </select>
               {/* <input
@@ -279,15 +244,7 @@ const CompetitionFormat = (props) => {
           ) : null}
 
           {teamPaticipate.value >= 12 && teamPaticipate.value <= 16 ? (
-            <p
-              style={{
-                margin: "20px 0",
-                fontWeight: 600,
-                fontStyle: "italic",
-                fontSize: 18,
-                lineHeight: 1.5,
-              }}
-            >
+            <p className={styles.luuytype}>
               Đối với số bảng đấu bằng {groupNumber.value}, thì hệ thống chúng
               tôi sẽ chia làm{" "}
               {groupNumber.value == 2 ? "2 bảng A-B" : "4 bảng A-B-C-D"},{" "}

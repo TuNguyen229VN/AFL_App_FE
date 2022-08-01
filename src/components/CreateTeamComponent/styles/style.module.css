@@ -148,7 +148,7 @@
   margin-bottom: 30px;
   position: initial;
 }
-.optionBtn{
+.optionBtn {
   margin-top: 40px;
   display: flex;
   align-items: center;
@@ -198,4 +198,123 @@
 .createTournament_img_title {
   margin-bottom: 10px;
   font-weight: 600;
+}
+
+.location {
+  display: flex;
+  justify-content: space-between;
+}
+.wrapLocation {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+.selectLocation {
+  padding: 10px 5px;
+}
+/* =======Reponsive========== */
+@media only screen and (max-width: 1279px) {
+}
+
+@media only screen and (max-width: 1190px) {
+  .create__team .createTeam_btn {
+    width: 130px;
+  }
+  .create__team .cancleCreate {
+    width: 130px;
+    margin-right: 10px;
+  }
+  .create__team {
+    margin-top: 60px;
+  }
+  .create__team .main__team {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  .input__label {
+    padding: 10px;
+  }
+  .create__team .descTeam {
+    margin-top: 30px;
+    border: 1px solid var(--blue-black);
+    height: 450px;
+    overflow: hidden;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .create__team {
+    padding: 50px 50px;
+    margin-top: 60px;
+    --create-title: 30px;
+    --create-text: 18px;
+    --create-p: 14px;
+  }
+  .create__team .main__team {
+    display: block;
+  }
+  .input__field {
+    height: 200px;
+    margin-bottom: 20px;
+  }
+  .create__team .line3 {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    position: initial;
+  }
+  .create__team .descTeam {
+    margin-top: 20px;
+    border: 1px solid var(--blue-black);
+    height: 400px;
+    overflow: hidden;
+  }
+  .wrapLocation{
+    width: 100%;
+  }
+  .location {
+    display: block;
+    width: 100%;
+  }
+  .selectLocation {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  .create__team .createTeam_btn {
+    width: 100px;
+    padding: 10px;
+  }
+  .create__team .cancleCreate {
+    width: 100px;
+    margin-right: 10px;
+    padding: 10px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .create__team {
+    padding: 30px 30px;
+    margin-top: 40px;
+    --create-title: 30px;
+    --create-text: 18px;
+    --create-p: 14px;
+  }
+  .create__team .createTeam_btn {
+    width: 100px;
+    padding: 10px;
+    font-size: var(--create-p);
+  }
+  .create__team .cancleCreate {
+    width: 100px;
+    margin-right: 10px;
+    padding: 10px;
+    font-size: var(--create-p);
+  }
+  .create__team .descTeam {
+    margin-top: 30px;
+    border: 1px solid var(--blue-black);
+    height: 300px;
+    overflow: hidden;
+  }
 }

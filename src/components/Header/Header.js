@@ -9,6 +9,9 @@ import Notification from "../NotificationComponent/Notification";
 import axios from "axios";
 import { toast } from "react-toastify";
 function Header(id) {
+  const [clickUserMobile, setClickUserMobile] = useState(false);
+  const [tourMobile, setTourMobile] = useState(false);
+  const [teamMobile, setTeamMobile] = useState(false);
   // const firebaseConfig = {
   //   apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
   //   authDomain: "amateurfoooballleague.firebaseapp.com",
@@ -32,7 +35,6 @@ function Header(id) {
   //   JSON.parse(localStorage.getItem("playerInfo"))
   // );
   // signout
-
 
   const logout = async () => {
     try {
@@ -117,9 +119,12 @@ function Header(id) {
   ];
   useEffect(() => {
     getMyAccount();
-    window.addEventListener("click",()=>{
-     setClickUserMenu(false)
-    })
+    window.addEventListener("click", () => {
+      setClickUserMenu(false);
+      setTeamMobile(false);
+      setTourMobile(false);
+      setClickUserMobile(false)
+    });
   }, []);
   useEffect(() => {
     setactiveMenu(location.pathname);
@@ -261,13 +266,66 @@ function Header(id) {
           ) : null}
           <div
             className={`btn__menu ${clickMenu}`}
-            onClick={() => setClickMenu((clickMenu) => !clickMenu)}
+            onClick={() => {
+              setClickMenu((clickMenu) => !clickMenu);
+            }}
           >
             <span></span>
           </div>
         </div>
         <nav className={`nav ${clickMenu}`} id="nav">
           <ul className="menu --mobile">
+            <li>
+              {user ? (
+                <div
+                  className="current --mobile"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setClickUserMobile(!clickUserMobile);
+                    setClickUserMenu(false)
+                    setTourMobile(false);
+                    setTeamMobile(false);
+                  }}
+                >
+                  <div className="avatar --avtmobile">
+                    <img src={myAccount.avatar} alt={myAccount.username} />
+                  </div>
+                  <p className="name_account">{myAccount.username}</p>
+                  <i>
+                    <img src="/assets/icons/arrowDown.svg" alt="arrowDown" />
+                  </i>
+                </div>
+              ) : (
+                <div className="current --dkmobile">
+                  <Link to={"/login"} className="login__text">
+                    Đăng nhập
+                  </Link>
+                  <span className="dash">/</span>
+                  <Link to={"/signup"} className="login__text">
+                    Đăng ký
+                  </Link>
+                </div>
+              )}
+              {user ? (
+                <div
+                  className={
+                    clickUserMobile ? "profilemobile active" : "profilemobile"
+                  }
+                >
+                  <Link to={"/profile"}>Hồ sơ</Link>
+                  <Link to={`/playerDetail/${myAccount.id}/myTeamInPlayer`}>
+                    Thông tin cầu thủ
+                  </Link>
+                  <Link to={`/teamDetail/${myAccount.id}/inforTeamDetail`}>
+                    Đội bóng của bạn
+                  </Link>
+                  <Link to={`/myListTournament`}>Giải đấu của bạn</Link>
+                  <a href="#" onClick={signout}>
+                    Đăng xuất
+                  </a>
+                </div>
+              ) : null}
+            </li>
             <li>
               <Link
                 to={"/"}
@@ -281,30 +339,85 @@ function Header(id) {
                 Trang chủ
               </Link>
             </li>
-            <li>
-              <Link
-                to={"/findTournaments"}
-                className={
-                  activeMenu === "/findTournaments" ? "title active" : "title"
-                }
-                onClick={() => setactiveMenu("/findTournaments")}
+            <li className="tourMobile">
+              <span
+                className={checkTour()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setClickUserMenu(false);
+                  setTourMobile(!tourMobile);
+                  setTeamMobile(false);
+                  setClickUserMobile(false)
+                }}
               >
                 Giải đấu
-              </Link>
+              </span>
+              <div
+                className={
+                  tourMobile ? "sub_menumobile --tour" : "sub_menumobile "
+                }
+              >
+                <Link
+                  to={"/findTournaments"}
+                  onClick={() => setactiveMenu("/findTournaments")}
+                >
+                  Tìm giải đấu
+                </Link>
+                <Link
+                  to={"/createTournament"}
+                  onClick={() => setactiveMenu("/createTournament")}
+                >
+                  Tạo giải đấu
+                </Link>
+              </div>
+            </li>
+            <li className="teamMobile">
+              <span
+                className={checkTeam()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setClickUserMenu(false);
+                  setTourMobile(false);
+                  setClickUserMobile(false)
+                  setTeamMobile(!teamMobile);
+                }}
+              >
+                Đội bóng
+              </span>
+              <div
+                className={
+                  teamMobile ? "sub_menumobile --team" : "sub_menumobile"
+                }
+              >
+                <Link
+                  to={"/findTeam"}
+                  onClick={() => setactiveMenu("/findTeam")}
+                >
+                  Tìm đội bóng
+                </Link>
+                <Link
+                  to={"/createTeam"}
+                  onClick={() => setactiveMenu("/findTeam")}
+                >
+                  Tạo đội bóng
+                </Link>
+              </div>
             </li>
             <li>
               <Link
-                to={"/findTeam"}
+                to={"/footballPlayer"}
                 className={
-                  activeMenu === "/findTeam" ? "title active" : "title"
+                  activeMenu === "/footballPlayer"
+                    ? "title active"
+                    : "title"
                 }
-                onClick={() => setactiveMenu("/findTeam")}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setactiveMenu("/footballPlayer");
+                }}
               >
-                Đội bóng
+                Cầu thủ
               </Link>
-            </li>
-            <li>
-              <a href="#">Giới thiệu</a>
             </li>
           </ul>
         </nav>

@@ -18,7 +18,7 @@ input:focus{
   position: relative;
   overflow: hidden;
   height: 0;
-  padding-bottom: 26%;
+  padding-bottom: 27%;
 }
 
 .img_mytour {
@@ -121,16 +121,8 @@ input:focus{
   cursor: pointer;
 }
 
-.selectArea {
-  width: max-content;
-}
-
-.typeFootball {
-  width: max-content;
-}
-
-.sortTour {
-  width: max-content;
+.selectArea,.typeFootball,.sortTour   {
+  width: 180px
 }
 
 .btnResetFind {
@@ -394,124 +386,188 @@ cursor: pointer;
 }
 /* End PagingTournament */
 
-/* @media only screen and (max-width: 900px) {
-  
-} */
-
-@media only screen and (max-width: 399px) and (min-width: 380px) {
-  .findTournaments {
-    left: 5%;
-    top: 30%;
-    width: 365px;
+ /* =================Reponsive=============== */
+ @media only screen and (max-width: 1279px) {
+  .myTourImg {
+    position: relative;
+    overflow: initial;
+    height: 200px;
+    padding-bottom: 65%;
   }
-  .selectOp {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 25px;
-    justify-content: space-between;
+
+  .img_mytour {
+    min-width: 100%;
+    min-height: 100%;
+    position: absolute;
+    image-rendering: pixelated;
+    object-fit: cover;
+    user-select: none;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+  }
+  .tournamentName {
+    margin-bottom: 8px;
+    font-family: "Mulish-Bold";
+    font-size: 22px;
   }
   .titleFindTour {
-    font-size: 20px;
-  }
-  .desFindTour {
-    font-size: 14px;
-    margin: 8px 0px;
-  }
-  .selectArea {
-    margin-bottom: 20px;
-  }
-  .btnResetFind {
-    margin-right: 105px;
+    font-size: 35px;
   }
 }
 
-@media only screen and (max-width: 600px) and (min-width: 400px) {
-  .findTournaments {
-    left: 5%;
-    top: 30%;
-    width: 385px;
+@media only screen and (max-width: 1190px) {
+  .myTourImg {
+    position: relative;
+    overflow: initial;
+    height: 200px;
+    padding-bottom: 40%;
   }
-  .titleFindTour {
-    font-size: 20px;
+  .listTournament {
+    padding: 0 50px;
   }
-  .desFindTour {
-    font-size: 14px;
-    margin: 8px 0px;
+  .selectOp {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .listTour {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    gap: 30px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .myTourImg {
+    position: relative;
+    overflow: initial;
+    height: 200px;
+    padding-bottom: 55%;
+  }
+  .listTournament {
+    padding: 0 30px;
+  }
+  .titleListTour {
+    font-size: 35px;
+  }
+  .selectOp {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
   .inputNameTour {
-    width: 210px;
-    padding: 5px 10px;
+    font-size: 18px;
+    width: 320px;
+    padding: 10px 15px;
+    outline: none;
+    border: none;
+    height: 100%;
+    font-size: 18px;
   }
   .btnFindTour {
-    padding: 7px 10px;
+    font-size: 18px;
+    padding: 10px 15px;
+    width: 130px;
   }
-  .selectOp {
+  .tournamentName {
+    margin-bottom: 8px;
+    font-family: "Mulish-Bold";
+    font-size: 20px;
+    height: 23px;
+  }
+  .titleFindTour {
+    font-size: 30px;
+  }
+  .findWrap {
+    height: 40px;
     display: flex;
-    flex-wrap: wrap;
-    margin-top: 25px;
-    justify-content: space-between;
-  }
-  .selectArea {
-    margin-bottom: 20px;
-  }
-  .listTour {
-    width: 51%;
-  }
-  .btnResetFind {
-    margin-right: 105px;
   }
 }
+@media only screen and (max-width: 480px) {
+  .desFindTour {
+    font-size: 16px;
+    line-height: 1.1;
+    text-align: left;
+    color: var(--white-text);
+    margin: 10px 0px;
+    width: 290px;
+  }
+  .titleListTour {
+    font-size: 30px;
+  }
+  .myTourImg {
+    position: relative;
+    overflow: initial;
+    height: 420px;
+    padding-bottom: 100%;
+  }
+  .selectArea,
+  .typeFootball,
+  .sortTour {
+    width: max-content;
+    width: 170px;
+    font-size: 14px;
+  }
 
-@media only screen and (max-width: 900px) and (min-width: 601px) {
+  .selectOp {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .findTournaments {
+    /* width: 900px;
+    height: 270px; */
+    width: 100%;
+    text-align: left;
+    position: absolute;
+    top: 120px;
+    /* /* bottom: 30%; */
+    left: 0%;
+    padding: 15px;
+  }
+  .btnFindTour {
+    font-size: 16px;
+    padding: 10px 15px;
+    width: 100px;
+  }
+  .inputNameTour {
+    font-size: 18px;
+    width: 250px;
+    padding: 10px 15px;
+    outline: none;
+    border: none;
+    height: 100%;
+    font-size: 16px;
+  }
   .listTour {
-    grid-template-columns: repeat(1, 500px);
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
     grid-template-rows: auto;
     gap: 30px;
   }
 
-  .listTournament {
-    padding: 0 50px;
-  }
-  .findTournaments {
-    left: 10%;
-    top: 25%;
-    width: 400px;
-  }
-  .titleFindTour {
-    font-size: 24px;
-  }
-  .desFindTour {
-    font-size: 16px;
-    margin: 8px 0px;
-  }
-  .findInfo {
-    display: inline-block;
-  }
-  .selectOp {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 25px;
-  }
-  .selectArea {
+  .pagingTournament {
+    width: max-content;
+    margin: 0 auto;
+    margin-top: 10px;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .listTour {
-    width: 39%;
+  .pageItem {
+    margin-left: 10px;
+    font-size: 14px;
   }
-  .btnResetFind {
-    margin-right: 105px;
+  .pageItem:first-child,.pageItem:last-child {
+   display: none;
   }
 }
 
-/* @media only screen and (max-width: 900px) {
-  .findTournaments{
-    left: 10%;
-    top: 30%;
-  }
-  .titleFindTour{
-    font-size: 28px;
-  }
-  .desFindTour{
-    font-size: 16px;
-  }
-} */
+
+

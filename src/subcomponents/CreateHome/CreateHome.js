@@ -16,7 +16,7 @@ const CreateHome = () => {
           </a>
         </div>
         <div className="product__img" data-aos="fade-left">
-          <img src="/assets/img/homepage/product1.png" alt="product" />
+          <img src="/assets/img/homepage/product1.jpg" alt="product" />
         </div>
       </div>
       <div className="product">
@@ -34,7 +34,7 @@ const CreateHome = () => {
           </Link>
         </div>
         <div className="product__img " data-aos="fade-right">
-          <img src="/assets/img/homepage/product2.png " alt="product " />
+          <img src="/assets/img/homepage/product2.jpg " alt="product " />
         </div>
       </div>
     </div>

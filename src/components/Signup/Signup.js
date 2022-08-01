@@ -278,7 +278,7 @@ function Signup() {
             }}
           >
             <h4>Đăng ký</h4>
-            <div>
+            <div className={styles.wrapLog}>
               <img src="/assets/icons/user-icon.svg" alt="lock" />
               <input
                 type="text"
@@ -290,7 +290,7 @@ function Signup() {
               />
             </div>
             {isNull ? <p className={styles.error}>{firstNameErr}</p> : ""}
-            <div>
+            <div className={styles.wrapLog}>
               <img src="/assets/icons/sex.png" alt="lock" className="aaa" />
               <select
                 className={styles.gender}
@@ -304,7 +304,7 @@ function Signup() {
               </select>
             </div>
             {isNull ? <p className={styles.error}>{genderErr}</p> : ""}
-            <div>
+            <div className={styles.wrapLog}>
               <img src="/assets/icons/mail-icon.svg" alt="lock" />
               <input
                 type="text"
@@ -321,7 +321,7 @@ function Signup() {
             ) : (
               ""
             )}
-            <div>
+            <div className={styles.wrapLog}>
               <img src="/assets/icons/telephone.png" alt="lock" />
               <input
                 type="number"
@@ -333,7 +333,7 @@ function Signup() {
               />
             </div>
             {isNull ? <p className={styles.error}>{phoneErr}</p> : ""}
-            <div>
+            <div className={styles.wrapLog}>
               <img src="/assets/icons/lock-icon.svg" alt="lock" />
               <input
                 type={passwordShown ? "text" : "password"}
@@ -350,7 +350,7 @@ function Signup() {
               />
             </div>
             {isNull ? <p className={styles.error}>{passwordErr}</p> : ""}
-            <div>
+            <div className={styles.wrapLog}>
               <img src="/assets/icons/lock-icon.svg" alt="lock" />
               <input
                 type={passwordShown ? "text" : "password"}

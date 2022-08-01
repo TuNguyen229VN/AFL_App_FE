@@ -79,10 +79,13 @@
   margin-bottom: 20px;
   border: 1px solid #ccc;
   height: 60px;
-  width: 500px;
+  width: 100%;
   font-size: 18px;
 }
 
+.wrapLog{
+  width: 500px;
+}
 .login__form input:focus {
   border: 1px solid var(--blue-black);
 }
@@ -298,4 +301,113 @@
 
 .remind1:hover{
 text-decoration: underline; 
+}
+
+@media only screen and (max-width: 1279px) {
+}
+
+@media only screen and (max-width: 1190px) {
+  .login .container__wrap {
+    display: block;
+    height: 100%;
+  }
+  .imgBack {
+    width: 100%;
+    height: 350px;
+  }
+  .login__sub__text {
+    position: absolute;
+    top: 44%;
+    transform: translateY(-50%);
+    color: var(--white-text);
+    left: 25%;
+    text-align: center;
+  }
+
+  .login__sub__text h3 {
+    font-size: 24px;
+  }
+
+  .login__sub__text h2 {
+    font-family: "Mulish-Bold";
+    font-size: 40px;
+    margin-top: 10px;
+    width: initial;
+  }
+  .login__main {
+    padding: 35px;
+  }
+  .login__form {
+    margin-top: 40px;
+  }
+  .login__form h4 {
+    text-align: center;
+  }
+  .wrapLog {
+    margin: 0 auto;
+  }
+  .remember__pass {
+    width: max-content;
+    margin: 0 auto;
+  }
+  .btn_login {
+    margin: 0 auto;
+    margin-top: 20px;
+    display: block;
+  }
+  .login .other_login {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .social__share{
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .remind1{
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+@media only screen and (max-width: 768px) {
+}
+@media only screen and (max-width: 480px) {
+  .login__main {
+    padding: 30px;
+  }
+  .wrapLog {
+    width: 100%;
+  }
+  .login__form .eyesPass{
+    right: 10px;
+    left: initial;
+  }
+  .btn_login {
+    margin: 0 auto;
+    display: block;
+  }
+  .login .logo {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    z-index: 2;
+    width: 80px;
+  }
+  .login__sub__text {
+    position: absolute;
+    top: 44%;
+    transform: translateY(-50%);
+    color: var(--white-text);
+    left: 0px;
+  }
+  
+  .login__sub__text h3 {
+    font-size: 18px;
+  }
+  
+  .login__sub__text h2 {
+    font-family: "Mulish-Bold";
+    font-size: 25px;
+    margin-top: 10px;
+    width: 400px;
+  }
 }

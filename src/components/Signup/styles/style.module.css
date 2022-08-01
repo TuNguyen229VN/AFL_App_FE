@@ -1,306 +1,409 @@
-
 .signup .container__wrap {
-    display: grid;
-    grid-template-columns: 660px 1fr;
-    column-gap: 150px;
-    height: auto;
-    overflow: hidden;
+  display: grid;
+  grid-template-columns: 660px 1fr;
+  column-gap: 150px;
+  height: auto;
+  overflow: hidden;
+}
+
+.sign__sub {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.signup .imgBack {
+  filter: brightness(60%);
+  min-height: 100%;
+}
+.signup .logo {
+  position: absolute;
+  top: 45px;
+  left: 45px;
+  z-index: 2;
+}
+
+.sign__sub__text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--white-text);
+  left: 45px;
+}
+
+.sign__sub__text h3 {
+  font-size: 24px;
+}
+
+.sign__sub__text h2 {
+  font-family: "Mulish-Bold";
+  font-size: 40px;
+  margin-top: 10px;
+}
+
+.sign__main {
+  padding: 45px;
+}
+
+.sign__signup {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sign__signup p {
+  margin-right: 5px;
+  color: rgb(132, 130, 130);
+}
+
+.sign__signup a {
+  color: var(--blue-black);
+}
+
+.sign__signup a:hover {
+  text-decoration: underline;
+}
+
+.signup__form {
+  margin-top: 20px;
+}
+
+.signup__form h4 {
+  font-family: "Mulish-Bold";
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+.signup__form img {
+  width: 24px;
+}
+.signup__form input {
+  display: block;
+  padding: 8px 10px;
+  padding-left: 45px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  height: 60px;
+  width: 100%;
+  font-size: 18px;
+}
+
+.signup__form input:focus {
+  border: 1px solid var(--blue-black);
+}
+
+.btn_login {
+  font-family: "Mulish-Bold";
+  background-color: var(--blue-black);
+  outline: none;
+  border: none;
+  color: var(--white-text);
+  text-align: center;
+  width: max-content;
+  font-size: 18px;
+  padding: 20px 35px;
+  transition: 0.5s;
+  margin-top: 30px;
+}
+
+.btn_login:hover {
+  background-color: var(--green-bold);
+  color: var(--blue-black);
+}
+
+.signup__form div {
+  position: relative;
+}
+
+.signup__form div img {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+.signup__form .eyesPass {
+  width: 25px;
+  left: 460px;
+  cursor: pointer;
+}
+
+.social-share {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+.social-share-icon {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.social-share-icon img {
+  width: 20px;
+  height: 20px;
+}
+.social-share-text {
+  color: white;
+  margin-left: 20px;
+  font-size: 16px;
+}
+
+.social-share-item {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.social-share-item.facebook {
+  background-color: #3b5999;
+}
+.social-share-item.facebook .social-share-icon {
+  color: #3b5999;
+}
+.social-share-item.twitter {
+  background-color: #4d82e5;
+}
+.social-share-item.twitter .social-share-icon {
+  color: #4d82e5;
+}
+.social-share-item + .social-share-item {
+  margin-top: 20px;
+}
+
+.signup .other_login {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: 4px;
+  width: 200px;
+  background-color: var(--blue-black);
+  margin-left: 160px;
+  position: relative;
+}
+
+.gender {
+  display: block;
+  padding: 8px 10px;
+  padding-left: 45px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  height: 60px;
+  width: 100%;
+  font-size: 18px;
+}
+
+.error {
+  margin-top: -10px;
+  color: red;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.aaa {
+  z-index: 0;
+}
+
+.remember__pass {
+  margin-top: 10px;
+  margin-left: 380px;
+}
+
+.remember__pass a {
+  color: rgb(132, 130, 130);
+}
+
+.remember__pass a:hover {
+  text-decoration: underline;
+}
+
+.logo {
+  width: 100px;
+  height: 60px;
+}
+.logo img {
+  object-fit: cover;
+}
+
+.popup {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup:after {
+  content: "";
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+  background-color: black;
+  opacity: 0.2;
+  top: 0;
+  bottom: 0;
+}
+
+.verifyForm {
+  position: relative;
+  z-index: 12;
+  width: 500px;
+  height: max-content;
+  background: white;
+  padding: 40px 40px;
+}
+
+.verifyForm h4 {
+  font-family: "Mulish-Bold";
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.remind {
+  font-size: 15px;
+  display: flex;
+  justify-content: flex-end;
+  color: #e74c3c;
+  margin-bottom: 40px;
+}
+
+.verify {
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonWrapper button {
+  font-family: "Mulish-Bold";
+  background-color: var(--blue-black);
+  outline: none;
+  border: none;
+  color: var(--white-text);
+  text-align: center;
+  width: max-content;
+  font-size: 18px;
+  padding: 10px 15px;
+  transition: 0.5s;
+  border-radius: 5px;
+}
+
+.buttonWrapper button:first-child {
+  background-color: #cf3c3c;
+}
+.wrapLog {
+  width: 500px;
+}
+@media only screen and (max-width: 1279px) {
+}
+
+@media only screen and (max-width: 1190px) {
+  .signup .container__wrap {
+    display: block;
+    height: 100%;
   }
-  
-  .sign__sub {
-    position: relative;
-    top: 0;
-    left: 0;
+  .imgBack {
+    width: 100%;
+    height: 350px;
   }
-  .signup .imgBack {
-    filter: brightness(60%);
-    min-height: 100%;
-  }
-  .signup .logo {
-    position: absolute;
-    top: 45px;
-    left: 45px;
-    z-index: 2;
-  }
-  
   .sign__sub__text {
     position: absolute;
-    top: 50%;
+    top: 44%;
     transform: translateY(-50%);
     color: var(--white-text);
-    left: 45px;
+    left: 25%;
+    text-align: center;
   }
-  
+
   .sign__sub__text h3 {
     font-size: 24px;
   }
-  
+
   .sign__sub__text h2 {
     font-family: "Mulish-Bold";
     font-size: 40px;
     margin-top: 10px;
+    width: initial;
   }
-  
-  .sign__main{
-      padding: 45px;
+  .sign__main {
+    padding: 35px;
   }
-  
-  .sign__signup{
-      display: flex;
-      justify-content: flex-end;
+  .signup__form {
+    margin-top: 40px;
   }
-  
-  .sign__signup p{
-      margin-right: 5px;
-      color: rgb(132, 130, 130);
+  .signup__form h4 {
+    text-align: center;
   }
-  
-  .sign__signup a{
-      color: var(--blue-black);
+  .wrapLog {
+    margin: 0 auto;
   }
-  
-  .sign__signup a:hover{
-      text-decoration: underline;
+  .remember__pass {
+    width: max-content;
+    margin: 0 auto;
   }
-  
-  .signup__form{
-      margin-top: 20px;
+  .btn_login {
+    margin: 0 auto;
+    margin-top: 20px;
+    display: block;
   }
-  
-  .signup__form h4{
-      font-family: "Mulish-Bold";
-      font-size: 30px;
-      margin-bottom: 30px;
+  .signup .other_login {
+    margin-left: auto;
+    margin-right: auto;
   }
-  .signup__form img{
-     width: 24px;
+  .social__share {
+    margin-left: auto;
+    margin-right: auto;
   }
-  .signup__form input{
-      display: block;
-      padding: 8px 10px;
-      padding-left: 45px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      height: 60px;
-      width: 500px;
-      font-size: 18px;
+}
+@media only screen and (max-width: 768px) {
+}
+@media only screen and (max-width: 480px) {
+  .sign__main {
+    padding: 30px;
   }
-  
-  .signup__form input:focus{
-      border: 1px solid var(--blue-black);
+  .wrapLog {
+    width: 100%;
   }
-  
-  .btn_login{
-      font-family: "Mulish-Bold";
-      background-color: var(--blue-black);
-      outline: none;
-      border: none;
-      color: var(--white-text);
-      text-align: center;
-      width: max-content;
-      font-size: 18px;
-      padding: 20px 35px;
-      transition: 0.5s;
-      margin-top: 30px;
+  .signup__form .eyesPass {
+    right: 10px;
+    left: initial;
   }
-  
-  .btn_login:hover{
-      background-color: var(--green-bold);
-      color: var(--blue-black);
+  .btn_login {
+    margin: 0 auto;
+    display: block;
   }
-  
-  .signup__form div{
-      position: relative;
-  }
-  
-  .signup__form div img{
-      position: absolute;
-      top: 50%;
-      left: 10px;
-      transform: translateY(-50%);
-  }
-  
-  .signup__form .eyesPass{
-      width: 25px;
-     left: 460px;
-     cursor: pointer;
-  }
-  
-  .social-share {
-      margin-top: 20px;
-      width: 100%;
-      max-width: 400px;
-    }
-    .social-share-icon {
-      width: 40px;
-      height: 40px;
-      background-color: white;
-      border-radius: inherit;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
-    .social-share-icon img{
-      width: 20px;
-      height: 20px;
-    }
-    .social-share-text {
-      color: white;
-      margin-left: 20px;
-      font-size: 16px;
-    }
-  
-    .social-share-item {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-    .social-share-item.facebook {
-      background-color: #3b5999;
-    }
-    .social-share-item.facebook .social-share-icon {
-      color: #3b5999;
-    }
-    .social-share-item.twitter {
-      background-color: #4d82e5;
-    }
-    .social-share-item.twitter .social-share-icon {
-      color: #4d82e5;
-    }
-    .social-share-item + .social-share-item {
-      margin-top: 20px;
-    }
-  
-    .signup .other_login{
-        margin-top: 30px;
-        margin-bottom: 30px;
-        height: 4px;
-        width: 200px;
-        background-color: var(--blue-black);
-        margin-left: 160px;
-        position: relative;
-    }
-
-    .gender{
-      display: block;
-      padding: 8px 10px;
-      padding-left: 45px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      height: 60px;
-      width: 500px;
-  
-   font-size: 18px;
-    }
-
-    .error{
-      margin-top: -10px;
-      color:red;
-      margin-bottom:10px;
-      font-style: italic;
-    }
-
-    .aaa{
-      z-index: 0;
-    }
-
-    .remember__pass{
-      margin-top: 10px;
-      margin-left: 380px;
-  }
-
-  .remember__pass a{
-    color: rgb(132, 130, 130);
-  }
-
-  .remember__pass a:hover{
-    text-decoration: underline; 
-  }
-
-  .logo {
-    width: 100px;
-    height: 60px;
-  }
-  .logo img{
-    object-fit: cover;
-  }
-
-  
-  .popup{
+  .signup .logo {
     position: absolute;
-    width: 100vw;
-    height: 100vh;
-   z-index: 10;
-   display: flex;
-   align-items: center;
-   justify-content: center;
+    top: 25px;
+    left: 25px;
+    z-index: 2;
+    width: 80px;
   }
-
-  .popup:after{
-    content: "";
+  .sign__sub__text {
     position: absolute;
-    width: 100vw;
-    height: 100vh;
-    z-index: 10;
-    background-color:black;
-    opacity: 0.2;
-    top: 0;
-    bottom: 0;
+    top: 44%;
+    transform: translateY(-50%);
+    color: var(--white-text);
+    left: 10px;
   }
 
-
-  .verifyForm{
-    position: relative;
-    z-index: 12;
-    width: 500px;
-    height: max-content;
-    background:white;
-    padding:40px 40px
+  .sign__sub__text h3 {
+    font-size: 18px;
   }
 
-  .verifyForm h4{
+  .sign__sub__text h2 {
     font-family: "Mulish-Bold";
-    font-size: 30px;
-    margin-bottom: 20px;
+    font-size: 25px;
+    margin-top: 10px;
+    width: 355px;
   }
-
-  .remind{
-    font-size: 15px;
-    display: flex;
-    justify-content: flex-end;
-    color: #e74c3c;
-    margin-bottom: 40px;
-  }
-
-  .verify{
-      padding:10px;
-      width: 100%;
-      margin-bottom: 10px;
-  }
-
-  .buttonWrapper{
-    display: flex;
-    justify-content:space-between;
-  }
-
-  .buttonWrapper button{
-    font-family: "Mulish-Bold";
-      background-color: var(--blue-black);
-      outline: none;
-      border: none;
-      color: var(--white-text);
-      text-align: center;
-      width: max-content;
-      font-size: 18px;
-      padding: 10px 15px;
-      transition: 0.5s;
-      border-radius: 5px;
-  }
-
-  .buttonWrapper button:first-child{
-    background-color:#cf3c3c;
-  }
+}

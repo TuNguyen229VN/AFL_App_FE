@@ -289,10 +289,67 @@ header .container-fluid .menu li {
   overflow: hidden;
   height: 19px;
 }
+
+.header .--mobile li {
+  position: relative;
+}
+.sub_menumobile {
+  display: none;
+  margin-left: 20px;
+  position: absolute;
+  left: 120px;
+  width: max-content;
+  top: 0;
+}
+
+.tourMobile .--tour,
+.teamMobile .--team {
+  display: block;
+}
 @media only screen and (max-width: 1279px) {
 }
 
 @media only screen and (max-width: 1190px) {
+
+  .popup_down.active {
+    display: none;
+  }
+  .--dkmobile {
+    display: flex;
+    width: max-content;
+  }
+
+  .--dkmobile .dash {
+    height: initial !important;
+    margin:0px !important;
+  }
+  .header .--avtmobile img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+
+  .header .current.--mobile {
+    display: flex;
+    color: var(--white-text);
+    align-items: center;
+    column-gap: 20px;
+    font-size: 18px;
+    cursor: pointer;
+    font-family: "Mulish-Bold";
+  }
+
+  .profilemobile {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 250px;
+    width: max-content;
+  }
+
+  .profilemobile.active {
+    display: block;
+  }
   .header .account .current {
     display: none;
   }
@@ -320,7 +377,7 @@ header .container-fluid .menu li {
   .header .nav ul li {
     margin: 0 auto;
     height: 80px;
-    z-index: 300;
+    /* z-index: 300; */
     transition: 0.5s;
   }
   .header .nav ul li a {
@@ -332,8 +389,21 @@ header .container-fluid .menu li {
   .header .btn__menu {
     display: block;
   }
+  .sub_menumobile a {
+    padding: 10px !important;
+  }
+  .sub_menumobile a:hover {
+    color: var(--green-bold) !important;
+  }
 }
 @media only screen and (max-width: 768px) {
+  .profilemobile {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 150px;
+    width: max-content;
+  }
   header {
     height: 80px;
   }
@@ -341,13 +411,38 @@ header .container-fluid .menu li {
     width: 100px;
     height: 50px;
   }
+  .--avtmobile {
+    display: none;
+  }
+  .profilemobile {
+    display: none;
+    top: 100px;
+    left: -30px;
+    width: max-content;
+    background-color: var(--blue-black);
+    z-index: 400;
+  }
+  .sub_menumobile {
+    display: none;
+    margin-left: 20px;
+    position: absolute;
+    left: -30px;
+    width: max-content;
+    top: 100%;
+    z-index: 400;
+    background-color: var(--blue-black);
+  }
+
+  .profilemobile a:hover {
+    color: var(--green-bold) !important;
+  }
 }
 @media only screen and (max-width: 480px) {
   header {
     height: 60px;
   }
   .logo {
-    width: 60px;
+    width: 65px;
     height: 40px;
   }
 }
