@@ -22,6 +22,7 @@ import {
 } from "../../api/TeamInTournamentAPI";
 import { toast } from "react-toastify";
 import { async } from "@firebase/util";
+import { putStatusScorePrediction } from "../../api/ScorePrediction";
 
 export default function DetailMatch(props) {
   const { idMatch } = useParams();
@@ -118,13 +119,22 @@ export default function DetailMatch(props) {
     for (let i = 0; i < 2; i++) {
       updateInAPI(i === 0 ? newTeamA : newTeamB);
     }
-    console.log(type);
+
     await deleteMatchDetailByType(
       idMatch,
       type === 1 ? "score" : type === 2 ? "yellow" : "red",
       data
     );
     updateScoreTeamInTour();
+    await updateScorePrediction();
+  };
+
+  const updateScorePrediction = async () => {
+    try {
+      const response = await putStatusScorePrediction(idMatch);
+    } catch (err) {
+      console.error(err);
+    }
   };
   // const updateRedCardTeamInTour = async () => {
   //   const data = {
@@ -399,7 +409,7 @@ export default function DetailMatch(props) {
               className={styles.btnInput}
               onChange={onChangeHandler}
             />
-               <p className={styles.lineDash}></p>
+            <p className={styles.lineDash}></p>
             <input
               id="scoreB"
               name="scoreB"
@@ -413,9 +423,7 @@ export default function DetailMatch(props) {
             {scoreA !== null &&
             scoreB !== null &&
             ((scoreA + "").length > 0 || (scoreB + "").length > 0) ? (
-              <div
-                className="btnAccept"
-              >
+              <div className="btnAccept">
                 {/* <button
                   className="cancleCreate"
                   onClick={() => {
@@ -429,7 +437,7 @@ export default function DetailMatch(props) {
           </div>
           {(scoreA + "").length > 0 && (scoreB + "").length > 0 ? (
             <p
-            className={styles.deitalScoreFootball}
+              className={styles.deitalScoreFootball}
               onClick={() => {
                 setHideShow(true);
                 setTypeDetail("score");
@@ -456,7 +464,7 @@ export default function DetailMatch(props) {
               onChange={onChangeHandler}
               className={styles.btnInput}
             />
-             <p className={styles.lineDash}></p>
+            <p className={styles.lineDash}></p>
             <input
               id="yellowB"
               name="yellowB"
@@ -471,9 +479,7 @@ export default function DetailMatch(props) {
             yellowB !== null &&
             (yellowA + "").length > 0 &&
             (yellowB + "").length > 0 ? (
-              <div
-                className="btnAccept"
-              >
+              <div className="btnAccept">
                 {/* <button
                   className="cancleCreate"
                   onClick={() => {
@@ -515,7 +521,7 @@ export default function DetailMatch(props) {
               value={redA === null ? "" : redA}
               onChange={onChangeHandler}
             />
-              <p className={styles.lineDash}></p>
+            <p className={styles.lineDash}></p>
             <input
               id="redB"
               className={styles.btnInput}
