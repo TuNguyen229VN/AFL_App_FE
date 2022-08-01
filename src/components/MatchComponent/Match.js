@@ -66,7 +66,6 @@ function Match() {
   const [detailTeamA, setDetailTeamA] = useState(null);
   const [detailTeamB, setDetailTeamB] = useState(null);
   const [predict, setPredict] = useState({});
-
   const getPredict = async () => {
     try {
       const response = await axios.get(
@@ -76,7 +75,7 @@ function Match() {
       console.log(response.data);
     } catch (err) {
       console.error(err);
-      setPredict();
+      setPredict({});
     }
   };
   const getMatch = () => {
@@ -1628,7 +1627,7 @@ function Match() {
                 </div>
               </div>
             </div>
-            {predict != null ? (
+            {predict != null&&predict.user ? (
               <div className={styles.truePredic}>
                 <h3>Người dự đoán đúng nhất</h3>
                 <div className={styles.match__team}>
@@ -1639,15 +1638,15 @@ function Match() {
                   />
                   <div className={`${styles.logo} ${styles.userPredict}`}>
                     <img
-                      src={predict != null && predict.user.avatar}
-                      alt={predict != null && predict.user.avatar}
+                      src={predict != undefined &&predict.user&& predict.user.avatar}
+                      alt={predict != undefined && predict.user&&predict.user.avatar}
                     />
-                    <h2>{predict != null && predict.user.username}</h2>
+                    <h2>{predict != undefined && predict.user&&predict.user.username}</h2>
                   </div>
                   <div className={styles.logo}>
                     <h2>
                       {allTeamA.length > 0 &&
-                      predict != null &&
+                      predict != undefined &&predict.user&&
                       allTeamA[0].id == predict.teamInMatchAid
                         ? allTeamA[0].teamName
                         : allTeamB[0].teamName}
@@ -1655,7 +1654,7 @@ function Match() {
                   </div>
                   <div className={styles.score__A}>
                     {allTeamA.length > 0 &&
-                    predict != null &&
+                    predict != null &&predict.user&&
                     allTeamA[0].id == predict.teamInMatchAid
                       ? predict.teamAscore
                       : predict.teamBscore}
@@ -1663,7 +1662,7 @@ function Match() {
                   <div className={styles.line}>-</div>
                   <div className={styles.score__B}>
                     {allTeamA.length > 0 &&
-                    predict != null &&
+                    predict != undefined &&predict.user&&
                     allTeamB[0].id == predict.teamInMatchBid
                       ? predict.teamBscore
                       : predict.teamAscore}
@@ -1671,10 +1670,10 @@ function Match() {
                   <div className={styles.logo}>
                     <h2>
                       {allTeamA.length > 0 &&
-                      predict != null &&
-                      allTeamA[0].id == predict.teamInMatchAid
-                        ? allTeamA[0].teamName
-                        : allTeamB[0].teamName}
+                      predict != undefined &&predict.user&&
+                      allTeamB[0].id == predict.teamInMatchBid
+                        ? allTeamB[0].teamName
+                        : allTeamA[0].teamName}
                     </h2>
                   </div>
                   <img
