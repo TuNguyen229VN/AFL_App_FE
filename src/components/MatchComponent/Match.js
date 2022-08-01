@@ -75,6 +75,7 @@ function Match() {
     }
     catch(err){
       console.error(err);
+      setPredict();
     }
   }
   const getMatch = () => {
