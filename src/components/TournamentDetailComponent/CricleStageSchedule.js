@@ -292,9 +292,9 @@ export default function CricleStageSchedule(props) {
                 </td>
               )}
 
-              {user != undefined &&
+              {(user != undefined &&
                 user.userVM.id === hostTournamentId &&
-                (new Date(endDate).getTime() > new Date().getTime() &&
+                new Date(endDate).getTime() > new Date().getTime() &&
                 item.match.matchDate === null) ||
               (new Date(endDate).getTime() > new Date().getTime() &&
                 new Date(item.match.matchDate).getTime() >
@@ -324,12 +324,22 @@ export default function CricleStageSchedule(props) {
               allTeamB[index].teamInTournament.team !== null ? (
                 <td>
                   {" "}
-                  <Link
+                  {
+                    index === allTeamA.length - 1 ?
+<Link
                     to={`/match/${item.match.id}/matchDetail`}
-                    state={{ hostTournamentId, tourDetail }}
+                    state={{ hostTournamentId, tourDetail, index }}
                   >
                     Chi tiết
-                  </Link>
+                  </Link> : 
+                  <Link
+                  to={`/match/${item.match.id}/matchDetail`}
+                  state={{ hostTournamentId, tourDetail, index:0 }}
+                >
+                  Chi tiết
+                </Link>
+                  }
+                  
                 </td>
               ) : (
                 <td></td>

@@ -25,6 +25,7 @@ export default function FootballPlayer() {
     getAllFootballPlayer();
   }, [nameFootballSearch, genderSearch, positionSearch, currentPage]);
   const getAllFootballPlayer = () => {
+    console.log(nameFootballSearch);
     setLoading(true);
     const dataSearch = `football-player-name=${nameFootballSearch}&gender=${genderSearch}&position=${positionSearch}`;
     const response = getAllFootballPlayerAPI(dataSearch, currentPage);

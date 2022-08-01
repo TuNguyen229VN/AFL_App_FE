@@ -23,7 +23,7 @@ function Match() {
     JSON.parse(localStorage.getItem("userInfo"))
   );
   const title = location.state.title;
-  console.log(title);
+  const index = location.state.index;
   
   const [guestId, setGuestId] = useState(localStorage.getItem("guestId"));
   const inputRef = useRef(null);
@@ -67,17 +67,18 @@ function Match() {
   const [detailTeamB, setDetailTeamB] = useState(null);
   const [predict, setPredict] = useState({});
 
-  const getPredict = async ()=>{
-    try{
-      const response = await axios.get(`https://afootballleague.ddns.net/api/v1/ScorePrediction/truePredict?matchId=${idMatch}`);
+  const getPredict = async () => {
+    try {
+      const response = await axios.get(
+        `https://afootballleague.ddns.net/api/v1/ScorePrediction/truePredict?matchId=${idMatch}`
+      );
       setPredict(response.data);
       console.log(response.data);
-    }
-    catch(err){
+    } catch (err) {
       console.error(err);
       setPredict();
     }
-  }
+  };
   const getMatch = () => {
     setLoading(true);
     let afterURL = `TeamInMatch/matchId?matchId=${idMatch}`;
@@ -112,7 +113,7 @@ function Match() {
         getPlayer(res.data.teamsInMatch[0].teamInTournament.id, "teamA");
         getPlayer(res.data.teamsInMatch[1].teamInTournament.id, "teamB");
         getMatchDetail();
-        
+
         // getAllPlayerByTeamIdA(
         //   res.data.teamsInMatch[0].teamInTournament.team.id,
         //   res.data.teamsInMatch[0].teamInTournament.id
@@ -433,7 +434,7 @@ function Match() {
   };
 
   const formatDateTime = (date) => {
-    console.log(date)
+    console.log(date);
     const day = new Date(date);
     return (
       String(day.getDate()).padStart(2, "0") +
@@ -1455,7 +1456,9 @@ function Match() {
                     state: {
                       hostTournamentId: location.state.hostTournamentId,
                       tourDetail: location.state.tourDetail,
-                      indexMatch: location.state.index
+                      indexMatch: location.state.index,
+                      title,
+                      index
                     },
                   })
                 }
@@ -1625,37 +1628,65 @@ function Match() {
                 </div>
               </div>
             </div>
-            {predict!=null?<div className={styles.truePredic}>
-              <h3>Người dự đoán đúng nhất</h3>
-            <div className={styles.match__team}>
-              <img src="/assets/img/findTournaments/celeb.png" alt=""  className={styles.celeb}/>
-                    <div className={`${styles.logo} ${styles.userPredict}`}>
+            {predict != null ? (
+              <div className={styles.truePredic}>
+                <h3>Người dự đoán đúng nhất</h3>
+                <div className={styles.match__team}>
+                  <img
+                    src="/assets/img/findTournaments/celeb.png"
+                    alt=""
+                    className={styles.celeb}
+                  />
+                  <div className={`${styles.logo} ${styles.userPredict}`}>
                     <img
-                      src={predict!=null&&predict.user.avatar}
-                      alt={predict!=null&&predict.user.avatar}
+                      src={predict != null && predict.user.avatar}
+                      alt={predict != null && predict.user.avatar}
                     />
-                    <h2>{predict!=null&&predict.user.username}</h2>
-                    
+                    <h2>{predict != null && predict.user.username}</h2>
                   </div>
                   <div className={styles.logo}>
-                   
-                    <h2>{allTeamA.length>0&&predict!=null&&allTeamA[0].id == predict.teamInMatchAid?allTeamA[0].teamName:allTeamB[0].teamName}</h2>
+                    <h2>
+                      {allTeamA.length > 0 &&
+                      predict != null &&
+                      allTeamA[0].id == predict.teamInMatchAid
+                        ? allTeamA[0].teamName
+                        : allTeamB[0].teamName}
+                    </h2>
                   </div>
                   <div className={styles.score__A}>
-                    {allTeamA.length>0&&predict!=null&&allTeamA[0].id == predict.teamInMatchAid?predict.teamAscore:predict.teamBscore}
+                    {allTeamA.length > 0 &&
+                    predict != null &&
+                    allTeamA[0].id == predict.teamInMatchAid
+                      ? predict.teamAscore
+                      : predict.teamBscore}
                   </div>
                   <div className={styles.line}>-</div>
                   <div className={styles.score__B}>
-                    { allTeamA.length>0&&predict!=null&&allTeamB[0].id == predict.teamInMatchBid?predict.teamBscore:predict.teamAscore}
+                    {allTeamA.length > 0 &&
+                    predict != null &&
+                    allTeamB[0].id == predict.teamInMatchBid
+                      ? predict.teamBscore
+                      : predict.teamAscore}
                   </div>
                   <div className={styles.logo}>
-                  
-                    <h2>{allTeamA.length>0&&predict!=null&&allTeamA[0].id == predict.teamInMatchAid?allTeamA[0].teamName:allTeamB[0].teamName}</h2>
-                    
+                    <h2>
+                      {allTeamA.length > 0 &&
+                      predict != null &&
+                      allTeamA[0].id == predict.teamInMatchAid
+                        ? allTeamA[0].teamName
+                        : allTeamB[0].teamName}
+                    </h2>
                   </div>
-                  <img src="/assets/img/findTournaments/celeb.png" alt=""  className={`${styles.celeb} ${styles.reverse}`}/>
+                  <img
+                    src="/assets/img/findTournaments/celeb.png"
+                    alt=""
+                    className={`${styles.celeb} ${styles.reverse}`}
+                  />
                 </div>
-            </div>:""}
+              </div>
+            ) : (
+              ""
+            )}
             <div className={styles.match__menu}>
               <Link
                 state={{
@@ -1691,10 +1722,22 @@ function Match() {
               </Link>
             </div>
             <div className={styles.realScore}>
-          <p className={styles.teamLeft}>{allTeamA.length>0&&allTeamA[0].teamName}</p>
-          <p className= {styles.scoreTeam}>{allTeamA.length>0&&scoreA == 0 ? allTeamA[0].teamScore : scoreA } - {allTeamB.length>0&&scoreB == 0 ? allTeamB[0].teamScore : scoreB}</p>
-          <p className={styles.teamRight}>{allTeamB.length>0&&allTeamB[0].teamName}</p>
-        </div>
+              <p className={styles.teamLeft}>
+                {allTeamA.length > 0 && allTeamA[0].teamName}
+              </p>
+              <p className={styles.scoreTeam}>
+                {allTeamA.length > 0 && scoreA == 0
+                  ? allTeamA[0].teamScore
+                  : scoreA}{" "}
+                -{" "}
+                {allTeamB.length > 0 && scoreB == 0
+                  ? allTeamB[0].teamScore
+                  : scoreB}
+              </p>
+              <p className={styles.teamRight}>
+                {allTeamB.length > 0 && allTeamB[0].teamName}
+              </p>
+            </div>
             {renderByLink()}
           </>
         ) : (

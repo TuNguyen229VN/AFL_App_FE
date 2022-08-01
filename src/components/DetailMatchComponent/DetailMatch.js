@@ -31,6 +31,8 @@ export default function DetailMatch(props) {
   const tourDetail = location.state.tourDetail;
   const hostTournamentId = location.state.hostTournamentId;
   const indexMatch = location.state.indexMatch;
+  const title = location.state.title;
+  const index = location.state.index;
   const [teamA, setTeamA] = useState(null);
   const [teamB, setTeamB] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -115,7 +117,17 @@ export default function DetailMatch(props) {
     }
 
     setLoading(true);
-    
+
+    if (tourDetail.tournamentTypeId !== 2) {
+      
+      if (title === "Chung kết") {
+        matchResult();
+      }
+    } else {
+      if(index > 0){
+        matchResult();
+      }
+    }
 
     for (let i = 0; i < 2; i++) {
       updateInAPI(i === 0 ? newTeamA : newTeamB);
@@ -132,6 +144,7 @@ export default function DetailMatch(props) {
   const matchResult = async () => {
     try {
       const response = postTournamentResult(idMatch);
+      console.log(response);
     } catch (err) {
       console.error(err);
     }
