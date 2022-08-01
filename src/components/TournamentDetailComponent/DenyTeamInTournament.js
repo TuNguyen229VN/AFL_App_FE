@@ -32,7 +32,7 @@ export default function DenyTeamInTournament(props) {
             ></button>
           </div>
           <div class="modal-body">
-            Bạn có chắc chắn không muốn đội bóng này tham gia giải?
+            Bạn có chắc chắn không?
           </div>
           <div class="modal-footer">
             <button

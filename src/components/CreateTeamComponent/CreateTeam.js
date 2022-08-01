@@ -78,7 +78,7 @@ const CreateTeam = () => {
   };
   const getAllCity = async () => {
     const response = await axios.get(
-      "https://provinces.open-api.vn/api/?depth=3"
+      "https://provinces.open-api.vn/api/"
     );
     if (response.status === 200) {
       setProvice(response.data);

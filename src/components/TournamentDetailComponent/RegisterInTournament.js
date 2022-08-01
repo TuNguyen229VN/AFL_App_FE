@@ -47,7 +47,6 @@ export default function RegisterInTournament(props) {
     });
     const playersData = await Promise.all(players);
     playersData.countList = response.data.countList;
-
     deletePlayerBusyInAnotherTournament(playersData);
   };
   const deletePlayerBusyInAnotherTournament = async (data) => {
