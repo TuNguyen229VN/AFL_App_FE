@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 export default function DenyTeamInTournament(props) {
   const {
-    hideShowDelete,
-    setHideShowDelete,
+    setHideShow,
+    hideShow,
     teamDelete,
     setTeamDelete,
     getAllPlayerInTournamentByIdTeam
@@ -12,7 +12,7 @@ export default function DenyTeamInTournament(props) {
   return (
     <div
       id="exampleModal"
-      className={hideShowDelete ? "popup__player active" : "popup__player"}
+      className={hideShow ? "popup__player active" : "popup__player"}
     >
       <div class="modal-dialog">
         <div class="modal-content">
@@ -26,7 +26,7 @@ export default function DenyTeamInTournament(props) {
               data-bs-dismiss="modal"
               aria-label="Close"
               onClick={() => {
-                setHideShowDelete(false);
+                setHideShow(false);
                 setTeamDelete(null);
               }}
             ></button>
@@ -43,7 +43,7 @@ export default function DenyTeamInTournament(props) {
                 padding: 10,
               }}
               onClick={() => {
-                setHideShowDelete(false);
+                setHideShow(false);
                 setTeamDelete(null);
               }}
             >

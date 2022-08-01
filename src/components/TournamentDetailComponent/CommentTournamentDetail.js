@@ -55,7 +55,7 @@ function CommentTournamentDetail() {
         setContentError("Vui lòng nhập bình luận...");
         return;
       }
-      if(content.length >256){
+      if (content.length > 256) {
         setContentError("Bình luận không vượt quá 256 ký tự...");
         return;
       }
@@ -88,7 +88,7 @@ function CommentTournamentDetail() {
         setContentEditError("Vui lòng nhập bình luận...");
         return;
       }
-      if(contentEdit.length >256){
+      if (contentEdit.length > 256) {
         setContentEditError("Bình luận không vượt quá 256 ký tự...");
         return;
       }
@@ -172,8 +172,10 @@ function CommentTournamentDetail() {
             value={content}
           />
           <p className="error">{contentError}</p>
-          <div className={`countText ${countText>256?'active':""}`}>
-          <span>{countText}</span><span>/</span><span>256</span>
+          <div className={`countText ${countText > 256 ? "active" : ""}`}>
+            <span>{countText}</span>
+            <span>/</span>
+            <span>256</span>
           </div>
           <button
             onClick={(e) => {
@@ -241,7 +243,14 @@ function CommentTournamentDetail() {
                   )}
                   <p className="name">{comment.user.username}</p>
                   {edit != comment.id && (
-                    <p className="content">{comment.content}</p>
+                    <p
+                      className="content"
+                      style={{
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {comment.content}
+                    </p>
                   )}
                   <form
                     className={`editComment_form ${

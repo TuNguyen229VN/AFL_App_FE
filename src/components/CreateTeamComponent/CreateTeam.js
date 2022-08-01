@@ -312,7 +312,7 @@ const CreateTeam = () => {
         });
         break;
       case "gender":
-        console.log(value);
+        
         let gender = null;
         if (flagValid.flag === false) {
           gender = {

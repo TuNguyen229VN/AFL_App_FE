@@ -143,7 +143,12 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/galleryTournamentDetail`
     ) {
-      return <GalleryTournamentDetail idTour={tourDetail.userId} tourDetail={tourDetail} />;
+      return (
+        <GalleryTournamentDetail
+          idTour={tourDetail.userId}
+          tourDetail={tourDetail}
+        />
+      );
     }
     if (
       activeTeamDetail ===
@@ -781,7 +786,8 @@ function HeaderTournamentDetail() {
                             <i class="fa-solid fa-pen-to-square" /> Chỉnh sửa
                             giải đấu
                           </Link>
-                          {tourDetail.status === true && tourDetail.statusTnm !== "Kết thúc" ? (
+                          {tourDetail.status === true &&
+                          tourDetail.statusTnm !== "Kết thúc" ? (
                             <SendCancelTournament
                               data={{
                                 userId: user.userVM.id,
@@ -798,7 +804,9 @@ function HeaderTournamentDetail() {
                         checkPaticipate === false &&
                         user.teamInfo !== null &&
                         tourDetail.numberTeamInTournament <
-                          tourDetail.footballTeamNumber ? (
+                          tourDetail.footballTeamNumber &&
+                        tourDetail.tournamentGender ===
+                          user.teamInfo.teamGender ? (
                         <div>
                           <div
                             className={hideShow ? "overlay active" : "overlay"}
