@@ -160,7 +160,7 @@ function TournamentTeamDetail(props) {
         if (res.status === 200) {
           setHideShowDelete(false);
           setLoading(false);
-
+          setHideShowDenyTeam(false)
           setCheck(!check);
           toast.success("Hủy lời mời tham gia giải đấu thành công ", {
             position: "top-right",
