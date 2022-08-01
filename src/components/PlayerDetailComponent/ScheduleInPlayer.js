@@ -25,15 +25,14 @@ function ScheduleInPlayer() {
   };
 
   const formatDate = (date) => {
-    const myArr = date.split("T");
-      const day = myArr[0].split("-").reverse();
-       return day.join("/");
+    const myArr = date.split(" ");
+      const day = myArr[0].split("/");
+      const dateFormat = day[1]+"/"+day[0]+"/"+day[2];
+       return dateFormat;
   }
   const formatTime = (date) => {
-    const myArr = date.split("T");
-      const day = myArr[1].split(".");
-      const time = day[0].split(":");
-       return time[0]+"h"+time[1];
+    const myArr = date.split(" ");
+       return `${myArr[1]} ${myArr[2]}` ;
   }
   return (
     <>
@@ -43,14 +42,15 @@ function ScheduleInPlayer() {
             <tr>
               <th colSpan={5}>Các trận đấu hôm nay</th>
             </tr>
-            {match&&match.matchs.map(match =>(<tr>
+            {match&&match.matchs.length>0&&match.matchs.map(match =>(<tr>
               <td>{formatDate(match.matchDate)} {formatTime(match.matchDate)}</td>
               <td>
-                {match.teamInMatches[0].teamName}
+               
                 <img
-                  src={match.teamInMatches[0].team.teamAvatar}
+                  src={match.teamInMatches[0].teamInTournament.team.teamAvatar}
                   alt="gallery_item"
                 />
+                 <p>{match.teamInMatches[0].teamName}</p>
               </td>
               <td>
                 <span className="score">{match.teamInMatches[0].teamScore}</span>
@@ -59,10 +59,10 @@ function ScheduleInPlayer() {
               </td>
               <td>
                 <img
-                  src={match.teamInMatches[1].team.teamAvatar}
+                  src={match.teamInMatches[1].teamInTournament.team.teamAvatar}
                   alt="gallery_item"
                 />
-               {match.teamInMatches[1].teamName}{" "}
+               <p>{match.teamInMatches[1].teamName}{" "}</p>
               </td>
               <td>
               {" "}
