@@ -70,7 +70,7 @@ export default function RegisterInTournament(props) {
             }
           }
         }
-        console.log(newData);
+        
         setPlayerInTeam(newData);
         setLoading(false);
       }

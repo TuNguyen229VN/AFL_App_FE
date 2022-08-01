@@ -23,7 +23,7 @@ import {
 import { toast } from "react-toastify";
 import { async } from "@firebase/util";
 import { putStatusScorePrediction } from "../../api/ScorePrediction";
-
+import { postTournamentResult } from "../../api/TournamentResultAPI";
 export default function DetailMatch(props) {
   const { idMatch } = useParams();
 
@@ -115,6 +115,7 @@ export default function DetailMatch(props) {
     }
 
     setLoading(true);
+    
 
     for (let i = 0; i < 2; i++) {
       updateInAPI(i === 0 ? newTeamA : newTeamB);
@@ -128,7 +129,13 @@ export default function DetailMatch(props) {
     updateScoreTeamInTour();
     await updateScorePrediction();
   };
-
+  const matchResult = async () => {
+    try {
+      const response = postTournamentResult(idMatch);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const updateScorePrediction = async () => {
     try {
       const response = await putStatusScorePrediction(idMatch);

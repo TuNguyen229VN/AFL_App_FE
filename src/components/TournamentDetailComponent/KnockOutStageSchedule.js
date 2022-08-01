@@ -605,12 +605,13 @@ export default function KnockOutStageSchedule(props) {
                         ) : null}
                       </td>
                     )}
-                    {user != undefined &&
+                    {(user != undefined &&
                       user.userVM.id === hostTournamentId &&
-                      (new Date(endDate).getTime() > new Date().getTime() &&
+                      new Date(endDate).getTime() > new Date().getTime() &&
                       itemSeeds.match.matchDate === null) ||
                     (new Date(endDate).getTime() > new Date().getTime() &&
-                    new Date(itemSeeds.match.matchDate).getTime() > new Date().getTime()) ? (
+                      new Date(itemSeeds.match.matchDate).getTime() >
+                        new Date().getTime()) ? (
                       <td
                         style={{
                           cursor: "pointer",
@@ -640,7 +641,12 @@ export default function KnockOutStageSchedule(props) {
                         {" "}
                         <Link
                           to={`/match/${itemSeeds.match.id}/matchDetail`}
-                          state={{ hostTournamentId, tourDetail, index }}
+                          state={{
+                            hostTournamentId,
+                            tourDetail,
+                            index,
+                            title: item.title,
+                          }}
                         >
                           Chi tiết
                         </Link>
