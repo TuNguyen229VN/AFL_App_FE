@@ -20,7 +20,7 @@ export default function RegisterInTournament(props) {
     setStatus,
     inTour,
     numPlayer,
-    teamInTournament
+    teamInTournament,
   } = props;
   const [playerInTeam, setPlayerInTeam] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,6 @@ export default function RegisterInTournament(props) {
   }, [idUser, status === true]);
   // console.log(tourDetail);
   const getListPlayerInTeamByIdTeam = async () => {
-    
     setLoading(true);
     const afterURL = `PlayerInTeam?teamId=${idUser}&status=true&pageIndex=1&limit=50`;
     const response = await getAPI(afterURL);
@@ -48,7 +47,7 @@ export default function RegisterInTournament(props) {
     });
     const playersData = await Promise.all(players);
     playersData.countList = response.data.countList;
-    
+
     deletePlayerBusyInAnotherTournament(playersData);
   };
   const deletePlayerBusyInAnotherTournament = async (data) => {
@@ -213,8 +212,8 @@ export default function RegisterInTournament(props) {
           console.error(err);
         });
     });
-    if(!inTour){
-    setCheckRegistertour(true);
+    if (!inTour) {
+      setCheckRegistertour(true);
     }
     setLoading(false);
     setHideShow(false);
@@ -248,10 +247,13 @@ export default function RegisterInTournament(props) {
   console.log(teamInTournament);
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    if(inTour){
+    if (inTour) {
       setLoading(true);
       const getPlayerChoice = getPlayerChoiceRegister();
-      if (getPlayerChoice.length >tourDetail.footballPlayerMaxNumber - numPlayer ) {
+      if (
+        getPlayerChoice.length >
+        tourDetail.footballPlayerMaxNumber - numPlayer
+      ) {
         setLoading(false);
         toast.error(`Vượt quá cầu thủ giải cho phép`, {
           position: "top-right",
@@ -262,15 +264,13 @@ export default function RegisterInTournament(props) {
           draggable: true,
           progress: undefined,
         });
-      return;
+        return;
       }
- 
+
       addPlayerInTournament(teamInTournament, getPlayerChoice);
       setLoading(false);
-    }
-
-    else{
-    addTeamInTournament();
+    } else {
+      addTeamInTournament();
     }
   };
   const onRowClick = () => {
@@ -303,8 +303,11 @@ export default function RegisterInTournament(props) {
               data-bs-dismiss="modal"
               aria-label="Close"
               onClick={() => {
-                setHideShowDeny(true);
-                
+                if (playerInTeam.length < getNumberInField()) {
+                  setHideShow(false);
+                } else {
+                  setHideShowDeny(true);
+                }
               }}
             ></button>
           </div>
@@ -315,7 +318,8 @@ export default function RegisterInTournament(props) {
               }}
               class="modal-body"
             >
-              {playerInTeam != null && !inTour&&
+              {playerInTeam != null &&
+              !inTour &&
               playerInTeam.length < getNumberInField() ? (
                 <div>
                   <p
@@ -371,8 +375,13 @@ export default function RegisterInTournament(props) {
                         lineHeight: 1.5,
                       }}
                     >
-                      Lưu ý: {!numPlayer?`Chọn ít nhất ${getNumberInField()} cầu thủ - tối đa{" "}
-                      ${tourDetail.footballPlayerMaxNumber} cầu thủ.`:`Chọn tối đa ${tourDetail.footballPlayerMaxNumber - numPlayer} cầu thủ`}
+                      Lưu ý:{" "}
+                      {!numPlayer
+                        ? `Chọn ít nhất ${getNumberInField()} cầu thủ - tối đa{" "}
+                      ${tourDetail.footballPlayerMaxNumber} cầu thủ.`
+                        : `Chọn tối đa ${
+                            tourDetail.footballPlayerMaxNumber - numPlayer
+                          } cầu thủ`}
                       <p>
                         Sẽ có vài cầu thủ tham gia đội bóng của bạn nhưng ko có
                         trong danh sách, vì đang thi đấu cho đội bóng khác ở
@@ -522,14 +531,18 @@ export default function RegisterInTournament(props) {
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
                 onClick={() => {
-                  setHideShowDeny(true);
-                  
+                  if (playerInTeam.length < getNumberInField()) {
+                    setHideShow(false);
+                  } else {
+                    setHideShowDeny(true);
+                  }
                 }}
               >
                 Đóng
               </button>
               {playerInTeam != null &&
-              playerInTeam.countList < getNumberInField() ? null : (
+              !inTour &&
+              playerInTeam.length < getNumberInField() ? null : (
                 <input
                   style={{
                     padding: 10,

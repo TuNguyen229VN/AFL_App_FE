@@ -47,3 +47,8 @@ export function updateYellowRedCardInTournamentByTourIdAPI(data){
     const afterDefaultURL = `team-in-tournaments/card`;
     return axios.put(url + afterDefaultURL,data); 
 }
+
+export function getInforTeamInTournamentByTeamId(idTour,idTeam){
+    const afterDefaultURL = `team-in-tournaments?tournament-id=${idTour}&team-id=${idTeam}&status=Ch%E1%BB%9D%20duy%E1%BB%87t&page-offset=1&limit=5`;
+    return axios.get(url + afterDefaultURL); 
+}

@@ -893,6 +893,29 @@ function HeaderTournamentDetail() {
                         >
                           Đang chờ xét duyệt
                         </button>
+                      ) : 
+                        checkPaticipate === "Chờ duyệt private" ? (
+                        <button
+                          style={{
+                            padding: "20px 50px",
+                            marginLeft: 75,
+                            fontWeight: 600,
+                            fontFamily: "Mulish-Bold",
+                            borderRadius: 5,
+                            backgroundColor: "#D7FC6A",
+                            border: 1,
+                            borderColor: "#D7FC6A",
+                            transition: "0.5s",
+                            position: "absolute",
+                            top: 365,
+                            cursor: "default",
+                          }}
+                          // onClick={() => {
+                          //   updateClick(,)
+                          // }}
+                        >
+                          Đã gửi lời mời cho đội bóng bạn
+                        </button>
                       ) : null}
                     </>
                   ) : null}
