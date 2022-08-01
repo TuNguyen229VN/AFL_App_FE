@@ -646,4 +646,69 @@ margin-right:10px;
   border-right-color:#1534cd;  /* Blue */
 
 }
+.truePredic{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.truePredic h3{
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top:50px;
+  font-size: 20px;
+}
+.userPredict{
+  flex-direction:row;
+}
+.truePredic .match__team{
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.userPredict img{
+  width: 60px;
+  height: 60px;
+}
+
+.truePredic h2{
+font-size: 18px;
+margin:0;
+}
+
+.truePredic .score__A {
+  font-size: 18px;
+}
+
+.truePredic .score__B{
+  font-size: 18px;
+}
+
+.truePredic .line{
+  font-size: 15px;
+}
+
+
+.userPredict h2{
+  margin-left: 10px;
+ 
+}
+
+.truePredic div{
+  margin-right: 20px;
+}
+
+.celeb{
+  width: 100px;
+ 
+}
+
+.celeb:first-child{
+  margin-right: 100px;
+}
+
+.reverse{
+  transform: rotate(270deg);
+  transform-origin: center;
+  margin-left: 100px;
+}
 

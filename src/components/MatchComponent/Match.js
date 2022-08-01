@@ -15,6 +15,7 @@ import { getAllPlayerInTournamentByTeamInTournamentIdAPI } from "../../api/Playe
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { getMatchDetailByMatchIdAPI } from "../../api/MatchDetailAPI";
 import { saveRecordInMatchDetail } from "../../api/MatchDetailAPI";
+import { async } from "@firebase/util";
 
 function Match() {
   const location = useLocation();
@@ -28,6 +29,7 @@ function Match() {
   // location.state.hostTournamentId
   useEffect(() => {
     joinRoom();
+    getPredict();
   }, []);
 
   const navigate = useNavigate();
@@ -62,6 +64,18 @@ function Match() {
   const [yellowTeamB, setYellowTeamB] = useState({ value: 0, error: "" });
   const [detailTeamA, setDetailTeamA] = useState(null);
   const [detailTeamB, setDetailTeamB] = useState(null);
+  const [predict, setPredict] = useState({});
+
+  const getPredict = async ()=>{
+    try{
+      const response = await axios.get(`https://afootballleague.ddns.net/api/v1/ScorePrediction/truePredict?matchId=${idMatch}`);
+      setPredict(response.data);
+      console.log(response.data);
+    }
+    catch(err){
+      console.error(err);
+    }
+  }
   const getMatch = () => {
     setLoading(true);
     let afterURL = `TeamInMatch/matchId?matchId=${idMatch}`;
@@ -93,11 +107,10 @@ function Match() {
         setTournamentID(res.data.teamsInMatch[0].match.tournamentId);
         setTokenLivestream(res.data.teamsInMatch[0].match.tokenLivestream);
         getTourDetail(res.data.teamsInMatch[0].match.tournamentId);
-
         getPlayer(res.data.teamsInMatch[0].teamInTournament.id, "teamA");
         getPlayer(res.data.teamsInMatch[1].teamInTournament.id, "teamB");
         getMatchDetail();
-
+        
         // getAllPlayerByTeamIdA(
         //   res.data.teamsInMatch[0].teamInTournament.team.id,
         //   res.data.teamsInMatch[0].teamInTournament.id
@@ -1610,6 +1623,37 @@ function Match() {
                 </div>
               </div>
             </div>
+            {predict!=null?<div className={styles.truePredic}>
+              <h3>Người dự đoán đúng nhất</h3>
+            <div className={styles.match__team}>
+              <img src="/assets/img/findTournaments/celeb.png" alt=""  className={styles.celeb}/>
+                    <div className={`${styles.logo} ${styles.userPredict}`}>
+                    <img
+                      src={predict!=null&&predict.user.avatar}
+                      alt={predict!=null&&predict.user.avatar}
+                    />
+                    <h2>{predict!=null&&predict.user.username}</h2>
+                    
+                  </div>
+                  <div className={styles.logo}>
+                   
+                    <h2>{allTeamA.length>0&&predict!=null&&allTeamA[0].id == predict.teamInMatchAid?allTeamA[0].teamName:allTeamB[0].teamName}</h2>
+                  </div>
+                  <div className={styles.score__A}>
+                    {allTeamA.length>0&&predict!=null&&allTeamA[0].id == predict.teamInMatchAid?predict.teamAscore:predict.teamBscore}
+                  </div>
+                  <div className={styles.line}>-</div>
+                  <div className={styles.score__B}>
+                    { allTeamA.length>0&&predict!=null&&allTeamB[0].id == predict.teamInMatchBid?predict.teamBscore:predict.teamAscore}
+                  </div>
+                  <div className={styles.logo}>
+                  
+                    <h2>{allTeamA.length>0&&predict!=null&&allTeamA[0].id == predict.teamInMatchAid?allTeamA[0].teamName:allTeamB[0].teamName}</h2>
+                    
+                  </div>
+                  <img src="/assets/img/findTournaments/celeb.png" alt=""  className={`${styles.celeb} ${styles.reverse}`}/>
+                </div>
+            </div>:""}
             <div className={styles.match__menu}>
               <Link
                 state={{
