@@ -589,3 +589,61 @@ margin-right:10px;
 .playerCard__item span{
   margin-left: 10px;
 }
+
+.realScore{
+  display: flex;
+  background-color:var(--blue-black);
+  width: max-content;
+  align-items: center;
+}
+
+.realScore p{
+  color: white;
+  font-weight: bold;
+  position: relative;
+}
+
+.scoreTeam{
+  margin: 0 20px;
+}
+
+.teamLeft, .teamRight{
+  background-color:#1534cd;
+  padding:10px;
+
+}
+
+.teamLeft{
+  padding-right: 20px;
+}
+
+.teamRight{
+  padding-left: 20px;
+}
+
+.teamLeft:after{
+    content: "";
+    position: absolute;
+    border:18px solid;
+    top:0;
+    border-bottom-color:var(--blue-black); /* Green */
+    border-top-color:var(--blue-black);    /* Red */
+    border-left-color:#1534cd;   /* Black */
+    border-right-color:var(--blue-black);  /* Blue */
+ 
+}
+
+
+.teamRight:after{
+  content: "";
+  position: absolute;
+  border:18px solid;
+  left:-18px;
+  top:0;
+  border-bottom-color:var(--blue-black);; /* Green */
+  border-top-color:var(--blue-black);    /* Red */
+  border-left-color:var(--blue-black);;   /* Black */
+  border-right-color:#1534cd;  /* Blue */
+
+}
+

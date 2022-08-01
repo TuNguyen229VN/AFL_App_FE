@@ -1644,6 +1644,11 @@ function Match() {
                 Livestream
               </Link>
             </div>
+            <div className={styles.realScore}>
+          <p className={styles.teamLeft}>{allTeamA.length>0&&allTeamA[0].teamName}</p>
+          <p className= {styles.scoreTeam}>{allTeamA.length>0&&scoreA == 0 ? allTeamA[0].teamScore : scoreA } - {allTeamB.length>0&&scoreB == 0 ? allTeamB[0].teamScore : scoreB}</p>
+          <p className={styles.teamRight}>{allTeamB.length>0&&allTeamB[0].teamName}</p>
+        </div>
             {renderByLink()}
           </>
         ) : (
