@@ -8,6 +8,7 @@ function Livestream(data) {
   const [isHost, setIsHost] = useState(true);
   const [isPinned, setisPinned] = useState(true);
   const [cLive, setCLive] = useState("");
+  
   // Options for joining a channel
   const rtcProps = {
     appId: "629c856215b345779a8fb2a691f51976",
@@ -16,10 +17,10 @@ function Livestream(data) {
     role: "audience",
     layout: isPinned ? layout.pin : layout.grid,
   };
-  console.log(rtcProps)
+  console.log(rtcProps+ "dasd")
   const callbacks = {
     EndCall: () => setVideocall(false),
-    PinnedVideo:()=>console.log("s")
+    PinnedVideo:()=>console.log("s"),
   };
 
   const styleProps={
