@@ -84,7 +84,7 @@ function TournamentTeamDetail(props) {
           for (let item of res.data.playerInTournaments) {
             deletePlayerById(item.id);
           }
-          
+
           setTimeout(() => {
             deleteTeamInTournament(idTeam);
           }, 2000);
@@ -160,22 +160,17 @@ function TournamentTeamDetail(props) {
         if (res.status === 200) {
           setHideShowDelete(false);
           setLoading(false);
-          setTypeReport("report");
+
           setCheck(!check);
-          toast.success(
-            typeReport !== "outtournament"
-              ? "Từ chối giải đấu thành công"
-              : "Giải đấu đã hủy tham gia giải thành công",
-            {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            }
-          );
+          toast.success("Hủy lời mời tham gia giải đấu thành công ", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       })
       .catch((err) => {
