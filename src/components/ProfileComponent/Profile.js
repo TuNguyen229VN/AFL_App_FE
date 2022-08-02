@@ -509,8 +509,40 @@ function Profile() {
         data
       );
       if (response.status === 201) {
-        setCheck(!check);
         setLoading(false);
+        pushNotiForAdmin(e);
+      }
+    } catch (error) {
+      setLoading(false);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.error(error.response);
+    }
+  };
+
+  const pushNotiForAdmin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const data = {
+      content: username.value + " đã gửi yêu cầu thăng cấp người tạo giải",
+      forAdmin: true,
+      userId: user.userVM.id,
+    };
+    try {
+      const response = await axios.post(
+        "https://afootballleague.ddns.net/api/v1/notifications",
+        data
+      );
+      if (response.status === 201) {
+        setLoading(false);
+        setCheck(!check);
         toast.success(
           "Gửi yêu cầu thăng cấp thành công, vui lòng chờ xét duyệt",
           {
@@ -582,19 +614,7 @@ function Profile() {
       );
       if (response.status === 201) {
         setLoading(false);
-        setCheck(!check);
-        toast.success(
-          "Gửi yêu cầu thăng cấp thành công, vui lòng chờ xét duyệt",
-          {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          }
-        );
+        pushNotiForAdmin(e);
       }
     } catch (error) {
       setLoading(false);

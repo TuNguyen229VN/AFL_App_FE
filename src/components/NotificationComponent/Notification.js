@@ -27,9 +27,9 @@ function Notification() {
     setLoading(true);
     let afterDefaultURL = "";
     if (chooseOption) {
-      afterDefaultURL = `notifications?user-id=${user.userVM.id}&order-by=DateCreate&order-type=DESC&page-offset=1&limit=${limit}`;
+      afterDefaultURL = `notifications?user-id=${user.userVM.id}&for-admin=false&order-by=DateCreate&order-type=DESC&page-offset=1&limit=${limit}`;
     } else {
-      afterDefaultURL = `notifications?user-id=${user.userVM.id}&is-seen=false&order-by=DateCreate&order-type=DESC&page-offset=1&limit=${limit}`;
+      afterDefaultURL = `notifications?user-id=${user.userVM.id}&for-admin=false&is-seen=false&order-by=DateCreate&order-type=DESC&page-offset=1&limit=${limit}`;
     }
     let response = getAPI(afterDefaultURL);
     response

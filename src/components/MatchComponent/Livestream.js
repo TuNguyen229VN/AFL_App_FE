@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./styles/style.module.css";
 // import AgoraRTC from "agora-rtc-sdk";
+import { Button } from "@material-ui/core";
 import AgoraUIKit, { PropsInterface, layout } from "agora-react-uikit";
-
+import VideoRoom from "./VideoRoom";
 function Livestream(data) {
   const [videocall, setVideocall] = useState(true);
   const [isHost, setIsHost] = useState(true);
@@ -16,15 +17,15 @@ function Livestream(data) {
     role: "audience",
     layout: isPinned ? layout.pin : layout.grid,
   };
-  console.log(rtcProps)
+  console.log(rtcProps);
   const callbacks = {
     EndCall: () => setVideocall(false),
-    PinnedVideo:()=>console.log("s")
+    PinnedVideo: () => console.log("s"),
   };
 
-  const styleProps={
+  const styleProps = {
     // localBtnContainer: {display:"none"}
-  }
+  };
 
   //   function joinChannel(role) {
   //     // Create a client
@@ -143,28 +144,47 @@ function Livestream(data) {
       });
     }
   }, [data.message]);
+  const [inCall, setInCall] = useState(false);
+
   return (
     <div className={styles.livestream}>
-      {/* <button onClick={() => joinChannel("host")}>
-          Join Channel as Host
-        </button>
-      <button onClick={() => joinChannel("audience")}>
-          Join Channel as Audience
-        </button>
-      <button onClick={() => leaveEventHost("host")}>Leave Event Host</button>
-      <button onClick={() => leaveEventAudience("audience")}>
-          Leave Event Audience
-        </button> */}
-        <p onClick={()=>{setisPinned(!isPinned)}}>Change layout</p>
-      <div className={styles.video} id="local_stream">
-        {videocall ? (
+     <div className={styles.video}>
+      {inCall ? (
+        <VideoRoom props={rtcProps} setInCall={setInCall}/>
+      ) : (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setInCall(true)}
+        >
+          Join Call
+        </Button>
+      )}
+    </div>
+
+      {/* {!inCall && <button onClick={() => setInCall(true)}>Join Room</button>}
+
+      {inCall && <VideoRoom props={rtcProps} setInCall={setInCall}/>} */}
+      {/* <div className={styles.video} id="local_stream">
+        {inCall ? (
+          <VideoCall setInCall={setInCall} />
+        ) : (
+          <div
+            variant="contained"
+            color="primary"
+            onClick={() => setInCall(true)}
+          >
+            Join Call
+          </div>
+        )} */}
+      {/* {videocall ? (
           <div style={{ display: "flex", width: "853px", height: "480px" }}>
             <AgoraUIKit rtcProps={rtcProps} callbacks={callbacks} styleProps={styleProps}/>
           </div>
         ) : (
           <h3>Chưa có livestream</h3>
-        )}
-      </div>
+        )} */}
+      {/* </div> */}
       <div className={styles.comment} ref={messageRef}>
         <div className={styles.commnet__content}>
           {data.message.length > 0 &&
