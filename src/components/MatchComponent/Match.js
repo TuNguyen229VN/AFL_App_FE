@@ -865,8 +865,7 @@ function Match() {
       console.log(Id);
       const connection = new HubConnectionBuilder()
 
-        // .withUrl("https://afootballleague.ddns.net/chat")
-        .withUrl("https://localhost:7225/chat")
+        .withUrl("https://afootballleague.ddns.net/chat")
         .configureLogging(LogLevel.Information)
         .build();
 
