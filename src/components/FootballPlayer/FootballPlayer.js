@@ -57,11 +57,11 @@ export default function FootballPlayer() {
         break;
       case "gender":
         setGenderSearch(value);
-
+        setCurrentPage(1);
         break;
       default:
         setPositionSearch(value);
-
+        setCurrentPage(1);
         break;
     }
   };
