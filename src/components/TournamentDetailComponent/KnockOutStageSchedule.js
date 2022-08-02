@@ -534,12 +534,12 @@ export default function KnockOutStageSchedule(props) {
                     <td>{indexSeeds + 1}</td>
                     <td
                       style={{
-                        color: itemSeeds.date != null ? "black" : "red",
+                        color: itemSeeds.date != null ? "black" : "black",
                       }}
                     >
                       {itemSeeds.date != null
                         ? changeDate(itemSeeds.date)
-                        : "Chưa cập nhật"}
+                        : "Chưa có lịch thi đấu"}
                     </td>
                     {itemSeeds.teams[0].team !== null ? (
                       <td>
@@ -634,7 +634,9 @@ export default function KnockOutStageSchedule(props) {
                         {itemSeeds.date != null ? "Chỉnh sửa " : "Cập nhật "}{" "}
                         ngày
                       </td>
-                    ) : null}
+                    ) : (
+                      <td></td>
+                    )}
                     {itemSeeds.teams[0].team !== null &&
                     itemSeeds.teams[1].team !== null ? (
                       <td>

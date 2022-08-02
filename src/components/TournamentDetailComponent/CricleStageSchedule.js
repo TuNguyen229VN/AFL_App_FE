@@ -220,12 +220,12 @@ export default function CricleStageSchedule(props) {
               <td>{index + 1}</td>
               <td
                 style={{
-                  color: item.match.matchDate != null ? "black" : "red",
+                  color: item.match.matchDate != null ? "black" : "black",
                 }}
               >
                 {item.match.matchDate != null
                   ? changeDate(item.match.matchDate)
-                  : "Chưa cập nhật"}
+                  : "Chưa có lịch thi đấu"}
               </td>
               {/* <td>{index + 1}</td> */}
               {item.teamInTournament.team != null ? (
@@ -318,28 +318,29 @@ export default function CricleStageSchedule(props) {
                   {item.match.matchDate != null ? "Chỉnh sửa " : "Cập nhật "}{" "}
                   ngày
                 </td>
-              ) : null}
+              ) : (
+                <td></td>
+              )}
 
               {item.teamInTournament.team !== null &&
               allTeamB[index].teamInTournament.team !== null ? (
                 <td>
                   {" "}
-                  {
-                    index === allTeamA.length - 1 ?
-<Link
-                    to={`/match/${item.match.id}/matchDetail`}
-                    state={{ hostTournamentId, tourDetail, index }}
-                  >
-                    Chi tiết
-                  </Link> : 
-                  <Link
-                  to={`/match/${item.match.id}/matchDetail`}
-                  state={{ hostTournamentId, tourDetail, index:0 }}
-                >
-                  Chi tiết
-                </Link>
-                  }
-                  
+                  {index === allTeamA.length - 1 ? (
+                    <Link
+                      to={`/match/${item.match.id}/matchDetail`}
+                      state={{ hostTournamentId, tourDetail, index }}
+                    >
+                      Chi tiết
+                    </Link>
+                  ) : (
+                    <Link
+                      to={`/match/${item.match.id}/matchDetail`}
+                      state={{ hostTournamentId, tourDetail, index: 0 }}
+                    >
+                      Chi tiết
+                    </Link>
+                  )}
                 </td>
               ) : (
                 <td></td>
