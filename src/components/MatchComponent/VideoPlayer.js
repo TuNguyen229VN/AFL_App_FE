@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styles from "./styles/style.module.css"
-function VideoPlayer({ user,setMainScreen }) {
+function VideoPlayer({ user,setMainScreen,sendScreen }) {
   const ref = useRef();
   useEffect(() => {
     user.videoTrack.play(ref.current);
@@ -10,6 +10,7 @@ function VideoPlayer({ user,setMainScreen }) {
     var newArr=[]
     newArr.push(user);
     setMainScreen(newArr);
+    sendScreen(user.uid);
   }
   return (
     <>

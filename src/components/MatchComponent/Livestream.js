@@ -151,7 +151,7 @@ function Livestream(data) {
     <div className={styles.livestream}>
      <div className={styles.video}>
       {inCall ? (
-        <VideoRoom props={rtcProps} setInCall={setInCall}/>
+        <VideoRoom props={rtcProps} setInCall={setInCall} sendScreen={data.sendScreen} uId ={data.uId}/>
       ) : (
         <Button
           variant="contained"
