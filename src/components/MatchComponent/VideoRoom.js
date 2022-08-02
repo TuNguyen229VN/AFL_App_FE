@@ -86,9 +86,9 @@ function VideoRoom(props) {
       <div className={styles.listLivestream}>
         {/* <p>{uId}</p> */}
         {mainScreen.length > 0 ? (
-          mainScreen.map((main) => {
+          mainScreen.map((main,index) => {
             <MainScreen
-              key={main.uid}
+              key={main.uid+index}
               user={main}
               setMainScreen={setMainScreen}
             />;
@@ -102,6 +102,7 @@ function VideoRoom(props) {
               key={user.uid}
               user={user}
               setMainScreen={setMainScreen}
+              sendScreen={props.sendScreen}
             />
           </>
         ))}

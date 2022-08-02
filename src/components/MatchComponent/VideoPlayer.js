@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import styles from "./styles/style.module.css"
 function VideoPlayer({ user,setMainScreen }) {
   const ref = useRef();
+  console.log(user)
   useEffect(() => {
     user.videoTrack.play(ref.current);
   }, []);
