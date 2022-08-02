@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-export default function DenyTeamInTournament(props) {
-  const {
-    setHideShow,
-    hideShow,
-    teamDelete,
-    setTeamDelete,
-    getAllPlayerInTournamentByIdTeam
-  } = props;
-   console.log(teamDelete)
+function ModalDenyTeamOutTournament(props) {
+  const { hideShow, setHideShow,getPlayerInTourByTourID } = props;
+    
   return (
     <div
       id="exampleModal"
@@ -18,7 +12,7 @@ export default function DenyTeamInTournament(props) {
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              Xác nhận xóa đội bóng
+              Hủy lời mời
             </h5>
             <button
               type="button"
@@ -27,40 +21,37 @@ export default function DenyTeamInTournament(props) {
               aria-label="Close"
               onClick={() => {
                 setHideShow(false);
-                setTeamDelete(null);
               }}
             ></button>
           </div>
           <div class="modal-body">
-            Bạn có chắc chắn không?
+            <h3>Bạn có chắc chắn muốn hủy lời mời tham gia giải đấu không ?</h3>
           </div>
           <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
-              style={{
-                padding: 10,
-              }}
               onClick={() => {
                 setHideShow(false);
-                setTeamDelete(null);
+              }}
+              style={{
+                padding: "10px 15px",
               }}
             >
               Đóng
             </button>
             <button
-              style={{
-                padding: 10,
-              }}
               type="button"
               class="btn btn-primary"
+              style={{
+                padding: "10px 15px",
+              }}
               onClick={() => {
-                //acceptTeamInTournament(teamDelete, false);
-                getAllPlayerInTournamentByIdTeam(teamDelete.id);
+                getPlayerInTourByTourID();
               }}
             >
-              Xóa
+              Xác nhận
             </button>
           </div>
         </div>
@@ -68,3 +59,5 @@ export default function DenyTeamInTournament(props) {
     </div>
   );
 }
+
+export default ModalDenyTeamOutTournament;

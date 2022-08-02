@@ -9,6 +9,7 @@ function Livestream(data) {
   const [isHost, setIsHost] = useState(true);
   const [isPinned, setisPinned] = useState(true);
   const [cLive, setCLive] = useState("");
+  
   // Options for joining a channel
   const rtcProps = {
     appId: "629c856215b345779a8fb2a691f51976",

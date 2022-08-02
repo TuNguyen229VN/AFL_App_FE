@@ -534,12 +534,12 @@ export default function KnockOutStageSchedule(props) {
                     <td>{indexSeeds + 1}</td>
                     <td
                       style={{
-                        color: itemSeeds.date != null ? "black" : "red",
+                        color: itemSeeds.date != null ? "black" : "black",
                       }}
                     >
                       {itemSeeds.date != null
                         ? changeDate(itemSeeds.date)
-                        : "Chưa cập nhật"}
+                        : "Chưa có lịch thi đấu"}
                     </td>
                     {itemSeeds.teams[0].team !== null ? (
                       <td>
@@ -605,12 +605,13 @@ export default function KnockOutStageSchedule(props) {
                         ) : null}
                       </td>
                     )}
-                    {user != undefined &&
+                    {(user != undefined &&
                       user.userVM.id === hostTournamentId &&
-                      (new Date(endDate).getTime() > new Date().getTime() &&
+                      new Date(endDate).getTime() > new Date().getTime() &&
                       itemSeeds.match.matchDate === null) ||
                     (new Date(endDate).getTime() > new Date().getTime() &&
-                    new Date(itemSeeds.match.matchDate).getTime() > new Date().getTime()) ? (
+                      new Date(itemSeeds.match.matchDate).getTime() >
+                        new Date().getTime()) ? (
                       <td
                         style={{
                           cursor: "pointer",
@@ -633,14 +634,21 @@ export default function KnockOutStageSchedule(props) {
                         {itemSeeds.date != null ? "Chỉnh sửa " : "Cập nhật "}{" "}
                         ngày
                       </td>
-                    ) : null}
+                    ) : (
+                      <td></td>
+                    )}
                     {itemSeeds.teams[0].team !== null &&
                     itemSeeds.teams[1].team !== null ? (
                       <td>
                         {" "}
                         <Link
                           to={`/match/${itemSeeds.match.id}/matchDetail`}
-                          state={{ hostTournamentId, tourDetail, index }}
+                          state={{
+                            hostTournamentId,
+                            tourDetail,
+                            index,
+                            title: item.title,
+                          }}
                         >
                           Chi tiết
                         </Link>

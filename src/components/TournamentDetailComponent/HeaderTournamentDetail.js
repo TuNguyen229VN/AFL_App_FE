@@ -143,7 +143,12 @@ function HeaderTournamentDetail() {
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/galleryTournamentDetail`
     ) {
-      return <GalleryTournamentDetail idTour={tourDetail.userId} tourDetail={tourDetail} />;
+      return (
+        <GalleryTournamentDetail
+          idTour={tourDetail.userId}
+          tourDetail={tourDetail}
+        />
+      );
     }
     if (
       activeTeamDetail ===
@@ -781,7 +786,8 @@ function HeaderTournamentDetail() {
                             <i class="fa-solid fa-pen-to-square" /> Chỉnh sửa
                             giải đấu
                           </Link>
-                          {tourDetail.status === true && tourDetail.statusTnm !== "Kết thúc" ? (
+                          {tourDetail.status === true &&
+                          tourDetail.statusTnm !== "Kết thúc" ? (
                             <SendCancelTournament
                               data={{
                                 userId: user.userVM.id,
@@ -798,7 +804,9 @@ function HeaderTournamentDetail() {
                         checkPaticipate === false &&
                         user.teamInfo !== null &&
                         tourDetail.numberTeamInTournament <
-                          tourDetail.footballTeamNumber ? (
+                          tourDetail.footballTeamNumber &&
+                        tourDetail.tournamentGender ===
+                          user.teamInfo.teamGender ? (
                         <div>
                           <div
                             className={hideShow ? "overlay active" : "overlay"}
@@ -884,6 +892,29 @@ function HeaderTournamentDetail() {
                           // }}
                         >
                           Đang chờ xét duyệt
+                        </button>
+                      ) : 
+                        checkPaticipate === "Chờ duyệt private" ? (
+                        <button
+                          style={{
+                            padding: "20px 50px",
+                            marginLeft: 75,
+                            fontWeight: 600,
+                            fontFamily: "Mulish-Bold",
+                            borderRadius: 5,
+                            backgroundColor: "#D7FC6A",
+                            border: 1,
+                            borderColor: "#D7FC6A",
+                            transition: "0.5s",
+                            position: "absolute",
+                            top: 365,
+                            cursor: "default",
+                          }}
+                          // onClick={() => {
+                          //   updateClick(,)
+                          // }}
+                        >
+                          Đã gửi lời mời cho đội bóng bạn
                         </button>
                       ) : null}
                     </>

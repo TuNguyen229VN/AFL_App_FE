@@ -18,7 +18,7 @@ export default function DetailInMatch(props) {
     statusUpdate,
     setStatusUpdate,
     tourDetail,
-    indexMatch
+    indexMatch,
   } = props;
 
   const [detail, setDetail] = useState([]);
@@ -290,12 +290,17 @@ export default function DetailInMatch(props) {
     }
   };
   const updateNextTeamInNextRound = () => {
-   
     try {
       const data = {
         tournamentId: tourDetail.id,
-        matchId: tourDetail.tournamentTypeId === 1 ? idMatch : indexMatch < tourDetail.groupNumber ? 0 : idMatch,
+        matchId:
+          tourDetail.tournamentTypeId === 1
+            ? idMatch
+            : indexMatch < tourDetail.groupNumber
+            ? 0
+            : idMatch,
       };
+     
       const response = updateNextTeamInRoundAPI(data);
     } catch (err) {
       console.error(err);

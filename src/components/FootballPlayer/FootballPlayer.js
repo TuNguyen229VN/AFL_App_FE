@@ -23,10 +23,11 @@ export default function FootballPlayer() {
   const [listFootballPlayer, setListFootballPlayer] = useState(null);
   useEffect(() => {
     getAllFootballPlayer();
-  }, [nameFootballSearch, genderSearch, positionSearch, currentPage]);
+  }, [genderSearch, positionSearch, currentPage]);
   const getAllFootballPlayer = () => {
     setLoading(true);
     const dataSearch = `football-player-name=${nameFootballSearch}&gender=${genderSearch}&position=${positionSearch}`;
+    console.log(dataSearch);
     const response = getAllFootballPlayerAPI(dataSearch, currentPage);
     response
       .then((res) => {
@@ -34,7 +35,6 @@ export default function FootballPlayer() {
           setLoading(false);
           setCount(res.data.countList);
           setListFootballPlayer(res.data.footballPlayers);
-          console.log(res.data.footballPlayers);
         }
       })
       .catch((err) => {
@@ -57,19 +57,30 @@ export default function FootballPlayer() {
         break;
       case "gender":
         setGenderSearch(value);
+        setCurrentPage(1);
         break;
       default:
         setPositionSearch(value);
+        setCurrentPage(1);
         break;
     }
   };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    clickSearch();
   };
 
   const handlePageClick = (data) => {
     setCurrentPage(data.selected + 1);
+  };
+
+  const clickSearch = () => {
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    } else {
+      getAllFootballPlayer();
+    }
   };
   return (
     <div>

@@ -137,7 +137,7 @@ const UpdateTournamentInformation = () => {
   const [changeFormat, setChangeFormat] = useState(false);
   const getAllCity = async () => {
     const response = await axios.get(
-      "https://provinces.open-api.vn/api/?depth=3"
+      "https://provinces.open-api.vn/api/"
     );
     if (response.status === 200) {
       setProvice(response.data);
@@ -172,8 +172,9 @@ const UpdateTournamentInformation = () => {
   const ChangeDate = (data) => {
     const sampleData = data.split("-")[0] + "-" + data.split("-")[1] + "-";
     const date = +data.split("-")[2] + 1;
-    return sampleData + date;
-  }
+    const newDate = date >= "10" ? date : "0" + date
+    return sampleData + newDate;
+  };
   const getInforTournamentById = async () => {
     const response = await getTournamentById(idTournament);
     if (response.status === 200) {
@@ -191,6 +192,7 @@ const UpdateTournamentInformation = () => {
         error: null,
       });
       setTeam(response.data);
+
       setStatus(team.mode === "PUBLIC" ? 0 : -1);
       setImgTournament({
         value: null,
@@ -219,17 +221,22 @@ const UpdateTournamentInformation = () => {
         value: team.tournamentGender,
         error: null,
       });
+
       setCloseRegister({
         value: ChangeDate(new Date(team.registerEndDate).toISOString().slice(0, 10)),
         error: null,
       });
 
       setStartTime({
-        value: ChangeDate(new Date(team.tournamentStartDate).toISOString().slice(0, 10)),
+        value: ChangeDate(
+          new Date(team.tournamentStartDate).toISOString().slice(0, 10)
+        ),
         error: null,
       });
       setEndTime({
-        value: ChangeDate(new Date(team.tournamentEndDate).toISOString().slice(0, 10)),
+        value: ChangeDate(
+          new Date(team.tournamentEndDate).toISOString().slice(0, 10)
+        ),
         error: null,
       });
       setTimeDuration({
@@ -340,11 +347,10 @@ const UpdateTournamentInformation = () => {
             TournamentTypeEnum: competitionFormat.value,
             TournamentFootballFieldTypeEnum: typeFootballField.value,
           };
-           
+
           const response = await updateTournamentInfoAPI(data);
           if (response.status === 200) {
-            
-            if (typeNoti !== "hasTeam" || typeNoti === "default") {
+            if (typeNoti !== "hasTeam" && typeNoti !== "default") {
               createGenerateTable(response.data.id);
             }
             const intitalState = {
@@ -1107,17 +1113,11 @@ const UpdateTournamentInformation = () => {
                     type="date"
                     name="closeRegister"
                     value={
-                      closeRegister.value == null ? "" : closeRegister.value
+                      closeRegister.value === null ? "" : closeRegister.value
                     }
                     min={new Date().toJSON().split("T")[0]}
                     onChange={onChangeHandler}
-                    disabled={
-                      status === 0 &&
-                      new Date(closeRegister.value).getTime() <=
-                        new Date().getTime()
-                        ? ""
-                        : "disable"
-                    }
+                    disabled={status === 0 ? "" : "disable"}
                     required
                   />
                 </div>
@@ -1208,7 +1208,7 @@ const UpdateTournamentInformation = () => {
                     min={startTime.value}
                     // disabled={(new Date(closeRegister.value).getTime() <=
                     //   new Date().getTime()) && startTime.value != null ? "" : "disable"}
-                     onChange={onChangeHandler}
+                    onChange={onChangeHandler}
                   />
                 </div>
               </div>

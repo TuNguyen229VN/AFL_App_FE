@@ -76,6 +76,7 @@ function UpdateTeam() {
   const [districSearch, setDistricSearch] = useState(null);
   const [wardSearch, setWardSearch] = useState(null);
   const [player,setPlayer] = useState(null);
+  const [numberInTeam,setNumberInTeam] = useState(null);
   useEffect(() => {
     setResetProvice(-1);
     getAllCity();
@@ -129,6 +130,8 @@ function UpdateTeam() {
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
+        
+        setNumberInTeam(res.data.numberPlayerInTeam);
         setNameClub({ value: res.data.teamName });
         setImgClub({ value: res.data.teamAvatar, img: res.data.teamAvatar });
         setPhoneContact({ value: res.data.teamPhone });
@@ -149,7 +152,7 @@ function UpdateTeam() {
   const getAllCity = async () => {
     console.log(address);
     const response = await axios.get(
-      "https://provinces.open-api.vn/api/?depth=3"
+      "https://provinces.open-api.vn/api/"
     );
     if (response.status === 200) {
       setProvice(response.data);
@@ -578,7 +581,7 @@ function UpdateTeam() {
                   onChange={onChangeHandler}
                   id="genderteam"
                   required
-                  disabled
+                  disabled= { numberInTeam !== null && numberInTeam > 0 ? "disabled" : ""}
                 >
                   <option value="Male">Nam</option>
                   <option value="Female">Nữ</option>

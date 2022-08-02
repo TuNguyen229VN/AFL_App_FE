@@ -11,13 +11,15 @@ import {
   deleteRegisterTeamAPI,
   updateStatusTeamInTournament,
   updateTeamInScheduleAPI,
+  getInforTeamInTournamentByTeamId,
 } from "../../api/TeamInTournamentAPI";
 import {
   deletePlayerInTournamentById,
   getAllPlayerInTournamentByTeamInTournamentIdAPI,
 } from "../../api/PlayerInTournamentAPI";
-import RegisterInTournament from "../TournamentDetailComponent/RegisterInTournament";
+//import RegisterInTournament from "../TournamentDetailComponent/RegisterInTournament";
 import AcceptPrivateTour from "./AcceptPrivateTour";
+import ModalDenyTeamOutTournament from "./ModalDenyTeamOutTournament";
 function TournamentTeamDetail(props) {
   const { user, team } = props;
   const [checkRegisterTour, setCheckRegistertour] = useState(false);
@@ -39,9 +41,13 @@ function TournamentTeamDetail(props) {
     getTeamInTournament();
     setCheck(!check);
   };
-
+  const [hideShowDenyTeam, setHideShowDenyTeam] = useState(false);
+  const [viewMoreOption, setViewMoreOption] = useState({
+    index: "0",
+    check: false,
+  });
   const [teamDelete, setTeamDelete] = useState(null);
-
+  const [idTeamDenyTour, setIdTeamDenyTour] = useState(null);
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
@@ -57,6 +63,28 @@ function TournamentTeamDetail(props) {
           //   deletePlayerById(item.id);
           // }
           console.log(idTeam);
+          setTimeout(() => {
+            deleteTeamInTournament(idTeam);
+          }, 2000);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        setHideShowDelete(false);
+        console.error(err);
+      });
+  };
+
+  const denyTeamOutTournament = (idTeam) => {
+    setLoading(true);
+    const response = getAllPlayerInTournamentByTeamInTournamentIdAPI(idTeam);
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          for (let item of res.data.playerInTournaments) {
+            deletePlayerById(item.id);
+          }
+
           setTimeout(() => {
             deleteTeamInTournament(idTeam);
           }, 2000);
@@ -132,22 +160,17 @@ function TournamentTeamDetail(props) {
         if (res.status === 200) {
           setHideShowDelete(false);
           setLoading(false);
-          setTypeReport("report");
+          setHideShowDenyTeam(false)
           setCheck(!check);
-          toast.success(
-            typeReport !== "outtournament"
-              ? "Từ chối giải đấu thành công"
-              : "Giải đấu đã hủy tham gia giải thành công",
-            {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            }
-          );
+          toast.success("Hủy lời mời tham gia giải đấu thành công ", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       })
       .catch((err) => {
@@ -201,7 +224,7 @@ function TournamentTeamDetail(props) {
   };
   useEffect(() => {
     getTeamInTournament();
-  }, [currentPage, check, statusTeam, hideShow,hideShowRegis]);
+  }, [currentPage, check, statusTeam, hideShow, hideShowRegis]);
 
   const addTeamInSchedule = (idTeamInTour) => {
     const data = {
@@ -260,7 +283,22 @@ function TournamentTeamDetail(props) {
         });
     }
   };
+  const getPlayerInTourByTourID = async () => {
+    try {
+      const response = await getInforTeamInTournamentByTeamId(
+        idTeamDenyTour.id,
+        team.id
+      );
 
+      if (response.status === 200) {
+        const data = response.data.teamInTournaments;
+
+        await denyTeamOutTournament(data[0].id);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <div className="tournamentdetail">
       {loading ? <LoadingAction /> : null}
@@ -372,6 +410,61 @@ function TournamentTeamDetail(props) {
               tourTeam.map((item, index) => {
                 return (
                   <div key={index} className="listPlayer__item">
+                    <div>
+                      <div
+                        className="view__more"
+                        onClick={() => {
+                          setViewMoreOption({
+                            index: index,
+                            check: !viewMoreOption.check,
+                          });
+                        }}
+                      >
+                        <i className="fa-solid fa-ellipsis"></i>
+                      </div>
+                      <div
+                        className={
+                          viewMoreOption.index === index && viewMoreOption.check
+                            ? "option__player active"
+                            : "option__player"
+                        }
+                      >
+                        {/* <div
+                            className={
+                              hideShowDeleteTeamOut
+                                ? "overlay active"
+                                : "overlay"
+                            }
+                          ></div> */}
+                        <p
+                          onClick={() => {
+                            //deletePlayerInTeam(item.idPlayerInTeam);
+                            // setHideShowDelete(true);
+                            // setIdDelete(item.idPlayerInTeam);
+                            // setDeleteSuccessFul(false);
+                            // setHideShowDeleteTeamOut(true);
+                            // setIdTeamDelete(
+                            //   item.teamInTournament.id + "-" + item.id
+                            // );
+                            setHideShowDenyTeam(true);
+                            setIdTeamDenyTour(item);
+                          }}
+                        >
+                          <i class="fa-solid fa-trash"></i>
+                          Hủy lời mời tham gia giải
+                        </p>
+                      </div>
+                      <div
+                        className={
+                          hideShowDenyTeam ? "overlay active" : "overlay"
+                        }
+                      ></div>
+                      <ModalDenyTeamOutTournament
+                        hideShow={hideShowDenyTeam}
+                        setHideShow={setHideShowDenyTeam}
+                        getPlayerInTourByTourID={getPlayerInTourByTourID}
+                      />
+                    </div>
                     <Link
                       to={`/tournamentDetail/${item.id}/inforTournamentDetail`}
                     >
@@ -538,8 +631,8 @@ function TournamentTeamDetail(props) {
               }
               teamDelete={teamDelete}
               setTeamDelete={setTeamDelete}
-              setHideShowDelete={setHideShowDelete}
-              hideShowDelete={hideShowDelete}
+              setHideShow={setHideShowDelete}
+              hideShow={hideShowDelete}
             />
           </div>
         ) : null}
