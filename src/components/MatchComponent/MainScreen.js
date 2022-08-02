@@ -5,7 +5,7 @@ function MainScreen({ mainScreen }) {
   useEffect(() => {
     mainScreen.videoTrack.play(ref1.current);
   }, []);
-
+  console.log(ref1.current , "sdasjkdj");
   return (
     <>
       {/* Uid: {user.uid} */}

@@ -417,6 +417,8 @@ function Match() {
           tokenLivestream={tokenLivestream}
           sendComment={sendComment}
           message={message}
+          sendScreen={sendScreen}
+          uId={uId}
         />
       );
     }
@@ -838,7 +840,7 @@ function Match() {
   const [yellowB, setYellowB] = useState(0);
   const [message, setMessage] = useState([]);
   const [connection, setConnection] = useState();
-
+  const [uId, setUId] = useState([]);
   const [room, setRoom] = useState("");
   const joinRoom = async () => {
     try {
@@ -869,6 +871,9 @@ function Match() {
 
       connection.on("ReceiveComment", (user, comment) => {
         setMessage((message) => [...message, { user, comment }]);
+      });
+      connection.on("ReceiveScreen", (id) => {
+        setUId(id);
       });
 
       connection.on("MatchDetail", (mDt) => {
@@ -974,6 +979,13 @@ function Match() {
     try {
       const comment = c;
       await connection.invoke("sendComment", comment);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const sendScreen = async (id) => {
+    try {
+      await connection.invoke("sendUser", id);
     } catch (err) {
       console.log(err);
     }
