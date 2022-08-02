@@ -118,19 +118,8 @@ export default function DetailMatch(props) {
 
     setLoading(true);
 
-    if (tourDetail.tournamentTypeId !== 2) {
-      
-      if (title === "Chung kết") {
-        matchResult();
-      }
-    } else {
-      if(index > 0){
-        matchResult();
-      }
-    }
-
     for (let i = 0; i < 2; i++) {
-      updateInAPI(i === 0 ? newTeamA : newTeamB);
+      await updateInAPI(i === 0 ? newTeamA : newTeamB);
     }
 
     await deleteMatchDetailByType(
@@ -138,8 +127,18 @@ export default function DetailMatch(props) {
       type === 1 ? "score" : type === 2 ? "yellow" : "red",
       data
     );
-    updateScoreTeamInTour();
+    await updateScoreTeamInTour();
     await updateScorePrediction();
+
+    if (tourDetail.tournamentTypeId !== 2) {
+      if (title === "Chung kết") {
+        matchResult();
+      }
+    } else {
+      if (index > 0) {
+        matchResult();
+      }
+    }
   };
   const matchResult = async () => {
     try {
