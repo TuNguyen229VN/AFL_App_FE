@@ -24,7 +24,7 @@ function Match() {
   );
   const title = location.state.title;
   const index = location.state.index;
-  
+
   const [guestId, setGuestId] = useState(localStorage.getItem("guestId"));
   const inputRef = useRef(null);
   // location.state.hostTournamentId
@@ -1460,26 +1460,26 @@ function Match() {
           <>
             <h2 className={styles.title}>Trận đấu</h2>
             <div className={styles.action}>
-              {/* {user !== null &&
+              {user !== null &&
               location.state !== null &&
-              user.userVM.id === location.state.hostTournamentId ? ( */}
-              <p
-                className={styles.updateMatch}
-                onClick={() =>
-                  navigate(`/detailMatch/${idMatch}`, {
-                    state: {
-                      hostTournamentId: location.state.hostTournamentId,
-                      tourDetail: location.state.tourDetail,
-                      indexMatch: location.state.index,
-                      title,
-                      index
-                    },
-                  })
-                }
-              >
-                Cập nhật tỉ số
-              </p>
-              {/* ) : null} */}
+              user.userVM.id === location.state.hostTournamentId ? (
+                <p
+                  className={styles.updateMatch}
+                  onClick={() =>
+                    navigate(`/detailMatch/${idMatch}`, {
+                      state: {
+                        hostTournamentId: location.state.hostTournamentId,
+                        tourDetail: location.state.tourDetail,
+                        indexMatch: location.state.index,
+                        title,
+                        index,
+                      },
+                    })
+                  }
+                >
+                  Cập nhật tỉ số
+                </p>
+              ) : null}
             </div>
             <div className={styles.match__header}>
               {allTeamA.map((item, index) => (
@@ -1517,24 +1517,28 @@ function Match() {
                       alt={item.teamName}
                     />
                     <h2>{item.teamName}</h2>
-                    <div className={styles.editWrap}>
-                      <button
-                        className={styles.editScore}
-                        onClick={() => {
-                          setPlayerPopup(true);
-                        }}
-                      >
-                        Ghi bàn
-                      </button>
-                      <button
-                        className={styles.editCard}
-                        onClick={() => {
-                          setPlayerCardPopup(true);
-                        }}
-                      >
-                        Thẻ phạt
-                      </button>
-                    </div>
+                    {user !== null &&
+                    location.state !== null &&
+                    user.userVM.id === location.state.hostTournamentId ? (
+                      <div className={styles.editWrap}>
+                        <button
+                          className={styles.editScore}
+                          onClick={() => {
+                            setPlayerPopup(true);
+                          }}
+                        >
+                          Ghi bàn
+                        </button>
+                        <button
+                          className={styles.editCard}
+                          onClick={() => {
+                            setPlayerCardPopup(true);
+                          }}
+                        >
+                          Thẻ phạt
+                        </button>
+                      </div>
+                    ) : null}
                   </div>
                   <div className={styles.score__A}>
                     {scoreA == 0 ? item.teamScore : scoreA}
@@ -1549,24 +1553,28 @@ function Match() {
                       alt={allTeamB[index].teamName}
                     />
                     <h2>{allTeamB[index].teamName}</h2>
-                    <div className={styles.editWrap}>
-                      <button
-                        className={styles.editScore}
-                        onClick={() => {
-                          setPlayerPopupB(true);
-                        }}
-                      >
-                        Ghi bàn
-                      </button>
-                      <button
-                        className={styles.editCard}
-                        onClick={() => {
-                          setPlayerCardPopupB(true);
-                        }}
-                      >
-                        Thẻ phạt
-                      </button>
-                    </div>
+                    {user !== null &&
+                    location.state !== null &&
+                    user.userVM.id === location.state.hostTournamentId ? (
+                      <div className={styles.editWrap}>
+                        <button
+                          className={styles.editScore}
+                          onClick={() => {
+                            setPlayerPopupB(true);
+                          }}
+                        >
+                          Ghi bàn
+                        </button>
+                        <button
+                          className={styles.editCard}
+                          onClick={() => {
+                            setPlayerCardPopupB(true);
+                          }}
+                        >
+                          Thẻ phạt
+                        </button>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               ))}
@@ -1642,7 +1650,7 @@ function Match() {
                 </div>
               </div>
             </div>
-            {predict != null&&predict.user ? (
+            {predict != null && predict.user ? (
               <div className={styles.truePredic}>
                 <h3>Người dự đoán đúng nhất</h3>
                 <div className={styles.match__team}>
@@ -1653,15 +1661,28 @@ function Match() {
                   />
                   <div className={`${styles.logo} ${styles.userPredict}`}>
                     <img
-                      src={predict != undefined &&predict.user&& predict.user.avatar}
-                      alt={predict != undefined && predict.user&&predict.user.avatar}
+                      src={
+                        predict != undefined &&
+                        predict.user &&
+                        predict.user.avatar
+                      }
+                      alt={
+                        predict != undefined &&
+                        predict.user &&
+                        predict.user.avatar
+                      }
                     />
-                    <h2>{predict != undefined && predict.user&&predict.user.username}</h2>
+                    <h2>
+                      {predict != undefined &&
+                        predict.user &&
+                        predict.user.username}
+                    </h2>
                   </div>
                   <div className={styles.logo}>
                     <h2>
                       {allTeamA.length > 0 &&
-                      predict != undefined &&predict.user&&
+                      predict != undefined &&
+                      predict.user &&
                       allTeamA[0].id == predict.teamInMatchAid
                         ? allTeamA[0].teamName
                         : allTeamB[0].teamName}
@@ -1669,7 +1690,8 @@ function Match() {
                   </div>
                   <div className={styles.score__A}>
                     {allTeamA.length > 0 &&
-                    predict != null &&predict.user&&
+                    predict != null &&
+                    predict.user &&
                     allTeamA[0].id == predict.teamInMatchAid
                       ? predict.teamAscore
                       : predict.teamBscore}
@@ -1677,7 +1699,8 @@ function Match() {
                   <div className={styles.line}>-</div>
                   <div className={styles.score__B}>
                     {allTeamA.length > 0 &&
-                    predict != undefined &&predict.user&&
+                    predict != undefined &&
+                    predict.user &&
                     allTeamB[0].id == predict.teamInMatchBid
                       ? predict.teamBscore
                       : predict.teamAscore}
@@ -1685,7 +1708,8 @@ function Match() {
                   <div className={styles.logo}>
                     <h2>
                       {allTeamA.length > 0 &&
-                      predict != undefined &&predict.user&&
+                      predict != undefined &&
+                      predict.user &&
                       allTeamB[0].id == predict.teamInMatchBid
                         ? allTeamB[0].teamName
                         : allTeamA[0].teamName}
@@ -1705,6 +1729,7 @@ function Match() {
               <Link
                 state={{
                   tourDetail: location.state.tourDetail,
+                  hostTournamentId: location.state.hostTournamentId,
                 }}
                 to={`/match/${idMatch}/matchDetail`}
                 className={
@@ -1721,6 +1746,7 @@ function Match() {
               <Link
                 state={{
                   tourDetail: location.state.tourDetail,
+                  hostTournamentId: location.state.hostTournamentId,
                 }}
                 to={`/match/${idMatch}/livestream`}
                 className={
@@ -1735,23 +1761,25 @@ function Match() {
                 Livestream
               </Link>
             </div>
-            <div className={styles.realScore}>
-              <p className={styles.teamLeft}>
-                {allTeamA.length > 0 && allTeamA[0].teamName}
-              </p>
-              <p className={styles.scoreTeam}>
-                {allTeamA.length > 0 && scoreA == 0
-                  ? allTeamA[0].teamScore
-                  : scoreA}{" "}
-                -{" "}
-                {allTeamB.length > 0 && scoreB == 0
-                  ? allTeamB[0].teamScore
-                  : scoreB}
-              </p>
-              <p className={styles.teamRight}>
-                {allTeamB.length > 0 && allTeamB[0].teamName}
-              </p>
-            </div>
+            {activeTeamDetail === `/match/${idMatch}/livestream` ? (
+              <div className={styles.realScore}>
+                <p className={styles.teamLeft}>
+                  {allTeamA.length > 0 && allTeamA[0].teamName}
+                </p>
+                <p className={styles.scoreTeam}>
+                  {allTeamA.length > 0 && scoreA == 0
+                    ? allTeamA[0].teamScore
+                    : scoreA}{" "}
+                  -{" "}
+                  {allTeamB.length > 0 && scoreB == 0
+                    ? allTeamB[0].teamScore
+                    : scoreB}
+                </p>
+                <p className={styles.teamRight}>
+                  {allTeamB.length > 0 && allTeamB[0].teamName}
+                </p>
+              </div>
+            ) : null}
             {renderByLink()}
           </>
         ) : (

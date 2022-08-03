@@ -13,7 +13,7 @@ function VideoRoom(props) {
   );
   const [uid, setUid] = useState(props.uId);
 
-  console.log(idUser, idHostTournament);
+  console.log(props.uId)
   const client = AgoraRTC.createClient({
     mode: "rtc",
     codec: "vp8",
@@ -30,8 +30,14 @@ function VideoRoom(props) {
       // setMainScreen((previousUsers) => [...previousUsers, user]);
     }
 
-    if (mediaType === "audio") {
-      //   user.audioTrack.play();
+    if (
+      (mediaType === "audio" && props.uId.length > 0) ||
+      (mediaType === "audio" &&
+        idUser !== null &&
+        idHostTournament !== null &&
+        idUser.userVM.id === idHostTournament)
+    ) {
+      user.audioTrack.play();
     }
   };
 
@@ -84,6 +90,7 @@ function VideoRoom(props) {
     };
   }, []);
 
+  const [numberScreen, setNumberScreen] = useState(0);
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       {users.length > 0 ? (
@@ -98,28 +105,42 @@ function VideoRoom(props) {
         >
           {idUser !== null &&
           idHostTournament !== null &&
-          idUser.userVM.id === idHostTournament
-            ? users.map((user) => (
-                <>
-                  {/* <p>{user.uid}</p> */}
+          idUser.userVM.id === idHostTournament ? (
+            users.map((user, index) => (
+              <>
+                {/* <p>{user.uid}</p> */}
+                <div
+                  className={
+                    numberScreen === index
+                      ? `${styles.itemLivestream} ${styles.active}`
+                      : styles.itemLivestream
+                  }
+                >
                   <VideoPlayer
+                    index={index}
                     key={user.uid}
                     user={user}
                     setMainScreen={setMainScreen}
                     sendScreen={props.sendScreen}
+                    setNumberScreen={setNumberScreen}
                   />
-                </>
-              ))
-            : users.map((user) => (
-                <>
-                  {props.uId == user.uid ? (
-                    <VideoPlayerUser key={user.uid} user={user} />
-                  ) : null}
-                </>
-              ))}
+                </div>
+              </>
+            ))
+          ) : props.uId.length>0 ? (
+            users.map((user) => (
+              <>
+                {props.uId == user.uid ? (
+                  <VideoPlayerUser key={user.uid} user={user} />
+                ) : null}
+              </>
+            ))
+          ) : (
+            <p className={styles.notLive}>Chưa có livestream</p>
+          )}
         </div>
       ) : (
-        <p>Chưa có video</p>
+        <p className={styles.notLive}>Chưa có livestream</p>
       )}
     </div>
   );

@@ -1,23 +1,27 @@
-import React, { useEffect, useRef } from "react";
-import styles from "./styles/style.module.css"
-function VideoPlayer({ user,setMainScreen,sendScreen }) {
+import React, { useEffect, useRef, useState } from "react";
+import styles from "./styles/style.module.css";
+function VideoPlayer({ user, setMainScreen, sendScreen, index,setNumberScreen }) {
   const ref = useRef();
-  console.log(user)
+  console.log(user);
   useEffect(() => {
     user.videoTrack.play(ref.current);
   }, []);
 
-  const selectMainStream=(user)=>{
-    var newArr=[]
+  const selectMainStream = (user) => {
+    var newArr = [];
     newArr.push(user);
     setMainScreen(newArr);
-    console.log(user.uid)
-    sendScreen(user.uid+"");
-  }
+    setNumberScreen(index);
+    sendScreen(user.uid + "");
+  };
   return (
     <>
-      {/* Uid: {user.uid} */}
-      <div ref={ref} className={styles.itemLivestream} onClick={()=>selectMainStream(user)}></div>
+      <div
+        ref={ref}
+        onClick={() => selectMainStream(user)}
+        className={styles.item}
+      ></div>
+      <p className={styles.screenNum}>Màn hình {index + 1}</p>
     </>
   );
 }
