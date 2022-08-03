@@ -206,7 +206,7 @@ function GalleryTournamentDetail(data) {
         </div>
       </div>
       <form
-        className={popupCreateImage ? "popup__news active" : "popup__news"}
+        className={popupCreateImage ? "popup__news1 active" : "popup__news1"}
         onSubmit={addImages}
       >
         <div className="close" onClick={() => setPopupCreateImage(false)}>

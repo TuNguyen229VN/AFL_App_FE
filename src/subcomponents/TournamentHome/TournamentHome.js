@@ -9,7 +9,7 @@ const TournamentHome = () => {
   const getTournament = async (nameFind, currentPage) => {
     try {
       const res = await axios.get(
-        `https://afootballleague.ddns.net/api/v1/tournaments?order-by=DateCreate&order-type=ASC&page-offset=1&limit=4`
+        `https://afootballleague.ddns.net/api/v1/tournaments?order-by=DateCreate&order-type=DESC&page-offset=1&limit=4`
       );
       if (res.status === 200) {
         setTournaments(await res.data.tournaments);

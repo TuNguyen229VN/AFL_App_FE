@@ -235,7 +235,7 @@
   height: 18px;
   text-overflow: ellipsis;
   display: -webkit-box;
-  width:200px;
+  width: 200px;
 }
 .teamdetail .schedule__tour .schedule__table td:nth-child(5) p {
   margin-left: 70px;
@@ -630,10 +630,28 @@
   display: none;
 }
 
+.popup__news1 {
+  border-radius: 5px;
+  height: auto;
+  width: max-content;
+  position: fixed;
+  z-index: 10;
+  background-color: #fff;
+  padding: 30px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+.popup__news1.active {
+  display: block;
+}
 .popup__news.active {
   display: block;
 }
 
+.popup__news1 h4,
 .popup__news h4 {
   text-transform: uppercase;
   font-family: "Mulish-Bold";
@@ -649,18 +667,21 @@
   height: 140px;
   width: 100%;
 }
+.popup__news1 input,
 .popup__news input {
   display: none;
 }
 
+.popup__news1 input:focus,
+.popup__news1 textarea:focus,
 .popup__news input:focus,
 .popup__news textarea:focus {
   border: none;
 }
-.searchaa:focus{
+.searchaa:focus {
   border: 2px solid var(--black-text);
 }
-.popup__news button {
+.popup__news1 button,.popup__news button {
   display: block;
   background-color: var(--green-bold);
   padding: 10px 20px;
@@ -675,21 +696,21 @@
   transition: 0.5s;
   border-radius: 5px;
 }
-.popup__news button:hover {
+.popup__news1 button:hover ,.popup__news button:hover {
   background-color: var(--blue-black);
   color: var(--white-text);
 }
-.popup__news label {
+.popup__news1 label,.popup__news label {
   margin-top: 20px;
   cursor: pointer;
 }
 
-.popup__news label i {
+.popup__news1 label i,.popup__news label i {
   font-size: 28px;
   color: var(--green-bold);
 }
 
-.popup__news img {
+.popup__news1 img,.popup__news img {
   display: block;
   height: 200px;
   width: 200px;
@@ -702,13 +723,13 @@
   margin-left: 10px;
   font-size: 18px;
 }
-.popup__news .img {
+.popup__news1 .img ,.popup__news .img {
   margin-top: 20px;
   position: relative;
   width: max-content;
 }
 
-.popup__news .img i {
+.popup__news1 .img i ,.popup__news .img i {
   background-color: #fff;
   padding: 5px;
   position: absolute;
@@ -720,7 +741,7 @@
   top: 10px;
 }
 
-.popup__news .close {
+.popup__news1 .close,.popup__news .close {
   position: absolute;
   top: 10px;
   right: 30px;
@@ -864,6 +885,9 @@
 }
 
 .exo .img__list {
+  margin-top: 20px;
+  height: 290px;
+  overflow-y: scroll;
   display: grid;
   grid-template-columns: repeat(4, 200px);
   column-gap: 20px;
@@ -954,7 +978,7 @@
   margin-bottom: 10px;
 }
 
-.teamdetail .listPlayer .listPlayer__item .des .buttonChieumoGiai{
+.teamdetail .listPlayer .listPlayer__item .des .buttonChieumoGiai {
   margin-top: 15px;
   padding: 10px;
   background-color: var(--green-bold);
@@ -964,7 +988,7 @@
   font-size: 16px;
   cursor: pointer;
 }
-.teamdetail .listPlayer .listPlayer__item .des .buttonThamGia{
+.teamdetail .listPlayer .listPlayer__item .des .buttonThamGia {
   margin-top: 15px;
   padding: 10px;
   font-family: "Mulish-Bold";
@@ -974,11 +998,11 @@
   font-size: 16px;
   cursor: pointer;
 }
-.teamdetail .listPlayer .listPlayer__item .des .buttonChieumoGiai:hover{
+.teamdetail .listPlayer .listPlayer__item .des .buttonChieumoGiai:hover {
   filter: brightness(90%);
 }
 
-.teamdetail .listPlayer .listPlayer__item .des .daChieuMo{
+.teamdetail .listPlayer .listPlayer__item .des .daChieuMo {
   margin-top: 15px;
   padding: 10px;
   border: 1px solid var(--green-bold);
@@ -989,15 +1013,15 @@
   cursor: pointer;
 }
 
-.btn-delete{
-  border:none;
+.btn-delete {
+  border: none;
   background-color: #e53445;
-  padding:10px 15px ;
-  border-radius:10px;
-  color:white;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: white;
 }
 
-.khongin{
+.khongin {
   font-family: "Mulish-Regular" !important;
   font-size: 16px !important;
 }
