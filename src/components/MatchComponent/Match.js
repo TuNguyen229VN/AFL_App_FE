@@ -22,8 +22,8 @@ function Match() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
-  const title = location.state.title;
-  const index = location.state.index;
+  const title = location.state.title !== null ? location.state.title : null;
+  const index = location.state.index !== null ? location.state.index : null;
 
   const [guestId, setGuestId] = useState(localStorage.getItem("guestId"));
   const inputRef = useRef(null);

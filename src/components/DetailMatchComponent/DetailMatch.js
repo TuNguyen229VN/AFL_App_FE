@@ -31,8 +31,8 @@ export default function DetailMatch(props) {
   const tourDetail = location.state.tourDetail;
   const hostTournamentId = location.state.hostTournamentId;
   const indexMatch = location.state.indexMatch;
-  const title = location.state.title;
-  const index = location.state.index;
+  const title = location.state.title !== null ? location.state.title : null;
+  const index = location.state.index !== null ? location.state.index : null;
   const [teamA, setTeamA] = useState(null);
   const [teamB, setTeamB] = useState(null);
   const [loading, setLoading] = useState(false);
