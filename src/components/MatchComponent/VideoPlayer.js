@@ -11,7 +11,8 @@ function VideoPlayer({ user,setMainScreen,sendScreen }) {
     var newArr=[]
     newArr.push(user);
     setMainScreen(newArr);
-    sendScreen(user.uid);
+    console.log(user.uid)
+    sendScreen(user.uid+"");
   }
   return (
     <>

@@ -419,6 +419,8 @@ function Match() {
           message={message}
           sendScreen={sendScreen}
           uId={uId}
+          user={user}
+          idHostTournament={location.state.tourDetail.userId}
         />
       );
     }
@@ -874,6 +876,7 @@ function Match() {
       });
       connection.on("ReceiveScreen", (id) => {
         setUId(id);
+        console.log(id);
       });
 
       connection.on("MatchDetail", (mDt) => {

@@ -1,14 +1,19 @@
 import AgoraRTC, { AgoraVideoPlayer } from "agora-rtc-react";
 import React, { useEffect, useState } from "react";
-import Controls from "./Controls";
 import VideoPlayer from "./VideoPlayer";
 import styles from "./styles/style.module.css";
-import MainScreen from "./MainScreen";
+import VideoPlayerUser from "./VideoPlayerUser";
 function VideoRoom(props) {
   const APP_ID = props.props.appId;
   const TOKEN = props.props.token;
   const CHANNEL = props.props.channel;
+  const [idUser, setIdUser] = useState(props.idUser);
+  const [idHostTournament, setIdHostTournament] = useState(
+    props.idHostTournament
+  );
+  const [uid, setUid] = useState(props.uId);
 
+  console.log(idUser, idHostTournament);
   const client = AgoraRTC.createClient({
     mode: "rtc",
     codec: "vp8",
@@ -79,34 +84,43 @@ function VideoRoom(props) {
     };
   }, []);
 
-  const [uId, setUId] = useState(0);
-
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
-      <div className={styles.listLivestream}>
-        {/* <p>{uId}</p> */}
-        {mainScreen.length > 0 ? (
-          mainScreen.map((main,index) => {
-            <MainScreen
-              key={main.uid+index}
-              user={main}
-              setMainScreen={setMainScreen}
-            />;
-          })
-        ) : (
-          <p>Chưa có video</p>
-        )}
-        {users.map((user) => (
-          <>
-            <VideoPlayer
-              key={user.uid}
-              user={user}
-              setMainScreen={setMainScreen}
-              sendScreen={props.sendScreen}
-            />
-          </>
-        ))}
-      </div>
+      {users.length > 0 ? (
+        <div
+          className={
+            idUser !== null &&
+            idHostTournament !== null &&
+            idUser.userVM.id === idHostTournament
+              ? styles.listLivestream
+              : styles.listLivestreamUser
+          }
+        >
+          {idUser !== null &&
+          idHostTournament !== null &&
+          idUser.userVM.id === idHostTournament
+            ? users.map((user) => (
+                <>
+                  {/* <p>{user.uid}</p> */}
+                  <VideoPlayer
+                    key={user.uid}
+                    user={user}
+                    setMainScreen={setMainScreen}
+                    sendScreen={props.sendScreen}
+                  />
+                </>
+              ))
+            : users.map((user) => (
+                <>
+                  {props.uId == user.uid ? (
+                    <VideoPlayerUser key={user.uid} user={user} />
+                  ) : null}
+                </>
+              ))}
+        </div>
+      ) : (
+        <p>Chưa có video</p>
+      )}
     </div>
   );
 }

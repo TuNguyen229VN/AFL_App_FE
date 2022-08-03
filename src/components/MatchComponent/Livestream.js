@@ -5,6 +5,8 @@ import { Button } from "@material-ui/core";
 import AgoraUIKit, { PropsInterface, layout } from "agora-react-uikit";
 import VideoRoom from "./VideoRoom";
 function Livestream(data) {
+  const [idUser, setidUser] = useState(data.user)
+  const [idHostTournament, setIdHostTournament] = useState(data.idHostTournament)
   const [videocall, setVideocall] = useState(true);
   const [isHost, setIsHost] = useState(true);
   const [isPinned, setisPinned] = useState(true);
@@ -151,7 +153,7 @@ function Livestream(data) {
     <div className={styles.livestream}>
      <div className={styles.video}>
       {inCall ? (
-        <VideoRoom props={rtcProps} setInCall={setInCall} sendScreen={data.sendScreen} uId ={data.uId}/>
+        <VideoRoom props={rtcProps} setInCall={setInCall} sendScreen={data.sendScreen} uId ={data.uId} idUser={idUser} idHostTournament={idHostTournament}/>
       ) : (
         <Button
           variant="contained"
