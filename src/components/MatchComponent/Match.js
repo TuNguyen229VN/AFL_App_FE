@@ -108,6 +108,7 @@ function Match() {
         setYellowTeamB({ value: res.data.teamsInMatch[1].yellowCardNumber });
         setTournamentID(res.data.teamsInMatch[0].match.tournamentId);
         setTokenLivestream(res.data.teamsInMatch[0].match.tokenLivestream);
+        setUId(res.data.teamsInMatch[0].match.idScreen);
         getTourDetail(res.data.teamsInMatch[0].match.tournamentId);
         getPlayer(res.data.teamsInMatch[0].teamInTournament.id, "teamA");
         getPlayer(res.data.teamsInMatch[1].teamInTournament.id, "teamB");
@@ -417,7 +418,6 @@ function Match() {
           tokenLivestream={tokenLivestream}
           sendComment={sendComment}
           message={message}
-          sendScreen={sendScreen}
           uId={uId}
           user={user}
           idHostTournament={location.state.tourDetail.userId}
@@ -874,10 +874,10 @@ function Match() {
       connection.on("ReceiveComment", (user, comment) => {
         setMessage((message) => [...message, { user, comment }]);
       });
-      connection.on("ReceiveScreen", (id) => {
-        setUId(id);
-        console.log(id);
-      });
+      // connection.on("ReceiveScreen", (id) => {
+      //   setUId(id);
+      //   console.log(id);
+      // });
 
       connection.on("MatchDetail", (mDt) => {
         console.log(mDt);
@@ -986,13 +986,13 @@ function Match() {
       console.log(err);
     }
   };
-  const sendScreen = async (id) => {
-    try {
-      await connection.invoke("sendUser", id);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const sendScreen = async (id) => {
+  //   try {
+  //     await connection.invoke("sendUser", id);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   // const [minutes, setMinutes] = useState("");
   const [minuteIndex, setMinuteIndex] = useState();

@@ -8,7 +8,6 @@ function Livestream(data) {
   const [idUser, setidUser] = useState(data.user)
   const [idHostTournament, setIdHostTournament] = useState(data.idHostTournament)
   const [videocall, setVideocall] = useState(true);
-  const [isHost, setIsHost] = useState(true);
   const [isPinned, setisPinned] = useState(true);
   const [cLive, setCLive] = useState("");
   
@@ -19,6 +18,7 @@ function Livestream(data) {
     channel: "MATCH_" + data.idMatch,
     role: "audience",
     layout: isPinned ? layout.pin : layout.grid,
+    idMatch: data.idMatch,
   };
   console.log(rtcProps);
   const callbacks = {
@@ -26,9 +26,6 @@ function Livestream(data) {
     PinnedVideo: () => console.log("s"),
   };
 
-  const styleProps = {
-    // localBtnContainer: {display:"none"}
-  };
 
   const messageRef = useRef();
   useEffect(() => {

@@ -93,23 +93,21 @@
   flex-wrap: wrap;
 }
 
-.player__A ,
+.player__A,
 .player__B {
   max-width: 400px;
-} 
+}
 
-.playerAction{
+.playerAction {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
 }
 
-.player{
+.player {
   display: flex;
   align-items: center;
-  
 }
-
 
 .player__A p,
 .player__B p {
@@ -199,7 +197,7 @@
   width: 855px;
 }
 
-.listLivestream{
+.listLivestream {
   width: 855px;
   display: grid;
   overflow-y: scroll;
@@ -209,7 +207,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: minmax(100px, auto); */
 }
-.listLivestreamUser{
+.listLivestreamUser {
   width: 855px;
   height: 480px;
   border-radius: 5px;
@@ -220,35 +218,39 @@
   top: 0;
   left: 0; */
 }
-.itemLivestreamUser{
+.itemLivestreamUser {
   width: 100%;
   height: 100%;
 }
 
-.itemLivestream.active .item{
-  border:  6px solid #5fe37d;
+.itemLivestream.active .item {
+  border: 6px solid #5fe37d;
 }
-.itemLivestream.active{
+.itemLivestream.active {
   height: 380px;
   grid-column: 1/4;
   grid-row: 1/4;
   cursor: pointer;
 }
-.screenNum{
+.screenNum {
   height: 20px;
   text-align: center;
   margin-top: 10px;
 }
-.itemLivestream{
+.itemLivestream {
   /* grid-column: 3/4; */
   height: 180px;
- cursor: pointer;
+  cursor: pointer;
 }
-.item{
+.item {
   width: 100%;
   height: calc(100% - 30px);
   border-radius: 5px;
   border: 4px solid var(--blue-black);
+}
+.itemUser {
+  width: 100%;
+  height: 100%;
 }
 .comment {
   height: 100%;
@@ -260,7 +262,7 @@
   overflow-x: hidden;
 }
 
-.notLive{
+.notLive {
   background-color: var(--blue-black);
   color: var(--white-text);
   height: 480px;
@@ -286,9 +288,8 @@
 .commnet__content {
   padding: 10px 20px;
   width: 340px;
- position: relative;
- padding-bottom:40px;
-
+  position: relative;
+  padding-bottom: 40px;
 }
 .comment__input {
   position: absolute;
@@ -502,27 +503,26 @@
   cursor: pointer;
 }
 
-.editScore{
+.editScore {
   margin-right: 10px;
-  
 }
 
-.editWrap button{
-  border:none;
+.editWrap button {
+  border: none;
   background-color: var(--green-bold);
-  padding:5px 10px;
+  padding: 5px 10px;
   border-radius: 5px;
   transition: 0.2s linear;
 }
 
-.editWrap button:hover{
+.editWrap button:hover {
   background-color: var(--blue-black);
   color: white;
 }
 
-.playerPopup{
+.playerPopup {
   position: absolute;
-  background-color:white;
+  background-color: white;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -530,147 +530,146 @@
   z-index: 10;
   border-radius: 7px;
 }
-.playerPopup div:first-child{
+.playerPopup div:first-child {
   position: relative;
 }
 
-.playerPopup div:first-child span{
+.playerPopup div:first-child span {
   position: absolute;
   top: -5px;
-  right:-10px;
-  padding:5px;
+  right: -10px;
+  padding: 5px;
   font-weight: bold;
   cursor: pointer;
   border-radius: 50%;
-  background-color:#ce2c2c;
+  background-color: #ce2c2c;
   color: white;
 }
 
-.popUpPlayerWrap{
+.popUpPlayerWrap {
   content: "";
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background-color:rgb(66 66 75 / 50%);
+  background-color: rgb(66 66 75 / 50%);
   top: 0;
   left: 0;
   z-index: 10;
 }
 
-.playerWrap{
+.playerWrap {
   display: flex;
   align-items: center;
   column-gap: 20px;
   margin-bottom: 20px;
 }
 
-.playerPopup img{
+.playerPopup img {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.playerPopup h2{
-  margin-bottom:40px;
+.playerPopup h2 {
+  margin-bottom: 40px;
 }
 
-.choose{
+.choose {
   cursor: pointer;
   background-color: var(--green-bold);
   transition: 0.2s linear;
-  padding:5px;
+  padding: 5px;
   border-radius: 5px;
-
 }
 
-.playerName{
-  max-width:200px;
-  min-width: 200px;;
+.playerName {
+  max-width: 200px;
+  min-width: 200px;
 }
 
-.choose:hover{
+.choose:hover {
   background-color: var(--blue-black);
   color: var(--white-text);
 }
 
-.minutes p{
- margin-bottom: 10px;
- text-align: center;
+.minutes p {
+  margin-bottom: 10px;
+  text-align: center;
 }
 
-.card div{
+.card div {
   width: 25px;
   cursor: pointer;
   height: 40px;
 }
 
-.card{
+.card {
   display: flex;
 }
 
-.red{
-  background-color:red;
+.red {
+  background-color: red;
 }
-.yellow{
-  background-color:yellow;
+.yellow {
+  background-color: yellow;
   margin-right: 20px;
 }
 
-.red.active{
+.red.active {
   border: 5px solid var(--bs-green);
 }
-.yellow.active{
+.yellow.active {
   border: 5px solid var(--bs-green);
 }
 
-.playerCardWrap{
- display: flex;
- justify-content: space-between;
- column-gap:20px;
- margin-top:50px;
+.playerCardWrap {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 20px;
+  margin-top: 50px;
 }
 
-.playerCardWrap div{
+.playerCardWrap div {
   max-width: 600px;
 }
 
-.playerCard__item{
+.playerCard__item {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   margin-top: 20px;
 }
 
-.reverse .playerCard__item{
-  flex-direction:row-reverse;
+.reverse .playerCard__item {
+  flex-direction: row-reverse;
 }
 
-.playerCard__item img{
+.playerCard__item img {
   width: 50px;
   border-radius: 50%;
 }
 
-.playerCard__item h3{
+.playerCard__item h3 {
   margin: 0 20px;
   font-size: 18px;
 }
 
-.reverse .playerCard__item span{
-margin-left: 0;
-margin-right:10px;
+.reverse .playerCard__item span {
+  margin-left: 0;
+  margin-right: 10px;
 }
-.playerCard__item .yellow{
+.playerCard__item .yellow {
   margin-right: 0;
 }
 
-.playerCard__item span{
+.playerCard__item span {
   margin-left: 10px;
 }
 
-.realScore{
+.realScore {
   display: flex;
-  background-color:var(--blue-black);
+  background-color: var(--blue-black);
   width: max-content;
   align-items: center;
   position: absolute;
@@ -678,118 +677,111 @@ margin-right:10px;
   margin-top: 30px;
 }
 
-.realScore p{
+.realScore p {
   color: white;
   font-weight: bold;
   position: relative;
 }
 
-.scoreTeam{
+.scoreTeam {
   margin: 0 20px;
 }
 
-.teamLeft, .teamRight{
-  background-color:#1534cd;
-  padding:10px;
-
+.teamLeft,
+.teamRight {
+  background-color: #1534cd;
+  padding: 10px;
 }
 
-.teamLeft{
+.teamLeft {
   padding-right: 20px;
 }
 
-.teamRight{
+.teamRight {
   padding-left: 20px;
 }
 
-.teamLeft:after{
-    content: "";
-    position: absolute;
-    border:18px solid;
-    top:0;
-    border-bottom-color:var(--blue-black); /* Green */
-    border-top-color:var(--blue-black);    /* Red */
-    border-left-color:#1534cd;   /* Black */
-    border-right-color:var(--blue-black);  /* Blue */
- 
-}
-
-
-.teamRight:after{
+.teamLeft:after {
   content: "";
   position: absolute;
-  border:18px solid;
-  left:-18px;
-  top:0;
-  border-bottom-color:var(--blue-black);; /* Green */
-  border-top-color:var(--blue-black);    /* Red */
-  border-left-color:var(--blue-black);;   /* Black */
-  border-right-color:#1534cd;  /* Blue */
-
+  border: 18px solid;
+  top: 0;
+  border-bottom-color: var(--blue-black); /* Green */
+  border-top-color: var(--blue-black); /* Red */
+  border-left-color: #1534cd; /* Black */
+  border-right-color: var(--blue-black); /* Blue */
 }
-.truePredic{
+
+.teamRight:after {
+  content: "";
+  position: absolute;
+  border: 18px solid;
+  left: -18px;
+  top: 0;
+  border-bottom-color: var(--blue-black); /* Green */
+  border-top-color: var(--blue-black); /* Red */
+  border-left-color: var(--blue-black); /* Black */
+  border-right-color: #1534cd; /* Blue */
+}
+.truePredic {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.truePredic h3{
+.truePredic h3 {
   font-weight: bold;
   text-transform: uppercase;
-  margin-top:50px;
+  margin-top: 50px;
   font-size: 20px;
 }
-.userPredict{
-  flex-direction:row;
+.userPredict {
+  flex-direction: row;
 }
-.truePredic .match__team{
+.truePredic .match__team {
   justify-content: center;
   margin-top: 10px;
 }
 
-.userPredict img{
+.userPredict img {
   width: 60px;
   height: 60px;
 }
 
-.truePredic h2{
-font-size: 18px;
-margin:0;
+.truePredic h2 {
+  font-size: 18px;
+  margin: 0;
 }
 
 .truePredic .score__A {
   font-size: 18px;
 }
 
-.truePredic .score__B{
+.truePredic .score__B {
   font-size: 18px;
 }
 
-.truePredic .line{
+.truePredic .line {
   font-size: 15px;
 }
 
-
-.userPredict h2{
+.userPredict h2 {
   margin-left: 10px;
- 
 }
 
-.truePredic div{
+.truePredic div {
   margin-right: 20px;
 }
 
-.celeb{
+.celeb {
   width: 100px;
- 
 }
 
-.celeb:first-child{
+.celeb:first-child {
   margin-right: 100px;
 }
 
-.reverse{
+.reverse {
   transform: rotate(270deg);
   transform-origin: center;
   margin-left: 100px;
 }
-

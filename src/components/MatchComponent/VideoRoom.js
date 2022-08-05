@@ -13,7 +13,7 @@ function VideoRoom(props) {
   );
   const [uid, setUid] = useState(props.uId);
 
-  console.log(props.uId)
+  console.log(props.uId);
   const client = AgoraRTC.createClient({
     mode: "rtc",
     codec: "vp8",
@@ -117,17 +117,17 @@ function VideoRoom(props) {
                   }
                 >
                   <VideoPlayer
+                    matchId={props.props.idMatch}
                     index={index}
                     key={user.uid}
                     user={user}
                     setMainScreen={setMainScreen}
-                    sendScreen={props.sendScreen}
                     setNumberScreen={setNumberScreen}
                   />
                 </div>
               </>
             ))
-          ) : props.uId.length>0 ? (
+          ) : props.uId.length > 0 ? (
             users.map((user) => (
               <>
                 {props.uId == user.uid ? (
