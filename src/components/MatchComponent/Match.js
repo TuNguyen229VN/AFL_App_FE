@@ -16,7 +16,13 @@ import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { getMatchDetailByMatchIdAPI } from "../../api/MatchDetailAPI";
 import { saveRecordInMatchDetail } from "../../api/MatchDetailAPI";
 import { async } from "@firebase/util";
-
+import ReportMatch from "./ReportMatch";
+import {
+  getReportByReasonAPI,
+  createReport,
+  deleteReport,
+} from "../../api/Report";
+import { updateTeamInMatch } from "../../api/TeamInMatchAPI";
 function Match() {
   const location = useLocation();
   const [user, setUser] = useState(
@@ -53,7 +59,7 @@ function Match() {
   // update Player
   const [playerScoreA, setplayerScoreA] = useState([]);
   const [playerScoreB, setPlayerScoreB] = useState([]);
-
+  const [hideShowReport, setHideShowReport] = useState(false);
   const [playerTeamA, setPlayerTeamA] = useState([]);
   const [playerTeamB, setPlayerTeamB] = useState([]);
   //
@@ -127,6 +133,24 @@ function Match() {
         setLoading(false);
         console.log(err);
       });
+  };
+
+  // useEffect(() => {
+  //   getReportByReason();
+  // },[]);
+  const [reportMatch, setReportMatch] = useState(null);
+  const getReportByReason = async () => {
+    try {
+      const response = await getReportByReasonAPI(`${idMatch}-`);
+      if (response.status === 200) {
+        const data = response.data.reports;
+        if (data.length > 0) {
+          setReportMatch(data[0]);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const [detail, setDetail] = useState([]);
@@ -377,6 +401,42 @@ function Match() {
         setLoading(false);
       });
   };
+  const updateTeamInMatchReport = async (data) => {
+    try {
+      const response = await updateTeamInMatch(data);
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const postReportMatch = async (teamInMatchData, reason, teamId) => {
+    try {
+      let response = null;
+      if (typeof reason === "string") {
+        const data = {
+          reason: reason,
+          userId: teamId,
+          footballPlayerId: 0,
+          teamId: teamId,
+          tournamentId: 0,
+          status: "match",
+        };
+        response = await createReport(data);
+      } else {
+        response = await deleteReport(reason);
+      }
+      if (response.status === 200 || response.status === 201) {
+        setHideShowReport(false);
+        setReportMatch(response.status === 201 ? response.data : null);
+        for (const item of teamInMatchData) {
+          //console.log(item);
+          await updateTeamInMatchReport(item);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const [players, setPlayers] = useState([]);
   const getPlayer = (id, team) => {
@@ -392,6 +452,7 @@ function Match() {
   };
   useEffect(() => {
     getMatch();
+    getReportByReason();
   }, [check]);
 
   const [activeTeamDetail, setActiveTeamDetail] = useState(location.pathname);
@@ -1033,7 +1094,7 @@ function Match() {
       let response = saveRecordInMatchDetail(data, idMatch);
       response
         .then((res) => {
-          updateTeamInMatch(actionId);
+          updateTeamInMatchh(actionId);
           console.log(res.data);
           if (playerPopup) {
             setPlayerPopup(false);
@@ -1054,7 +1115,7 @@ function Match() {
     }
   };
 
-  const updateTeamInMatch = async (actionId) => {
+  const updateTeamInMatchh = async (actionId) => {
     try {
       let tim = {};
       let teamScore = 0;
@@ -1459,10 +1520,46 @@ function Match() {
         {allTeamA != null && allTeamB != null ? (
           <>
             <h2 className={styles.title}>Trận đấu</h2>
-            <div className={styles.action}>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+              }}
+              className={styles.action}
+            >
+              {detail === null || detail.length === 0 ? (
+                <p
+                  style={{
+                    color: "blue",
+                    fontSize: 20,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    setHideShowReport(true);
+                  }}
+                >
+                  Báo cáo trận đấu
+                </p>
+              ) : null}
+
+              <div
+                className={hideShowReport ? "overlay active" : "overlay"}
+              ></div>
+              <ReportMatch
+                hideShow={hideShowReport}
+                setHideShow={setHideShowReport}
+                inforTeam={
+                  allTeamA !== null ? [{ ...allTeamA }, { ...allTeamB }] : null
+                }
+                reportMatch={reportMatch !== null ? reportMatch : null}
+                postReportMatch={postReportMatch}
+              />
               {user !== null &&
               location.state !== null &&
-              user.userVM.id === location.state.hostTournamentId ? (
+              user.userVM.id === location.state.hostTournamentId &&
+              (reportMatch === null || reportMatch.length === 0) ? (
                 <p
                   className={styles.updateMatch}
                   onClick={() =>
@@ -1578,79 +1675,98 @@ function Match() {
                   </div>
                 </div>
               ))}
-              <div className={styles.player__score}>
-                <div className={styles.player__A}>
-                  {detail &&
-                    allTeamA &&
-                    detail.map((item) => (
-                      <>
-                        {item.playerSide == "teamA" && (
-                          <div className={styles.playerAction}>
-                            <div className={styles.player}>
-                              <img
-                                style={{
-                                  width: 30,
-                                  marginRight: 10,
-                                }}
-                                src={
-                                  item.actionMatchId === 1
-                                    ? "/assets/icons/soccer-ball-retina.png"
-                                    : item.actionMatchId === 2
-                                    ? "/assets/icons/yellow-card.png"
-                                    : "/assets/icons/red-card.png"
-                                }
-                                alt="ball"
-                              />
-                              <p>{item.namePlayer}</p>
-                            </div>
+              {reportMatch !== null ? (
+                <h1
+                  style={{
+                    color: "red",
+                    fontSize: 24,
+                    marginTop: 40,
+                    textAlign: "center",
+                  }}
+                >
+                  {reportMatch.team.teamName +
+                    " đã bị xử thua vì " +
+                    reportMatch.reason.split("-")[1]}
+                </h1>
+              ) : (
+                <div className={styles.player__score}>
+                  <div className={styles.player__A}>
+                    {detail &&
+                      allTeamA &&
+                      detail.map((item) => (
+                        <>
+                          {item.playerSide == "teamA" && (
+                            <div className={styles.playerAction}>
+                              <div className={styles.player}>
+                                <img
+                                  style={{
+                                    width: 30,
+                                    marginRight: 10,
+                                  }}
+                                  src={
+                                    item.actionMatchId === 1
+                                      ? "/assets/icons/soccer-ball-retina.png"
+                                      : item.actionMatchId === 2
+                                      ? "/assets/icons/yellow-card.png"
+                                      : "/assets/icons/red-card.png"
+                                  }
+                                  alt="ball"
+                                />
+                                <p>{item.namePlayer}</p>
+                              </div>
 
-                            {item.minutesScore.map((itemMin, indexMin) => {
-                              return <span key={indexMin}>{itemMin}'</span>;
-                            })}
-                          </div>
-                        )}
-                      </>
-                    ))}
-                </div>
-                <div className={styles.logo__ball}>
-                  <img src="/assets/icons/soccer-ball-retina.png" alt="ball" />
-                </div>
-                <div className={styles.player__B}>
-                  {detail &&
-                    allTeamB &&
-                    detail.map((item) => (
-                      <>
-                        {item.playerSide == "teamB" && (
-                          <div className={styles.playerAction}>
-                            <div className={styles.player}>
-                              <img
-                                style={{
-                                  width: 30,
-                                  marginRight: 10,
-                                }}
-                                src={
-                                  item.actionMatchId === 1
-                                    ? "/assets/icons/soccer-ball-retina.png"
-                                    : item.actionMatchId === 2
-                                    ? "/assets/icons/yellow-card.png"
-                                    : "/assets/icons/red-card.png"
-                                }
-                                alt="ball"
-                              />
-                              <p>{item.namePlayer}</p>
+                              {item.minutesScore.map((itemMin, indexMin) => {
+                                return <span key={indexMin}>{itemMin}'</span>;
+                              })}
                             </div>
+                          )}
+                        </>
+                      ))}
+                  </div>
+                  <div className={styles.logo__ball}>
+                    <img
+                      src="/assets/icons/soccer-ball-retina.png"
+                      alt="ball"
+                    />
+                  </div>
+                  <div className={styles.player__B}>
+                    {detail &&
+                      allTeamB &&
+                      detail.map((item) => (
+                        <>
+                          {item.playerSide == "teamB" && (
+                            <div className={styles.playerAction}>
+                              <div className={styles.player}>
+                                <img
+                                  style={{
+                                    width: 30,
+                                    marginRight: 10,
+                                  }}
+                                  src={
+                                    item.actionMatchId === 1
+                                      ? "/assets/icons/soccer-ball-retina.png"
+                                      : item.actionMatchId === 2
+                                      ? "/assets/icons/yellow-card.png"
+                                      : "/assets/icons/red-card.png"
+                                  }
+                                  alt="ball"
+                                />
+                                <p>{item.namePlayer}</p>
+                              </div>
 
-                            {item.minutesScore.map((itemMin, indexMin) => {
-                              return <span key={indexMin}>{itemMin}'</span>;
-                            })}
-                          </div>
-                        )}
-                      </>
-                    ))}
+                              {item.minutesScore.map((itemMin, indexMin) => {
+                                return <span key={indexMin}>{itemMin}'</span>;
+                              })}
+                            </div>
+                          )}
+                        </>
+                      ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
-            {predict != null && predict.user ? (
+
+            {reportMatch !== null ? null : predict != null && predict.user ? (
               <div className={styles.truePredic}>
                 <h3>Người dự đoán đúng nhất</h3>
                 <div className={styles.match__team}>
