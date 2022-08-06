@@ -17,7 +17,7 @@ import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import { createSchedule } from "../../api/MatchAPI";
 import LoadingAction from "../LoadingComponent/LoadingAction";
 import { useNavigate } from "react-router-dom";
-
+import myData from "../../provice.json";
 const CreateTournament = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState(-1);
@@ -108,12 +108,7 @@ const CreateTournament = () => {
     getAllCity();
   }, [resetProvice]);
   const getAllCity = async () => {
-    const response = await axios.get(
-      "https://provinces.open-api.vn/api/"
-    );
-    if (response.status === 200) {
-      setProvice(response.data);
-    }
+    setProvice(myData);
   };
 
   const createGenerateTable = (id) => {

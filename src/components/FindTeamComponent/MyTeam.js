@@ -12,6 +12,7 @@ import Loading from "../LoadingComponent/Loading";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import { getAPI } from "../../api/index";
 import LoadingAction from "../LoadingComponent/LoadingAction";
+import myData from "../../provice.json"
 const MyTournamemts = () => {
   AOS.init();
   const tour = gsap.timeline();
@@ -34,13 +35,12 @@ const MyTournamemts = () => {
   }, []);
 
   const getAllCity = async () => {
-    const response = await axios.get(
-      "https://provinces.open-api.vn/api/"
-    );
-    if (response.status === 200) {
-      setProvice(response.data);
-      // console.log(response.data)
-    }
+    
+    setProvice(myData);
+    // if (response.status === 200) {
+      
+    //   // console.log(response.data)
+    // }
   };
 
   const getTournament = async (nameFind, currentPage, anotherSearch, value) => {
