@@ -175,13 +175,24 @@ export default function DetailMatch(props) {
     }
   };
   const deleteMatchDetailByType = async (matchId, type, data) => {
-    console.log(data);
+    console.log([
+      { yellowA, yellowB },
+      { redA, redB },
+      { scoreA, scoreB },
+    ]);
     try {
       const response = await deleteMatchDetailByTypeAPI(matchId, type);
       if (response.status === 200) {
-        for (let item of data) {
-          await updateMatchDetail(item);
+        if (
+          (type === "yellow" && (+yellowA !== 0 || +yellowB !== 0)) ||
+          (type === "score" && (+scoreA !== 0 || +scoreB !== 0)) ||
+          (type === "red" && (+redA !== 0 || +redB !== 0))
+        ) {
+          for (let item of data) {
+            await updateMatchDetail(item);
+          }
         }
+
         toast.success("Cập nhật thành công chi tiết trận đấu", {
           position: "top-right",
           autoClose: 3000,
