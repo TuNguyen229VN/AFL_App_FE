@@ -212,17 +212,54 @@
   height: 480px;
   border-radius: 5px;
   border: 1px solid var(--blue-black);
+  position: initial;
   /* position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0; */
 }
+.listLivestreamUserFull {
+  border-radius: initial;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  left: 0;
+}
+
+.optionLive {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  justify-content: flex-end;
+  width: 100%;
+  bottom: 0;
+  transition: 0.5s;
+}
+
+.itemLivestreamUser:hover .optionLive {
+  visibility: visible;
+  opacity: 1;
+  transition: 0.5s;
+}
+.optionLive i {
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
 .itemLivestreamUser {
+  position: relative;
   width: 100%;
   height: 100%;
 }
-
+.itemLivestreamUserFull {
+  position: fixed;
+}
 .itemLivestream.active .item {
   border: 6px solid #5fe37d;
 }
@@ -252,6 +289,7 @@
   width: 100%;
   height: 100%;
 }
+
 .comment {
   height: 100%;
   background-color: var(--blue-black);

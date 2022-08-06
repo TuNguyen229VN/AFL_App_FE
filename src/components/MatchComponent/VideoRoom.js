@@ -24,7 +24,6 @@ function VideoRoom(props) {
 
   const handleUserJoined = async (user, mediaType) => {
     await client.subscribe(user, mediaType);
-
     if (mediaType === "video") {
       setUsers((previousUsers) => [...previousUsers, user]);
       props.setCheckLivestream((previousUsers) => [...previousUsers, user]);
@@ -92,6 +91,7 @@ function VideoRoom(props) {
   }, []);
 
   const [numberScreen, setNumberScreen] = useState(0);
+  const [fullScreen, setFullScreen] = useState(false);
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       {users.length > 0 ? (
@@ -101,7 +101,7 @@ function VideoRoom(props) {
             idHostTournament !== null &&
             idUser.userVM.id === idHostTournament
               ? styles.listLivestream
-              : styles.listLivestreamUser
+              : (fullScreen?styles.listLivestreamUserFull:styles.listLivestreamUser)
           }
         >
           {idUser !== null &&
@@ -132,7 +132,7 @@ function VideoRoom(props) {
             users.map((user) => (
               <>
                 {props.uId == user.uid ? (
-                  <VideoPlayerUser key={user.uid} user={user} />
+                  <VideoPlayerUser key={user.uid} user={user} setFullScreen={setFullScreen} fullScreen={fullScreen}/>
                 ) : null}
               </>
             ))
