@@ -25,6 +25,7 @@ import {
 import { updateTeamInMatch } from "../../api/TeamInMatchAPI";
 function Match() {
   const location = useLocation();
+  const [checkLivestream, setCheckLivestream] = useState([]);
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
@@ -475,6 +476,7 @@ function Match() {
     if (activeTeamDetail === `/match/${idMatch}/livestream`) {
       return (
         <Livestream
+          setCheckLivestream={setCheckLivestream}
           idMatch={idMatch}
           tokenLivestream={tokenLivestream}
           sendComment={sendComment}
@@ -935,10 +937,10 @@ function Match() {
       connection.on("ReceiveComment", (user, comment) => {
         setMessage((message) => [...message, { user, comment }]);
       });
-      // connection.on("ReceiveScreen", (id) => {
-      //   setUId(id);
-      //   console.log(id);
-      // });
+      connection.on("ReceiveScreen", (id) => {
+        setUId(id);
+        console.log(id);
+      });
 
       connection.on("MatchDetail", (mDt) => {
         console.log(mDt);
@@ -1528,7 +1530,8 @@ function Match() {
               }}
               className={styles.action}
             >
-              {detail === null || detail.length === 0 ? (
+              {tokenLivestream==="" &&
+              (detail === null || detail.length === 0) ? (
                 <p
                   style={{
                     color: "blue",
@@ -1556,7 +1559,8 @@ function Match() {
                 reportMatch={reportMatch !== null ? reportMatch : null}
                 postReportMatch={postReportMatch}
               />
-              {user !== null &&
+              {checkLivestream.length === 0 &&
+              user !== null &&
               location.state !== null &&
               user.userVM.id === location.state.hostTournamentId &&
               (reportMatch === null || reportMatch.length === 0) ? (
@@ -1614,7 +1618,8 @@ function Match() {
                       alt={item.teamName}
                     />
                     <h2>{item.teamName}</h2>
-                    {user !== null &&
+                    {checkLivestream.length > 0 &&
+                    user !== null &&
                     location.state !== null &&
                     user.userVM.id === location.state.hostTournamentId ? (
                       <div className={styles.editWrap}>
@@ -1650,7 +1655,8 @@ function Match() {
                       alt={allTeamB[index].teamName}
                     />
                     <h2>{allTeamB[index].teamName}</h2>
-                    {user !== null &&
+                    {checkLivestream.length > 0 &&
+                    user !== null &&
                     location.state !== null &&
                     user.userVM.id === location.state.hostTournamentId ? (
                       <div className={styles.editWrap}>

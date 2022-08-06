@@ -27,7 +27,7 @@ function VideoRoom(props) {
 
     if (mediaType === "video") {
       setUsers((previousUsers) => [...previousUsers, user]);
-      // setMainScreen((previousUsers) => [...previousUsers, user]);
+      props.setCheckLivestream((previousUsers) => [...previousUsers, user]);
     }
 
     if (
@@ -45,9 +45,9 @@ function VideoRoom(props) {
     setUsers((previousUsers) =>
       previousUsers.filter((u) => u.uid !== user.uid)
     );
-    // setMainScreen((previousUsers) =>
-    //   previousUsers.filter((u) => u.uid !== user.uid)
-    // );
+    props.setCheckLivestream((previousUsers) =>
+      previousUsers.filter((u) => u.uid !== user.uid)
+    );
   };
 
   useEffect(() => {
@@ -68,14 +68,15 @@ function VideoRoom(props) {
             audioTrack,
           },
         ]);
-        // setMainScreen((previousUsers) => [
-        //   ...previousUsers,
-        //   {
-        //     uid,
-        //     videoTrack,
-        //     audioTrack,
-        //   },
-        // ]);
+
+        props.setCheckLivestream((previousUsers) => [
+          ...previousUsers,
+          {
+            uid,
+            videoTrack,
+            audioTrack,
+          },
+        ]);
         client.publish(tracks);
       });
 
@@ -111,7 +112,7 @@ function VideoRoom(props) {
                 {/* <p>{user.uid}</p> */}
                 <div
                   className={
-                    numberScreen === index
+                    props.uId == user.uid
                       ? `${styles.itemLivestream} ${styles.active}`
                       : styles.itemLivestream
                   }

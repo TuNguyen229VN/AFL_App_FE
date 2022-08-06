@@ -43,7 +43,7 @@ function Livestream(data) {
   return (
     <div className={styles.livestream}>
      <div className={styles.video}>
-        <VideoRoom props={rtcProps} setInCall={setInCall} sendScreen={data.sendScreen} uId ={data.uId} idUser={idUser} idHostTournament={idHostTournament}/>
+        <VideoRoom props={rtcProps} setInCall={setInCall} sendScreen={data.sendScreen} uId ={data.uId} idUser={idUser} idHostTournament={idHostTournament} setCheckLivestream={data.setCheckLivestream}/>
     </div>
 
       {/* {!inCall && <button onClick={() => setInCall(true)}>Join Room</button>}
