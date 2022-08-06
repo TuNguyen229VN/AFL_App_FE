@@ -34,6 +34,7 @@ import {
   updateTeamInScheduleAPI,
 } from "../../api/TeamInTournamentAPI";
 import postNotifacation from "../../api/NotificationAPI";
+import myData from "../../provice.json"
 const UpdateTournamentInformation = () => {
   let navigate = useNavigate();
   const location = useLocation();
@@ -136,13 +137,11 @@ const UpdateTournamentInformation = () => {
   const tour = gsap.timeline();
   const [changeFormat, setChangeFormat] = useState(false);
   const getAllCity = async () => {
-    const response = await axios.get(
-      "https://provinces.open-api.vn/api/"
-    );
-    if (response.status === 200) {
-      setProvice(response.data);
+    
+    
+      setProvice(myData);
       const proviceCurrent = addressTour.split(", ")[3];
-      const findDistrictByNameProvice = response.data.find(
+      const findDistrictByNameProvice = myData.find(
         (item) => item.name === proviceCurrent
       );
       setProviceSearch(findDistrictByNameProvice.name);
@@ -160,7 +159,7 @@ const UpdateTournamentInformation = () => {
 
       setWardSearch(findWards.name);
       setWards(allWard);
-    }
+    
   };
   useEffect(() => {
     if (lengthTeamPaticipate > 0) {

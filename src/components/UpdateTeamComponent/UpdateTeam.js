@@ -21,6 +21,7 @@ import LoadingAction from "../LoadingComponent/LoadingAction";
 import { getAllPlayerByTeamIdAPI } from "../../api/PlayerInTeamAPI";
 import postNotifacation from "../../api/NotificationAPI";
 import { async } from "@firebase/util";
+import myData from "../../provice.json";
 function UpdateTeam() {
   const location = useLocation();
   const address = location.state.address;
@@ -75,8 +76,8 @@ function UpdateTeam() {
   const [proviceSearch, setProviceSearch] = useState(null);
   const [districSearch, setDistricSearch] = useState(null);
   const [wardSearch, setWardSearch] = useState(null);
-  const [player,setPlayer] = useState(null);
-  const [numberInTeam,setNumberInTeam] = useState(null);
+  const [player, setPlayer] = useState(null);
+  const [numberInTeam, setNumberInTeam] = useState(null);
   useEffect(() => {
     setResetProvice(-1);
     getAllCity();
@@ -88,7 +89,7 @@ function UpdateTeam() {
     getPlayerPaticipateInTeam();
   }, []);
 
-  const postNotificationforTeamManager = async (footballPlayer,nameClub) => {
+  const postNotificationforTeamManager = async (footballPlayer, nameClub) => {
     const data = {
       content: `${nameClub} đội bóng mà bạn đang tham gia thay đổi thông tin đội bóng của họ.Xem ngay`,
       userId: footballPlayer.id,
@@ -98,18 +99,17 @@ function UpdateTeam() {
     try {
       const response = await postNotifacation(data);
       if (response.status === 201) {
-        
       }
     } catch (err) {
       console.error(err);
     }
   };
-  
-  const getPlayerPaticipateInTeam =  () => {
-    const response =  getAllPlayerByTeamIdAPI(user.userVM.id);
+
+  const getPlayerPaticipateInTeam = () => {
+    const response = getAllPlayerByTeamIdAPI(user.userVM.id);
     response
       .then((res) => {
-        setPlayer(res.data.playerInTeamsFull)
+        setPlayer(res.data.playerInTeamsFull);
       })
       .catch((err) => console.error(err));
   };
@@ -130,7 +130,6 @@ function UpdateTeam() {
     let response = getAPI(afterDefaultURL);
     response
       .then((res) => {
-        
         setNumberInTeam(res.data.numberPlayerInTeam);
         setNameClub({ value: res.data.teamName });
         setImgClub({ value: res.data.teamAvatar, img: res.data.teamAvatar });
@@ -150,26 +149,23 @@ function UpdateTeam() {
       });
   };
   const getAllCity = async () => {
-    console.log(address);
-    const response = await axios.get(
-      "https://provinces.open-api.vn/api/"
-    );
-    if (response.status === 200) {
-      setProvice(response.data);
+    
+    
+      setProvice(myData);
 
       const proviceCurrent = address.split(", ")[2];
-      const findDistrictByNameProvice = response.data.find(
+      const findDistrictByNameProvice = myData.find(
         (item) => item.name === proviceCurrent
       );
-      console.log(findDistrictByNameProvice);
+
       setDistricts(findDistrictByNameProvice.districts);
       const districtCurrent = address.split(", ")[1];
       const findWardsByDistrictName = findDistrictByNameProvice.districts.find(
         (item) => item.name === districtCurrent
       );
-      console.log(findWardsByDistrictName);
+
       setWards(findWardsByDistrictName.wards);
-    }
+    
   };
   const validateForm = (name, value) => {
     switch (name) {
@@ -264,7 +260,6 @@ function UpdateTeam() {
         progress: undefined,
       });
     } else {
-      
       try {
         const data = {
           id: user.userVM.id,
@@ -284,8 +279,11 @@ function UpdateTeam() {
           }
         );
         if (response.status === 200) {
-          for(const item of player){
-            await postNotificationforTeamManager(item.footballPlayer,nameClub.value)
+          for (const item of player) {
+            await postNotificationforTeamManager(
+              item.footballPlayer,
+              nameClub.value
+            );
           }
           setLoading(false);
           toast.success("Cập nhật đội bóng thành công", {
@@ -581,7 +579,9 @@ function UpdateTeam() {
                   onChange={onChangeHandler}
                   id="genderteam"
                   required
-                  disabled= { numberInTeam !== null && numberInTeam > 0 ? "disabled" : ""}
+                  disabled={
+                    numberInTeam !== null && numberInTeam > 0 ? "disabled" : ""
+                  }
                 >
                   <option value="Male">Nam</option>
                   <option value="Female">Nữ</option>

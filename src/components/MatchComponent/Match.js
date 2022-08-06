@@ -411,6 +411,7 @@ function Match() {
     }
   };
   const postReportMatch = async (teamInMatchData, reason, teamId) => {
+    setLoading(true);
     try {
       let response = null;
       if (typeof reason === "string") {
@@ -433,8 +434,19 @@ function Match() {
           //console.log(item);
           await updateTeamInMatchReport(item);
         }
+        setLoading(false);
+        toast.success(response.status === 201 ? "Báo cáo trận đấu thành công" : "Hủy báo cáo trận đấu thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     } catch (err) {
+      setLoading(false);
       console.error(err);
     }
   };
@@ -1530,7 +1542,7 @@ function Match() {
               }}
               className={styles.action}
             >
-              {tokenLivestream==="" &&
+              {tokenLivestream === "" &&
               (detail === null || detail.length === 0) ? (
                 <p
                   style={{

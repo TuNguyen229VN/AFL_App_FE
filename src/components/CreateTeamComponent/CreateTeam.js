@@ -13,7 +13,7 @@ import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import { useNavigate } from "react-router-dom";
 import { getAPI } from "../../api";
 import LoadingAction from "../LoadingComponent/LoadingAction";
-
+import myData from "../../provice.json";
 const CreateTeam = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const textDescription = draftToHtml(
@@ -77,12 +77,9 @@ const CreateTeam = () => {
       .catch((err) => console.error(err));
   };
   const getAllCity = async () => {
-    const response = await axios.get(
-      "https://provinces.open-api.vn/api/"
-    );
-    if (response.status === 200) {
-      setProvice(response.data);
-    }
+    
+
+    setProvice(myData);
   };
   const validateForm = (name, value) => {
     switch (name) {
@@ -312,7 +309,6 @@ const CreateTeam = () => {
         });
         break;
       case "gender":
-        
         let gender = null;
         if (flagValid.flag === false) {
           gender = {
