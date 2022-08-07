@@ -289,6 +289,48 @@ function HeaderTeamDetail() {
     }
   };
 
+  const pushNotiForAdmin = async () => {
+    setLoadingAc(true);
+    const data = {
+      content: user.userVM.username + " đã báo cáo một đội bóng",
+      forAdmin: true,
+      teamId: idTeam,
+      userId: user.userVM.id,
+    };
+    try {
+      const response = await axios.post(
+        "https://afootballleague.ddns.net/api/v1/notifications",
+        data
+      );
+      if (response.status === 201) {
+        setPopupReport(false);
+        setContentReport({ value: "", error: "" });
+        setLoadingAc(false);
+        toast.success("Báo cáo thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      setLoadingAc(false);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.error(error.response);
+    }
+  };
+
   const sendReport = async (e) => {
     setLoadingAc(true);
     e.preventDefault();
@@ -324,18 +366,7 @@ function HeaderTeamDetail() {
         data
       );
       if (response.status === 201) {
-        setPopupReport(false);
-        setContentReport({ value: "", error: "" });
-        setLoadingAc(false);
-        toast.success("Báo cáo thành công", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        pushNotiForAdmin();
       }
     } catch (error) {
       setLoadingAc(false);

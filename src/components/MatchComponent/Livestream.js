@@ -5,12 +5,14 @@ import { Button } from "@material-ui/core";
 import AgoraUIKit, { PropsInterface, layout } from "agora-react-uikit";
 import VideoRoom from "./VideoRoom";
 function Livestream(data) {
-  const [idUser, setidUser] = useState(data.user)
-  const [idHostTournament, setIdHostTournament] = useState(data.idHostTournament)
+  const [idUser, setidUser] = useState(data.user);
+  const [idHostTournament, setIdHostTournament] = useState(
+    data.idHostTournament
+  );
   const [videocall, setVideocall] = useState(true);
   const [isPinned, setisPinned] = useState(true);
   const [cLive, setCLive] = useState("");
-  
+
   // Options for joining a channel
   const rtcProps = {
     appId: "629c856215b345779a8fb2a691f51976",
@@ -25,7 +27,6 @@ function Livestream(data) {
     EndCall: () => setVideocall(false),
     PinnedVideo: () => console.log("s"),
   };
-
 
   const messageRef = useRef();
   useEffect(() => {
@@ -42,9 +43,19 @@ function Livestream(data) {
 
   return (
     <div className={styles.livestream}>
-     <div className={styles.video}>
-        <VideoRoom props={rtcProps} setInCall={setInCall} sendScreen={data.sendScreen} uId ={data.uId} idUser={idUser} idHostTournament={idHostTournament} setCheckLivestream={data.setCheckLivestream}/>
-    </div>
+      <div className={styles.video}>
+        <VideoRoom
+          fullScreen={data.fullScreen}
+          setFullScreen={data.setFullScreen}
+          props={rtcProps}
+          setInCall={setInCall}
+          sendScreen={data.sendScreen}
+          uId={data.uId}
+          idUser={idUser}
+          idHostTournament={idHostTournament}
+          setCheckLivestream={data.setCheckLivestream}
+        />
+      </div>
 
       {/* {!inCall && <button onClick={() => setInCall(true)}>Join Room</button>}
 

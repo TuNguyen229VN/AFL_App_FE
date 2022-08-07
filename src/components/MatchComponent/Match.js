@@ -25,6 +25,7 @@ import {
 import { updateTeamInMatch } from "../../api/TeamInMatchAPI";
 function Match() {
   const location = useLocation();
+  const [fullScreen, setFullScreen] = useState(false);
   const [checkLivestream, setCheckLivestream] = useState([]);
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
@@ -435,15 +436,20 @@ function Match() {
           await updateTeamInMatchReport(item);
         }
         setLoading(false);
-        toast.success(response.status === 201 ? "Báo cáo trận đấu thành công" : "Hủy báo cáo trận đấu thành công", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.success(
+          response.status === 201
+            ? "Báo cáo trận đấu thành công"
+            : "Hủy báo cáo trận đấu thành công",
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
       }
     } catch (err) {
       setLoading(false);
@@ -488,6 +494,8 @@ function Match() {
     if (activeTeamDetail === `/match/${idMatch}/livestream`) {
       return (
         <Livestream
+          fullScreen={fullScreen}
+          setFullScreen={setFullScreen}
           setCheckLivestream={setCheckLivestream}
           idMatch={idMatch}
           tokenLivestream={tokenLivestream}
@@ -1896,7 +1904,7 @@ function Match() {
               </Link>
             </div>
             {activeTeamDetail === `/match/${idMatch}/livestream` ? (
-              <div className={styles.realScore}>
+              <div className={!fullScreen?styles.realScore:`${styles.realScore} ${styles.realScoreFull}`}>
                 <p className={styles.teamLeft}>
                   {allTeamA.length > 0 && allTeamA[0].teamName}
                 </p>

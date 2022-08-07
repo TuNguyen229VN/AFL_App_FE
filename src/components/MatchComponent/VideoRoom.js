@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import VideoPlayer from "./VideoPlayer";
 import styles from "./styles/style.module.css";
 import VideoPlayerUser from "./VideoPlayerUser";
+import { toast } from "react-toastify";
+import axios from "axios";
 function VideoRoom(props) {
   const APP_ID = props.props.appId;
   const TOKEN = props.props.token;
@@ -91,9 +93,81 @@ function VideoRoom(props) {
   }, []);
 
   const [numberScreen, setNumberScreen] = useState(0);
-  const [fullScreen, setFullScreen] = useState(false);
+  const changeScreenForUser = async (matchId) => {
+    try {
+      const response = await axios.put(
+        `https://afootballleague.ddns.net/api/v1/matchs/IdScreen?matchId=${matchId}&screenId=${0}`,
+        {
+          headers: { "content-type": "multipart/form-data" },
+        }
+      );
+      console.log(response.status);
+      if (response.status === 204) {
+        toast.success("Kết thúc livestream", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      toast.error(error.response.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.log(error);
+    }
+  };
+  const checkLiveScreen = () => {
+    let check = false;
+    if (
+      users.length > 0 &&
+      idUser !== null &&
+      idHostTournament !== null &&
+      idUser.userVM.id === idHostTournament
+    ) {
+      for (let i = 0; i < users.length; i++) {
+        if (users[i].uid == props.uId) {
+          check = true;
+          break;
+        }
+      }
+      if (!check) {
+        return (
+          <p className={styles.buttonSelect}>
+            Vui lòng chọn màn hình để livestream
+          </p>
+        );
+      } else {
+        return (
+          <p
+            className={styles.buttonOff}
+            onClick={() => changeScreenForUser(props.props.idMatch)}
+          >
+            Kết thúc livestream
+          </p>
+        );
+      }
+    }
+    return null;
+  };
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        position: "relative",
+      }}
+    >
+      {checkLiveScreen()}
       {users.length > 0 ? (
         <div
           className={
@@ -101,7 +175,9 @@ function VideoRoom(props) {
             idHostTournament !== null &&
             idUser.userVM.id === idHostTournament
               ? styles.listLivestream
-              : (fullScreen?styles.listLivestreamUserFull:styles.listLivestreamUser)
+              : props.fullScreen
+              ? styles.listLivestreamUserFull
+              : styles.listLivestreamUser
           }
         >
           {idUser !== null &&
@@ -132,8 +208,13 @@ function VideoRoom(props) {
             users.map((user) => (
               <>
                 {props.uId == user.uid ? (
-                  <VideoPlayerUser key={user.uid} user={user} setFullScreen={setFullScreen} fullScreen={fullScreen}/>
-                ) : null}
+                  <VideoPlayerUser
+                    key={user.uid}
+                    user={user}
+                    setFullScreen={props.setFullScreen}
+                    fullScreen={props.fullScreen}
+                  />
+                ) : <p className={styles.notLive}>Chưa có livestream</p>}
               </>
             ))
           ) : (

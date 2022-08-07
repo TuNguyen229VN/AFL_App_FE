@@ -563,6 +563,48 @@ function HeaderTournamentDetail() {
     }
   };
 
+  const pushNotiForAdmin = async () => {
+    setLoadingAc(true);
+    const data = {
+      content: user.userVM.username + " đã gửi báo cáo một giải đấu",
+      forAdmin: true,
+      tournamentId: idTour,
+      userId: user.userVM.id,
+    };
+    try {
+      const response = await axios.post(
+        "https://afootballleague.ddns.net/api/v1/notifications",
+        data
+      );
+      if (response.status === 201) {
+        setPopupReport(false);
+        setContentReport({ value: "", error: "" });
+        setLoadingAc(false);
+        toast.success("Báo cáo thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      setLoadingAc(false);
+      toast.error(error.response.data, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.error(error.response);
+    }
+  };
+
   const sendReport = async (e) => {
     setLoadingAc(true);
     e.preventDefault();
@@ -599,18 +641,7 @@ function HeaderTournamentDetail() {
           data
         );
         if (response.status === 201) {
-          setPopupReport(false);
-          setContentReport({ value: "", error: "" });
-          setLoadingAc(false);
-          toast.success("Báo cáo thành công", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+         pushNotiForAdmin()
         }
       } catch (error) {
         setLoadingAc(false);
@@ -790,6 +821,7 @@ function HeaderTournamentDetail() {
                           tourDetail.statusTnm !== "Kết thúc" ? (
                             <SendCancelTournament
                               data={{
+                                username: user.userVM.username,
                                 userId: user.userVM.id,
                                 tournamentId: idTour,
                               }}

@@ -203,12 +203,12 @@
   overflow-y: scroll;
   gap: 10px;
   height: 480px;
-  /* display: grid;
   grid-template-columns: repeat(3, 1fr);
+  /* display: grid;
   grid-auto-rows: minmax(100px, auto); */
 }
 .listLivestreamUser {
-  width: 855px;
+  width: 848px;
   height: 480px;
   border-radius: 5px;
   border: 1px solid var(--blue-black);
@@ -241,7 +241,11 @@
   bottom: 0;
   transition: 0.5s;
 }
-
+.itemLivestream:hover .optionLive {
+  visibility: visible;
+  opacity: 1;
+  transition: 0.5s;
+}
 .itemLivestreamUser:hover .optionLive {
   visibility: visible;
   opacity: 1;
@@ -278,6 +282,11 @@
   /* grid-column: 3/4; */
   height: 180px;
   cursor: pointer;
+  position: relative;
+}
+
+.itemLivestream .optionLive {
+  bottom: 30px;
 }
 .item {
   width: 100%;
@@ -301,6 +310,9 @@
 }
 
 .notLive {
+  top: 0;
+  left: 0;
+  position: absolute;
   background-color: var(--blue-black);
   color: var(--white-text);
   height: 480px;
@@ -715,6 +727,13 @@
   margin-top: 30px;
 }
 
+.realScoreFull {
+  margin-top: 0;
+  z-index: 11;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
 .realScore p {
   color: white;
   font-weight: bold;
@@ -822,4 +841,97 @@
   transform: rotate(270deg);
   transform-origin: center;
   margin-left: 100px;
+}
+
+.slide_cont {
+  box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.slider {
+  margin-left: 20px;
+  margin-right: 20px;
+  position: relative;
+  width: 150px;
+  height: 6px;
+}
+
+.slider input[type="range"] {
+  position: absolute;
+  left: -2px;
+  top: 0;
+  width: 154px;
+  height: 6px;
+  -webkit-appearance: none;
+  background: transparent;
+  z-index: 99;
+}
+
+.slider input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: var(--white-text);
+  border: 2px solid var(--green-bold);
+  cursor: pointer;
+  box-shadow: 0 0 0 1px var(--white-text);
+  border-radius: 50%;
+}
+
+.slider input::-webkit-slider-thumb:hover {
+  scale: 1.1;
+}
+
+.slider progress {
+  width: 150px;
+  height: 8px;
+  -webkit-appearance: none;
+  position: absolute;
+  top: 0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.slider progress::-webkit-progress-bar {
+  background: var(--white-text);
+}
+.slider progress::-webkit-progress-value {
+  background: var(--green-bold);
+}
+
+.sliderValue {
+  color: var(--white-text);
+}
+
+.buttonSelect {
+  position: absolute;
+  right: 0;
+  background-color: #5fe37d;
+  padding: 10px;
+  width: 200px;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+  line-height: 1.1;
+  z-index: 1;
+}
+
+.buttonOff {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  background-color: #ce2c2c;
+  padding: 10px;
+  width: 200px;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+  line-height: 1.1;
+}
+
+.buttonOff:hover{
+  filter: brightness(90%);
 }

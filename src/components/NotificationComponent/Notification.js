@@ -82,8 +82,9 @@ function Notification() {
   onMessageListener()
     .then((payload) => {
       // eslint-disable-next-line no-console
-      console.log(payload);
+      console.log(payload.data);
       setCheck(!check);
+      // if(payload.data)
       toast(CustomToastWithLink(payload), {
         position: "bottom-left",
         autoClose: 5000,
