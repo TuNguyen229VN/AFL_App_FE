@@ -165,22 +165,22 @@ function AchievementTournamnetDetail(props) {
               # 
             </th>
             <th>
-              Tên đội <i class="fa-solid fa-sort"></i>
+              Tên đội 
             </th>
             <th>
-              T-H-B <i class="fa-solid fa-sort"></i>
+              T-H-B 
             </th>
             <th>
-              Số bàn thắng <i class="fa-solid fa-sort"></i>
+              Số bàn thắng 
             </th>
             <th>
-              Số bàn thua <i class="fa-solid fa-sort"></i>
+              Số bàn thua 
             </th>
             <th>
-              Thẻ vàng <i class="fa-solid fa-sort"></i>
+              Thẻ vàng
             </th>
             <th>
-              Thẻ đỏ <i class="fa-solid fa-sort"></i>
+              Thẻ đỏ 
             </th>
           </tr>
           {teamInTour.length>0&&teamInTour.map((item,index) =>(<tr>

@@ -87,7 +87,7 @@ function AchivementInPlayer() {
           <tr>
             <th>#</th>
             <th>
-              Tên giải <i class="fa-solid fa-sort"></i>
+              Tên giải
             </th>
             <th>Thành tích</th>
           </tr>

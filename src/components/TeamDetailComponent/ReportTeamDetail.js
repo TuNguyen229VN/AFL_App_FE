@@ -115,25 +115,26 @@ function ReportTeamDetail() {
           <tr>
             <th>#</th>
             <th>
-              Tên giải <i class="fa-solid fa-sort"></i>
+              Tên giải 
+              {/* <i class="fa-solid fa-sort"></i> */}
             </th>
             <th>
               Thành tích
             </th>
             <th>
-              T-H-B <i class="fa-solid fa-sort"></i>
+              T-H-B 
             </th>
             <th>
-              Số bàn thắng <i class="fa-solid fa-sort"></i>
+              Số bàn thắng
             </th>
             <th>
-              Số bàn thua <i class="fa-solid fa-sort"></i>
+              Số bàn thua 
             </th>
             <th>
-              Thẻ vàng <i class="fa-solid fa-sort"></i>
+              Thẻ vàng 
             </th>
             <th>
-              Thẻ đỏ <i class="fa-solid fa-sort"></i>
+              Thẻ đỏ 
             </th>
           </tr>
          { result.length>0&&result.map((item, index) =>(
