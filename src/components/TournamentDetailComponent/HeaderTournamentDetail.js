@@ -569,7 +569,6 @@ function HeaderTournamentDetail() {
       content: user.userVM.username + " đã gửi báo cáo một giải đấu",
       forAdmin: true,
       tournamentId: idTour,
-      userId: user.userVM.id,
     };
     try {
       const response = await axios.post(

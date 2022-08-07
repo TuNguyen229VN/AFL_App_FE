@@ -295,7 +295,6 @@ function HeaderTeamDetail() {
       content: user.userVM.username + " đã báo cáo một đội bóng",
       forAdmin: true,
       teamId: idTeam,
-      userId: user.userVM.id,
     };
     try {
       const response = await axios.post(

@@ -19,7 +19,6 @@ function SendCancelTournament(props) {
       content: props.data.username + " đã gửi yêu cầu xin hủy giải đấu",
       forAdmin: true,
       tournamentId: props.data.tournamentId,
-      userId: props.data.userId,
     };
     try {
       const response = await axios.post(

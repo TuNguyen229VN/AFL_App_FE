@@ -428,7 +428,6 @@ function HeaderPlayerDetail() {
       content: user.userVM.username + " đã báo cáo một cầu thủ",
       forAdmin: true,
       footballPlayerId: idPlayer,
-      userId: user.userVM.id,
     };
     try {
       const response = await axios.post(
