@@ -214,7 +214,9 @@ function VideoRoom(props) {
                     setFullScreen={props.setFullScreen}
                     fullScreen={props.fullScreen}
                   />
-                ) : <p className={styles.notLive}>Chưa có livestream</p>}
+                ) : (
+                  <p className={styles.notLive}>Chưa có livestream</p>
+                )}
               </>
             ))
           ) : (
