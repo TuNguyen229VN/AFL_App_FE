@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 export default function ModelAcceptDeletePlayer(props) {
-    const {hideShowDelete,setHideShowDelete,deletePlayerInTeam,idDelete,setIdDelete,active} = props;
+    const {hideShowDelete,setHideShowDelete,deletePlayerInTeam,idDelete,setIdDelete,active,updateStatusFootballPlayer} = props;
   return (
     <div
       id="exampleModal"
@@ -41,7 +41,7 @@ export default function ModelAcceptDeletePlayer(props) {
               padding:10
             }}  type="button" class="btn btn-primary" 
             onClick={() => {
-              deletePlayerInTeam(idDelete);
+              updateStatusFootballPlayer(idDelete,"false");
             }}
             >
               Xóa

@@ -121,7 +121,21 @@ function ListPlayer(props) {
       .then((res) => {
         if (res.status === 200) {
           getInforTeam();
-          sendMailTeamAccpet(idPlayer, idHost);
+          if (status === "true") sendMailTeamAccpet(idPlayer, idHost);
+          else {
+            setLoadingAdd(false);
+            setHideShowDelete(false);
+            setDeleteSuccessFul(true);
+            toast.success("Xóa cầu thủ thành công", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
         }
       })
       .catch((err) => {
@@ -483,6 +497,7 @@ function ListPlayer(props) {
                 <ModelAcceptDeletePlayer
                   deletePlayerInTeam={deletePlayerInTeam}
                   idDelete={idDelete}
+                  updateStatusFootballPlayer={updateStatusFootballPlayer}
                   setIdDelete={setIdDelete}
                   setHideShowDelete={setHideShowDelete}
                   hideShowDelete={hideShowDelete}
