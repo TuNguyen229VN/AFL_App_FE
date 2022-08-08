@@ -16,6 +16,7 @@ function MyTeamInPlayer(props) {
     hideShow,
     setStatusAdd,
     currentPage,
+    updateStatusFootballPlayer,
     user
   } = props;
   const [idDelete, setIdDelete] = useState(null);
@@ -217,6 +218,7 @@ function MyTeamInPlayer(props) {
                     hideShow={hideShow}
                     setHideShow={setHideShow}
                     active={active}
+                    updateStatusFootballPlayer={updateStatusFootballPlayer}
                   />
                 </div>
               );

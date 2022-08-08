@@ -229,6 +229,7 @@ function RequestInPlayer(props) {
             setIdDelete={setIdDelete}
             hideShow={hideShow}
             setHideShow={setHideShow}
+            updateStatusFootballPlayer={updateStatusFootballPlayer}
             active={active}
           />
         </div>

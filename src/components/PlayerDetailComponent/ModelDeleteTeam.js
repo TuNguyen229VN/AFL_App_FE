@@ -8,6 +8,7 @@ export default function ModelDeleteTeam(props) {
     idDelete,
     setIdDelete,
     active,
+    updateStatusFootballPlayer
   } = props;
   return (
     <div
@@ -59,7 +60,7 @@ export default function ModelDeleteTeam(props) {
               type="button"
               class="btn btn-primary"
               onClick={() => {
-                deletePlayerInTeam(idDelete);
+                updateStatusFootballPlayer(idDelete,"false");
               }}
             >
               Xóa

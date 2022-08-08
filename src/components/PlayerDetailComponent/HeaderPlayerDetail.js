@@ -272,7 +272,21 @@ function HeaderPlayerDetail() {
     response
       .then((res) => {
         if (res.status === 200) {
-          sendMailPlayerAccept(idPlayer, idTeam);
+          if (status === "true") sendMailPlayerAccept(idPlayer, idTeam);
+          else {
+            setLoading(false);
+            setHideShow(false);
+            setStatusAdd(true);
+            toast.success("Xóa cầu thủ thành công", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
         }
       })
       .then((err) => {
@@ -323,6 +337,7 @@ function HeaderPlayerDetail() {
           setStatusAdd={setStatusAdd}
           currentPage={currentPage}
           user={user}
+          updateStatusFootballPlayer={updateStatusFootballPlayer}
         />
       );
     }
@@ -462,7 +477,6 @@ function HeaderPlayerDetail() {
       console.error(error.response);
     }
   };
-
 
   const sendReport = async (e) => {
     setLoadingAc(true);
