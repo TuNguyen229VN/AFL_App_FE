@@ -152,7 +152,7 @@ function VideoRoom(props) {
             className={styles.buttonOff}
             onClick={() => changeScreenForUser(props.props.idMatch)}
           >
-            Kết thúc livestream
+            Tạm dừng livestream
           </p>
         );
       }

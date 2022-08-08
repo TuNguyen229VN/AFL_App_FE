@@ -1256,6 +1256,7 @@ function Match() {
                     <input
                       type="number"
                       placeholder="Số phút ghi bàn"
+                      min={0}
                       onChange={(e) => {
                         setMinutes(e.target.value);
                       }}
@@ -1357,6 +1358,7 @@ function Match() {
                       type="number"
                       placeholder="Nhập số phút "
                       value={minutes}
+                      min={0}
                       onChange={(e) => {
                         setMinutes(e.target.value);
                       }}

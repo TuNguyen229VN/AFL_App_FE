@@ -4,7 +4,9 @@ import styles from "./styles/style.module.css";
 import { Button } from "@material-ui/core";
 import AgoraUIKit, { PropsInterface, layout } from "agora-react-uikit";
 import VideoRoom from "./VideoRoom";
+import { useNavigate } from "react-router-dom";
 function Livestream(data) {
+  const navigate=useNavigate()
   const [idUser, setidUser] = useState(data.user);
   const [idHostTournament, setIdHostTournament] = useState(
     data.idHostTournament
@@ -105,6 +107,9 @@ function Livestream(data) {
         />
         <button
           onClick={(e) => {
+            if(idUser===null){
+              navigate("/login")
+            }
             data.sendComment(cLive);
             setCLive("");
             e.preventDefault();
