@@ -12,18 +12,19 @@ export default function ModalChangeDateInSchedule(props) {
     dateUpdate,
     setDateUpdate,
     updateDateInMatch,
-    teamInUpdate
-    
+    teamInUpdate,
   } = props;
-  
+
   const [newStart, setNewStart] = useState(null);
   useEffect(() => {
-    
     // console.log(typeof matchCurrent.matchDate)
     // console.log(typeof new Date().toJSON())
     const dateUpdate = new Date(matchCurrent.matchDate);
     const dateCurrent = new Date();
-    if (matchCurrent.matchDate !== null && +dateCurrent > +dateUpdate) {
+    if (
+      matchCurrent.matchDate !== null &&
+      dateCurrent.getTime() > dateUpdate.getTime()
+    ) {
       setNewStart(dateCurrent.toJSON());
       setDateUpdate(
         matchCurrent != null && matchCurrent.matchDate != null
@@ -31,7 +32,11 @@ export default function ModalChangeDateInSchedule(props) {
           : dateCurrent.toJSON()
       );
     } else {
-      setNewStart(startDate);
+      if (new Date(startDate).getTime() > dateCurrent.getTime()) {
+        setNewStart(new Date(startDate).toJSON());
+      } else {
+        setNewStart(dateCurrent.toJSON());
+      }
       setDateUpdate(
         matchCurrent != null ? matchCurrent.matchDate : dateCurrent.toJSON()
       );
@@ -66,22 +71,15 @@ export default function ModalChangeDateInSchedule(props) {
     // }
   }, [matchCurrent.id]);
   const changeMinDate = (data) => {
-    
+    console.log(data);
     if (data !== null) {
-      const splitDateTime = data.split(" ");
-      return (
-        splitDateTime[0].split("-")[0] +
-        " " +
-        7 +
-        ":" +
-        splitDateTime[1].split(":")[1]
-      );
+      const splitDateTime = data.split("T");
+      return splitDateTime[0] + " " + 7 + ":" + splitDateTime[1].split(":")[1];
     }
   };
   const changeDate = (data, type) => {
     let splitDateTime = null;
     if (type === "maxDate") {
-      console.log(data);
       const maxTimeSlip = data.split(" ");
       const newDate = new Date(
         maxTimeSlip[0].split("/")[0] +
@@ -101,7 +99,6 @@ export default function ModalChangeDateInSchedule(props) {
         "-" +
         splitDateTime[0].split("-")[2] +
         "-" +
-        
         splitDateTime[0].split("-")[0] +
         " " +
         23 +
@@ -110,7 +107,7 @@ export default function ModalChangeDateInSchedule(props) {
       );
     } else {
       splitDateTime = data.split("T");
-      
+
       return (
         splitDateTime[0].split("-")[2] +
         "-" +

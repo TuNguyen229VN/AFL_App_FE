@@ -269,7 +269,7 @@ function TeamInTournament(props) {
                     <div key={index} className="listPlayer__item">
                       {user !== undefined &&
                       tourDetail != null &&
-                      user.userVM.id === tourDetail.userId ? (
+                      user.userVM.id === tourDetail.userId && tourDetail.statusTnm === "Chuẩn bị" ? (
                         <div>
                           <div
                             className="view__more"

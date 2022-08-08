@@ -336,16 +336,18 @@ export default function KnockOutStageSchedule(props) {
   };
 
   const onChangHandle = (e) => {
-    console.log(e.target.value);
     setDateUpdate(e.target.value);
   };
 
   const updateDateInMatch = (dataMatch) => {
+    console.log(dateUpdate.toJSON());
+    //someDate.setTime(someDate.getTime() + 1 * 60 * 60 * 1000);
+
     const data = {
       ...dataMatch,
       matchDate: changeDateUp(dateUpdate.toJSON()),
     };
-    console.log(data);
+
     const response = updateDateInMatchAPI(data);
     response
       .then((res) => {
@@ -419,8 +421,11 @@ export default function KnockOutStageSchedule(props) {
   };
 
   const changeDateUp = (data) => {
-    const splitDateTime = data.split("T");
-    const numberHour = +splitDateTime[1].split(":")[0] + 7;
+    const updateDate = new Date(data);
+    updateDate.setTime(updateDate.getTime() + 7 * 60 * 60 * 1000);
+
+    const splitDateTime = updateDate.toJSON().split("T");
+    const numberHour = +splitDateTime[1].split(":")[0];
     return (
       splitDateTime[0].split("-")[1] +
       "-" +
@@ -610,7 +615,8 @@ export default function KnockOutStageSchedule(props) {
                       new Date(endDate).getTime() > new Date().getTime() &&
                       itemSeeds.match.matchDate === null) ||
                     (new Date(endDate).getTime() > new Date().getTime() &&
-                      new Date(itemSeeds.match.matchDate).getTime() >
+                      new Date(itemSeeds.match.matchDate).getTime() -
+                        24 * 60 * 60 * 1000 >
                         new Date().getTime()) ? (
                       <td
                         style={{
