@@ -32,7 +32,8 @@ function Match() {
   );
   const title = location.state.title !== null ? location.state.title : null;
   const index = location.state.index !== null ? location.state.index : null;
-
+  const dateValidate = location.state.dateValidate;
+  console.log(dateValidate)
   const [guestId, setGuestId] = useState(localStorage.getItem("guestId"));
   const inputRef = useRef(null);
   // location.state.hostTournamentId
@@ -520,7 +521,6 @@ function Match() {
   };
 
   const formatDateTime = (date) => {
-    console.log(date);
     const day = new Date(date);
     return (
       String(day.getDate()).padStart(2, "0") +
@@ -929,7 +929,6 @@ function Match() {
   const [room, setRoom] = useState("");
   const joinRoom = async () => {
     try {
-      console.log(user);
       let Id = "0";
       let username = "guest";
       let avatar = "guest";
@@ -1583,7 +1582,19 @@ function Match() {
               user !== null &&
               location.state !== null &&
               user.userVM.id === location.state.hostTournamentId &&
-              (reportMatch === null || reportMatch.length === 0) ? (
+              (reportMatch === null || reportMatch.length === 0) &&
+
+              (dateValidate !== undefined && (new Date().getTime() >
+              new Date(dateValidate.seeds[0].date).getTime() +
+                1 * 60 * 60 * 1000)  &&
+              ((dateValidate.minDate !== undefined &&
+                new Date().getTime() <
+                  new Date(dateValidate.minDate).getTime() -
+                    24 * 60 * 60 * 1000) ||
+                (dateValidate.minDate === undefined &&
+                  new Date().getTime() <
+                    new Date(dateValidate.seeds[0].date).getTime() +
+                      3 * 24 * 60 * 60 * 1000))) || dateValidate === undefined  ? (
                 <p
                   className={styles.updateMatch}
                   onClick={() =>
@@ -1904,7 +1915,13 @@ function Match() {
               </Link>
             </div>
             {activeTeamDetail === `/match/${idMatch}/livestream` ? (
-              <div className={!fullScreen?styles.realScore:`${styles.realScore} ${styles.realScoreFull}`}>
+              <div
+                className={
+                  !fullScreen
+                    ? styles.realScore
+                    : `${styles.realScore} ${styles.realScoreFull}`
+                }
+              >
                 <p className={styles.teamLeft}>
                   {allTeamA.length > 0 && allTeamA[0].teamName}
                 </p>

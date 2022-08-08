@@ -224,6 +224,7 @@ export default function KnockOutStageSchedule(props) {
     }
     if (typeView === "result") {
       const findDate = excuteDate(data, tournamentType, tourDetail);
+      console.log(findDate);
       setFindMaxDate(findDate);
     }
 
@@ -278,7 +279,7 @@ export default function KnockOutStageSchedule(props) {
     }
   };
   const findEndate = () => {
-    //console.log(findMaxDate[3].minDate.toTimeString());
+    console.log(indexSchedule);
     if (tournamentType === "GroupStage") {
       if (indexSchedule === knockoutTeam.length - 1) {
         return endDate;
@@ -654,6 +655,16 @@ export default function KnockOutStageSchedule(props) {
                             tourDetail,
                             index,
                             title: item.title,
+                            dateValidate:
+                              findMaxDate !== null &&
+                              index + 1 < knockoutTeam.length
+                                ? findMaxDate[index + 1]
+                                : index + 1 == knockoutTeam.length
+                                ? {
+                                  ...findMaxDate[index],
+                                  minDate: undefined
+                                }
+                                : null,
                           }}
                         >
                           Chi tiết
