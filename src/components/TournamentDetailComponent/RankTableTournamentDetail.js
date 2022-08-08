@@ -65,6 +65,7 @@ function RankTableTournamentDetail(props) {
     } else {
       const tableInTournament = tourDetail.groupNumber;
       const teamInTable = Math.floor(numberTeamPaticipate / tableInTournament);
+      
       const tableName = [
         {
           title: "Bảng A",
@@ -86,16 +87,16 @@ function RankTableTournamentDetail(props) {
 
       const residualNumber =
         numberTeamPaticipate - teamInTable * tableInTournament;
-
+        
       if (residualNumber > 0) {
         for (let i = 0; i < residualNumber; i++) {
           tableName[i].numberTeam++;
         }
       }
-
+      
       for (
         let i = 0;
-        i < Math.ceil(numberTeamPaticipate / tableInTournament);
+        i < Math.ceil(numberTeamPaticipate / teamInTable);
         i++
       ) {
         const allTeam = [];
@@ -124,7 +125,7 @@ function RankTableTournamentDetail(props) {
           team: allTeam,
         });
       }
-      console.log(ranking);
+      
     }
     setLoading(false);
     setRaking(ranking);

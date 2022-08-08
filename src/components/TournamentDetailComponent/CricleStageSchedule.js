@@ -108,8 +108,10 @@ export default function CricleStageSchedule(props) {
     setDateUpdate(e.target.value);
   };
   const changeDateUp = (data) => {
-    const splitDateTime = data.split("T");
-    const numberHour = +splitDateTime[1].split(":")[0] + 7;
+    const updateDate = new Date(data);
+    updateDate.setTime(updateDate.getTime() + 7 * 60 * 60 * 1000);
+    const splitDateTime = updateDate.toJSON().split("T");
+    const numberHour = +splitDateTime[1].split(":")[0];
     return (
       splitDateTime[0].split("-")[1] +
       "-" +
@@ -297,7 +299,7 @@ export default function CricleStageSchedule(props) {
                 new Date(endDate).getTime() > new Date().getTime() &&
                 item.match.matchDate === null) ||
               (new Date(endDate).getTime() > new Date().getTime() &&
-                new Date(item.match.matchDate).getTime() >
+                new Date(item.match.matchDate).getTime() - 24 * 60 * 60 * 1000 >
                   new Date().getTime()) ? (
                 <td
                   onClick={() => {
