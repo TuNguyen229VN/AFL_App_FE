@@ -33,6 +33,7 @@ export default function DetailMatch(props) {
   const indexMatch = location.state.indexMatch;
   const title = location.state.title !== null ? location.state.title : null;
   const index = location.state.index !== null ? location.state.index : null;
+  const lastMatch = location.state.lastMatch;
   const [teamA, setTeamA] = useState(null);
   const [teamB, setTeamB] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -625,6 +626,7 @@ export default function DetailMatch(props) {
         tourDetail={tourDetail !== null ? tourDetail : null}
         indexMatch={indexMatch}
         title={title}
+        lastMatch={lastMatch}
       />
       {loading ? <LoadingAction /> : null}
       <Footer />

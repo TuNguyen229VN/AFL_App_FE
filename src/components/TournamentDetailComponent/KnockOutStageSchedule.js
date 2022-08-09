@@ -655,6 +655,7 @@ export default function KnockOutStageSchedule(props) {
                             tourDetail,
                             index,
                             title: item.title,
+                            lastMatch : indexSeeds === item.seeds.length - 1 ? true : false,
                             dateValidate:
                               findMaxDate !== null &&
                               index + 1 < knockoutTeam.length

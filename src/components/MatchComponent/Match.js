@@ -33,7 +33,7 @@ function Match() {
   const title = location.state.title !== null ? location.state.title : null;
   const index = location.state.index !== null ? location.state.index : null;
   const dateValidate = location.state.dateValidate;
-  console.log(dateValidate)
+  const lastMatch = location.state.lastMatch;
   const [guestId, setGuestId] = useState(localStorage.getItem("guestId"));
   const inputRef = useRef(null);
   // location.state.hostTournamentId
@@ -1595,6 +1595,7 @@ function Match() {
                         indexMatch: location.state.index,
                         title,
                         index,
+                        lastMatch
                       },
                     })
                   }
