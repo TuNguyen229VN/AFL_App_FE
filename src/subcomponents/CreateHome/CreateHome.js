@@ -11,9 +11,9 @@ const CreateHome = () => {
             Bạn có thể tổ chức một giải đấu qua hình thức online với các thể
             thức thi đấu đa dạng khác nhau còn gì tuyệt hơn
           </p>
-          <a href="#" className="btnmore">
-            xem thêm <img src="/assets/icons/arrow.png" alt="arrowRight" />
-          </a>
+          <Link to={"/createTournament"} className="btnmore">
+          xem thêm <img src="/assets/icons/arrow.png" alt="arrowRight" />
+          </Link>
         </div>
         <div className="product__img" data-aos="fade-left">
           <img src="/assets/img/homepage/product1.jpg" alt="product" />

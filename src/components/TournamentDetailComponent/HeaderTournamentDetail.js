@@ -987,7 +987,7 @@ function HeaderTournamentDetail() {
                     <span className="title">Đội tham gia: </span>
                     <span>
                       {tourDetail.numberTeamInTournament} /{" "}
-                      {tourDetail.footballTeamNumber} đội
+                      {tourDetail.footballTeamNumber} đội ( tối thiểu {tourDetail.footballPlayerMaxNumber} cầu thủ )
                     </span>
                   </div>
                   <div className="man gender__manager">

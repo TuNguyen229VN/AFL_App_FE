@@ -11,6 +11,7 @@ import { addPlayerInTournamentAPI } from "../../api/PlayerInTournamentAPI";
 import { NotiFootballInTournamentAPI } from "../../api/System";
 import postNotifacation from "../../api/NotificationAPI";
 import { async } from "@firebase/util";
+import { getPlayerBusyInTeambyTeamIdAPI } from "../../api/PlayerInTeamAPI";
 export default function AcceptPrivateTour(props) {
   const {
     idUser,
@@ -49,10 +50,38 @@ export default function AcceptPrivateTour(props) {
     const playersData = await Promise.all(players);
     playersData.countList = response.data.countList;
     console.log(playersData);
-    setPlayerInTeam(playersData);
-    setLoading(false);
+    deletePlayerBusyInAnotherTournament(playersData);
   };
 
+  const deletePlayerBusyInAnotherTournament = async (data) => {
+    //console.log(data);
+    try {
+      const response = await getPlayerBusyInTeambyTeamIdAPI(idUser);
+      if (response.status === 200) {
+        const playerBusy = response.data.playerInTeamsFull;
+        const newData = [];
+        for (let index in data) {
+          if (index !== "countList") {
+            let flag = false;
+            for (let indexRes in playerBusy) {
+              if (data[index].idPlayerInTeam === playerBusy[indexRes].id) {
+                flag = true;
+                break;
+              }
+            }
+            if (!flag) {
+              newData.push(data[index]);
+            }
+          }
+        }
+        
+        setPlayerInTeam(newData);
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const getPlayerById = async (idPlayer) => {
     const afterURL = `football-players/${idPlayer}`;
     const response = await getAPI(afterURL);

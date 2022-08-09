@@ -4,20 +4,26 @@ import styles from "./styles/style.module.css";
 import { Button } from "@material-ui/core";
 import AgoraUIKit, { PropsInterface, layout } from "agora-react-uikit";
 import VideoRoom from "./VideoRoom";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 function Livestream(data) {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [idUser, setidUser] = useState(data.user);
   const [idHostTournament, setIdHostTournament] = useState(
     data.idHostTournament
   );
+  const location = useLocation();
+  const tourDetail = location.state.tourDetail;
+  const indexMatch = location.state.indexMatch;
+  const title = location.state.title !== null ? location.state.title : null;
+  const index = location.state.index !== null ? location.state.index : null;
+  const lastMatch = location.state.lastMatch;
   const [videocall, setVideocall] = useState(true);
   const [isPinned, setisPinned] = useState(true);
+  console.log(location.state.title)
   const [cLive, setCLive] = useState("");
-
   // Options for joining a channel
   const rtcProps = {
-    appId: "629c856215b345779a8fb2a691f51976",
+    appId: "ab5ddade1a8c4bfaa6f7018e03f73463",
     token: data.tokenLivestream,
     channel: "MATCH_" + data.idMatch,
     role: "audience",
@@ -47,6 +53,12 @@ function Livestream(data) {
     <div className={styles.livestream}>
       <div className={styles.video}>
         <VideoRoom
+          title={title}
+          idMatch={data.idMatch}
+          tourDetail={tourDetail}
+          indexMatch={indexMatch}
+          lastMatch={lastMatch}
+          index={index}
           fullScreen={data.fullScreen}
           setFullScreen={data.setFullScreen}
           props={rtcProps}
@@ -107,8 +119,8 @@ function Livestream(data) {
         />
         <button
           onClick={(e) => {
-            if(idUser===null){
-              navigate("/login")
+            if (idUser === null) {
+              navigate("/login");
             }
             data.sendComment(cLive);
             setCLive("");

@@ -5,6 +5,10 @@ import styles from "./styles/style.module.css";
 import VideoPlayerUser from "./VideoPlayerUser";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { updateNextTeamInRoundAPI } from "../../api/TeamInMatchAPI";
+import { putStatusScorePrediction } from "../../api/ScorePrediction";
+import { updateScoreInTournamentByTourIdAPI } from "../../api/TeamInTournamentAPI";
+import { postTournamentResult } from "../../api/TournamentResultAPI";
 function VideoRoom(props) {
   const APP_ID = props.props.appId;
   const TOKEN = props.props.token;
@@ -32,12 +36,13 @@ function VideoRoom(props) {
     }
 
     if (
-      (mediaType === "audio" && props.uId.length > 0) ||
+      (mediaType === "audio" && props.uId !== null && props.uId != 0) ||
       (mediaType === "audio" &&
         idUser !== null &&
         idHostTournament !== null &&
         idUser.userVM.id === idHostTournament)
     ) {
+      console.log(props.uId);
       user.audioTrack.play();
     }
   };
@@ -93,6 +98,75 @@ function VideoRoom(props) {
   }, []);
 
   const [numberScreen, setNumberScreen] = useState(0);
+  const updateScoreTeamInTour = async () => {
+    try {
+      const response = updateScoreInTournamentByTourIdAPI(props.tourDetail.id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const updateScorePrediction = async () => {
+    try {
+      const response = await putStatusScorePrediction(props.idMatch);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const updateNextTeamInNextRound = () => {
+    try {
+      const data = {
+        tournamentId: props.tourDetail.id,
+        matchId:
+          props.tourDetail.tournamentTypeId === 1
+            ? props.idMatch
+            : props.indexMatch < props.tourDetail.groupNumber
+            ? 0
+            : props.idMatch,
+        groupName:
+          props.tourDetail.tournamentTypeId === 3 &&
+          props.title.includes("Bảng")
+            ? props.title.split(" ")[1]
+            : null,
+      };
+
+      const response = updateNextTeamInRoundAPI(data);
+      console.log(response.status)
+      if (response.status === 200) {
+        if (props.tourDetail.tournamentTypeId !== 2) {
+          if (props.title === "Chung kết") {
+            matchResult();
+          }
+        } else {
+          if (props.index > 0) {
+            matchResult();
+          }
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const matchResult = async () => {
+    try {
+      const response = postTournamentResult(props.idMatch);
+      toast.success("Kết thúc livestream", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      await updateScorePrediction();
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const changeScreenForUser = async (matchId) => {
     try {
       const response = await axios.put(
@@ -101,20 +175,20 @@ function VideoRoom(props) {
           headers: { "content-type": "multipart/form-data" },
         }
       );
-      console.log(response.status);
+
       if (response.status === 204) {
-        toast.success("Kết thúc livestream", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        console.log(props.title)
+        if (
+          props.tournamentTypeId !== 2 &&
+          (props.tourDetail.tournamentTypeId === 1 ||
+            (props.tourDetail.tournamentTypeId === 3 &&
+              (!props.title.includes("Bảng") || props.lastMatch === true)))
+        ) {
+          updateNextTeamInNextRound();
+        }
       }
     } catch (error) {
-      toast.error(error.response.message, {
+      toast.error(error.response, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -143,7 +217,9 @@ function VideoRoom(props) {
       if (!check) {
         return (
           <p className={styles.buttonSelect}>
-            Vui lòng chọn màn hình để livestream
+            {props.uId == 0
+              ? "Live stream đã kết thúc"
+              : "Vui lòng chọn màn hình để livestream"}
           </p>
         );
       } else {
@@ -152,13 +228,14 @@ function VideoRoom(props) {
             className={styles.buttonOff}
             onClick={() => changeScreenForUser(props.props.idMatch)}
           >
-            Tạm dừng livestream
+            Kết thúc livestream
           </p>
         );
       }
     }
     return null;
   };
+
   return (
     <div
       style={{
@@ -204,7 +281,7 @@ function VideoRoom(props) {
                 </div>
               </>
             ))
-          ) : props.uId.length > 0 ? (
+          ) : props.uId !== null ? (
             users.map((user) => (
               <>
                 {props.uId == user.uid ? (

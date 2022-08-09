@@ -945,7 +945,6 @@ function Match() {
       let username = "guest";
       let avatar = "guest";
       let newGuest = true;
-      console.log("guest" + guestId);
       if (user) {
         Id = user.userVM.id.toString();
         username = user.userVM.username;
@@ -1917,7 +1916,9 @@ function Match() {
                 Livestream
               </Link>
             </div>
-            {activeTeamDetail === `/match/${idMatch}/livestream` ? (
+            {activeTeamDetail === `/match/${idMatch}/livestream` &&
+            uId !== null &&
+            uId != 0 ? (
               <div
                 className={
                   !fullScreen
@@ -1925,8 +1926,9 @@ function Match() {
                     : `${styles.realScore} ${styles.realScoreFull}`
                 }
               >
+            
                 <p className={styles.teamLeft}>
-                  {allTeamA.length > 0 && allTeamA[0].teamName}
+                 {allTeamA.length > 0 && allTeamA[0].teamName}
                 </p>
                 <p className={styles.scoreTeam}>
                   {allTeamA.length > 0 && scoreA == 0

@@ -30,7 +30,7 @@ function TeamInTournament(props) {
     postNotificationforTeamManager,
     setCheckRegistertour,
   } = props;
-  
+
   const [active, setactive] = useState(1);
   const [viewList, setViewList] = useState(null);
   const [teamDelete, setTeamDelete] = useState(null);
@@ -248,7 +248,8 @@ function TeamInTournament(props) {
               ) : null}
               {user &&
               user.userVM.id === tourDetail.userId &&
-              tourDetail.mode === "PRIVATE" ? (
+              tourDetail.mode === "PRIVATE" &&
+              tourDetail.numberTeamInTournament<tourDetail.footballTeamNumber ? (
                 <p
                   className={active === 4 ? "active" : ""}
                   onClick={() => {
@@ -269,7 +270,8 @@ function TeamInTournament(props) {
                     <div key={index} className="listPlayer__item">
                       {user !== undefined &&
                       tourDetail != null &&
-                      user.userVM.id === tourDetail.userId && tourDetail.statusTnm === "Chuẩn bị" ? (
+                      user.userVM.id === tourDetail.userId &&
+                      tourDetail.statusTnm === "Chuẩn bị" ? (
                         <div>
                           <div
                             className="view__more"
@@ -431,6 +433,7 @@ function TeamInTournament(props) {
                             }}
                             onClick={() => {
                               setViewList(item.teamInTournament);
+                              setHideShowView(true);
                             }}
                           >
                             Danh sách cầu thủ đăng ký
@@ -602,9 +605,7 @@ function TeamInTournament(props) {
                       return (
                         <form onSubmit={onSubmitHandler}>
                           <div key={index} className="listPlayer__item">
-                            <Link
-                              to={`/teamDetail/${item.id}/inforTeamDetail`}
-                            >
+                            <Link to={`/teamDetail/${item.id}/inforTeamDetail`}>
                               <div className="avt">
                                 <img src={item.teamAvatar} alt="team" />
                               </div>
