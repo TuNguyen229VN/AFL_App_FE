@@ -59,6 +59,7 @@ function Login() {
       ) {
         setUserNameErr("Vui lòng nhập tên đăng nhập");
         setPasswordErr("Vui lòng nhập mật khẩu");
+        setCheckLoading(false);
         return;
       } else if (
         inputValues.username.trim() == "" ||
@@ -66,6 +67,7 @@ function Login() {
       ) {
         setUserNameErr("Vui lòng nhập tên đăng nhập");
         setPasswordErr("");
+        setCheckLoading(false);
         return;
       } else if (
         inputValues.password.trim() === "" ||
@@ -73,10 +75,12 @@ function Login() {
       ) {
         setPasswordErr("Vui lòng nhập mật khẩu");
         setUserNameErr("");
+        setCheckLoading(false);
         return;
       } else {
         setUserNameErr("");
         setPasswordErr("");
+        setCheckLoading(false);
       }
 
       const data = {

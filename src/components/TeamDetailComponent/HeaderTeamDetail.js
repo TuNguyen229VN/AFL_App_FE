@@ -703,7 +703,7 @@ function HeaderTeamDetail() {
             ) : (
               <h1 className="nupakachi">
                 Bạn chưa có đội bóng nào
-                <Link to="/createTeam">{`->`}Tạo đội bóng ngày</Link>
+                <Link to="/createTeam">{`->`}Tạo đội bóng ngay</Link>
               </h1>
             )}
           </div>

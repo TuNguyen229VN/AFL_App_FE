@@ -323,7 +323,7 @@ const MyTournamemts = () => {
                             />
                             <p>{team.numberPlayerInTeam}</p>
                           </div>
-                          <div className={styles.heart__shape}></div>
+                          {/* <div className={styles.heart__shape}></div> */}
                         </div>
                       </div>
                     </Link>
