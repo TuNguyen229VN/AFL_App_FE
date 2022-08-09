@@ -1584,19 +1584,7 @@ function Match() {
               user !== null &&
               location.state !== null &&
               user.userVM.id === location.state.hostTournamentId &&
-              (reportMatch === null || reportMatch.length === 0) &&
-
-              (dateValidate !== undefined && (new Date().getTime() >
-              new Date(dateValidate.seeds[0].date).getTime() +
-                1 * 60 * 60 * 1000)  &&
-              ((dateValidate.minDate !== undefined &&
-                new Date().getTime() <
-                  new Date(dateValidate.minDate).getTime() -
-                    24 * 60 * 60 * 1000) ||
-                (dateValidate.minDate === undefined &&
-                  new Date().getTime() <
-                    new Date(dateValidate.seeds[0].date).getTime() +
-                      3 * 24 * 60 * 60 * 1000))) || dateValidate === undefined  ? (
+              (reportMatch === null || reportMatch.length === 0)   ? (
                 <p
                   className={styles.updateMatch}
                   onClick={() =>

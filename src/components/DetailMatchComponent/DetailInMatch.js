@@ -19,7 +19,7 @@ export default function DetailInMatch(props) {
     setStatusUpdate,
     tourDetail,
     indexMatch,
-    title
+    title,
   } = props;
   console.log(title);
   const [detail, setDetail] = useState([]);
@@ -300,8 +300,12 @@ export default function DetailInMatch(props) {
             : indexMatch < tourDetail.groupNumber
             ? 0
             : idMatch,
+        groupName:
+          tourDetail.tournamentTypeId === 3 && title.includes("Bảng")
+            ? title.split(" ")[1]
+            : null,
       };
-     
+
       const response = updateNextTeamInRoundAPI(data);
     } catch (err) {
       console.error(err);
