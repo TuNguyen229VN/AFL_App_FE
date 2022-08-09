@@ -175,11 +175,6 @@ export default function DetailMatch(props) {
     }
   };
   const deleteMatchDetailByType = async (matchId, type, data) => {
-    console.log([
-      { yellowA, yellowB },
-      { redA, redB },
-      { scoreA, scoreB },
-    ]);
     try {
       const response = await deleteMatchDetailByTypeAPI(matchId, type);
       if (response.status === 200) {
@@ -629,6 +624,7 @@ export default function DetailMatch(props) {
         idMatch={idMatch}
         tourDetail={tourDetail !== null ? tourDetail : null}
         indexMatch={indexMatch}
+        title={title}
       />
       {loading ? <LoadingAction /> : null}
       <Footer />

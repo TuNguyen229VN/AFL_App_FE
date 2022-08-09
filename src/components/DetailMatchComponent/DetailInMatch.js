@@ -19,8 +19,9 @@ export default function DetailInMatch(props) {
     setStatusUpdate,
     tourDetail,
     indexMatch,
+    title
   } = props;
-
+  console.log(title);
   const [detail, setDetail] = useState([]);
   const [statusCall, setStatusCall] = useState(false);
   const [newMatchDetail, setNewMatchDetail] = useState(null);

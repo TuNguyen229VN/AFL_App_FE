@@ -14,7 +14,7 @@ import ModelAcceptDeletePlayer from "./ModelAcceptDeletePlayer";
 import { Link } from "react-router-dom";
 import { TeamAcceptAPI } from "../../api/System";
 function ListPlayer(props) {
-  const { id, numberPlayerInTeam, idHost, getInforTeam, postNotifacation } =
+  const { id, numberPlayerInTeam, idHost, getInforTeam, postNotifacation ,idTeam} =
     props;
   const [loading, setLoading] = useState(true);
   const [loadingAdd, setLoadingAdd] = useState(false);
@@ -53,6 +53,7 @@ function ListPlayer(props) {
     });
 
     const playersData = await Promise.all(players);
+    console.log(playersData)
     setPlayerInTeam(playersData);
     setLoading(false);
   };
@@ -291,8 +292,9 @@ function ListPlayer(props) {
                           className="listPlayer__item"
                         >
                           <form onSubmit={onSubmitHandler}>
-                            {active === "Cầu thủ" ? (
+                            {active === "Cầu thủ" && idHost === idTeam  ? (
                               <div>
+                                
                                 <div
                                   className="view__more"
                                   onClick={() => {
@@ -355,7 +357,7 @@ function ListPlayer(props) {
                                 </p>
                                 <p className="genderPlayer">
                                   <span>Giới tính:</span>
-                                  {item.gender === "Male" ? "Nam" : "Nữ"}
+                                  {item.userVM.gender === "Male" ? "Nam" : "Nữ"}
                                 </p>
                                 <p className="mailPlayer">
                                   <span>Email:</span>

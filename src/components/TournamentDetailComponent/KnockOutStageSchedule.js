@@ -227,7 +227,7 @@ export default function KnockOutStageSchedule(props) {
       console.log(findDate);
       setFindMaxDate(findDate);
     }
-
+    
     setKnoukoutTeam(data);
   };
   const editDate = (date) => {

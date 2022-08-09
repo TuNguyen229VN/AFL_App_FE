@@ -50,9 +50,13 @@ function Profile() {
         setEmail({ value: res.data.email });
         setUsername({ value: res.data.username });
         setGender({ value: res.data.gender });
+        const valueDate = new Date(res.data.dateOfBirth);
+        valueDate.setTime(valueDate.getTime() + 24 * 60 *60 * 1000);
+        
         setDob({
-          value: new Date(res.data.dateOfBirth).toISOString().split("T")[0],
+          value: valueDate.toISOString().split("T")[0],
         });
+        
         setAvt({ value: res.data.avatar, img: res.data.avatar });
         setAddress({ value: res.data.address });
         setPhone({ value: res.data.phone });

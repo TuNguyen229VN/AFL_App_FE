@@ -40,12 +40,14 @@ function HeaderPlayerDetail() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+ 
   const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [statusAdd, setStatusAdd] = useState(false);
   const [active, setActive] = useState("true");
   const [hideShow, setHideShow] = useState(false);
   useEffect(() => {
+    setDetailPlayer(null)
     getInForPlayerByID();
   }, [idPlayer]);
   const [statusPaticipate, setStatusPaticipate] = useState("Chiêu mộ cầu thủ");
@@ -310,6 +312,7 @@ function HeaderPlayerDetail() {
     response
       .then((res) => {
         if (res.status === 200) {
+          
           setLoading(false);
 
           setDetailPlayer(res.data);
@@ -326,6 +329,7 @@ function HeaderPlayerDetail() {
     if (activeTeamDetail === `/playerDetail/${idPlayer}/myTeamInPlayer`) {
       return (
         <MyTeamInPlayer
+          detailPlayer={detailPlayer}
           active={active}
           setactive={setActive}
           allTeam={allTeam}
@@ -554,7 +558,7 @@ function HeaderPlayerDetail() {
                       <i class="fa-solid fa-pen-to-square"></i>Chỉnh sửa thông
                       tin
                     </Link>
-                  ) : user !== null && user.teamInFo !== null ? (
+                  ) : user !== null && user.teamInfo !== null ? (
                     <button
                       onClick={() => {
                         if (statusPaticipate === "Chiêu mộ cầu thủ") {

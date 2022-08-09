@@ -121,6 +121,7 @@ function HeaderTeamDetail() {
     if (activeTeamDetail === `/teamDetail/${idTeam}/listPlayer`) {
       return (
         <ListPlayer
+        idTeam={idTeam}
           idHost={user != undefined ? user.userVM.id : undefined}
           id={team.id}
           gender={team.teamGender}
