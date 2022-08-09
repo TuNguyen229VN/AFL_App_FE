@@ -227,7 +227,7 @@ export default function KnockOutStageSchedule(props) {
       console.log(findDate);
       setFindMaxDate(findDate);
     }
-    
+
     setKnoukoutTeam(data);
   };
   const editDate = (date) => {
@@ -244,6 +244,7 @@ export default function KnockOutStageSchedule(props) {
   const findStateDate = () => {
     if (tournamentType === "GroupStage") {
       if (indexSchedule >= 0 && indexSchedule < tourDetail.groupNumber) {
+        //console.log(startDate)
         return startDate;
       } else {
         let newStartDate = null;
@@ -256,7 +257,8 @@ export default function KnockOutStageSchedule(props) {
         if (newStartDate === null) {
           return endDate;
         } else {
-          return editDate(newStartDate);
+          console.log(newStartDate)
+          return newStartDate;
         }
       }
     } else {
@@ -273,7 +275,7 @@ export default function KnockOutStageSchedule(props) {
         if (newStartDate === null) {
           return endDate;
         } else {
-          return editDate(newStartDate);
+          return newStartDate;
         }
       }
     }
@@ -298,7 +300,7 @@ export default function KnockOutStageSchedule(props) {
         if (endDateNew === null) {
           return endDate;
         } else {
-          return editDate(endDateNew);
+          return endDateNew;
         }
       }
     } else {
@@ -315,7 +317,7 @@ export default function KnockOutStageSchedule(props) {
         if (endDateNew === null) {
           return endDate;
         } else {
-          return editDate(endDateNew);
+          return endDateNew;
         }
       }
     }
@@ -655,16 +657,19 @@ export default function KnockOutStageSchedule(props) {
                             tourDetail,
                             index,
                             title: item.title,
-                            lastMatch : indexSeeds === item.seeds.length - 1 ? true : false,
+                            lastMatch:
+                              indexSeeds === item.seeds.length - 1
+                                ? true
+                                : false,
                             dateValidate:
                               findMaxDate !== null &&
                               index + 1 < knockoutTeam.length
                                 ? findMaxDate[index + 1]
                                 : index + 1 == knockoutTeam.length
                                 ? {
-                                  ...findMaxDate[index],
-                                  minDate: undefined
-                                }
+                                    ...findMaxDate[index],
+                                    minDate: undefined,
+                                  }
                                 : null,
                           }}
                         >
