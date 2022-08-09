@@ -20,26 +20,42 @@ export default function ModalChangeDateInSchedule(props) {
     // console.log(typeof matchCurrent.matchDate)
     // console.log(typeof new Date().toJSON())
     const dateUpdate = new Date(matchCurrent.matchDate);
+    dateUpdate.setTime(dateUpdate.getTime() + 7 * 60 * 60 * 1000);
+
     const dateCurrent = new Date();
+    dateCurrent.setTime(dateCurrent.getTime() + 7 * 60 * 60 * 1000);
+
     if (
       matchCurrent.matchDate !== null &&
       dateCurrent.getTime() > dateUpdate.getTime()
     ) {
       setNewStart(dateCurrent.toJSON());
+
       setDateUpdate(
         matchCurrent != null && matchCurrent.matchDate != null
           ? matchCurrent.matchDate
           : dateCurrent.toJSON()
       );
     } else {
-      if (new Date(startDate).getTime() > dateCurrent.getTime()) {
-        setNewStart(new Date(startDate).toJSON());
+      const newDateStart = new Date(startDate);
+      newDateStart.setTime(newDateStart.getTime() + 7 * 60 * 60 * 1000);
+
+      if (newDateStart.getTime() > dateCurrent.getTime()) {
+        setNewStart(newDateStart.toJSON());
       } else {
         setNewStart(dateCurrent.toJSON());
       }
-      setDateUpdate(
-        matchCurrent != null ? matchCurrent.matchDate : dateCurrent.toJSON()
-      );
+      if (matchCurrent != null && matchCurrent.matchDate != null) {
+        setDateUpdate(
+          matchCurrent != null ? matchCurrent.matchDate : dateCurrent.toJSON()
+        );
+      } else {
+        setDateUpdate(null);
+      }
+
+      // setDateUpdate(
+      //   matchCurrent != null ? dateUpdate.toJSON() : dateCurrent.toJSON()
+      // );
       //setDateUpdate(matchCurrent != null &&  matchCurrent.matchDate != null ? matchCurrent.matchDate : startDate);
     }
     //console.log(setNewStart(new Date().toJSON().split('T')[0] + "" + new Date().toJSON().split('T')[1]))
@@ -74,26 +90,48 @@ export default function ModalChangeDateInSchedule(props) {
     console.log(data);
     if (data !== null) {
       const splitDateTime = data.split("T");
-      return splitDateTime[0] + " " + 7 + ":" + splitDateTime[1].split(":")[1];
+      const newDate =
+        +splitDateTime[1].split(":")[0] < 7
+          ? 7
+          : +splitDateTime[1].split(":")[1] > 0
+          ? +splitDateTime[1].split(":")[0] + 1
+          : +splitDateTime[1].split(":")[0];
+      const newMinutes =
+        +splitDateTime[1].split(":")[0] < 7
+          ? "00"
+          : +splitDateTime[1].split(":")[1] > 0
+          ? "00"
+          : "30";
+      console.log(splitDateTime[0] + " " + newDate + ":" + newMinutes);
+      return splitDateTime[0] + " " + newDate + ":" + newMinutes;
     }
   };
-  const changeDate = (data, type) => {
+  const changeDate = (newData, type) => {
     let splitDateTime = null;
     if (type === "maxDate") {
-      const maxTimeSlip = data.split(" ");
-      const newDate = new Date(
-        maxTimeSlip[0].split("/")[0] +
-          "-" +
-          maxTimeSlip[0].split("/")[1] +
-          "-" +
-          maxTimeSlip[0].split("/")[2] +
-          " " +
-          maxTimeSlip[1].split(":")[0] +
-          ":" +
-          maxTimeSlip[1].split(":")[1]
-      ).toJSON();
-      splitDateTime = newDate.split("T");
+      const data = new Date(newData);
+      data.setTime(data.getTime() + 7 * 60 * 60 * 1000);
+      splitDateTime = data.toJSON().split("T");
 
+      const newDate =
+        +splitDateTime[1].split(":")[0] < 7
+          ? 7
+          : +splitDateTime[1].split(":")[1] > 0
+          ? +splitDateTime[1].split(":")[0]
+          : +splitDateTime[1].split(":")[0] - 1;
+      const newMinutes =
+        +splitDateTime[1].split(":")[0] < 7
+          ? "00"
+          : +splitDateTime[1].split(":")[1] > 0 ? "00" : "30";
+      console.log(splitDateTime[0].split("-")[1] +
+      "-" +
+      splitDateTime[0].split("-")[2] +
+      "-" +
+      splitDateTime[0].split("-")[0] +
+      " " +
+      newDate +
+      ":" +
+      newMinutes)
       return (
         splitDateTime[0].split("-")[1] +
         "-" +
@@ -101,12 +139,12 @@ export default function ModalChangeDateInSchedule(props) {
         "-" +
         splitDateTime[0].split("-")[0] +
         " " +
-        23 +
+        newDate +
         ":" +
-        splitDateTime[1].split(":")[1]
+        newMinutes
       );
     } else {
-      splitDateTime = data.split("T");
+      splitDateTime = newData.split("T");
 
       return (
         splitDateTime[0].split("-")[2] +
