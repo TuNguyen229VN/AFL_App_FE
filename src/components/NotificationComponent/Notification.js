@@ -82,18 +82,19 @@ function Notification() {
   onMessageListener()
     .then((payload) => {
       // eslint-disable-next-line no-console
-      console.log(payload.data);
+      const idNoti = parseInt(Object.keys(payload.data));
       setCheck(!check);
-      // if(payload.data)
-      toast(CustomToastWithLink(payload), {
-        position: "bottom-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      if (idNoti === user.userVM.id) {
+        toast(CustomToastWithLink(payload), {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
     })
     // eslint-disable-next-line no-console
     .catch((err) => console.log("failed: ", err));
@@ -104,9 +105,7 @@ function Notification() {
 
   const CustomToastWithLink = (item) => (
     <div>
-      <div
-        className={styles.noti__link1}
-      >
+      <div className={styles.noti__link1}>
         <div className={styles.content__text1}>
           <p className={styles.time1}>{item.notification.title}</p>
           <p>{item.notification.body}</p>
