@@ -22,11 +22,7 @@ export default function DetailInMatch(props) {
     title,
     lastMatch
   } = props;
-  console.log(
-    tourDetail.tournamentTypeId === 3 && title.includes("Bảng")
-      ? title.split(" ")[1]
-      : null
-  );
+  
   const [detail, setDetail] = useState([]);
   const [statusCall, setStatusCall] = useState(false);
   const [newMatchDetail, setNewMatchDetail] = useState(null);
@@ -325,7 +321,7 @@ export default function DetailInMatch(props) {
       detail,
       typeDetail === "score" ? 1 : typeDetail === "yellow" ? 2 : 3
     );
-    if (tourDetail.tournamentTypeId !== 2 && (tourDetail.tournamentTypeId === 1 || (tourDetail.tournamentTypeId === 3 && lastMatch === true))) {
+    if (tourDetail.tournamentTypeId !== 2 && (tourDetail.tournamentTypeId === 1 || (tourDetail.tournamentTypeId === 3 && (!title.includes("Bảng") || lastMatch === true)))) {
       updateNextTeamInNextRound();
     }
 

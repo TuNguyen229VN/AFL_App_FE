@@ -128,6 +128,7 @@ export default function DetailMatch(props) {
       type === 1 ? "score" : type === 2 ? "yellow" : "red",
       data
     );
+    
     await updateScoreTeamInTour();
     await updateScorePrediction();
 

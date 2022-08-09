@@ -489,6 +489,12 @@ function Match() {
           redB={redB}
           yellowA={yellowA}
           yellowB={yellowB}
+          title={title}
+          hostTournamentId={location.state.hostTournamentId}
+          tourDetail={location.state.tourDetail}
+          indexMatch={location.state.index}
+          index={index}
+          lastMatch={lastMatch}
         />
       );
     }
@@ -505,6 +511,12 @@ function Match() {
           uId={uId}
           user={user}
           idHostTournament={location.state.tourDetail.userId}
+          title={title}
+          hostTournamentId={location.state.hostTournamentId}
+          tourDetail={location.state.tourDetail}
+          indexMatch={location.state.index}
+          index={index}
+          lastMatch={lastMatch}
         />
       );
     }
@@ -1584,7 +1596,7 @@ function Match() {
               user !== null &&
               location.state !== null &&
               user.userVM.id === location.state.hostTournamentId &&
-              (reportMatch === null || reportMatch.length === 0)   ? (
+              (reportMatch === null || reportMatch.length === 0) ? (
                 <p
                   className={styles.updateMatch}
                   onClick={() =>
@@ -1595,7 +1607,7 @@ function Match() {
                         indexMatch: location.state.index,
                         title,
                         index,
-                        lastMatch
+                        lastMatch,
                       },
                     })
                   }
