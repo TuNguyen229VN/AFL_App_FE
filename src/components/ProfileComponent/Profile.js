@@ -533,7 +533,6 @@ function Profile() {
     const data = {
       content: username.value + " đã gửi yêu cầu thăng cấp người tạo giải",
       forAdmin: true,
-      userId: user.userVM.id,
     };
     try {
       const response = await axios.post(
