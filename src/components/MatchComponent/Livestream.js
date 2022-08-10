@@ -4,22 +4,19 @@ import styles from "./styles/style.module.css";
 import { Button } from "@material-ui/core";
 import AgoraUIKit, { PropsInterface, layout } from "agora-react-uikit";
 import VideoRoom from "./VideoRoom";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 function Livestream(data) {
   const navigate = useNavigate();
   const [idUser, setidUser] = useState(data.user);
   const [idHostTournament, setIdHostTournament] = useState(
     data.idHostTournament
   );
-  const location = useLocation();
-  const tourDetail = location.state.tourDetail;
-  const indexMatch = location.state.indexMatch;
-  const title = location.state.title !== null ? location.state.title : null;
-  const index = location.state.index !== null ? location.state.index : null;
-  const lastMatch = location.state.lastMatch;
+
+  console.log(data);
+
   const [videocall, setVideocall] = useState(true);
   const [isPinned, setisPinned] = useState(true);
-  console.log(location.state.title)
+
   const [cLive, setCLive] = useState("");
   // Options for joining a channel
   const rtcProps = {
@@ -30,7 +27,7 @@ function Livestream(data) {
     layout: isPinned ? layout.pin : layout.grid,
     idMatch: data.idMatch,
   };
-  console.log(rtcProps);
+
   const callbacks = {
     EndCall: () => setVideocall(false),
     PinnedVideo: () => console.log("s"),
@@ -53,12 +50,12 @@ function Livestream(data) {
     <div className={styles.livestream}>
       <div className={styles.video}>
         <VideoRoom
-          title={title}
+          title={data.title}
           idMatch={data.idMatch}
-          tourDetail={tourDetail}
-          indexMatch={indexMatch}
-          lastMatch={lastMatch}
-          index={index}
+          tourDetail={data.tourDetail}
+          indexMatch={data.indexMatch}
+          lastMatch={data.lastMatch}
+          index={data.index}
           fullScreen={data.fullScreen}
           setFullScreen={data.setFullScreen}
           props={rtcProps}

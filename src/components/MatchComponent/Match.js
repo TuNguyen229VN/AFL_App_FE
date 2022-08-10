@@ -32,12 +32,15 @@ function Match() {
   );
   const title = location.state.title !== null ? location.state.title : null;
   const index = location.state.index !== null ? location.state.index : null;
+
   const dateValidate = location.state.dateValidate;
   const lastMatch = location.state.lastMatch;
   const [guestId, setGuestId] = useState(localStorage.getItem("guestId"));
   const inputRef = useRef(null);
+  const [dataMatch, setDataMatch] = useState(null);
   // location.state.hostTournamentId
   useEffect(() => {
+    setDataMatch([title, index, location.state.index, lastMatch]);
     joinRoom();
     getPredict();
   }, []);
@@ -489,12 +492,12 @@ function Match() {
           redB={redB}
           yellowA={yellowA}
           yellowB={yellowB}
-          title={title}
           hostTournamentId={location.state.hostTournamentId}
           tourDetail={location.state.tourDetail}
-          indexMatch={location.state.index}
-          index={index}
-          lastMatch={lastMatch}
+          title={dataMatch[0]}
+          indexMatch={dataMatch[2]}
+          index={dataMatch[1]}
+          lastMatch={dataMatch[3]}
         />
       );
     }
@@ -511,12 +514,12 @@ function Match() {
           uId={uId}
           user={user}
           idHostTournament={location.state.tourDetail.userId}
-          title={title}
           hostTournamentId={location.state.hostTournamentId}
           tourDetail={location.state.tourDetail}
-          indexMatch={location.state.index}
-          index={index}
-          lastMatch={lastMatch}
+          title={dataMatch[0]}
+          indexMatch={dataMatch[2]}
+          index={dataMatch[1]}
+          lastMatch={dataMatch[3]}
         />
       );
     }
@@ -1926,9 +1929,8 @@ function Match() {
                     : `${styles.realScore} ${styles.realScoreFull}`
                 }
               >
-            
                 <p className={styles.teamLeft}>
-                 {allTeamA.length > 0 && allTeamA[0].teamName}
+                  {allTeamA.length > 0 && allTeamA[0].teamName}
                 </p>
                 <p className={styles.scoreTeam}>
                   {allTeamA.length > 0 && scoreA == 0
@@ -1944,6 +1946,7 @@ function Match() {
                 </p>
               </div>
             ) : null}
+
             {renderByLink()}
           </>
         ) : (
