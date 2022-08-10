@@ -148,7 +148,6 @@ const CreateTournament = () => {
     setLoading(true);
     e.preventDefault();
     const flag = checkValidateAdd();
-    console.log(flag);
     if (flag !== null) {
       setLoading(false);
       toast.error(flag, {
@@ -324,7 +323,6 @@ const CreateTournament = () => {
     return { flag: true, content: null };
   };
   const checkValidateAdd = () => {
-    console.log(closeRegister.value);
     if (
       closeRegister.value !== null &&
       new Date(closeRegister.value).getTime() >=
@@ -340,6 +338,32 @@ const CreateTournament = () => {
       return "Số điện thoại không được để trống";
     } else if (!/(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(phoneContact.value)) {
       return "Sai định dạng số điện thoại";
+    }
+    if (status === 0 && closeRegister.value === null) {
+      return "Ngày đóng đăng ký tham gia không được để trống";
+    }
+    // +
+    //       new Date().getTime() -
+    //       new Date(startTime.value).getTime() >
+    //       0
+    //       ? new Date().getTime() - new Date(startTime.value).getTime()
+    //       : new Date().getTime() -
+    //           new Date().getTime() -
+    //           new Date().getHours() * 60 * 60 * 1000
+    if (startTime.value === null) {
+      return "Ngày bắt đầu không được để trống";
+    } else if (
+      status === -1 &&
+      Math.abs(
+        new Date().getTime() -
+          new Date(startTime.value).getTime() 
+      ) <
+        24 * 60 * 60 * 1000
+    ) {
+      return "Không thể bắt đầu ngày hôm nay vì chưa đủ đội";
+    }
+    if (endTime.value === null) {
+      return "Ngày kết thúc không được để trống";
     }
     if (teamPaticipate.value === null || teamPaticipate.value.length === 0) {
       return "Số đội tham gia không được để trống";
