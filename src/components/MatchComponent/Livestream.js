@@ -19,7 +19,7 @@ function Livestream(data) {
   const lastMatch = location.state.lastMatch;
   const [videocall, setVideocall] = useState(true);
   const [isPinned, setisPinned] = useState(true);
-  console.log(location.state.title)
+  console.log(data.title)
   const [cLive, setCLive] = useState("");
   // Options for joining a channel
   const rtcProps = {
