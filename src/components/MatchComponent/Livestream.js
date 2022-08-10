@@ -16,7 +16,6 @@ function Livestream(data) {
 
   const [videocall, setVideocall] = useState(true);
   const [isPinned, setisPinned] = useState(true);
-
   const [cLive, setCLive] = useState("");
   // Options for joining a channel
   const rtcProps = {

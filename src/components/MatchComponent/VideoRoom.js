@@ -6,6 +6,7 @@ import VideoPlayerUser from "./VideoPlayerUser";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { updateNextTeamInRoundAPI } from "../../api/TeamInMatchAPI";
+import { updateTeamInMatch } from "../../api/TeamInMatchAPI";
 import { putStatusScorePrediction } from "../../api/ScorePrediction";
 import { updateScoreInTournamentByTourIdAPI } from "../../api/TeamInTournamentAPI";
 import { postTournamentResult } from "../../api/TournamentResultAPI";
@@ -98,13 +99,13 @@ function VideoRoom(props) {
   }, []);
 
   const [numberScreen, setNumberScreen] = useState(0);
-  const updateScoreTeamInTour = async () => {
-    try {
-      const response = updateScoreInTournamentByTourIdAPI(props.tourDetail.id);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const updateScoreTeamInTour = async () => {
+  //   try {
+  //     const response = updateScoreInTournamentByTourIdAPI(props.tourDetail.id);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const updateScorePrediction = async () => {
     try {
@@ -131,24 +132,23 @@ function VideoRoom(props) {
             : null,
       };
 
+      console.log(data);
       const response = updateNextTeamInRoundAPI(data);
-      console.log(response.status)
-      if (response.status === 200) {
-        if (props.tourDetail.tournamentTypeId !== 2) {
-          if (props.title === "Chung kết") {
-            matchResult();
-          }
-        } else {
-          if (props.index > 0) {
-            matchResult();
-          }
-        }
-      }
     } catch (err) {
       console.error(err);
     }
   };
 
+  const updateInAPI = (data) => {
+    const response = updateTeamInMatch(data);
+    response
+      .then((res) => {
+        return true;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   const matchResult = async () => {
     try {
       const response = postTournamentResult(props.idMatch);
@@ -161,6 +161,7 @@ function VideoRoom(props) {
         draggable: true,
         progress: undefined,
       });
+      console.log("Asa");
       await updateScorePrediction();
       console.log(response);
     } catch (err) {
@@ -177,15 +178,33 @@ function VideoRoom(props) {
       );
 
       if (response.status === 204) {
-        console.log(props.title)
-        if (
-          props.tournamentTypeId !== 2 &&
-          (props.tourDetail.tournamentTypeId === 1 ||
-            (props.tourDetail.tournamentTypeId === 3 &&
-              (!props.title.includes("Bảng") || props.lastMatch === true)))
-        ) {
-          updateNextTeamInNextRound();
-        }
+        toast.success("Tạm dừng livestream", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        // console.log(props.index);
+        // if (
+        //   props.tourDetail.tournamentTypeId !== 2 &&
+        //   (props.tourDetail.tournamentTypeId === 1 ||
+        //     (props.tourDetail.tournamentTypeId === 3 &&
+        //       (!props.title.includes("Bảng") || props.lastMatch === true)))
+        // ) {
+        //   updateNextTeamInNextRound();
+        // }
+        // if (props.tourDetail.tournamentTypeId !== 2) {
+        //   if (props.title === "Chung kết") {
+        //     matchResult();
+        //   }
+        // } else {
+        //   if (props.index > 0) {
+        //     matchResult();
+        //   }
+        // }
       }
     } catch (error) {
       toast.error(error.response, {
@@ -217,9 +236,10 @@ function VideoRoom(props) {
       if (!check) {
         return (
           <p className={styles.buttonSelect}>
-            {props.uId == 0
+            {/* {props.uId == 0
               ? "Live stream đã kết thúc"
-              : "Vui lòng chọn màn hình để livestream"}
+              : "Vui lòng chọn màn hình để livestream"} */}
+              Vui lòng chọn màn hình để livestream
           </p>
         );
       } else {
@@ -228,7 +248,7 @@ function VideoRoom(props) {
             className={styles.buttonOff}
             onClick={() => changeScreenForUser(props.props.idMatch)}
           >
-            Kết thúc livestream
+           Tạm dừng livestream
           </p>
         );
       }

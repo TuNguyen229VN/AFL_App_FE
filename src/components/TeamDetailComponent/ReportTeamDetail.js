@@ -98,12 +98,12 @@ function ReportTeamDetail() {
             <div className="match__item">
               <p className="match__name">Số trận hòa</p>
               <img src="/assets/img/teamdetail/win.png" alt="1"></img>
-              <p className="match__number">{statistic&&statistic.totalLose}</p>
+              <p className="match__number">{statistic&&statistic.totalDraw}</p>
             </div>
             <div className="match__item">
               <p className="match__name">Số trận thua</p>
               <img src="/assets/img/teamdetail/exhausted-man.png" alt="1"></img>
-              <p className="match__number">{statistic&&statistic.totalDraw}</p>
+              <p className="match__number">{statistic&&statistic.totalLose}</p>
             </div>
           </div>
         </div>
