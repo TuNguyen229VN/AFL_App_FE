@@ -169,7 +169,7 @@ function Match() {
         for(let i = 0; i < res.data.matchDetails.length; i++){
           if(res.data.matchDetails[i].actionMatchId == 4){
             setCheckPen(true);
-            return;
+           break;
           }
         }
         setLoading(false);
