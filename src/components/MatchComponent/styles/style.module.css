@@ -91,6 +91,7 @@
   font-size: 16px;
   color: #70757a;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .player__A,
@@ -120,7 +121,10 @@
   line-height: 1.6;
 }
 .logo__ball {
-  margin-left: -50px;
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%)
 }
 
 .match__menu {
@@ -632,6 +636,7 @@
   transition: 0.2s linear;
   padding: 5px;
   border-radius: 5px;
+  width: max-content;
 }
 
 .playerName {
@@ -935,4 +940,62 @@
 
 .buttonOff:hover{
   filter: brightness(90%);
+}
+.score__main, .score__pen{
+  display: flex;
+}
+.score__wrap{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+ .penText{
+  margin-top:80px;
+  font-size: 20px;
+}
+
+.score__pen{
+  margin-top: 10px;
+}
+
+.score__pen div{
+  font-weight: normal;
+  font-size: 18px;
+}
+
+.titlePen{
+  margin: 0 auto;
+  display: block;
+  text-transform: uppercase;
+  width: max-content;
+}
+.penPlayer__score{
+  position: relative;
+  margin-top:60px;
+}
+
+.penPlayer__score:after{
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: -20px;
+  width: 100%;
+  height: 2px;
+  background-color:#ccc;
+}
+
+.pText{
+  width: max-content;
+  font-size: 16px;
+  margin-top:-25px
+}
+
+.pCheck{
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+  display: block;
+  margin-top:5px;
+
 }
