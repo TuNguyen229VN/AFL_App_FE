@@ -22,7 +22,7 @@ export default function DetailInMatch(props) {
     title,
     lastMatch
   } = props;
-  
+  console.log(title)
   const [detail, setDetail] = useState([]);
   const [statusCall, setStatusCall] = useState(false);
   const [newMatchDetail, setNewMatchDetail] = useState(null);

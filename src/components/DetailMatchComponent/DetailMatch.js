@@ -52,7 +52,7 @@ export default function DetailMatch(props) {
   const [playerA, setPlayerA] = useState(null);
   const [playerB, setPlayerB] = useState(null);
   const [statusUpdate, setStatusUpdate] = useState(false);
-
+  console.log(title)
   useEffect(() => {
     getTeamInMatchByMatchID();
   }, [statusUpdate === true]);

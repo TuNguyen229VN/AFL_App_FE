@@ -1799,6 +1799,7 @@ function Match() {
                               {item.minutesScore.map((itemMin, indexMin) => {
                                 return <span key={indexMin}>{itemMin}'</span>;
                               })}
+                              
                             </div>
                           )}
                         </>
