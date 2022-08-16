@@ -41,7 +41,7 @@ const CompetitionFormat = (props) => {
             id="circle"
             name="competitionFormat"
             value="CircleStage"
-            disabled={lengthTeamPaticipate === 0 ? "" : "disabled"}
+            //disabled={lengthTeamPaticipate === 0 ? "" : "disabled"}
             onChange={onChangeHandler}
             checked={competitionFormat.value === "CircleStage" ? true : false}
           ></input>
@@ -73,7 +73,7 @@ const CompetitionFormat = (props) => {
             id="knockout"
             name="competitionFormat"
             value="KnockoutStage"
-            disabled={lengthTeamPaticipate === 0 ? "" : "disabled"}
+            //disabled={lengthTeamPaticipate === 0 ? "" : "disabled"}
             onChange={onChangeHandler}
             checked={competitionFormat.value === "KnockoutStage" ? true : false}
           ></input>
@@ -107,7 +107,7 @@ const CompetitionFormat = (props) => {
             name="competitionFormat"
             value="GroupStage"
             onChange={onChangeHandler}
-            disabled={lengthTeamPaticipate === 0 ? "" : "disabled"}
+            //disabled={lengthTeamPaticipate === 0 ? "" : "disabled"}
             checked={competitionFormat.value === "GroupStage" ? true : false}
           ></input>
         </div>

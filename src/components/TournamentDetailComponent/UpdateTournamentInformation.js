@@ -34,7 +34,7 @@ import {
   updateTeamInScheduleAPI,
 } from "../../api/TeamInTournamentAPI";
 import postNotifacation from "../../api/NotificationAPI";
-import myData from "../../provice.json"
+import myData from "../../provice.json";
 const UpdateTournamentInformation = () => {
   let navigate = useNavigate();
   const location = useLocation();
@@ -137,29 +137,26 @@ const UpdateTournamentInformation = () => {
   const tour = gsap.timeline();
   const [changeFormat, setChangeFormat] = useState(false);
   const getAllCity = async () => {
-    
-    
-      setProvice(myData);
-      const proviceCurrent = addressTour.split(", ")[3];
-      const findDistrictByNameProvice = myData.find(
-        (item) => item.name === proviceCurrent
-      );
-      setProviceSearch(findDistrictByNameProvice.name);
-      const allDistrict = findDistrictByNameProvice.districts;
-      setDistricts(allDistrict);
-      const districtCurrent = addressTour.split(", ")[2];
-      const findWardsByDistrictName = findDistrictByNameProvice.districts.find(
-        (item) => item.name === districtCurrent
-      );
-      setDistricSearch(findWardsByDistrictName.name);
-      const wardCurrent = addressTour.split(", ")[1];
+    setProvice(myData);
+    const proviceCurrent = addressTour.split(", ")[3];
+    const findDistrictByNameProvice = myData.find(
+      (item) => item.name === proviceCurrent
+    );
+    setProviceSearch(findDistrictByNameProvice.name);
+    const allDistrict = findDistrictByNameProvice.districts;
+    setDistricts(allDistrict);
+    const districtCurrent = addressTour.split(", ")[2];
+    const findWardsByDistrictName = findDistrictByNameProvice.districts.find(
+      (item) => item.name === districtCurrent
+    );
+    setDistricSearch(findWardsByDistrictName.name);
+    const wardCurrent = addressTour.split(", ")[1];
 
-      const allWard = findWardsByDistrictName.wards;
-      const findWards = allWard.find((item) => item.name === wardCurrent);
+    const allWard = findWardsByDistrictName.wards;
+    const findWards = allWard.find((item) => item.name === wardCurrent);
 
-      setWardSearch(findWards.name);
-      setWards(allWard);
-    
+    setWardSearch(findWards.name);
+    setWards(allWard);
   };
   useEffect(() => {
     if (lengthTeamPaticipate > 0) {
@@ -171,7 +168,7 @@ const UpdateTournamentInformation = () => {
   const ChangeDate = (data) => {
     const sampleData = data.split("-")[0] + "-" + data.split("-")[1] + "-";
     const date = +data.split("-")[2] + 1;
-    const newDate = date >= "10" ? date : "0" + date
+    const newDate = date >= "10" ? date : "0" + date;
     return sampleData + newDate;
   };
   const getInforTournamentById = async () => {
@@ -222,7 +219,9 @@ const UpdateTournamentInformation = () => {
       });
 
       setCloseRegister({
-        value: ChangeDate(new Date(team.registerEndDate).toISOString().slice(0, 10)),
+        value: ChangeDate(
+          new Date(team.registerEndDate).toISOString().slice(0, 10)
+        ),
         error: null,
       });
 
@@ -861,7 +860,12 @@ const UpdateTournamentInformation = () => {
     setResetProvice(-1);
     getAllCity();
   }, [resetProvice]);
-
+  const addDays = (data, numDay) => {
+    const addDay = data;
+    addDay.setTime(addDay.getTime() + numDay * 24 * 60 * 60 * 1000);
+    console.log(addDay.toJSON().split("T")[0], numDay);
+    return addDay.toJSON().split("T")[0];
+  };
   return (
     <>
       <ScrollToTop />
@@ -1114,7 +1118,7 @@ const UpdateTournamentInformation = () => {
                     value={
                       closeRegister.value === null ? "" : closeRegister.value
                     }
-                    min={new Date().toJSON().split("T")[0]}
+                    min={addDays(new Date(), 3)}
                     onChange={onChangeHandler}
                     disabled={status === 0 ? "" : "disable"}
                     required
@@ -1153,8 +1157,8 @@ const UpdateTournamentInformation = () => {
                     type="date"
                     min={
                       status === 0
-                        ? closeRegister.value
-                        : new Date().toJSON().split("T")[0]
+                        ? addDays(new Date(closeRegister.value), 1)
+                        : addDays(new Date(), 3)
                     }
                     name="startTime"
                     value={startTime.value === null ? "" : startTime.value}
@@ -1204,7 +1208,8 @@ const UpdateTournamentInformation = () => {
                     type="date"
                     name="endTime"
                     value={endTime.value === null ? "" : endTime.value}
-                    min={startTime.value}
+                    min={startTime.value !== null ? addDays(new Date(startTime.value),1) : null}
+                    max={startTime.value !== null ? addDays(new Date(startTime.value),31): null}
                     // disabled={(new Date(closeRegister.value).getTime() <=
                     //   new Date().getTime()) && startTime.value != null ? "" : "disable"}
                     onChange={onChangeHandler}

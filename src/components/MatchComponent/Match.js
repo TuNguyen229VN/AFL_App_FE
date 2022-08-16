@@ -166,10 +166,10 @@ function Match() {
       .then((res) => {
         devidePlayer(res.data.matchDetails, data, team);
         // setDetail(res.data.matchDetails);
-        for(let i = 0; i < res.data.matchDetails.length; i++){
-          if(res.data.matchDetails[i].actionMatchId == 4){
+        for (let i = 0; i < res.data.matchDetails.length; i++) {
+          if (res.data.matchDetails[i].actionMatchId == 4) {
             setCheckPen(true);
-           break;
+            break;
           }
         }
         setLoading(false);
@@ -972,7 +972,7 @@ function Match() {
   const [uId, setUId] = useState([]);
   const [room, setRoom] = useState("");
   const [penA, setPenA] = useState(0);
-  const [penB, setPenB]= useState(0);
+  const [penB, setPenB] = useState(0);
   const joinRoom = async () => {
     try {
       let Id = "0";
@@ -1134,7 +1134,7 @@ function Match() {
     }
     }
   }, [team]);
-    console.log(detail)
+  console.log(detail);
   const sendComment = async (c) => {
     try {
       const comment = c;
@@ -1175,8 +1175,8 @@ function Match() {
       }
       actionId = 3;
     }
-    if(isPen){
-      actionId =4;
+    if (isPen) {
+      actionId = 4;
     }
     let data = {
       actionMatchId: actionId,
@@ -1223,7 +1223,7 @@ function Match() {
             setPlayerCardPopupB(false);
           }
           setMinuteIndex(0);
-          if(actionId ==4){
+          if (actionId == 4) {
             setCheckPen(true);
           }
           // setMinutes("");
@@ -1257,7 +1257,7 @@ function Match() {
           redCardNumber = redA;
         }
         scorePenalty = tim.scorePenalty;
-        if(penA >0){
+        if (penA > 0) {
           scorePenalty = penA;
         }
       }
@@ -1277,7 +1277,7 @@ function Match() {
           redCardNumber = redB;
         }
         scorePenalty = tim.scorePenalty;
-        if(penB>0){
+        if (penB > 0) {
           scorePenalty = penB;
         }
       }
@@ -1291,8 +1291,8 @@ function Match() {
       if (card == "red") {
         redCardNumber = redCardNumber + 1;
       }
-      if(actionId == 4){
-        scorePenalty = scorePenalty+1;
+      if (actionId == 4) {
+        scorePenalty = scorePenalty + 1;
       }
       const data = {
         id: tim.id,
@@ -1720,10 +1720,14 @@ function Match() {
                       state: {
                         hostTournamentId: location.state.hostTournamentId,
                         tourDetail: location.state.tourDetail,
-                        indexMatch: location.state.index,
-                        title,
-                        index,
-                        lastMatch,
+                        indexMatch: dataMatch[2],
+                        title: dataMatch[0],
+                        index: dataMatch[1],
+                        lastMatch: dataMatch[3],
+                        // title={dataMatch[0]}
+                        // indexMatch={dataMatch[2]}
+                        // index={dataMatch[1]}
+                        // lastMatch={dataMatch[3]}
                       },
                     })
                   }
@@ -1860,80 +1864,91 @@ function Match() {
                     " đã bị xử thua vì " +
                     reportMatch.reason.split("-")[1]}
                 </h1>
-              ) : (<>
-                <div className={styles.player__score}>
-                  <div className={styles.player__A}>
-                    {detail &&
-                      allTeamA &&
-                      detail.map((item) => (
-                        <>
-                          {item.playerSide == "teamA" && item.actionMatchId!=4 &&(
-                            <div className={styles.playerAction}>
-                              <div className={styles.player}>
-                                <img
-                                  style={{
-                                    width: 30,
-                                    marginRight: 10,
-                                  }}
-                                  src={
-                                    item.actionMatchId === 1
-                                      ? "/assets/icons/soccer-ball-retina.png"
-                                      : item.actionMatchId === 2
-                                      ? "/assets/icons/yellow-card.png"
-                                      : "/assets/icons/red-card.png"
-                                  }
-                                  alt="ball"
-                                />
-                                <p>{item.namePlayer}</p>
-                              </div>
+              ) : (
+                <>
+                  <div className={styles.player__score}>
+                    <div className={styles.player__A}>
+                      {detail &&
+                        allTeamA &&
+                        detail.map((item) => (
+                          <>
+                            {item.playerSide == "teamA" &&
+                              item.actionMatchId != 4 && (
+                                <div className={styles.playerAction}>
+                                  <div className={styles.player}>
+                                    <img
+                                      style={{
+                                        width: 30,
+                                        marginRight: 10,
+                                      }}
+                                      src={
+                                        item.actionMatchId === 1
+                                          ? "/assets/icons/soccer-ball-retina.png"
+                                          : item.actionMatchId === 2
+                                          ? "/assets/icons/yellow-card.png"
+                                          : "/assets/icons/red-card.png"
+                                      }
+                                      alt="ball"
+                                    />
+                                    <p>{item.namePlayer}</p>
+                                  </div>
 
-                              {item.minutesScore.map((itemMin, indexMin) => {
-                                return <span key={indexMin}>{itemMin}'</span>;
-                              })}
-                            </div>
-                          )}
-                        </>
-                      ))}
-                  </div>
-                  <div className={styles.logo__ball}>
-                    <img
-                      src="/assets/icons/soccer-ball-retina.png"
-                      alt="ball"
-                    />
-                  </div>
-                  <div className={styles.player__B}>
-                    {detail &&
-                      allTeamB &&
-                      detail.map((item) => (
-                        <>
-                          {item.playerSide == "teamB" && item.actionMatchId !=4 &&(
-                            <div className={styles.playerAction}>
-                              <div className={styles.player}>
-                                <img
-                                  style={{
-                                    width: 30,
-                                    marginRight: 10,
-                                  }}
-                                  src={
-                                    item.actionMatchId === 1
-                                      ? "/assets/icons/soccer-ball-retina.png"
-                                      : item.actionMatchId === 2
-                                      ? "/assets/icons/yellow-card.png"
-                                      : "/assets/icons/red-card.png"
-                                  }
-                                  alt="ball"
-                                />
-                                <p>{item.namePlayer}</p>
-                              </div>
+                                  {item.minutesScore.map(
+                                    (itemMin, indexMin) => {
+                                      return (
+                                        <span key={indexMin}>{itemMin}'</span>
+                                      );
+                                    }
+                                  )}
+                                </div>
+                              )}
+                          </>
+                        ))}
+                    </div>
+                    <div className={styles.logo__ball}>
+                      <img
+                        src="/assets/icons/soccer-ball-retina.png"
+                        alt="ball"
+                      />
+                    </div>
+                    <div className={styles.player__B}>
+                      {detail &&
+                        allTeamB &&
+                        detail.map((item) => (
+                          <>
+                            {item.playerSide == "teamB" &&
+                              item.actionMatchId != 4 && (
+                                <div className={styles.playerAction}>
+                                  <div className={styles.player}>
+                                    <img
+                                      style={{
+                                        width: 30,
+                                        marginRight: 10,
+                                      }}
+                                      src={
+                                        item.actionMatchId === 1
+                                          ? "/assets/icons/soccer-ball-retina.png"
+                                          : item.actionMatchId === 2
+                                          ? "/assets/icons/yellow-card.png"
+                                          : "/assets/icons/red-card.png"
+                                      }
+                                      alt="ball"
+                                    />
+                                    <p>{item.namePlayer}</p>
+                                  </div>
 
-                              {item.minutesScore.map((itemMin, indexMin) => {
-                                return <span key={indexMin}>{itemMin}'</span>;
-                              })}
-                              
-                            </div>
-                          )}
-                        </>
-                      ))}
+                                  {item.minutesScore.map(
+                                    (itemMin, indexMin) => {
+                                      return (
+                                        <span key={indexMin}>{itemMin}'</span>
+                                      );
+                                    }
+                                  )}
+                                </div>
+                              )}
+                          </>
+                        ))}
+                    </div>
                   </div>
                 </div>
                 {checkPen&&

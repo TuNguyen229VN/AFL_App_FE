@@ -15,3 +15,8 @@ export function deleteMatchByTourIdAPI(id){
     const afterDefaultURL = `matchs/delete-match-by-tournament-id?tournamentId=${id}`;
     return axios.delete(url+afterDefaultURL);
 }
+
+export function createTieBreakAPI(idTour,groupName){
+    const afterDefaultURL = `matchs/create-tie-break-match?tournamentId=${idTour}&groupName=${groupName}`;
+    return axios.post(url + afterDefaultURL);
+}
