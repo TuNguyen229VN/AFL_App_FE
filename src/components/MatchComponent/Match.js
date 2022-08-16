@@ -77,6 +77,7 @@ function Match() {
   const [detailTeamA, setDetailTeamA] = useState(null);
   const [detailTeamB, setDetailTeamB] = useState(null);
   const [predict, setPredict] = useState({});
+  console.log("aa")
   const getPredict = async () => {
     try {
       const response = await axios.get(
