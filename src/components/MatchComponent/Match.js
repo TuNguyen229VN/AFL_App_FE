@@ -1942,7 +1942,6 @@ function Match() {
                         ))}
                     </div>
                   </div>
-                </div>
                 {checkPen&&
                   <div className={styles.penPlayer__score}>
                     <h2 className={styles.titlePen}>Loạt sút luân lưu</h2>
