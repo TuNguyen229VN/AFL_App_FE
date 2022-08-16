@@ -113,6 +113,7 @@ export default function DetailMatch(props) {
           +scoreB > +scoreA ? "3" : +scoreA === +scoreB ? "1" : "0";
         newTeamA.scorePenalty = null;
         newTeamB.scorePenalty = null;
+
       } else {
         const splitResultPenalty = teamWinPenalty.split("-");
         newTeamA.result =
@@ -130,7 +131,7 @@ export default function DetailMatch(props) {
         newTeamB.scorePenalty =
         newTeamB.teamInTournament.team.id == splitResultPenalty[1]
             ? +splitResultPenalty[0]
-            : +splitResultPenalty[2];
+            : +splitResultPenalty[2];    
       }
     } else if (type === 2) {
       newTeamA.yellowCardNumber = +yellowA;

@@ -352,16 +352,17 @@ const CreateTournament = () => {
     //           new Date().getHours() * 60 * 60 * 1000
     if (startTime.value === null) {
       return "Ngày bắt đầu không được để trống";
-    } else if (
-      status === -1 &&
-      Math.abs(
-        new Date().getTime() -
-          new Date(startTime.value).getTime() 
-      ) <
-        24 * 60 * 60 * 1000
-    ) {
-      return "Không thể bắt đầu ngày hôm nay vì chưa đủ đội";
-    }
+    } 
+    // else if (
+    //   status === -1 &&
+    //   Math.abs(
+    //     new Date().getTime() -
+    //       new Date(startTime.value).getTime() 
+    //   ) <
+    //     24 * 60 * 60 * 1000
+    // ) {
+    //   return "Không thể bắt đầu ngày hôm nay vì chưa đủ đội";
+    // }
     if (endTime.value === null) {
       return "Ngày kết thúc không được để trống";
     }
@@ -859,7 +860,7 @@ const CreateTournament = () => {
                         : "disable"
                     }
                     onChange={onChangeHandler}
-                    required
+                    
                   />
                 </div>
 
