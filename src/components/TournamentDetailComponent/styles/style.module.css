@@ -278,7 +278,6 @@
   display: flex;
   align-items: center;
   column-gap: 25px;
-  justify-content: center;
 }
 
 .tableTeamName img {

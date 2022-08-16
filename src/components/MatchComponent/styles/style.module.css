@@ -637,6 +637,11 @@
   padding: 5px;
   border-radius: 5px;
   width: max-content;
+  text-align: center;
+}
+
+.choose.active{
+  width: 200px;
 }
 
 .playerName {
@@ -998,4 +1003,8 @@
   display: block;
   margin-top:5px;
 
+}
+
+.fail{
+  color: red;
 }
