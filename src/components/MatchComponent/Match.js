@@ -83,7 +83,6 @@ function Match() {
         `https://afootballleague.ddns.net/api/v1/ScorePrediction/truePredict?matchId=${idMatch}`
       );
       setPredict(response.data);
-      console.log(response.data);
     } catch (err) {
       console.error(err);
       setPredict({});
@@ -439,7 +438,6 @@ function Match() {
   const updateTeamInMatchReport = async (data) => {
     try {
       const response = await updateTeamInMatch(data);
-      console.log(response);
     } catch (err) {
       console.error(err);
     }
@@ -991,7 +989,6 @@ function Match() {
       }
       const room = idMatch;
       const connectionId = "a";
-      console.log(Id);
       const connection = new HubConnectionBuilder()
 
         .withUrl("https://afootballleague.ddns.net/chat")
@@ -1007,13 +1004,11 @@ function Match() {
       });
 
       connection.on("MatchDetail", (mDt) => {
-        console.log(mDt);
         setMDetail(mDt);
         // setDetail(detail =>[...detail,mDt]);
       });
 
       connection.on("TeamInMatch", (tim) => {
-        console.log(tim.teamScore);
         setTeam(tim);
         if (tim && allTeamA != null && tim.id === allTeamA[0].id) {
           setRedA(tim.redCardNumber);
@@ -1030,7 +1025,6 @@ function Match() {
       });
       connection.on("Guest", (guestId) => {
         localStorage.setItem("guestId", guestId);
-        console.log(guestId);
       });
       await connection.start();
       await connection.invoke("JoinStream", {
@@ -1134,7 +1128,6 @@ function Match() {
     }
     }
   }, [team]);
-  console.log(detail);
   const sendComment = async (c) => {
     try {
       const comment = c;
@@ -1323,7 +1316,6 @@ function Match() {
       const response = await axios.put(
         `https://afootballleague.ddns.net/api/v1/team-in-tournaments/update-score?tournamentId=${idTour}`
       );
-      console.log(response.data);
     } catch (err) {
       console.log(err);
     }
@@ -1406,7 +1398,6 @@ function Match() {
                     setMinutes("");
                     setIsPen(false);
                     setFail(false);
-                    console.log(fail ,"chọn")
                   }}
                 >
                   {minuteIndex == item.id ? "Hoàn tất" : "Chọn"}
