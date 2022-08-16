@@ -111,8 +111,8 @@ export default function DetailMatch(props) {
           +scoreA > +scoreB ? "3" : +scoreA === +scoreB ? "1" : "0";
         newTeamB.result =
           +scoreB > +scoreA ? "3" : +scoreA === +scoreB ? "1" : "0";
-        newTeamA.scorePenalty = 0;
-        newTeamB.scorePenalty = 0;
+        newTeamA.scorePenalty = null;
+        newTeamB.scorePenalty = null;
       } else {
         const splitResultPenalty = teamWinPenalty.split("-");
         newTeamA.result =
