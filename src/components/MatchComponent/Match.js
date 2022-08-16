@@ -166,10 +166,10 @@ function Match() {
       .then((res) => {
         devidePlayer(res.data.matchDetails, data, team);
         // setDetail(res.data.matchDetails);
-        for(let i = 0; i < res.data.matchDetails.length; i++){
-          if(res.data.matchDetails[i].actionMatchId == 4){
+        for (let i = 0; i < res.data.matchDetails.length; i++) {
+          if (res.data.matchDetails[i].actionMatchId == 4) {
             setCheckPen(true);
-           break;
+            break;
           }
         }
         setLoading(false);
@@ -948,7 +948,7 @@ function Match() {
   const [uId, setUId] = useState([]);
   const [room, setRoom] = useState("");
   const [penA, setPenA] = useState(0);
-  const [penB, setPenB]= useState(0);
+  const [penB, setPenB] = useState(0);
   const joinRoom = async () => {
     try {
       let Id = "0";
@@ -1084,7 +1084,7 @@ function Match() {
       }
     }
   }, [team]);
-    console.log(detail)
+  console.log(detail);
   const sendComment = async (c) => {
     try {
       const comment = c;
@@ -1125,8 +1125,8 @@ function Match() {
       }
       actionId = 3;
     }
-    if(isPen){
-      actionId =4;
+    if (isPen) {
+      actionId = 4;
     }
     const data = {
       actionMatchId: actionId,
@@ -1157,7 +1157,7 @@ function Match() {
             setPlayerCardPopupB(false);
           }
           setMinuteIndex(0);
-          if(actionId ==4){
+          if (actionId == 4) {
             setCheckPen(true);
           }
           // setMinutes("");
@@ -1191,7 +1191,7 @@ function Match() {
           redCardNumber = redA;
         }
         scorePenalty = tim.scorePenalty;
-        if(penA >0){
+        if (penA > 0) {
           scorePenalty = penA;
         }
       }
@@ -1211,7 +1211,7 @@ function Match() {
           redCardNumber = redB;
         }
         scorePenalty = tim.scorePenalty;
-        if(penB>0){
+        if (penB > 0) {
           scorePenalty = penB;
         }
       }
@@ -1225,8 +1225,8 @@ function Match() {
       if (card == "red") {
         redCardNumber = redCardNumber + 1;
       }
-      if(actionId == 4){
-        scorePenalty = scorePenalty+1;
+      if (actionId == 4) {
+        scorePenalty = scorePenalty + 1;
       }
       const data = {
         id: tim.id,
@@ -1264,7 +1264,7 @@ function Match() {
   };
   const PopupPlayer = (players) => {
     const [minutes, setMinutes] = useState();
-    const [isPen,setIsPen] = useState(false);
+    const [isPen, setIsPen] = useState(false);
     return (
       <div className={styles.popUpPlayerWrap}>
         <div className={styles.playerPopup}>
@@ -1298,26 +1298,33 @@ function Match() {
                 </span>
                 {minuteIndex == item.id && (
                   <>
-                  <div className={styles.minutes}>
-                    {/* <p>Số phút ghi bàn</p> */}
-                    <input
-                      type="number"
-                      placeholder="Số phút ghi bàn"
-                      min={0}
-                      onChange={(e) => {
-                        setMinutes(e.target.value);
-                      }}
-                      value={minutes}
-                      onFocus={(e) => {
-                        setMinutesError("");
-                      }}
-                    />
-                    <p className="error">{minutesError}</p>
-                  </div>
-                  <div>
-                    <p className={styles.pText}>Sút luân lưu</p>
-                  <input className={styles.pCheck} type="checkbox" checked={isPen} onChange={(e) => {setIsPen(e.target.checked)}}/>
-                  </div>
+                    <div className={styles.minutes}>
+                      {/* <p>Số phút ghi bàn</p> */}
+                      <input
+                        type="number"
+                        placeholder="Số phút ghi bàn"
+                        min={0}
+                        onChange={(e) => {
+                          setMinutes(e.target.value);
+                        }}
+                        value={minutes}
+                        onFocus={(e) => {
+                          setMinutesError("");
+                        }}
+                      />
+                      <p className="error">{minutesError}</p>
+                    </div>
+                    <div>
+                      <p className={styles.pText}>Sút luân lưu</p>
+                      <input
+                        className={styles.pCheck}
+                        type="checkbox"
+                        checked={isPen}
+                        onChange={(e) => {
+                          setIsPen(e.target.checked);
+                        }}
+                      />
+                    </div>
                   </>
                 )}
                 <span
@@ -1333,7 +1340,6 @@ function Match() {
                     );
                     setMinutes("");
                     setIsPen(false);
-                    console.log(isPen ,"chọn")
                   }}
                 >
                   {minuteIndex == item.id ? "Hoàn tất" : "Chọn"}
@@ -1647,10 +1653,14 @@ function Match() {
                       state: {
                         hostTournamentId: location.state.hostTournamentId,
                         tourDetail: location.state.tourDetail,
-                        indexMatch: location.state.index,
-                        title,
-                        index,
-                        lastMatch,
+                        indexMatch: dataMatch[2],
+                        title: dataMatch[0],
+                        index: dataMatch[1],
+                        lastMatch: dataMatch[3],
+                        // title={dataMatch[0]}
+                        // indexMatch={dataMatch[2]}
+                        // index={dataMatch[1]}
+                        // lastMatch={dataMatch[3]}
                       },
                     })
                   }
@@ -1721,26 +1731,28 @@ function Match() {
                   </div>
                   <div className={styles.score__wrap}>
                     <div className={styles.score__main}>
-                  <div className={styles.score__A}>
-                    {scoreA == 0 ? item.teamScore : scoreA}
-                  </div>
-                  <div className={styles.line}>-</div>
-                  <div className={styles.score__B}>
-                    {scoreB == 0 ? allTeamB[index].teamScore : scoreB}
-                  </div>
-                  </div>
-                  {checkPen&&<>
-                    <p className ={styles.penText}>Loạt sút luân lưu</p>
-                  <div className={styles.score__pen}>
-                  <div className={styles.score__A}>
-                    {penA == 0 ? item.scorePenalty : penA}
-                  </div>
-                  <div className={styles.line}>-</div>
-                  <div className={styles.score__B}>
-                    {penB == 0 ? allTeamB[index].scorePenalty : penB}
-                  </div> 
-                  </div></>
-                  }
+                      <div className={styles.score__A}>
+                        {scoreA == 0 ? item.teamScore : scoreA}
+                      </div>
+                      <div className={styles.line}>-</div>
+                      <div className={styles.score__B}>
+                        {scoreB == 0 ? allTeamB[index].teamScore : scoreB}
+                      </div>
+                    </div>
+                    {checkPen && (
+                      <>
+                        <p className={styles.penText}>Loạt sút luân lưu</p>
+                        <div className={styles.score__pen}>
+                          <div className={styles.score__A}>
+                            {penA == 0 ? item.scorePenalty : penA}
+                          </div>
+                          <div className={styles.line}>-</div>
+                          <div className={styles.score__B}>
+                            {penB == 0 ? allTeamB[index].scorePenalty : penB}
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className={styles.logo}>
                     <img
@@ -1787,160 +1799,185 @@ function Match() {
                     " đã bị xử thua vì " +
                     reportMatch.reason.split("-")[1]}
                 </h1>
-              ) : (<>
-                <div className={styles.player__score}>
-                  <div className={styles.player__A}>
-                    {detail &&
-                      allTeamA &&
-                      detail.map((item) => (
-                        <>
-                          {item.playerSide == "teamA" && item.actionMatchId!=4 &&(
-                            <div className={styles.playerAction}>
-                              <div className={styles.player}>
-                                <img
-                                  style={{
-                                    width: 30,
-                                    marginRight: 10,
-                                  }}
-                                  src={
-                                    item.actionMatchId === 1
-                                      ? "/assets/icons/soccer-ball-retina.png"
-                                      : item.actionMatchId === 2
-                                      ? "/assets/icons/yellow-card.png"
-                                      : "/assets/icons/red-card.png"
-                                  }
-                                  alt="ball"
-                                />
-                                <p>{item.namePlayer}</p>
-                              </div>
+              ) : (
+                <>
+                  <div className={styles.player__score}>
+                    <div className={styles.player__A}>
+                      {detail &&
+                        allTeamA &&
+                        detail.map((item) => (
+                          <>
+                            {item.playerSide == "teamA" &&
+                              item.actionMatchId != 4 && (
+                                <div className={styles.playerAction}>
+                                  <div className={styles.player}>
+                                    <img
+                                      style={{
+                                        width: 30,
+                                        marginRight: 10,
+                                      }}
+                                      src={
+                                        item.actionMatchId === 1
+                                          ? "/assets/icons/soccer-ball-retina.png"
+                                          : item.actionMatchId === 2
+                                          ? "/assets/icons/yellow-card.png"
+                                          : "/assets/icons/red-card.png"
+                                      }
+                                      alt="ball"
+                                    />
+                                    <p>{item.namePlayer}</p>
+                                  </div>
 
-                              {item.minutesScore.map((itemMin, indexMin) => {
-                                return <span key={indexMin}>{itemMin}'</span>;
-                              })}
-                            </div>
-                          )}
-                        </>
-                      ))}
-                  </div>
-                  <div className={styles.logo__ball}>
-                    <img
-                      src="/assets/icons/soccer-ball-retina.png"
-                      alt="ball"
-                    />
-                  </div>
-                  <div className={styles.player__B}>
-                    {detail &&
-                      allTeamB &&
-                      detail.map((item) => (
-                        <>
-                          {item.playerSide == "teamB" && item.actionMatchId !=4 &&(
-                            <div className={styles.playerAction}>
-                              <div className={styles.player}>
-                                <img
-                                  style={{
-                                    width: 30,
-                                    marginRight: 10,
-                                  }}
-                                  src={
-                                    item.actionMatchId === 1
-                                      ? "/assets/icons/soccer-ball-retina.png"
-                                      : item.actionMatchId === 2
-                                      ? "/assets/icons/yellow-card.png"
-                                      : "/assets/icons/red-card.png"
-                                  }
-                                  alt="ball"
-                                />
-                                <p>{item.namePlayer}</p>
-                              </div>
+                                  {item.minutesScore.map(
+                                    (itemMin, indexMin) => {
+                                      return (
+                                        <span key={indexMin}>{itemMin}'</span>
+                                      );
+                                    }
+                                  )}
+                                </div>
+                              )}
+                          </>
+                        ))}
+                    </div>
+                    <div className={styles.logo__ball}>
+                      <img
+                        src="/assets/icons/soccer-ball-retina.png"
+                        alt="ball"
+                      />
+                    </div>
+                    <div className={styles.player__B}>
+                      {detail &&
+                        allTeamB &&
+                        detail.map((item) => (
+                          <>
+                            {item.playerSide == "teamB" &&
+                              item.actionMatchId != 4 && (
+                                <div className={styles.playerAction}>
+                                  <div className={styles.player}>
+                                    <img
+                                      style={{
+                                        width: 30,
+                                        marginRight: 10,
+                                      }}
+                                      src={
+                                        item.actionMatchId === 1
+                                          ? "/assets/icons/soccer-ball-retina.png"
+                                          : item.actionMatchId === 2
+                                          ? "/assets/icons/yellow-card.png"
+                                          : "/assets/icons/red-card.png"
+                                      }
+                                      alt="ball"
+                                    />
+                                    <p>{item.namePlayer}</p>
+                                  </div>
 
-                              {item.minutesScore.map((itemMin, indexMin) => {
-                                return <span key={indexMin}>{itemMin}'</span>;
-                              })}
-                              
-                            </div>
-                          )}
-                        </>
-                      ))}
+                                  {item.minutesScore.map(
+                                    (itemMin, indexMin) => {
+                                      return (
+                                        <span key={indexMin}>{itemMin}'</span>
+                                      );
+                                    }
+                                  )}
+                                </div>
+                              )}
+                          </>
+                        ))}
+                    </div>
                   </div>
-                </div>
-                {checkPen&&
-                  <div className={styles.penPlayer__score}>
-                    <h2 className={styles.titlePen}>Loạt sút luân lưu</h2>
-                    <div className={styles.player__score}>
-                  <div className={styles.player__A}>
-                    {detail &&
-                      allTeamA &&
-                      detail.map((item) => (
-                        <>
-                          {item.playerSide == "teamA" && item.actionMatchId ==4 &&(
-                            <div className={styles.playerAction}>
-                              <div className={styles.player}>
-                                <img
-                                  style={{
-                                    width: 30,
-                                    marginRight: 10,
-                                  }}
-                                  src={
-                                    item.actionMatchId === 4
-                                      ? "/assets/icons/soccer-ball-retina.png"
-                                      : item.actionMatchId === 2
-                                      ? "/assets/icons/yellow-card.png"
-                                      : "/assets/icons/red-card.png"
-                                  }
-                                  alt="ball"
-                                />
-                                <p>{item.namePlayer}</p>
-                              </div>
+                  {checkPen && (
+                    <div className={styles.penPlayer__score}>
+                      <h2 className={styles.titlePen}>Loạt sút luân lưu</h2>
+                      <div className={styles.player__score}>
+                        <div className={styles.player__A}>
+                          {detail &&
+                            allTeamA &&
+                            detail.map((item) => (
+                              <>
+                                {item.playerSide == "teamA" &&
+                                  item.actionMatchId == 4 && (
+                                    <div className={styles.playerAction}>
+                                      <div className={styles.player}>
+                                        <img
+                                          style={{
+                                            width: 30,
+                                            marginRight: 10,
+                                          }}
+                                          src={
+                                            item.actionMatchId === 4
+                                              ? "/assets/icons/soccer-ball-retina.png"
+                                              : item.actionMatchId === 2
+                                              ? "/assets/icons/yellow-card.png"
+                                              : "/assets/icons/red-card.png"
+                                          }
+                                          alt="ball"
+                                        />
+                                        <p>{item.namePlayer}</p>
+                                      </div>
 
-                              {item.minutesScore.map((itemMin, indexMin) => {
-                                return <span key={indexMin}>{itemMin}'</span>;
-                              })}
-                            </div>
-                          )}
-                        </>
-                      ))}
-                  </div>
-                  <div className={styles.logo__ball}>
-                    <img
-                      src="/assets/icons/soccer-ball-retina.png"
-                      alt="ball"
-                    />
-                  </div>
-                  <div className={styles.player__B}>
-                    {detail &&
-                      allTeamB &&
-                      detail.map((item) => (
-                        <>
-                          {item.playerSide == "teamB" && item.actionMatchId ==4 &&(
-                            <div className={styles.playerAction}>
-                              <div className={styles.player}>
-                                <img
-                                  style={{
-                                    width: 30,
-                                    marginRight: 10,
-                                  }}
-                                  src={
-                                    item.actionMatchId === 4
-                                      ? "/assets/icons/soccer-ball-retina.png"
-                                      : item.actionMatchId === 2
-                                      ? "/assets/icons/yellow-card.png"
-                                      : "/assets/icons/red-card.png"
-                                  }
-                                  alt="ball"
-                                />
-                                <p>{item.namePlayer}</p>
-                              </div>
+                                      {item.minutesScore.map(
+                                        (itemMin, indexMin) => {
+                                          return (
+                                            <span key={indexMin}>
+                                              {itemMin}'
+                                            </span>
+                                          );
+                                        }
+                                      )}
+                                    </div>
+                                  )}
+                              </>
+                            ))}
+                        </div>
+                        <div className={styles.logo__ball}>
+                          <img
+                            src="/assets/icons/soccer-ball-retina.png"
+                            alt="ball"
+                          />
+                        </div>
+                        <div className={styles.player__B}>
+                          {detail &&
+                            allTeamB &&
+                            detail.map((item) => (
+                              <>
+                                {item.playerSide == "teamB" &&
+                                  item.actionMatchId == 4 && (
+                                    <div className={styles.playerAction}>
+                                      <div className={styles.player}>
+                                        <img
+                                          style={{
+                                            width: 30,
+                                            marginRight: 10,
+                                          }}
+                                          src={
+                                            item.actionMatchId === 4
+                                              ? "/assets/icons/soccer-ball-retina.png"
+                                              : item.actionMatchId === 2
+                                              ? "/assets/icons/yellow-card.png"
+                                              : "/assets/icons/red-card.png"
+                                          }
+                                          alt="ball"
+                                        />
+                                        <p>{item.namePlayer}</p>
+                                      </div>
 
-                              {item.minutesScore.map((itemMin, indexMin) => {
-                                return <span key={indexMin}>{itemMin}'</span>;
-                              })}
-                            </div>
-                          )}
-                        </>
-                      ))}
-                  </div>
-                </div>
-                </div>}
+                                      {item.minutesScore.map(
+                                        (itemMin, indexMin) => {
+                                          return (
+                                            <span key={indexMin}>
+                                              {itemMin}'
+                                            </span>
+                                          );
+                                        }
+                                      )}
+                                    </div>
+                                  )}
+                              </>
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </>
               )}
             </div>

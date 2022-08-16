@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ModalDenyMatchDetail from "./ModalDenyMatchDetail";
 import { updateNextTeamInRoundAPI } from "../../api/TeamInMatchAPI";
+import PenaltyMatch from "./penalty/PenaltyMatch";
+import { deleteMatchDetailByTypeAPI } from "../../api/MatchDetailAPI";
 export default function DetailInMatch(props) {
   const {
     hideShow,
@@ -20,13 +22,17 @@ export default function DetailInMatch(props) {
     tourDetail,
     indexMatch,
     title,
-    lastMatch
+    lastMatch,
+    createTieBreak,
   } = props;
-  console.log(title)
+  console.log(matchDetail);
   const [detail, setDetail] = useState([]);
+  const [detailPenalty, setDetailPenalty] = useState([]);
   const [statusCall, setStatusCall] = useState(false);
   const [newMatchDetail, setNewMatchDetail] = useState(null);
   const [hideShowDeny, setHideShowDeny] = useState(null);
+  const [scoreAPenalty, setScoreAPenalty] = useState(0);
+  const [scoreBPenalty, setScoreBPenalty] = useState(0);
   let matchMinutes = null;
   useEffect(() => {
     matchMinutes = tourDetail !== null ? tourDetail.matchMinutes : null;
@@ -54,7 +60,38 @@ export default function DetailInMatch(props) {
     }
 
     coverMatchDetail();
-  }, [typeDetail, statusUpdate === false]);
+  }, [typeDetail, statusUpdate === false, matchDetail]);
+  useEffect(() => {
+    if (matchDetail !== null) {
+      
+      const detailA = [];
+      for (const item of matchDetail) {
+        if (
+          item.actionMatchId === 4 &&
+          item.teamId === nameTeamA.teamInTournament.team.id
+        )
+          detailA.push(item);
+      }
+      const detailB = [];
+      for (const item of matchDetail) {
+        if (
+          item.actionMatchId === 4 &&
+          item.teamId === nameTeamB.teamInTournament.team.id
+        )
+          detailB.push(item);
+      }
+
+      if (
+        (scoreAPenalty === 0 && scoreBPenalty === 0) ||
+        ((scoreAPenalty !== 0 || scoreAPenalty !== 0) &&
+          scoreAPenalty + scoreBPenalty === detailA.length + detailB.length)
+      ) {
+        setScoreAPenalty(detailA.length);
+        setScoreBPenalty(detailB.length);
+        getDataPenaltyDetail([...detailA, ...detailB]);
+      }
+    }
+  }, [scoreAPenalty === 0, scoreBPenalty === 0, matchDetail]);
 
   const coverMatchDetail = () => {
     if (matchDetail !== null) {
@@ -119,7 +156,6 @@ export default function DetailInMatch(props) {
     }
   };
   const getDataDetail = (data) => {
-    console.log(data);
     const player = [];
     const newPlayerA = [];
     if (data !== null) {
@@ -161,6 +197,50 @@ export default function DetailInMatch(props) {
       setDetail(player);
     }
   };
+  const getDataPenaltyDetail = (data) => {
+    const player = [];
+    const newPlayerA = [];
+    if (data !== null) {
+      const idTeamA = nameTeamA.teamInTournament.team.id;
+      for (let index in data) {
+        if (data[index].teamId === idTeamA) {
+          newPlayerA.push({
+            id: index,
+            actionMatchId: data[index].actionMatchId,
+            actionMinute: data[index].actionMinute,
+            matchId: data[index].matchId,
+            playerInTournamentId: data[index].playerInTournamentId,
+            footballPlayerId: data[index].footballPlayerId,
+          });
+        }
+      }
+      newPlayerA.sort(function (a, b) {
+        return a.actionMinute - b.actionMinute;
+      });
+      player.push(...newPlayerA);
+      const newPlayerB = [];
+      const idTeamB = nameTeamB.teamInTournament.team.id;
+      for (let index in data) {
+        if (data[index].teamId === idTeamB)
+          newPlayerB.push({
+            id: index,
+            actionMatchId: data[index].actionMatchId,
+            actionMinute: data[index].actionMinute,
+            matchId: data[index].matchId,
+            playerInTournamentId: data[index].playerInTournamentId,
+            footballPlayerId: data[index].footballPlayerId,
+          });
+      }
+
+      newPlayerB.sort(function (a, b) {
+        return a.actionMinute - b.actionMinute;
+      });
+      player.push(...newPlayerB);
+
+      setDetailPenalty(player);
+      // setDetail(player);
+    }
+  };
   const renderSelectByMinutes = (data) => {
     let array = [];
 
@@ -182,9 +262,24 @@ export default function DetailInMatch(props) {
     }
     return array;
   };
+
+  const onChangePenalty = (e) => {
+    const { name, value } = e.target;
+
+    switch (name) {
+      case "A":
+        setDetailPenalty([]);
+        setScoreAPenalty(+value);
+        break;
+      default:
+        setDetailPenalty([]);
+        setScoreBPenalty(+value);
+        break;
+    }
+  };
+
   const renderInputByNumber = (number, data, type) => {
     let array = [];
-
     for (let i = 0; i < number; i++) {
       let calc = i + +numTeamA;
       array.push(
@@ -200,6 +295,7 @@ export default function DetailInMatch(props) {
               marginRight: 20,
               padding: "10px 20px",
               marginBottom: 20,
+              width: 200,
             }}
           >
             {renderSelectByNumber(
@@ -242,6 +338,44 @@ export default function DetailInMatch(props) {
               margin: "10px 0",
             }}
           /> */}
+        </div>
+      );
+    }
+    return array;
+  };
+
+  const renderInputByNumberPenalty = (number, data, type) => {
+    let array = [];
+
+    for (let i = 0; i < number; i++) {
+      let calc = i + +scoreAPenalty;
+      const findId = +scoreAPenalty;
+      array.push(
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <select
+            name={type === "B" ? i + findId : i}
+            onChange={onChangeHandlerPenalty}
+            style={{
+              marginRight: 20,
+              padding: "10px 20px",
+              marginBottom: 20,
+              width: 200,
+            }}
+          >
+            {renderSelectByNumber(
+              data,
+              detailPenalty !== null &&
+                detailPenalty.length === +scoreAPenalty + +scoreBPenalty
+                ? type === "B"
+                  ? detailPenalty[calc].playerInTournamentId
+                  : detailPenalty[i].playerInTournamentId
+                : null
+            )}
+          </select>
         </div>
       );
     }
@@ -291,16 +425,52 @@ export default function DetailInMatch(props) {
       ]);
     }
   };
+  const onChangeHandlerPenalty = (e) => {
+    const { name, value } = e.target;
+    const id = name;
+    const valueObj = JSON.parse(value);
+    if (detailPenalty !== null && detailPenalty.length > 0) {
+      const newDetail = detailPenalty;
+      const findIndex = newDetail.findIndex((item, index) => item.id == id);
+      if (findIndex === -1) {
+        newDetail.push({
+          id: id,
+          actionMatchId: 4,
+          actionMinute: null,
+          matchId: +idMatch,
+          playerInTournamentId: valueObj.playerInTournamentId,
+          footballPlayerId: valueObj.id,
+        });
+      } else {
+        newDetail[findIndex].playerInTournamentId =
+          valueObj.playerInTournamentId;
+        newDetail[findIndex].footballPlayerId = valueObj.id;
+      }
+      console.log(newDetail);
+      setDetailPenalty(newDetail);
+    } else {
+      setDetailPenalty([
+        {
+          id: id,
+          actionMatchId: 4,
+          actionMinute: null,
+          matchId: +idMatch,
+          playerInTournamentId: valueObj.playerInTournamentId,
+          footballPlayerId: valueObj.id,
+        },
+      ]);
+    }
+  };
   const updateNextTeamInNextRound = () => {
     try {
       const data = {
         tournamentId: tourDetail.id,
         matchId:
           tourDetail.tournamentTypeId === 1
-            ? idMatch
+            ? +idMatch
             : indexMatch < tourDetail.groupNumber
             ? 0
-            : idMatch,
+            : +idMatch,
         groupName:
           tourDetail.tournamentTypeId === 3 && title.includes("Bảng")
             ? title.split(" ")[1]
@@ -317,15 +487,57 @@ export default function DetailInMatch(props) {
     for (let item of detail) {
       delete item.id;
     }
+    let teamWinPenalty = null;
+    if (+scoreAPenalty !== 0 || +scoreBPenalty !== 0) {
+      teamWinPenalty =
+        scoreAPenalty > scoreBPenalty
+          ? scoreAPenalty +
+            "-" +
+            nameTeamA.teamInTournament.team.id +
+            "-" +
+            scoreBPenalty
+          : scoreBPenalty +
+            "-" +
+            nameTeamB.teamInTournament.team.id +
+            "-" +
+            scoreAPenalty;
+      for (let item of detailPenalty) {
+        delete item.id;
+      }
+    }
+
+    if (scoreAPenalty !== 0 || scoreBPenalty !== 0) {
+      await deleteMatchDetailPenalty();
+    }
+
     await updateScoreInMatch(
-      detail,
-      typeDetail === "score" ? 1 : typeDetail === "yellow" ? 2 : 3
+      [...detail, ...detailPenalty],
+      typeDetail === "score" ? 1 : typeDetail === "yellow" ? 2 : 3,
+      teamWinPenalty
     );
-    if (tourDetail.tournamentTypeId !== 2 && (tourDetail.tournamentTypeId === 1 || (tourDetail.tournamentTypeId === 3 && (!title.includes("Bảng") || lastMatch === true)))) {
-      updateNextTeamInNextRound();
+    if (
+      tourDetail.tournamentTypeId !== 2 &&
+      (tourDetail.tournamentTypeId === 1 ||
+        (tourDetail.tournamentTypeId === 3 &&
+          (!title.includes("Bảng") || lastMatch === true)))
+    ) {
+      if (lastMatch && title.includes("Bảng")) {
+        const flagTieBreak = await createTieBreak();
+        if (flagTieBreak === false) updateNextTeamInNextRound();
+      } else {
+        updateNextTeamInNextRound();
+      }
     }
 
     setNewMatchDetail(null);
+  };
+
+  const deleteMatchDetailPenalty = async () => {
+    try {
+      const response = await deleteMatchDetailByTypeAPI(idMatch, "penalty");
+    } catch (err) {
+      console.error(err);
+    }
   };
   return (
     <div>
@@ -361,6 +573,8 @@ export default function DetailInMatch(props) {
                   aria-label="Close"
                   onClick={() => {
                     setHideShowDeny(true);
+                    setScoreAPenalty(0);
+                    setScoreBPenalty(0);
                   }}
                 ></button>
               </div>
@@ -381,7 +595,7 @@ export default function DetailInMatch(props) {
                     }}
                   >
                     {nameTeamA !== null && nameTeamB !== null
-                      ? nameTeamA.teamName + "-" + nameTeamB.teamName
+                      ? nameTeamA.teamName + " - " + nameTeamB.teamName
                       : null}
                   </p>
                 </div>
@@ -409,6 +623,75 @@ export default function DetailInMatch(props) {
                       : null}
                   </div>
                 </div>
+                {tourDetail.tournamentTypeId !== 2 &&
+                title.includes("Bảng") === false &&
+                +numTeamA === +numTeamB ? (
+                  <div>
+                    <h1
+                      style={{
+                        fontWeight: 600,
+                        textAlign: "center",
+                        marginBottom: 20,
+                      }}
+                    >
+                      Tỉ số bàn thắng luân lưu
+                    </h1>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-around",
+                        width: "110%",
+                        marginBottom: 20,
+                      }}
+                    >
+                      <input
+                        style={{
+                          width: "15%",
+                          padding: "0 0 0 25px",
+                        }}
+                        value={scoreAPenalty}
+                        name="A"
+                        onChange={onChangePenalty}
+                      />
+                      <p>-</p>
+                      <input
+                        style={{
+                          width: "15%",
+                          padding: "0 0 0 25px",
+                        }}
+                        value={scoreBPenalty}
+                        name="B"
+                        onChange={onChangePenalty}
+                      />
+                    </div>
+
+                    {scoreAPenalty !== 0 || scoreBPenalty !== 0 ? (
+                      <div>
+                        <h1
+                          style={{
+                            fontWeight: 600,
+                            textAlign: "center",
+                            marginBottom: 20,
+                          }}
+                        >
+                          Chi tiết bàn thắng luân lưu
+                        </h1>
+                        <PenaltyMatch
+                          scoreA={scoreAPenalty}
+                          scoreB={scoreBPenalty}
+                          playerA={playerA}
+                          playerB={playerB}
+                          renderInputByNumberPenalty={
+                            renderInputByNumberPenalty
+                          }
+                          detailPenalty={
+                            detailPenalty.length > 0 ? detailPenalty : null
+                          }
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
               </div>
               <div class="modal-footer">
                 <button
@@ -420,6 +703,8 @@ export default function DetailInMatch(props) {
                     // setNewMatchDetail([]);
                     // setStatusUpdate(true);
                     setHideShowDeny(true);
+                    setScoreAPenalty(0);
+                    setScoreBPenalty(0);
                   }}
                   style={{
                     padding: "10px 15px",

@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { async } from "@firebase/util";
 import { putStatusScorePrediction } from "../../api/ScorePrediction";
 import { postTournamentResult } from "../../api/TournamentResultAPI";
+import { createTieBreakAPI } from "../../api/MatchAPI";
 export default function DetailMatch(props) {
   const { idMatch } = useParams();
 
@@ -31,8 +32,8 @@ export default function DetailMatch(props) {
   const tourDetail = location.state.tourDetail;
   const hostTournamentId = location.state.hostTournamentId;
   const indexMatch = location.state.indexMatch;
-  const title = location.state.title !== null ? location.state.title : null;
-  const index = location.state.index !== null ? location.state.index : null;
+  const title = location.state.title;
+  const index = location.state.index;
   const lastMatch = location.state.lastMatch;
   const [teamA, setTeamA] = useState(null);
   const [teamB, setTeamB] = useState(null);
@@ -52,7 +53,7 @@ export default function DetailMatch(props) {
   const [playerA, setPlayerA] = useState(null);
   const [playerB, setPlayerB] = useState(null);
   const [statusUpdate, setStatusUpdate] = useState(false);
-  console.log(title)
+
   useEffect(() => {
     getTeamInMatchByMatchID();
   }, [statusUpdate === true]);
@@ -81,7 +82,6 @@ export default function DetailMatch(props) {
       if (response.status === 200) {
         setLoading(false);
         const data = response.data.matchDetails;
-        console.log(teamA);
         for (const item of data) {
           const teamId = await checkPlayerInTeam(
             idteamA,
@@ -97,18 +97,41 @@ export default function DetailMatch(props) {
       console.error(err);
     }
   };
-  const updateScoreInMatch = async (data, type) => {
+  const updateScoreInMatch = async (data, type, teamWinPenalty) => {
     const newTeamA = teamA;
     const newTeamB = teamB;
+    
     if (type === 1) {
       newTeamA.teamScore = +scoreA;
       newTeamA.teamScoreLose = +scoreB;
-      newTeamA.result =
-        +scoreA > +scoreB ? "3" : +scoreA === +scoreB ? "1" : "0";
       newTeamB.teamScore = +scoreB;
       newTeamB.teamScoreLose = +scoreA;
-      newTeamB.result =
-        +scoreB > +scoreA ? "3" : +scoreA === +scoreB ? "1" : "0";
+      if (teamWinPenalty === null) {
+        newTeamA.result =
+          +scoreA > +scoreB ? "3" : +scoreA === +scoreB ? "1" : "0";
+        newTeamB.result =
+          +scoreB > +scoreA ? "3" : +scoreA === +scoreB ? "1" : "0";
+        newTeamA.scorePenalty = 0;
+        newTeamB.scorePenalty = 0;
+      } else {
+        const splitResultPenalty = teamWinPenalty.split("-");
+        newTeamA.result =
+          newTeamA.teamInTournament.team.id == splitResultPenalty[1]
+            ? "3"
+            : "0";
+        newTeamB.result =
+          newTeamB.teamInTournament.team.id == splitResultPenalty[1]
+            ? "3"
+            : "0";
+        newTeamA.scorePenalty =
+          newTeamA.teamInTournament.team.id == splitResultPenalty[1]
+            ? +splitResultPenalty[0]
+            : +splitResultPenalty[2];
+        newTeamB.scorePenalty =
+        newTeamB.teamInTournament.team.id == splitResultPenalty[1]
+            ? +splitResultPenalty[0]
+            : +splitResultPenalty[2];
+      }
     } else if (type === 2) {
       newTeamA.yellowCardNumber = +yellowA;
       newTeamB.yellowCardNumber = +yellowB;
@@ -128,7 +151,7 @@ export default function DetailMatch(props) {
       type === 1 ? "score" : type === 2 ? "yellow" : "red",
       data
     );
-    
+
     await updateScoreTeamInTour();
     await updateScorePrediction();
 
@@ -138,10 +161,31 @@ export default function DetailMatch(props) {
       }
     } else {
       if (index > 0) {
-        matchResult();
+        const flagTieBreak = await createTieBreak();
+        if (flagTieBreak === false) {
+          matchResult();
+        }
       }
     }
   };
+  const createTieBreak = async () => {
+    try {
+      const groupName =
+        tourDetail.tournamentTypeId !== 2 ? title.includes("Bảng") : null;
+
+      const response = await createTieBreakAPI(
+        tourDetail.id,
+        groupName !== null ? (title ? title.includes("Bảng")[1] : null) : null
+      );
+      if (response.status === 201) {
+        return true;
+      }
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
+
   const matchResult = async () => {
     try {
       const response = postTournamentResult(idMatch);
@@ -628,6 +672,7 @@ export default function DetailMatch(props) {
         indexMatch={indexMatch}
         title={title}
         lastMatch={lastMatch}
+        createTieBreak={createTieBreak}
       />
       {loading ? <LoadingAction /> : null}
       <Footer />

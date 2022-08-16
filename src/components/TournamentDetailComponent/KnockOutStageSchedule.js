@@ -66,6 +66,7 @@ export default function KnockOutStageSchedule(props) {
                     score: item.teamScore,
                     teamResult: item.result,
                     teamInTournamentId: item.teamInTournamentId,
+                    penalty:item.scorePenalty
                   },
                   {
                     name: allTeam[index + 1].teamName,
@@ -76,6 +77,7 @@ export default function KnockOutStageSchedule(props) {
                     score: allTeam[index + 1].teamScore,
                     teamResult: allTeam[index + 1].result,
                     teamInTournamentId: allTeam[index + 1].teamInTournamentId,
+                    penalty:allTeam[index + 1].scorePenalty
                   },
                 ],
               },
@@ -101,6 +103,7 @@ export default function KnockOutStageSchedule(props) {
                 score: item.teamScore,
                 teamResult: item.result,
                 teamInTournamentId: item.teamInTournamentId,
+                penalty:item.scorePenalty
               },
               {
                 name:
@@ -114,6 +117,7 @@ export default function KnockOutStageSchedule(props) {
                 score: allTeam[index + 1].teamScore,
                 teamResult: allTeam[index + 1].result,
                 teamInTournamentId: allTeam[index + 1].teamInTournamentId,
+                penalty:allTeam[index + 1].scorePenalty
               },
             ],
           });
@@ -143,6 +147,7 @@ export default function KnockOutStageSchedule(props) {
                     score: item.teamScore,
                     teamResult: item.result,
                     teamInTournamentId: item.teamInTournamentId,
+                    penalty:item.scorePenalty
                   },
                   {
                     name: allTeam[index + 1].teamName,
@@ -153,6 +158,7 @@ export default function KnockOutStageSchedule(props) {
                     score: allTeam[index + 1].teamScore,
                     teamResult: allTeam[index + 1].result,
                     teamInTournamentId: allTeam[index + 1].teamInTournamentId,
+                    penalty:allTeam[index + 1].scorePenalty
                   },
                 ],
               },
@@ -257,7 +263,7 @@ export default function KnockOutStageSchedule(props) {
         if (newStartDate === null) {
           return endDate;
         } else {
-          console.log(newStartDate)
+          console.log(newStartDate);
           return newStartDate;
         }
       }
@@ -576,17 +582,34 @@ export default function KnockOutStageSchedule(props) {
                     )}
 
                     <td>
-                      <span className="score">
-                        {itemSeeds.teams[0].score !== null
-                          ? itemSeeds.teams[0].score
-                          : 0}
-                      </span>
-                      <span className="score"> - </span>
-                      <span className="score">
-                        {itemSeeds.teams[1].score !== null
-                          ? itemSeeds.teams[1].score
-                          : 0}
-                      </span>
+                      <div>
+                        <span className="score">
+                          {itemSeeds.teams[0].score !== null
+                            ? itemSeeds.teams[0].score
+                            : 0}
+                        </span>
+                        <span className="score"> - </span>
+                        <span className="score">
+                          {itemSeeds.teams[1].score !== null
+                            ? itemSeeds.teams[1].score
+                            : 0}
+                        </span>
+                      </div>
+                      {/* <div>
+                        <span className="score">
+                          {itemSeeds.teams[0].penalty !== null
+                            ? itemSeeds.teams[0].penalty
+                            : null}
+                        </span>
+                        <span className="score"> {itemSeeds.teams[0].penalty !== null
+                            ? "-"
+                            : null} </span>
+                        <span className="score">
+                          {itemSeeds.teams[1].penalty !== null
+                            ? itemSeeds.teams[1].penalty
+                            : null}
+                        </span>
+                      </div> */}
                     </td>
                     {itemSeeds.teams[1].team !== null ? (
                       <td>

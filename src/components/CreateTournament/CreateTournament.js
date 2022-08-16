@@ -555,6 +555,13 @@ const CreateTournament = () => {
         break;
     }
   };
+  const addDays = (data  , numDay) => {
+    
+    const addDay = data;
+    addDay.setTime(addDay.getTime() + numDay * 24 * 60 * 60 * 1000);
+    console.log(addDay.toJSON().split("T")[0],numDay);
+    return addDay.toJSON().split("T")[0];
+  }
   return (
     <>
       <ScrollToTop />
@@ -803,7 +810,7 @@ const CreateTournament = () => {
                     }
                     onChange={onChangeHandler}
                     disabled={status === 0 ? "" : "disable"}
-                    min={new Date().toJSON().split("T")[0]}
+                    min={addDays(new Date(), 3)}
                   />
                 </div>
 
@@ -839,8 +846,8 @@ const CreateTournament = () => {
                     type="date"
                     min={
                       status === 0
-                        ? closeRegister.value
-                        : new Date().toJSON().split("T")[0]
+                        ? addDays(new Date(closeRegister.value), 1)
+                        : addDays(new Date(), 3)
                     }
                     name="startTime"
                     value={startTime.value === null ? "" : startTime.value}
@@ -886,7 +893,8 @@ const CreateTournament = () => {
                   <input
                     className={styles.timeEnd_input}
                     id="endTime"
-                    min={startTime.value}
+                    min={startTime.value !== null ? addDays(new Date(startTime.value),1) : null}
+                    max={startTime.value !== null ? addDays(new Date(startTime.value),31): null}
                     type="date"
                     name="endTime"
                     value={endTime.value === null ? "" : endTime.value}
