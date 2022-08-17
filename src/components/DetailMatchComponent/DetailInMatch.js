@@ -582,7 +582,7 @@ export default function DetailInMatch(props) {
                 ></button>
               </div>
               <div
-                class="modal-body"
+                class="modal-body ic"
                 style={{
                   display: "flex",
                   flexDirection: "column",

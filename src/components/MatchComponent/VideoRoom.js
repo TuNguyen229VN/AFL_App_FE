@@ -96,7 +96,7 @@ function VideoRoom(props) {
       client.off("user-left", handleUserLeft);
       client.unpublish(localTracks).then(() => client.leave());
     };
-  }, []);
+  }, [props.inCall]);
 
   const [numberScreen, setNumberScreen] = useState(0);
   // const updateScoreTeamInTour = async () => {
@@ -187,24 +187,25 @@ function VideoRoom(props) {
           draggable: true,
           progress: undefined,
         });
-        // console.log(props.index);
-        // if (
-        //   props.tourDetail.tournamentTypeId !== 2 &&
-        //   (props.tourDetail.tournamentTypeId === 1 ||
-        //     (props.tourDetail.tournamentTypeId === 3 &&
-        //       (!props.title.includes("Bảng") || props.lastMatch === true)))
-        // ) {
-        //   updateNextTeamInNextRound();
-        // }
-        // if (props.tourDetail.tournamentTypeId !== 2) {
-        //   if (props.title === "Chung kết") {
-        //     matchResult();
-        //   }
-        // } else {
-        //   if (props.index > 0) {
-        //     matchResult();
-        //   }
-        // }
+        console.log(props.index);
+        if (
+          props.tourDetail.tournamentTypeId !== 2 &&
+          (props.tourDetail.tournamentTypeId === 1 ||
+            (props.tourDetail.tournamentTypeId === 3 &&
+              (!props.title.includes("Bảng") || props.lastMatch === true)))
+        ) {
+          console.log("as")
+          updateNextTeamInNextRound();
+        }
+        if (props.tourDetail.tournamentTypeId !== 2) {
+          if (props.title === "Chung kết") {
+            matchResult();
+          }
+        } else {
+          if (props.index > 0) {
+            matchResult();
+          }
+        }
       }
     } catch (error) {
       toast.error(error.response, {

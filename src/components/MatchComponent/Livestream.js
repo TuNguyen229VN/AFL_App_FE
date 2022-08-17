@@ -59,6 +59,7 @@ function Livestream(data) {
           setFullScreen={data.setFullScreen}
           props={rtcProps}
           setInCall={setInCall}
+          inCall={inCall}
           sendScreen={data.sendScreen}
           uId={data.uId}
           idUser={idUser}

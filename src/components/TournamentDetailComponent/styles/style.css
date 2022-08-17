@@ -504,7 +504,8 @@
 
 .popup__player {
   display: none;
-  position: fixed;
+  /* position: fixed; */
+  position: relative;
   top: 50%;
   z-index: 10;
   width: 100%;
@@ -516,6 +517,11 @@
   display: block;
 }
 
+.ic {
+  padding-top: 60px;
+  overflow-y: scroll;
+  max-height: 600px;
+}
 .btn_deleteTeam,
 .btn_acceptTeam {
   background-color: #d7fc6a;
@@ -681,7 +687,8 @@
 .searchaa:focus {
   border: 2px solid var(--black-text);
 }
-.popup__news1 button,.popup__news button {
+.popup__news1 button,
+.popup__news button {
   display: block;
   background-color: var(--green-bold);
   padding: 10px 20px;
@@ -696,21 +703,25 @@
   transition: 0.5s;
   border-radius: 5px;
 }
-.popup__news1 button:hover ,.popup__news button:hover {
+.popup__news1 button:hover,
+.popup__news button:hover {
   background-color: var(--blue-black);
   color: var(--white-text);
 }
-.popup__news1 label,.popup__news label {
+.popup__news1 label,
+.popup__news label {
   margin-top: 20px;
   cursor: pointer;
 }
 
-.popup__news1 label i,.popup__news label i {
+.popup__news1 label i,
+.popup__news label i {
   font-size: 28px;
   color: var(--green-bold);
 }
 
-.popup__news1 img,.popup__news img {
+.popup__news1 img,
+.popup__news img {
   display: block;
   height: 200px;
   width: 200px;
@@ -723,13 +734,15 @@
   margin-left: 10px;
   font-size: 18px;
 }
-.popup__news1 .img ,.popup__news .img {
+.popup__news1 .img,
+.popup__news .img {
   margin-top: 20px;
   position: relative;
   width: max-content;
 }
 
-.popup__news1 .img i ,.popup__news .img i {
+.popup__news1 .img i,
+.popup__news .img i {
   background-color: #fff;
   padding: 5px;
   position: absolute;
@@ -741,7 +754,8 @@
   top: 10px;
 }
 
-.popup__news1 .close,.popup__news .close {
+.popup__news1 .close,
+.popup__news .close {
   position: absolute;
   top: 10px;
   right: 30px;
