@@ -326,7 +326,7 @@ export default function CricleStageSchedule(props) {
               )}
 
               {item.teamInTournament.team !== null &&
-              allTeamB[index].teamInTournament.team !== null ? (
+              allTeamB[index].teamInTournament.team !== null && item.match.matchDate !== null ? (
                 <td>
                   {" "}
                   {index === allTeamA.length - 1 ? (

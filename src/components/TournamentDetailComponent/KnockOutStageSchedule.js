@@ -29,7 +29,7 @@ export default function KnockOutStageSchedule(props) {
   const [teamDescription, setTeamDescription] = useState(null);
   const [indexSchedule, setIndexSchedule] = useState(null);
   const [findMaxDate, setFindMaxDate] = useState(null);
-  console.log(allTeam);
+
   useEffect(() => {
     if (allTeam != null) {
       devideRound();
@@ -232,18 +232,24 @@ export default function KnockOutStageSchedule(props) {
     }
     if (typeView === "result") {
       const findDate = excuteDate(data, tournamentType, tourDetail);
+      //console.log(findDate);
       setFindMaxDate(findDate);
     }
+    
+    if (typeView === "result") {
+      const newData = [...data];
+      const newKnockOut = newData.splice(
+        tourDetail.groupNumber,
+        tourDetail.groupNumber === 2 ? 2 : 3
+      );
 
-    const newKnockOut = data.splice(
-      tourDetail.groupNumber,
-      tourDetail.groupNumber === 2 ? 2 : 3
-    );
-
-    data.sort((objA, objB) => {
-      return objA.title.localeCompare(objB.title);
-    });
-    setKnoukoutTeam([...data, ...newKnockOut]);
+      newData.sort((objA, objB) => {
+        return objA.title.localeCompare(objB.title);
+      });
+      setKnoukoutTeam([...newData, ...newKnockOut]);
+    }else{
+      setKnoukoutTeam(data);
+    }
   };
   const editDate = (date) => {
     const newDate = date.toJSON().split("T")[0];
@@ -689,7 +695,8 @@ export default function KnockOutStageSchedule(props) {
                       <td></td>
                     )}
                     {itemSeeds.teams[0].team !== null &&
-                    itemSeeds.teams[1].team !== null ? (
+                    itemSeeds.teams[1].team !== null &&
+                    itemSeeds.date !== null ? (
                       <td>
                         {" "}
                         <Link
