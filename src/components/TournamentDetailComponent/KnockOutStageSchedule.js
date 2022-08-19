@@ -646,14 +646,14 @@ export default function KnockOutStageSchedule(props) {
                         ) : null}
                       </td>
                     )}
-                    {(user != undefined &&
+                    {user != undefined &&
                       user.userVM.id === hostTournamentId &&
-                      new Date(endDate).getTime() > new Date().getTime() &&
+                      ((new Date(endDate).getTime() > new Date().getTime() &&
                       itemSeeds.match.matchDate === null) ||
                     (new Date(endDate).getTime() > new Date().getTime() &&
                       new Date(itemSeeds.match.matchDate).getTime() -
                         24 * 60 * 60 * 1000 >
-                        new Date().getTime()) ? (
+                        new Date().getTime())) ? (
                       <td
                         style={{
                           cursor: "pointer",

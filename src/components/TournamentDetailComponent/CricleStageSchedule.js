@@ -27,7 +27,6 @@ export default function CricleStageSchedule(props) {
   } = props;
   useEffect(() => {
     if (allTeam !== null) {
-      
       const sortAsc = allTeam.sort(
         (objA, objB) =>
           Number(new Date(objA.match.matchDate)) -
@@ -295,13 +294,14 @@ export default function CricleStageSchedule(props) {
                 </td>
               )}
 
-              {(user != undefined &&
-                user.userVM.id === hostTournamentId &&
-                new Date(endDate).getTime() > new Date().getTime() &&
+              {user != undefined &&
+              user.userVM.id === hostTournamentId &&
+              ((new Date(endDate).getTime() > new Date().getTime() &&
                 item.match.matchDate === null) ||
-              (new Date(endDate).getTime() > new Date().getTime() &&
-                new Date(item.match.matchDate).getTime() - 24 * 60 * 60 * 1000 >
-                  new Date().getTime()) ? (
+                (new Date(endDate).getTime() > new Date().getTime() &&
+                  new Date(item.match.matchDate).getTime() -
+                    24 * 60 * 60 * 1000 >
+                    new Date().getTime())) ? (
                 <td
                   onClick={() => {
                     setHideShow(true);
