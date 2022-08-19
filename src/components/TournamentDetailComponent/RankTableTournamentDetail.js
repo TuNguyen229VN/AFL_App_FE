@@ -65,7 +65,7 @@ function RankTableTournamentDetail(props) {
     } else {
       const tableInTournament = tourDetail.groupNumber;
       const teamInTable = Math.floor(numberTeamPaticipate / tableInTournament);
-      
+
       const tableName = [
         {
           title: "Bảng A",
@@ -87,18 +87,14 @@ function RankTableTournamentDetail(props) {
 
       const residualNumber =
         numberTeamPaticipate - teamInTable * tableInTournament;
-        
+
       if (residualNumber > 0) {
         for (let i = 0; i < residualNumber; i++) {
           tableName[i].numberTeam++;
         }
       }
-      
-      for (
-        let i = 0;
-        i < Math.ceil(numberTeamPaticipate / teamInTable);
-        i++
-      ) {
+
+      for (let i = 0; i < Math.ceil(numberTeamPaticipate / teamInTable); i++) {
         const allTeam = [];
         for (const item of data) {
           if (item.groupName === tableName[i].title) {
@@ -125,7 +121,6 @@ function RankTableTournamentDetail(props) {
           team: allTeam,
         });
       }
-      
     }
     setLoading(false);
     setRaking(ranking);
@@ -176,11 +171,7 @@ function RankTableTournamentDetail(props) {
                         <td>{item !== null ? item.numberOfDraw : 0}</td>
                         <td>{item !== null ? item.numberOfLose : 0}</td>
                         <td>{item !== null ? item.differentPoint : 0}</td>
-                        <td>
-                          {item !== null
-                            ? `${item.winScoreNumber}`
-                            : 0}
-                        </td>
+                        <td>{item !== null ? `${item.winScoreNumber}` : 0}</td>
                         <td>
                           {item !== null
                             ? `${item.totalYellowCard}/${item.totalRedCard}`
@@ -214,6 +205,7 @@ function RankTableTournamentDetail(props) {
                         <th>Hòa</th>
                         <th>Bại</th>
                         <th>Hiệu số</th>
+                        <th>TBT</th>
                         <th>Thẻ vàng/Thẻ đỏ</th>
                         <th>Điểm</th>
                       </tr>
@@ -231,6 +223,9 @@ function RankTableTournamentDetail(props) {
                             <td>{item !== null ? item.numberOfDraw : 0}</td>
                             <td>{item !== null ? item.numberOfLose : 0}</td>
                             <td>{item !== null ? item.differentPoint : 0}</td>
+                            <td>
+                              {item !== null ? `${item.winScoreNumber}` : 0}
+                            </td>
                             <td>
                               {item !== null
                                 ? `${item.totalYellowCard}/${item.totalRedCard}`

@@ -100,7 +100,7 @@ export default function DetailMatch(props) {
   const updateScoreInMatch = async (data, type, teamWinPenalty) => {
     const newTeamA = teamA;
     const newTeamB = teamB;
-    
+
     if (type === 1) {
       newTeamA.teamScore = +scoreA;
       newTeamA.teamScoreLose = +scoreB;
@@ -113,7 +113,6 @@ export default function DetailMatch(props) {
           +scoreB > +scoreA ? "3" : +scoreA === +scoreB ? "1" : "0";
         newTeamA.scorePenalty = null;
         newTeamB.scorePenalty = null;
-
       } else {
         const splitResultPenalty = teamWinPenalty.split("-");
         newTeamA.result =
@@ -129,9 +128,9 @@ export default function DetailMatch(props) {
             ? +splitResultPenalty[0]
             : +splitResultPenalty[2];
         newTeamB.scorePenalty =
-        newTeamB.teamInTournament.team.id == splitResultPenalty[1]
+          newTeamB.teamInTournament.team.id == splitResultPenalty[1]
             ? +splitResultPenalty[0]
-            : +splitResultPenalty[2];    
+            : +splitResultPenalty[2];
       }
     } else if (type === 2) {
       newTeamA.yellowCardNumber = +yellowA;
@@ -176,7 +175,7 @@ export default function DetailMatch(props) {
 
       const response = await createTieBreakAPI(
         tourDetail.id,
-        groupName !== null ? (title ? title.includes("Bảng")[1] : null) : null
+        groupName !== null ? (groupName ? title.split(" ")[1] : null) : null
       );
       if (response.status === 201) {
         return true;

@@ -194,7 +194,6 @@ function VideoRoom(props) {
             (props.tourDetail.tournamentTypeId === 3 &&
               (!props.title.includes("Bảng") || props.lastMatch === true)))
         ) {
-          console.log("as")
           updateNextTeamInNextRound();
         }
         if (props.tourDetail.tournamentTypeId !== 2) {
@@ -240,7 +239,7 @@ function VideoRoom(props) {
             {/* {props.uId == 0
               ? "Live stream đã kết thúc"
               : "Vui lòng chọn màn hình để livestream"} */}
-              Vui lòng chọn màn hình để livestream
+            Vui lòng chọn màn hình để livestream
           </p>
         );
       } else {
@@ -249,7 +248,7 @@ function VideoRoom(props) {
             className={styles.buttonOff}
             onClick={() => changeScreenForUser(props.props.idMatch)}
           >
-           Tạm dừng livestream
+            Tạm dừng livestream
           </p>
         );
       }
