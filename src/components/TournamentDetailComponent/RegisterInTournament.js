@@ -70,7 +70,7 @@ export default function RegisterInTournament(props) {
             }
           }
         }
-        
+
         setPlayerInTeam(newData);
         setLoading(false);
       }
@@ -114,7 +114,7 @@ export default function RegisterInTournament(props) {
       }
     } else {
       const getIndex = name.split("t")[2];
-      console.log(getIndex);
+
       allPlayer[getIndex].clothesNumber = value;
     }
     setPlayerInTeam(allPlayer);
@@ -124,7 +124,7 @@ export default function RegisterInTournament(props) {
     setLoading(true);
     const getPlayerChoice = getPlayerChoiceRegister();
     const mininumPlayer = getNumberInField();
-    console.log(getPlayerChoice.length);
+
     if (getPlayerChoice.length < mininumPlayer) {
       setLoading(false);
       toast.error(`Bạn phải đăng ký tối thiểu ${mininumPlayer} cầu thủ`, {
@@ -137,37 +137,69 @@ export default function RegisterInTournament(props) {
         progress: undefined,
       });
     } else {
-      const data = {
-        point: 0,
-        differentPoint: 0,
-        status: "Chờ duyệt",
-        tournamentId: tourDetail.id,
-        teamId: idUser,
-      };
-      const response = addTeamInTournamentAPI(data);
-      response
-        .then((res) => {
-          if (res.status === 201) {
-            //setLoading(false);
-            addPlayerInTournament(res.data.id, getPlayerChoice);
-            //console.log(res.data);
-          }
-        })
-        .catch((err) => {
-          setLoading(false);
-          console.error(err);
-          toast.error(err.response.data.message, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+      const flagValidateNumber = validateNumberClothes(getPlayerChoice);
+      if (flagValidateNumber === false) {
+        setLoading(false);
+        toast.error("Số áo cầu thủ không được trùng", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
         });
+      } else {
+        const data = {
+          point: 0,
+          differentPoint: 0,
+          status: "Chờ duyệt",
+          tournamentId: tourDetail.id,
+          teamId: idUser,
+        };
+        const response = addTeamInTournamentAPI(data);
+        response
+          .then((res) => {
+            if (res.status === 201) {
+              //setLoading(false);
+              addPlayerInTournament(res.data.id, getPlayerChoice);
+              //console.log(res.data);
+            }
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.error(err);
+            toast.error(err.response.data.message, {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          });
+      }
     }
   };
+
+  const validateNumberClothes = (data) => {
+    const newNumber = [];
+
+    for (const item of data) {
+      if (newNumber.length === 0) {
+        newNumber.push(item.clothesNumber);
+      } else {
+        const findIndex = newNumber.findIndex(
+          (itemFind) => itemFind === item.clothesNumber
+        );
+        if (findIndex === -1) newNumber.push(item.clothesNumber);
+        else return false;
+      }
+    }
+    return true;
+  };
+
   const sendMailNotiPlayer = (tourId, playerId, teamId) => {
     const response = NotiFootballInTournamentAPI(tourId, playerId, teamId);
     response
@@ -180,14 +212,13 @@ export default function RegisterInTournament(props) {
       });
   };
   const getPlayerChoiceRegister = () => {
-    console.log(playerInTeam);
     const getPlayerChoice = playerInTeam.reduce((accumulator, currentValue) => {
       if (currentValue.choice === true) {
         accumulator.push(currentValue);
       }
       return accumulator;
     }, []);
-    console.log(getPlayerChoice);
+
     return getPlayerChoice;
   };
   const addPlayerInTournament = (id, getPlayerChoice) => {
@@ -243,7 +274,7 @@ export default function RegisterInTournament(props) {
   //   console.log(allPlayer);
   //   setPlayerInTeam(allPlayer);
   // }
-  console.log(teamInTournament);
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
     if (inTour) {
@@ -266,7 +297,21 @@ export default function RegisterInTournament(props) {
         return;
       }
 
-      addPlayerInTournament(teamInTournament, getPlayerChoice);
+      const flagValidateNumber = validateNumberClothes(getPlayerChoice);
+      if (flagValidateNumber === false) {
+        toast.error("Số áo cầu thủ không được trùng", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        addPlayerInTournament(teamInTournament, getPlayerChoice);
+      }
+
       setLoading(false);
     } else {
       addTeamInTournament();

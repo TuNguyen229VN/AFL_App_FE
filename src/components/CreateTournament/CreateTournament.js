@@ -127,6 +127,48 @@ const CreateTournament = () => {
             draggable: true,
             progress: undefined,
           });
+          const intitalState = {
+            value: "",
+            error: "",
+          };
+          setImgTournament(intitalState);
+          setNameTournament(intitalState);
+          setTeamPaticipate(intitalState);
+          setTypeFootballField({
+            value: 1,
+            error: "",
+          });
+
+          setCloseRegister({
+            value: null,
+            error: "",
+          });
+          setStartTime(intitalState);
+          setEndTime(intitalState);
+          setCompetitionFormat({
+            value: 1,
+            error: "",
+          });
+          setMinimunPlayerInTournament(intitalState);
+          setPhoneContact(intitalState);
+          setFootballField(intitalState);
+          setGender({
+            value: "Male",
+            error: "",
+          });
+          setTimeDuration({
+            value: 15,
+            error: "",
+          });
+          setEditorState(EditorState.createEmpty());
+          setProvice(null);
+          setDistricts(null);
+          setWards(null);
+          setResetProvice(0);
+          setGroupNumber({
+            value: "-1",
+            error: null,
+          });
         }
       })
       .catch((err) => {
@@ -181,6 +223,7 @@ const CreateTournament = () => {
           TournamentTypeEnum: competitionFormat.value,
           TournamentFootballFieldTypeEnum: typeFootballField.value,
         };
+
         const response = await axios.post(
           "https://afootballleague.ddns.net/api/v1/tournaments",
           data,
@@ -190,48 +233,6 @@ const CreateTournament = () => {
         );
         if (response.status === 201) {
           createGenerateTable(response.data.id);
-          const intitalState = {
-            value: "",
-            error: "",
-          };
-          setImgTournament(intitalState);
-          setNameTournament(intitalState);
-          setTeamPaticipate(intitalState);
-          setTypeFootballField({
-            value: 1,
-            error: "",
-          });
-
-          setCloseRegister({
-            value: null,
-            error: "",
-          });
-          setStartTime(intitalState);
-          setEndTime(intitalState);
-          setCompetitionFormat({
-            value: 1,
-            error: "",
-          });
-          setMinimunPlayerInTournament(intitalState);
-          setPhoneContact(intitalState);
-          setFootballField(intitalState);
-          setGender({
-            value: "Male",
-            error: "",
-          });
-          setTimeDuration({
-            value: 15,
-            error: "",
-          });
-          setEditorState(EditorState.createEmpty());
-          setProvice(null);
-          setDistricts(null);
-          setWards(null);
-          setResetProvice(0);
-          setGroupNumber({
-            value: "-1",
-            error: null,
-          });
         }
       } catch (error) {
         setLoading(false);
@@ -352,12 +353,12 @@ const CreateTournament = () => {
     //           new Date().getHours() * 60 * 60 * 1000
     if (startTime.value === null) {
       return "Ngày bắt đầu không được để trống";
-    } 
+    }
     // else if (
     //   status === -1 &&
     //   Math.abs(
     //     new Date().getTime() -
-    //       new Date(startTime.value).getTime() 
+    //       new Date(startTime.value).getTime()
     //   ) <
     //     24 * 60 * 60 * 1000
     // ) {
@@ -556,13 +557,13 @@ const CreateTournament = () => {
         break;
     }
   };
-  const addDays = (data  , numDay) => {
-    
-    const addDay = data;
-    addDay.setTime(addDay.getTime() + numDay * 24 * 60 * 60 * 1000);
-    console.log(addDay.toJSON().split("T")[0],numDay);
-    return addDay.toJSON().split("T")[0];
-  }
+  const addDays = (data, numDay) => {
+    if (data !== undefined || data !== null) {
+      const addDay = data;
+      addDay.setTime(addDay.getTime() + numDay * 24 * 60 * 60 * 1000);
+      return addDay.toJSON().split("T")[0];
+    }
+  };
   return (
     <>
       <ScrollToTop />
@@ -846,7 +847,9 @@ const CreateTournament = () => {
                     id="startTime"
                     type="date"
                     min={
-                      status === 0
+                      status === 0 &&
+                      (closeRegister.value !== null ||
+                        closeRegister.value !== "")
                         ? addDays(new Date(closeRegister.value), 1)
                         : addDays(new Date(), 3)
                     }
@@ -860,7 +863,6 @@ const CreateTournament = () => {
                         : "disable"
                     }
                     onChange={onChangeHandler}
-                    
                   />
                 </div>
 
@@ -894,8 +896,16 @@ const CreateTournament = () => {
                   <input
                     className={styles.timeEnd_input}
                     id="endTime"
-                    min={startTime.value !== null ? addDays(new Date(startTime.value),1) : null}
-                    max={startTime.value !== null ? addDays(new Date(startTime.value),31): null}
+                    min={
+                      startTime.value !== null || startTime.value !== ""
+                        ? addDays(new Date(startTime.value), 1)
+                        : null
+                    }
+                    max={
+                      startTime.value !== null || startTime.value !== ""
+                        ? addDays(new Date(startTime.value), 31)
+                        : null
+                    }
                     type="date"
                     name="endTime"
                     value={endTime.value === null ? "" : endTime.value}

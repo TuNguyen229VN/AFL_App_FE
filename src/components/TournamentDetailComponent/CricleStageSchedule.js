@@ -27,6 +27,7 @@ export default function CricleStageSchedule(props) {
   } = props;
   useEffect(() => {
     if (allTeam !== null) {
+      
       const sortAsc = allTeam.sort(
         (objA, objB) =>
           Number(new Date(objA.match.matchDate)) -

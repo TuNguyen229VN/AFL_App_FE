@@ -21,7 +21,7 @@ export default function KnockOutStageSchedule(props) {
     statusUpdateDate,
     tourDetail,
   } = props;
-  console.log(groupNumber);
+  console.log(hostTournamentId)
   const [matchCurrent, setMatchCurrent] = useState(null);
   const [knockoutTeam, setKnoukoutTeam] = useState(null);
   const [dateUpdate, setDateUpdate] = useState(null);
@@ -29,6 +29,7 @@ export default function KnockOutStageSchedule(props) {
   const [teamDescription, setTeamDescription] = useState(null);
   const [indexSchedule, setIndexSchedule] = useState(null);
   const [findMaxDate, setFindMaxDate] = useState(null);
+  
   useEffect(() => {
     if (allTeam != null) {
       devideRound();

@@ -298,6 +298,7 @@ const UpdateTournamentInformation = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     await updateTournamentDetail();
   };
   const updateTournamentDetail = async () => {
@@ -351,6 +352,8 @@ const UpdateTournamentInformation = () => {
             if (typeNoti !== "hasTeam" && typeNoti !== "default") {
               createGenerateTable(response.data.id);
             }
+            navigate(-1);
+            setLoading(false);
             const intitalState = {
               value: "",
               error: "",
@@ -364,11 +367,17 @@ const UpdateTournamentInformation = () => {
             });
 
             setCloseRegister({
-              value: null,
+              value: new Date().toJSON(),
               error: "",
             });
-            setStartTime(intitalState);
-            setEndTime(intitalState);
+            setStartTime({
+              value: new Date().toJSON(),
+              error: "",
+            });
+            setEndTime({
+              value: new Date().toJSON(),
+              error: "",
+            });
             setCompetitionFormat({
               value: 1,
               error: "",
@@ -394,7 +403,6 @@ const UpdateTournamentInformation = () => {
               error: null,
             });
             // navigate(`tournamentDetail/${idTournament}/inforTournamentDetail`);
-            navigate(-1);
           }
         } catch (error) {
           setLoadingAction(false);
@@ -709,6 +717,7 @@ const UpdateTournamentInformation = () => {
     }
     switch (name) {
       case "imgTournament":
+        console.log(value);
         setImgTournament({
           ...imgTournament,
           value: e.target.files[0],
@@ -860,11 +869,14 @@ const UpdateTournamentInformation = () => {
     setResetProvice(-1);
     getAllCity();
   }, [resetProvice]);
+
   const addDays = (data, numDay) => {
-    const addDay = data;
-    addDay.setTime(addDay.getTime() + numDay * 24 * 60 * 60 * 1000);
-    console.log(addDay.toJSON().split("T")[0], numDay);
-    return addDay.toJSON().split("T")[0];
+    if (data !== undefined || data !== null) {
+      const addDay = data;
+      addDay.setTime(addDay.getTime() + numDay * 24 * 60 * 60 * 1000);
+      if (addDay.toJSON().split("T") !== null)
+        return addDay.toJSON().split("T")[0];
+    }
   };
   return (
     <>
@@ -1208,8 +1220,16 @@ const UpdateTournamentInformation = () => {
                     type="date"
                     name="endTime"
                     value={endTime.value === null ? "" : endTime.value}
-                    min={startTime.value !== null ? addDays(new Date(startTime.value),1) : null}
-                    max={startTime.value !== null ? addDays(new Date(startTime.value),31): null}
+                    min={
+                      startTime.value !== null
+                        ? addDays(new Date(startTime.value), 1)
+                        : null
+                    }
+                    max={
+                      startTime.value !== null
+                        ? addDays(new Date(startTime.value), 31)
+                        : null
+                    }
                     // disabled={(new Date(closeRegister.value).getTime() <=
                     //   new Date().getTime()) && startTime.value != null ? "" : "disable"}
                     onChange={onChangeHandler}
