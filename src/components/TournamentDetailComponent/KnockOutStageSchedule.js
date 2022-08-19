@@ -21,7 +21,7 @@ export default function KnockOutStageSchedule(props) {
     statusUpdateDate,
     tourDetail,
   } = props;
-  console.log(hostTournamentId)
+  console.log(hostTournamentId);
   const [matchCurrent, setMatchCurrent] = useState(null);
   const [knockoutTeam, setKnoukoutTeam] = useState(null);
   const [dateUpdate, setDateUpdate] = useState(null);
@@ -29,7 +29,7 @@ export default function KnockOutStageSchedule(props) {
   const [teamDescription, setTeamDescription] = useState(null);
   const [indexSchedule, setIndexSchedule] = useState(null);
   const [findMaxDate, setFindMaxDate] = useState(null);
-  console.log(allTeam)
+  console.log(allTeam);
   useEffect(() => {
     if (allTeam != null) {
       devideRound();
@@ -40,7 +40,7 @@ export default function KnockOutStageSchedule(props) {
     const data = [];
     let roundCurrent = null;
     let indexCurrent = 0;
-    
+
     allTeam.map((item, index) => {
       if (index % 2 === 0) {
         if (roundCurrent === null) {
@@ -232,11 +232,18 @@ export default function KnockOutStageSchedule(props) {
     }
     if (typeView === "result") {
       const findDate = excuteDate(data, tournamentType, tourDetail);
-      console.log(findDate);
       setFindMaxDate(findDate);
     }
 
-    setKnoukoutTeam(data);
+    const newKnockOut = data.splice(
+      tourDetail.groupNumber,
+      tourDetail.groupNumber === 2 ? 2 : 3
+    );
+
+    data.sort((objA, objB) => {
+      return objA.title.localeCompare(objB.title);
+    });
+    setKnoukoutTeam([...data, ...newKnockOut]);
   };
   const editDate = (date) => {
     const newDate = date.toJSON().split("T")[0];
@@ -602,8 +609,9 @@ export default function KnockOutStageSchedule(props) {
                           ( Luân lưu:{" "}
                           {itemSeeds.teams[0].penalty +
                             " - " +
-                            itemSeeds.teams[1].penalty + " "} 
-                           )
+                            itemSeeds.teams[1].penalty +
+                            " "}
+                          )
                         </span>
                       ) : null}
                       {/* <div>
@@ -648,13 +656,13 @@ export default function KnockOutStageSchedule(props) {
                       </td>
                     )}
                     {user != undefined &&
-                      user.userVM.id === hostTournamentId &&
-                      ((new Date(endDate).getTime() > new Date().getTime() &&
+                    user.userVM.id === hostTournamentId &&
+                    ((new Date(endDate).getTime() > new Date().getTime() &&
                       itemSeeds.match.matchDate === null) ||
-                    (new Date(endDate).getTime() > new Date().getTime() &&
-                      new Date(itemSeeds.match.matchDate).getTime() -
-                        24 * 60 * 60 * 1000 >
-                        new Date().getTime())) ? (
+                      (new Date(endDate).getTime() > new Date().getTime() &&
+                        new Date(itemSeeds.match.matchDate).getTime() -
+                          24 * 60 * 60 * 1000 >
+                          new Date().getTime())) ? (
                       <td
                         style={{
                           cursor: "pointer",
