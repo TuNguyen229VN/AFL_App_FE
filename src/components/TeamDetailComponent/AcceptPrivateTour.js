@@ -22,7 +22,7 @@ export default function AcceptPrivateTour(props) {
     teamInTour,
     loading,
     setLoading,
-    team
+    team,
   } = props;
   const [playerInTeam, setPlayerInTeam] = useState([]);
   // const [loading, setLoading] = useState(false);
@@ -74,7 +74,7 @@ export default function AcceptPrivateTour(props) {
             }
           }
         }
-        
+
         setPlayerInTeam(newData);
         setLoading(false);
       }
@@ -140,42 +140,74 @@ export default function AcceptPrivateTour(props) {
         progress: undefined,
       });
     } else {
-      const data = {
-        id: teamInTour.id,
-        point: teamInTour.point,
-        winScoreNumber: teamInTour.winScoreNumber,
-        loseScoreNumber: teamInTour.loseScoreNumber,
-        totalYellowCard: teamInTour.totalYellowCard,
-        totalRedCard: teamInTour.totalRedCard,
-        status: "Tham gia",
-        statusInTournament: teamInTour.statusInTournament,
-        tournamentId: teamInTour.tournamentId,
-        teamId: teamInTour.teamId,
-      };
-      const response = updateStatusTeamInTournament(data);
-      response
-        .then((res) => {
-          if (res.status === 201) {
-            //setLoading(false);
-            addTeamInSchedule(res.data.id, true, getPlayerChoice);
-            //console.log(res.data);
-          }
-        })
-        .catch((err) => {
-          setLoading(false);
-          console.error(err);
-          toast.error(err.response.data.message, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+      const flagValidateNumber = validateNumberClothes(getPlayerChoice);
+      if (flagValidateNumber === false) {
+        setLoading(false);
+        toast.error("Số áo cầu thủ không được trùng", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
         });
+      } else {
+        const data = {
+          id: teamInTour.id,
+          point: teamInTour.point,
+          winScoreNumber: teamInTour.winScoreNumber,
+          loseScoreNumber: teamInTour.loseScoreNumber,
+          totalYellowCard: teamInTour.totalYellowCard,
+          totalRedCard: teamInTour.totalRedCard,
+          status: "Tham gia",
+          statusInTournament: teamInTour.statusInTournament,
+          tournamentId: teamInTour.tournamentId,
+          teamId: teamInTour.teamId,
+        };
+        const response = updateStatusTeamInTournament(data);
+        response
+          .then((res) => {
+            if (res.status === 201) {
+              //setLoading(false);
+              addTeamInSchedule(res.data.id, true, getPlayerChoice);
+              //console.log(res.data);
+            }
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.error(err);
+            toast.error(err.response.data.message, {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          });
+      }
     }
   };
+
+  const validateNumberClothes = (data) => {
+    const newNumber = [];
+
+    for (const item of data) {
+      if (newNumber.length === 0) {
+        newNumber.push(item.clothesNumber);
+      } else {
+        const findIndex = newNumber.findIndex(
+          (itemFind) => itemFind === item.clothesNumber
+        );
+        if (findIndex === -1) newNumber.push(item.clothesNumber);
+        else return false;
+      }
+    }
+    return true;
+  };
+
   const sendMailNotiPlayer = (tourId, playerId, teamId) => {
     const response = NotiFootballInTournamentAPI(tourId, playerId, teamId);
     response
@@ -243,7 +275,6 @@ export default function AcceptPrivateTour(props) {
     try {
       const response = await postNotifacation(data);
       if (response.status === 201) {
-        
       }
     } catch (err) {
       console.error(err);

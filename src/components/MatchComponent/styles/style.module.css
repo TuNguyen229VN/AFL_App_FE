@@ -440,7 +440,8 @@
   padding: 20px;
   cursor: pointer;
   user-select: none;
-  width: max-content;
+  width: 200px;
+  justify-content: center;
   border-radius: 5px;
   display: flex;
   margin-right: 0;
@@ -450,7 +451,22 @@
   background-color: var(--green-bold);
   color: var(--blue-black);
 }
-
+.updateMatch1 {
+  padding: 20px ;
+  cursor: pointer;
+  user-select: none;
+  width: 200px;
+  justify-content: center;
+  border-radius: 5px;
+  display: flex;
+  transition: 0.5s;
+  font-family: "Mulish-Bold";
+  background-color: #ea6061 ;
+  color: var(--white-text);
+}
+.updateMatch1:hover {
+  filter: brightness(90%);
+}
 .updateMatch:hover {
   background-color: var(--blue-black);
   color: var(--white-text);

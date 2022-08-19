@@ -10,6 +10,7 @@ import { updateTeamInMatch } from "../../api/TeamInMatchAPI";
 import { putStatusScorePrediction } from "../../api/ScorePrediction";
 import { updateScoreInTournamentByTourIdAPI } from "../../api/TeamInTournamentAPI";
 import { postTournamentResult } from "../../api/TournamentResultAPI";
+import { createTieBreakAPI } from "../../api/MatchAPI";
 function VideoRoom(props) {
   const APP_ID = props.props.appId;
   const TOKEN = props.props.token;
@@ -99,17 +100,17 @@ function VideoRoom(props) {
   }, [props.inCall]);
 
   const [numberScreen, setNumberScreen] = useState(0);
-  // const updateScoreTeamInTour = async () => {
-  //   try {
-  //     const response = updateScoreInTournamentByTourIdAPI(props.tourDetail.id);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-  const updateScorePrediction = async () => {
+  const updateScoreTeamInTour = async () => {
     try {
-      const response = await putStatusScorePrediction(props.idMatch);
+      const response = updateScoreInTournamentByTourIdAPI(props.tourDetail.id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const updateScorePrediction = async (matchId) => {
+    try {
+      const response = await putStatusScorePrediction(matchId);
     } catch (err) {
       console.error(err);
     }
@@ -121,10 +122,10 @@ function VideoRoom(props) {
         tournamentId: props.tourDetail.id,
         matchId:
           props.tourDetail.tournamentTypeId === 1
-            ? props.idMatch
+            ? props.props.idMatch
             : props.indexMatch < props.tourDetail.groupNumber
             ? 0
-            : props.idMatch,
+            : props.props.idMatch,
         groupName:
           props.tourDetail.tournamentTypeId === 3 &&
           props.title.includes("Bảng")
@@ -149,9 +150,9 @@ function VideoRoom(props) {
         console.error(err);
       });
   };
-  const matchResult = async () => {
+  const matchResult = async (matchId) => {
     try {
-      const response = postTournamentResult(props.idMatch);
+      const response = postTournamentResult(matchId);
       toast.success("Kết thúc livestream", {
         position: "top-right",
         autoClose: 3000,
@@ -162,10 +163,38 @@ function VideoRoom(props) {
         progress: undefined,
       });
       console.log("Asa");
-      await updateScorePrediction();
       console.log(response);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const createTieBreak = async () => {
+    try {
+      const groupName =
+        props.tourDetail.tournamentTypeId !== 2 ? props.title.includes("Bảng") : null;
+
+      const response = await createTieBreakAPI(
+        props.tourDetail.id,
+        groupName !== null ? (groupName ? props.title.split(" ")[1] : null) : null
+      );
+      if (response.status === 201) {
+        return true;
+      }
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
+
+  const updateResult = async (matchId) => {
+    try {
+      const response = await axios.put(
+        `https://afootballleague.ddns.net/api/v1/TeamInMatch/update-result?matchId=${matchId}`
+        );
+        console.log("as")
+    } catch (error) {
+      console.log(error);
     }
   };
   const changeScreenForUser = async (matchId) => {
@@ -188,21 +217,32 @@ function VideoRoom(props) {
           progress: undefined,
         });
         console.log(props.index);
+        await updateResult(matchId);
+        await updateScorePrediction(matchId);
+        await updateScoreTeamInTour();
         if (
           props.tourDetail.tournamentTypeId !== 2 &&
           (props.tourDetail.tournamentTypeId === 1 ||
             (props.tourDetail.tournamentTypeId === 3 &&
               (!props.title.includes("Bảng") || props.lastMatch === true)))
         ) {
-          updateNextTeamInNextRound();
+          if (props.lastMatch && props.title.includes("Bảng")) {
+            const flagTieBreak = await createTieBreak();
+            if (flagTieBreak === false) updateNextTeamInNextRound();
+          } else {
+            updateNextTeamInNextRound();
+          }
         }
         if (props.tourDetail.tournamentTypeId !== 2) {
           if (props.title === "Chung kết") {
-            matchResult();
+            matchResult(matchId);
           }
         } else {
           if (props.index > 0) {
-            matchResult();
+            const flagTieBreak = await createTieBreak();
+            if (flagTieBreak === false) {
+              matchResult(matchId);
+            }
           }
         }
       }
@@ -248,7 +288,7 @@ function VideoRoom(props) {
             className={styles.buttonOff}
             onClick={() => changeScreenForUser(props.props.idMatch)}
           >
-            Tạm dừng livestream
+            Kết thúc livestream
           </p>
         );
       }

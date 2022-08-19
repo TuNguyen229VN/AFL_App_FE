@@ -26,7 +26,7 @@ import CreatePlayer from "./components/CreatePlayerComponent/CreatePlayer";
 import UpdatePlayer from "./components/UpdatePlayerComponent/UpdatePlayer";
 import DetailMatch from "./components/DetailMatchComponent/DetailMatch";
 function App() {
-  const { user } = useAuthListener()  
+  const { user } = useAuthListener();
   return (
     <div>
       <BrowserRouter>
@@ -202,7 +202,11 @@ function App() {
             element={<HeaderPlayerDetail />}
           />
           <Route exact path="/footballPlayer" element={<FootballPlayer />} />
-          <Route exact path="/detailMatch/:idMatch" element={<DetailMatch />} />
+          <Route
+            exact
+            path="/detailMatch/:idMatch"
+            element={user ? <DetailMatch /> : <Navigate to={"/login"} />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

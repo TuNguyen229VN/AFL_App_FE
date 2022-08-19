@@ -141,7 +141,7 @@ function RankTableTournamentDetail(props) {
             tourDetail.tournamentTypeId == 2 ? (
               <div className="wrap__table">
                 <div className="name__table">
-                  <h5>Bảng xếp hạng</h5>
+                  <h5>BXH</h5>
                 </div>
                 <div className="name__table-cross"></div>
                 <table className="table__team">
