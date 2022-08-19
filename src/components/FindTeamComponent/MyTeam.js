@@ -110,6 +110,7 @@ const MyTournamemts = () => {
         setProviceSearch(value !== "default" ? value : "");
         const newDistrics = provice.find((item) => item.name === value);
         setDistrics(value !== "default" ? newDistrics.districts : null);
+        setCurrentPage(1);
         getTournament(
           contentSearch,
           currentPage,
@@ -118,6 +119,7 @@ const MyTournamemts = () => {
         );
         break;
       case "districts":
+        setCurrentPage(1);
         getTournament(
           contentSearch,
           currentPage,
@@ -127,6 +129,7 @@ const MyTournamemts = () => {
         setDistricSearch(value !== "default" ? value : "");
         break;
       default:
+        setCurrentPage(1);
         setGender(value !== "default" ? value : "");
         getTournament(
           contentSearch,
