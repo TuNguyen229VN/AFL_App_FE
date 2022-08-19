@@ -379,7 +379,7 @@ input:focus {
 
 .titleNoContent {
   font-weight: 700;
-  font-size: 36px;
+  font-size: 24px;
   margin-bottom: 50px;
 }
 @media only screen and (max-width: 1279px) {
