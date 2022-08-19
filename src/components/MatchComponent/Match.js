@@ -43,7 +43,8 @@ function Match() {
     joinRoom();
     getPredict();
   }, []);
-
+  console.log('dddd')
+console.log(dataMatch);
   const navigate = useNavigate();
   const { idMatch } = useParams();
   const [allTeamA, setAllTeamA] = useState(null);
@@ -110,7 +111,9 @@ function Match() {
           return accumulator;
         }, []);
         setAllTeamA(teamA);
+        setScoreA(teamA[0].teamScore);
         setAllTeamB(teamB);
+        setScoreB(teamB[0].teamScore);
         setScoreTeamA({ value: res.data.teamsInMatch[0].teamScore });
         setScoreTeamB({ value: res.data.teamsInMatch[1].teamScore });
         setRedTeamA({ value: res.data.teamsInMatch[0].redCardNumber });
@@ -1323,7 +1326,8 @@ function Match() {
       console.log(err);
     }
   };
-  const PopupPlayer = (players) => {
+  const PopupPlayer = (props) => {
+    const {players,dataMatch} = props;
     const [minutes, setMinutes] = useState();
     const [isPen, setIsPen] = useState(false);
     const [fail, setFail] = useState(false);
@@ -1349,7 +1353,7 @@ function Match() {
           </div>
 
           {players &&
-            players.players.playerInTournaments.map((item) => (
+            players.playerInTournaments.map((item) => (
               <div className={styles.playerWrap}>
                 <img
                   src={item.playerInTeam.footballPlayer.playerAvatar}
@@ -1376,6 +1380,9 @@ function Match() {
                       />
                       <p className="error">{minutesError}</p>
                     </div>
+                    {dataMatch&&location.state.tourDetail.tournamentTypeId !== 2 &&
+                dataMatch[0].includes("Bảng") === false && 
+                scoreA === scoreB&&
                     <div>
                       <p className={styles.pText}>Sút luân lưu</p>
                       <input
@@ -1387,6 +1394,7 @@ function Match() {
                         }}
                       />
                     </div>
+                    }
                     {isPen && (
                       <div>
                         <p className={styles.pText}>Sút hỏng</p>
@@ -1767,13 +1775,13 @@ function Match() {
               {allTeamA.map((item, index) => (
                 <div className={styles.match__team}>
                   {playerPopup && (
-                    <PopupPlayer players={playerTeamA} team="teamA" />
+                    <PopupPlayer players={playerTeamA} dataMatch={dataMatch} team="teamA" />
                   )}
                   {playerCardPopup && (
-                    <PopupPlayerCard players={playerTeamA} team="teamA" />
+                    <PopupPlayerCard players={playerTeamA}  team="teamA" />
                   )}
                   {playerPopupB && (
-                    <PopupPlayer players={playerTeamB} team="teamB" />
+                    <PopupPlayer players={playerTeamB} dataMatch={dataMatch} team="teamB" />
                   )}
                   {playerCardPopupB && (
                     <PopupPlayerCard players={playerTeamB} team="teamB" />
