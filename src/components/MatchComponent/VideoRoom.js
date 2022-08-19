@@ -172,17 +172,11 @@ function VideoRoom(props) {
   const createTieBreak = async () => {
     try {
       const groupName =
-        props.tourDetail.tournamentTypeId !== 2
-          ? props.title.includes("Bảng")
-          : null;
+        props.tourDetail.tournamentTypeId !== 2 ? props.title.includes("Bảng") : null;
 
       const response = await createTieBreakAPI(
         props.tourDetail.id,
-        groupName !== null
-          ? props.title
-            ? props.title.includes("Bảng")[1]
-            : null
-          : null
+        groupName !== null ? (groupName ? props.title.split(" ")[1] : null) : null
       );
       if (response.status === 201) {
         return true;

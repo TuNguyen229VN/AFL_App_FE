@@ -124,7 +124,7 @@ function HeaderPlayerDetail() {
   };
 
   useEffect(() => {
-    if (user != undefined) {
+    if (user != undefined && user.userVM.roleId === 4) {
       checkPaticipateTeam();
     }
   }, []);

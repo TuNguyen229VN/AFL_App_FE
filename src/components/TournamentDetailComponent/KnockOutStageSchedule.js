@@ -29,7 +29,7 @@ export default function KnockOutStageSchedule(props) {
   const [teamDescription, setTeamDescription] = useState(null);
   const [indexSchedule, setIndexSchedule] = useState(null);
   const [findMaxDate, setFindMaxDate] = useState(null);
-  
+  console.log(allTeam)
   useEffect(() => {
     if (allTeam != null) {
       devideRound();
@@ -40,6 +40,7 @@ export default function KnockOutStageSchedule(props) {
     const data = [];
     let roundCurrent = null;
     let indexCurrent = 0;
+    
     allTeam.map((item, index) => {
       if (index % 2 === 0) {
         if (roundCurrent === null) {

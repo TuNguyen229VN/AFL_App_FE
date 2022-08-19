@@ -60,7 +60,7 @@ function HeaderTeamDetail() {
   };
 
   useEffect(() => {
-    if (user != undefined && user.userVM.roleId === 5) {
+    if (user != undefined && user.userVM.roleId === 4) {
       checkPaticipateTeam();
     }
   }, []);
@@ -72,7 +72,7 @@ function HeaderTeamDetail() {
         if (res.status === 200) {
           if (res.data.playerInTeamsFull.length > 0) {
             const playerInTeam = res.data.playerInTeamsFull[0];
-
+            console.log(playerInTeam.status);
             if (playerInTeam.status === "true") {
               setStatusPaticipate("Đã tham gia đội bóng");
             } else if (playerInTeam.status === "Chờ xét duyệt từ đội bóng") {
@@ -121,7 +121,7 @@ function HeaderTeamDetail() {
     if (activeTeamDetail === `/teamDetail/${idTeam}/listPlayer`) {
       return (
         <ListPlayer
-        idTeam={idTeam}
+          idTeam={idTeam}
           idHost={user != undefined ? user.userVM.id : undefined}
           id={team.id}
           gender={team.teamGender}
