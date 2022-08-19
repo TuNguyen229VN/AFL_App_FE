@@ -539,7 +539,7 @@ const MyTournamemts = () => {
                               />
                               <p>{tour.numberTeamInTournament}</p>
                             </div>
-                            <div className="heart__shape"></div>
+                            {/* <div className="heart__shape"></div> */}
                           </div>
                         </div>
                       </Link>
@@ -549,7 +549,7 @@ const MyTournamemts = () => {
               })
             ) : (
               <h1 className={styles.titleNoContent}>
-                Không tìm thấy giải đấu phù hợp
+                Không tìm thấy giải đấu
               </h1>
             )}
           </div>
