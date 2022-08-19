@@ -531,6 +531,10 @@ function Match() {
     if (activeTeamDetail === `/match/${idMatch}/livestream`) {
       return (
         <Livestream
+          allTeamA={allTeamA}
+          allTeamB={allTeamB}
+          scoreA={scoreA}
+          scoreB={scoreB}
           fullScreen={fullScreen}
           setFullScreen={setFullScreen}
           setCheckLivestream={setCheckLivestream}
@@ -1689,21 +1693,17 @@ function Match() {
               }}
               className={styles.action}
             >
-              {tokenLivestream === "" &&
+              {checkLivestream.length === 0 &&
               (detail === null || detail.length === 0) &&
               user !== null &&
               user.userVM.id === location.state.hostTournamentId ? (
                 <p
-                  style={{
-                    color: "blue",
-                    fontSize: 20,
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  }}
+                  className={styles.updateMatch1}
                   onClick={() => {
                     setHideShowReport(true);
                   }}
                 >
+                <i class="fa-solid fa-exclamation" style={{marginRight:"10px"}}></i>
                   Báo cáo trận đấu
                 </p>
               ) : null}

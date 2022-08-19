@@ -4,7 +4,7 @@ import styles from "./styles/style.module.css";
 import { Button } from "@material-ui/core";
 import AgoraUIKit, { PropsInterface, layout } from "agora-react-uikit";
 import VideoRoom from "./VideoRoom";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function Livestream(data) {
   const navigate = useNavigate();
   const [idUser, setidUser] = useState(data.user);
@@ -49,6 +49,10 @@ function Livestream(data) {
     <div className={styles.livestream}>
       <div className={styles.video}>
         <VideoRoom
+          allTeamA={data.allTeamA}
+          allTeamB={data.allTeamB}
+          scoreA={data.scoreA}
+          scoreB={data.scoreB}
           title={data.title}
           idMatch={data.idMatch}
           tourDetail={data.tourDetail}

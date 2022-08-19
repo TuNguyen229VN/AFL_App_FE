@@ -76,7 +76,16 @@ function ListPlayer(props) {
   const onSubmitHandler = (e) => {
     e.preventDefault();
   };
-
+  const formatDate = (date) => {
+    const day = new Date(date);
+    return (
+      String(day.getDate()).padStart(2, "0") +
+      "/" +
+      String(day.getMonth() + 1).padStart(2, "0") +
+      "/" +
+      day.getFullYear()
+    );
+  };
   const deletePlayerInTeam = (id) => {
     if (id !== null) {
       setLoadingAdd(true);
@@ -372,7 +381,7 @@ function ListPlayer(props) {
                                 <p className="dobPlayer">
                                   <span>Ngày sinh:</span>
                                   {item.userVM.dateOfBirth != null
-                                    ? item.userVM.dateOfBirth.split(" ")[0]
+                                    ? formatDate(item.userVM.dateOfBirth)
                                     : null}
                                   {/* {item.userVM.dateOfBirth != null ? item.userVM.dateOfBirth
                                   .split("-")[2]
