@@ -177,7 +177,7 @@ export default function DetailMatch(props) {
         tourDetail.id,
         groupName !== null ? (groupName ? title.split(" ")[1] : null) : null
       );
-      if (response.status === 201) {
+      if (response.status === 200) {
         return true;
       }
     } catch (err) {

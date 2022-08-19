@@ -18,7 +18,7 @@ export function deleteMatchByTourIdAPI(id) {
 
 export function createTieBreakAPI(idTour, groupName) {
   let afterDefaultURL = null;
-  if (groupName == "null") {
+  if (groupName !== null) {
     afterDefaultURL = `matchs/create-tie-break-match?tournamentId=${idTour}&groupName=${groupName}`;
   } else {
     afterDefaultURL = `matchs/create-tie-break-match?tournamentId=${idTour}`;
