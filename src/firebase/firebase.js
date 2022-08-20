@@ -16,7 +16,7 @@ var firebaseConfig = {
   storageBucket: "amateurfoooballleague.appspot.com",
   messagingSenderId: "765175452190",
   appId: "1:765175452190:web:3e01517d116d4777c9140f",
-  measurementId: "G-7Z7LB0W52J",
+  measurementId: "G-ZSF108Y844",
 };
 // Initialize Firebase
 const app = !firebase.apps.length
