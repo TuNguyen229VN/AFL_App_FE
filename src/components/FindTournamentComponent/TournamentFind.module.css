@@ -386,7 +386,7 @@ input:focus {
   .myTourImg {
     position: relative;
     overflow: initial;
-    height: 200px;
+    height: 201px;
     padding-bottom: 65%;
   }
 
