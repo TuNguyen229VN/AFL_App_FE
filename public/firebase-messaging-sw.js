@@ -6,14 +6,23 @@ importScripts(
 );
 
 // Initialize the Firebase app in the service worker by passing the generated config
-const firebaseConfig = {
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
+//   authDomain: "amateurfoooballleague.firebaseapp.com",
+//   projectId: "amateurfoooballleague",
+//   storageBucket: "amateurfoooballleague.appspot.com",
+//   messagingSenderId: "765175452190",
+//   appId: "1:765175452190:web:3e01517d116d4777c9140f",
+//   measurementId: "G-ZSF108Y844",
+// };
+var firebaseConfig = {
   apiKey: "AIzaSyCYXpUYy_KK1FjtBjz19gY2QTWi4sBcsgU",
   authDomain: "amateurfoooballleague.firebaseapp.com",
   projectId: "amateurfoooballleague",
   storageBucket: "amateurfoooballleague.appspot.com",
   messagingSenderId: "765175452190",
   appId: "1:765175452190:web:3e01517d116d4777c9140f",
-  measurementId: "G-ZSF108Y844",
+  measurementId: "G-ZSF108Y844"
 };
 
 // eslint-disable-next-line no-undef
