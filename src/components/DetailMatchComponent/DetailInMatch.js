@@ -679,20 +679,14 @@ export default function DetailInMatch(props) {
                       }}
                     >
                       <input
-                        style={{
-                          width: "15%",
-                          padding: "0 0 0 25px",
-                        }}
+                        className="-agile"
                         value={scoreAPenalty}
                         name="A"
                         onChange={onChangePenalty}
                       />
                       <p>-</p>
                       <input
-                        style={{
-                          width: "15%",
-                          padding: "0 0 0 25px",
-                        }}
+                        className="-agile"
                         value={scoreBPenalty}
                         name="B"
                         onChange={onChangePenalty}

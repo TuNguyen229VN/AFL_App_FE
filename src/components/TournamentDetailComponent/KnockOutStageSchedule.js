@@ -620,7 +620,7 @@ export default function KnockOutStageSchedule(props) {
                       </span>
                       {itemSeeds.teams[0].penalty !== null &&
                       itemSeeds.teams[1].penalty !== null ? (
-                        <span>
+                        <span className="pen">
                           {" "}
                           ( Luân lưu:{" "}
                           {itemSeeds.teams[0].penalty +
