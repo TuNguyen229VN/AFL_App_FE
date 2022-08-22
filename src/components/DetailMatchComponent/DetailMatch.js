@@ -376,8 +376,12 @@ export default function DetailMatch(props) {
       });
   };
   const setAllInfor = () => {
-    setScoreA(teamA.teamScore);
-    setScoreB(teamB.teamScore);
+    setScoreA(
+      teamA.scoreTieBreak === null ? teamA.teamScore : +teamA.scoreTieBreak
+    );
+    setScoreB(
+      teamB.scoreTieBreak === null ? teamB.teamScore : +teamB.scoreTieBreak
+    );
     setYellowA(teamA.yellowCardNumber);
     setYellowB(teamB.yellowCardNumber);
     setRedA(teamA.redCardNumber);
@@ -690,7 +694,11 @@ export default function DetailMatch(props) {
         updateScoreInMatch={updateScoreInMatch}
         matchDetail={
           teamA !== null && teamB !== null
-            ? teamA.teamScore + "-" + teamB.teamScore === scoreA + "-" + scoreB
+            ? teamA.scoreTieBreak === null && teamA.scoreTieBreak === null
+              ? teamA.teamScore + "-" + teamB.teamScore ===
+                scoreA + "-" + scoreB
+              : teamA.scoreTieBreak + "-" + teamB.scoreTieBreak ===
+                scoreA + "-" + scoreB
               ? matchDetail
               : null
             : null
