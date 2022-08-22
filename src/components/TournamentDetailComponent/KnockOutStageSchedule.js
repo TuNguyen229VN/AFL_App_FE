@@ -40,7 +40,7 @@ export default function KnockOutStageSchedule(props) {
     const data = [];
     let roundCurrent = null;
     let indexCurrent = 0;
-    console.log(allTeam);
+    
     allTeam.map((item, index) => {
       if (index % 2 === 0) {
         if (roundCurrent === null) {

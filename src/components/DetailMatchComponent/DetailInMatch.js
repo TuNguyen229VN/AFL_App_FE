@@ -35,7 +35,7 @@ export default function DetailInMatch(props) {
   const [scoreAPenalty, setScoreAPenalty] = useState(0);
   const [scoreBPenalty, setScoreBPenalty] = useState(0);
   let matchMinutes = null;
-  console.log(title);
+
   useEffect(() => {
     matchMinutes = tourDetail !== null ? tourDetail.matchMinutes : null;
     if (typeDetail === "score" && matchDetail !== null) {
@@ -280,7 +280,8 @@ export default function DetailInMatch(props) {
       default:
         {
           if (
-            ((+value === 0 || scoreAPenalty === 0) &&  Math.abs(+value - scoreAPenalty) > 3) ||
+            ((+value === 0 || scoreAPenalty === 0) &&
+              Math.abs(+value - scoreAPenalty) > 3) ||
             (+value < 6 &&
               scoreAPenalty < 6 &&
               Math.abs(+value - scoreAPenalty) > 2) ||
@@ -553,7 +554,11 @@ export default function DetailInMatch(props) {
         (tourDetail.tournamentTypeId === 3 &&
           (!title.includes("Bảng") || lastMatch === true)))
     ) {
-      if (lastMatch && title.includes("Bảng") && title.includes("tie-break") === false) {
+      if (
+        lastMatch &&
+        title.includes("Bảng") &&
+        title.includes("tie-break") === false
+      ) {
         const flagTieBreak = await createTieBreak();
         if (flagTieBreak === false) updateNextTeamInNextRound();
       } else {
@@ -655,11 +660,12 @@ export default function DetailInMatch(props) {
                       : null}
                   </div>
                 </div>
-                {tourDetail.tournamentTypeId !== 2 &&
-                (title.includes("Bảng") === false ||
-                  title.includes("tie-break") === true) &&
-                +numTeamA === +numTeamB &&
-                typeDetail === "score" ? (
+                {(tourDetail.tournamentTypeId === 2 && title !== null) ||
+                (tourDetail.tournamentTypeId !== 2 &&
+                  (title.includes("Bảng") === false ||
+                    title.includes("tie-break") === true) &&
+                  +numTeamA === +numTeamB &&
+                  typeDetail === "score") ? (
                   <div>
                     <h1
                       style={{

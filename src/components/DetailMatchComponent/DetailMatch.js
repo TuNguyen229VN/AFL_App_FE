@@ -25,6 +25,7 @@ import { async } from "@firebase/util";
 import { putStatusScorePrediction } from "../../api/ScorePrediction";
 import { postTournamentResult } from "../../api/TournamentResultAPI";
 import { createTieBreakAPI } from "../../api/MatchAPI";
+import { updateNextTeamInRoundAPI } from "../../api/TeamInMatchAPI";
 export default function DetailMatch(props) {
   const { idMatch } = useParams();
 
@@ -188,14 +189,33 @@ export default function DetailMatch(props) {
         matchResult();
       }
     } else {
-      if (index > 0) {
+      if (index > 0 && title !== null) {
         const flagTieBreak = await createTieBreak();
         if (flagTieBreak === false) {
+          await updateNextTeamInMatch();
           matchResult();
         }
+      } else {
+        await updateNextTeamInMatch();
+        matchResult();
       }
     }
   };
+
+  const updateNextTeamInMatch = async () => {
+    try {
+      const data = {
+        tournamentId: tourDetail.id,
+        matchId: null,
+        groupName: null,
+      };
+
+      const response = await updateNextTeamInRoundAPI(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const createTieBreak = async () => {
     try {
       const groupName =

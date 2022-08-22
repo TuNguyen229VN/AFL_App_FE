@@ -11,6 +11,7 @@ export default function CricleStageSchedule(props) {
   const [dateUpdate, setDateUpdate] = useState(null);
   const [teamInUpdate, setTeamInUpdate] = useState(null);
   const [teamDescription, setTeamDescription] = useState(null);
+  const [circleTeam, setCircleTeam] = useState(null);
   const {
     allTeam,
     loading,
@@ -27,6 +28,7 @@ export default function CricleStageSchedule(props) {
   } = props;
   useEffect(() => {
     if (allTeam !== null) {
+      console.log(allTeam);
       const sortAsc = allTeam.sort(
         (objA, objB) =>
           Number(new Date(objA.match.matchDate)) -
@@ -41,6 +43,157 @@ export default function CricleStageSchedule(props) {
         }
         return accumulator;
       }, []);
+
+      const newData = [];
+      let index = 0;
+
+      for (const item of teamA) {
+        if (newData.length === 0) {
+          newData.push({
+            title: "Vòng tròn",
+            seeds: [
+              {
+                id: item.id,
+                date: item.match.matchDate,
+                match: item.match,
+                teams: [
+                  {
+                    name: item.teamName,
+                    team:
+                      item.teamInTournament.team !== null
+                        ? item.teamInTournament.team
+                        : null,
+                    score: item.teamScore,
+                    teamResult: item.result,
+                    teamInTournamentId: item.teamInTournamentId,
+                    penalty: item.scorePenalty,
+                    scoreTieBreak: item.scoreTieBreak,
+                  },
+                  {
+                    name: teamB[index].teamName,
+                    team:
+                      teamB[index].teamInTournament.team !== null
+                        ? teamB[index].teamInTournament.team
+                        : null,
+                    score: teamB[index].teamScore,
+                    teamResult: teamB[index].result,
+                    teamInTournamentId: teamB[index].teamInTournamentId,
+                    penalty: teamB[index].scorePenalty,
+                    scoreTieBreak: teamB[index].scoreTieBreak,
+                  },
+                ],
+              },
+            ],
+          });
+        } else {
+          if (item.match.round.includes("tie-break") === false) {
+            newData[0].seeds.push({
+              id: item.id,
+              date: item.match.matchDate,
+              match: item.match,
+              teams: [
+                {
+                  name: item.teamName,
+                  team:
+                    item.teamInTournament.team !== null
+                      ? item.teamInTournament.team
+                      : null,
+                  score: item.teamScore,
+                  teamResult: item.result,
+                  teamInTournamentId: item.teamInTournamentId,
+                  penalty: item.scorePenalty,
+                  scoreTieBreak: item.scoreTieBreak,
+                },
+                {
+                  name: teamB[index].teamName,
+                  team:
+                    teamB[index].teamInTournament.team !== null
+                      ? teamB[index].teamInTournament.team
+                      : null,
+                  score: teamB[index].teamScore,
+                  teamResult: teamB[index].result,
+                  teamInTournamentId: teamB[index].teamInTournamentId,
+                  penalty: teamB[index].scorePenalty,
+                  scoreTieBreak: teamB[index].scoreTieBreak,
+                },
+              ],
+            });
+          } else {
+            if (newData[1] === undefined) {
+              newData.push({
+                title: "Vòng tie-break",
+                seeds: [
+                  {
+                    id: item.id,
+                    date: item.match.matchDate,
+                    match: item.match,
+                    teams: [
+                      {
+                        name: item.teamName,
+                        team:
+                          item.teamInTournament.team !== null
+                            ? item.teamInTournament.team
+                            : null,
+                        score: item.teamScore,
+                        teamResult: item.result,
+                        teamInTournamentId: item.teamInTournamentId,
+                        penalty: item.scorePenalty,
+                        scoreTieBreak: item.scoreTieBreak,
+                      },
+                      {
+                        name: teamB[index].teamName,
+                        team:
+                          teamB[index].teamInTournament.team !== null
+                            ? teamB[index].teamInTournament.team
+                            : null,
+                        score: teamB[index].teamScore,
+                        teamResult: teamB[index].result,
+                        teamInTournamentId: teamB[index].teamInTournamentId,
+                        penalty: teamB[index].scorePenalty,
+                        scoreTieBreak: teamB[index].scoreTieBreak,
+                      },
+                    ],
+                  },
+                ],
+              });
+            } else {
+              newData[1].seeds.push({
+                id: item.id,
+                date: item.match.matchDate,
+                match: item.match,
+                teams: [
+                  {
+                    name: item.teamName,
+                    team:
+                      item.teamInTournament.team !== null
+                        ? item.teamInTournament.team
+                        : null,
+                    score: item.teamScore,
+                    teamResult: item.result,
+                    teamInTournamentId: item.teamInTournamentId,
+                    penalty: item.scorePenalty,
+                    scoreTieBreak: item.scoreTieBreak,
+                  },
+                  {
+                    name: teamB[index].teamName,
+                    team:
+                      teamB[index].teamInTournament.team !== null
+                        ? teamB[index].teamInTournament.team
+                        : null,
+                    score: teamB[index].teamScore,
+                    teamResult: teamB[index].result,
+                    teamInTournamentId: teamB[index].teamInTournamentId,
+                    penalty: teamB[index].scorePenalty,
+                    scoreTieBreak: teamB[index].scoreTieBreak,
+                  },
+                ],
+              });
+            }
+          }
+        }
+        index += 1;
+      }
+      setCircleTeam(newData);
       if (type === "description") {
         const desTeam = [];
         for (let item of teamA) {
@@ -203,152 +356,211 @@ export default function CricleStageSchedule(props) {
   };
   return type === null ? (
     <table className="schedule__table">
-      <tr>
-        <th
-          colSpan={
-            user != undefined && user.userVM.id === hostTournamentId ? 8 : 7
-          }
-        >
-          Bảng đấu vòng tròn
-        </th>
-      </tr>
-
       {loading ? (
         <LoadingAction />
-      ) : allTeamA != null && allTeamB != null ? (
-        allTeamA.map((item, index) => {
+      ) : circleTeam != null ? (
+        circleTeam.map((item, index) => {
           return (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td
-                style={{
-                  color: item.match.matchDate != null ? "black" : "black",
-                }}
-              >
-                {item.match.matchDate != null
-                  ? changeDate(item.match.matchDate)
-                  : "Chưa có lịch thi đấu"}
-              </td>
-              {/* <td>{index + 1}</td> */}
-              {item.teamInTournament.team != null ? (
-                <td>
-                  <Link
-                    to={`/teamDetail/${item.teamInTournament.team.id}/inforTeamDetail`}
-                  >
-                    <p>{item.teamName}</p>
-                    {item.teamInTournament.team != null ? (
-                      <img
-                        src={item.teamInTournament.team.teamAvatar}
-                        alt="gallery_item"
-                      />
-                    ) : null}
-                  </Link>
-                </td>
-              ) : (
-                <td>
-                  <p>{item.teamName}</p>
-                  {item.teamInTournament.team != null ? (
-                    <img
-                      src={item.teamInTournament.team.teamAvatar}
-                      alt="gallery_item"
-                    />
-                  ) : null}
-                </td>
-              )}
-
-              <td>
-                <span className="score">
-                  {item.teamScore !== null ? item.teamScore : 0}
-                </span>
-                <span className="score"> - </span>
-                <span className="score">
-                  {allTeamB[index].teamScore !== null
-                    ? allTeamB[index].teamScore
-                    : 0}
-                </span>
-              </td>
-              {allTeamB[index].teamInTournament.team ? (
-                <td>
-                  {" "}
-                  <Link
-                    to={`/teamDetail/${allTeamB[index].teamInTournament.team.id}/inforTeamDetail`}
-                  >
-                    {allTeamB[index].teamInTournament.team != null ? (
-                      <img
-                        src={allTeamB[index].teamInTournament.team.teamAvatar}
-                        alt="gallery_item"
-                      />
-                    ) : null}
-                    <p>{allTeamB[index].teamName}</p>
-                  </Link>{" "}
-                </td>
-              ) : (
-                <td>
-                  {allTeamB[index].teamInTournament.team != null ? (
-                    <img
-                      src={allTeamB[index].teamInTournament.team.teamAvatar}
-                      alt="gallery_item"
-                    />
-                  ) : null}
-                  <p>{allTeamB[index].teamName}</p>
-                </td>
-              )}
-
-              {user != undefined &&
-              user.userVM.id === hostTournamentId &&
-              ((new Date(endDate).getTime() > new Date().getTime() &&
-                item.match.matchDate === null) ||
-                (new Date(endDate).getTime() > new Date().getTime() &&
-                  new Date(item.match.matchDate).getTime() -
-                    24 * 60 * 60 * 1000 >
-                    new Date().getTime())) ? (
-                <td
-                  onClick={() => {
-                    setHideShow(true);
-                    setMatchCurrent(item.match);
-                    setStatusUpdateDate(false);
-                    setTeamInUpdate(
-                      item.teamName + " - " + allTeamB[index].teamName
-                    );
-                  }}
-                  style={{
-                    cursor: "pointer",
-                    textDecoration: "underline",
-                    fontWeight: 700,
-                    lineHeight: 1.6,
-                  }}
+            <table
+              style={{
+                marginBottom: 50,
+              }}
+              key={index}
+              className="schedule__table"
+            >
+              <tr>
+                <th
+                  colSpan={
+                    user != undefined && user.userVM.id === hostTournamentId
+                      ? 8
+                      : 7
+                  }
                 >
-                  {item.match.matchDate != null ? "Chỉnh sửa " : "Cập nhật "}{" "}
-                  ngày
-                </td>
-              ) : (
-                <td></td>
-              )}
+                  Bảng đấu - {item.title}
+                </th>
+              </tr>
+              {item.seeds.map((itemSeeds, indexSeeds) => {
+                return (
+                  <tr key={indexSeeds}>
+                    <td>{indexSeeds + 1}</td>
+                    <td
+                      style={{
+                        color: itemSeeds.date != null ? "black" : "black",
+                      }}
+                    >
+                      {itemSeeds.date != null
+                        ? changeDate(itemSeeds.date)
+                        : "Chưa có lịch thi đấu"}
+                    </td>
+                    {itemSeeds.teams[0].team !== null ? (
+                      <td>
+                        <Link
+                          to={`/teamDetail/${itemSeeds.teams[0].team.id}/inforTeamDetail`}
+                        >
+                          <p>{itemSeeds.teams[0].name}</p>
+                          {itemSeeds.teams[0].team !== null ? (
+                            <img
+                              src={itemSeeds.teams[0].team.teamAvatar}
+                              alt="gallery_item"
+                            />
+                          ) : null}
+                        </Link>
+                      </td>
+                    ) : (
+                      <td>
+                        <p>{itemSeeds.teams[0].name}</p>
+                        {itemSeeds.teams[0].team !== null ? (
+                          <img
+                            src={itemSeeds.teams[0].team.teamAvatar}
+                            alt="gallery_item"
+                          />
+                        ) : null}
+                      </td>
+                    )}
 
-              {item.teamInTournament.team !== null &&
-              allTeamB[index].teamInTournament.team !== null && item.match.matchDate !== null ? (
-                <td>
-                  {" "}
-                  {index === allTeamA.length - 1 ? (
-                    <Link
-                      to={`/match/${item.match.id}/matchDetail`}
-                      state={{ hostTournamentId, tourDetail, index }}
-                    >
-                      Chi tiết
-                    </Link>
-                  ) : (
-                    <Link
-                      to={`/match/${item.match.id}/matchDetail`}
-                      state={{ hostTournamentId, tourDetail, index: 0 }}
-                    >
-                      Chi tiết
-                    </Link>
-                  )}
-                </td>
-              ) : (
-                <td></td>
-              )}
-            </tr>
+                    <td>
+                      <span className="score">
+                        {itemSeeds.teams[0].score !== null
+                          ? itemSeeds.teams[0].scoreTieBreak !== null
+                            ? itemSeeds.teams[0].scoreTieBreak
+                            : itemSeeds.teams[0].score
+                          : 0}
+                      </span>
+                      <span className="score"> - </span>
+                      <span className="score">
+                        {itemSeeds.teams[1].score !== null
+                          ? itemSeeds.teams[1].scoreTieBreak !== null
+                            ? itemSeeds.teams[1].scoreTieBreak
+                            : itemSeeds.teams[1].score
+                          : 0}
+                      </span>
+                      {itemSeeds.teams[0].penalty !== null &&
+                      itemSeeds.teams[1].penalty !== null ? (
+                        <span>
+                          {" "}
+                          ( Luân lưu:{" "}
+                          {itemSeeds.teams[0].penalty +
+                            " - " +
+                            itemSeeds.teams[1].penalty +
+                            " "}
+                          )
+                        </span>
+                      ) : null}
+                      {/* <div>
+                        <span className="score">
+                          {itemSeeds.teams[0].penalty !== null
+                            ? itemSeeds.teams[0].penalty
+                            : null}
+                        </span>
+                        <span className="score"> {itemSeeds.teams[0].penalty !== null
+                            ? "-"
+                            : null} </span>
+                        <span className="score">
+                          {itemSeeds.teams[1].penalty !== null
+                            ? itemSeeds.teams[1].penalty
+                            : null}
+                        </span>
+                      </div> */}
+                    </td>
+                    {itemSeeds.teams[1].team !== null ? (
+                      <td>
+                        <Link
+                          to={`/teamDetail/${itemSeeds.teams[1].team.id}/inforTeamDetail`}
+                        >
+                          <p>{itemSeeds.teams[1].name}</p>
+                          {itemSeeds.teams[1].team !== null ? (
+                            <img
+                              src={itemSeeds.teams[1].team.teamAvatar}
+                              alt="gallery_item"
+                            />
+                          ) : null}
+                        </Link>
+                      </td>
+                    ) : (
+                      <td>
+                        <p>{itemSeeds.teams[1].name}</p>
+                        {itemSeeds.teams[1].team !== null ? (
+                          <img
+                            src={itemSeeds.teams[1].team.teamAvatar}
+                            alt="gallery_item"
+                          />
+                        ) : null}
+                      </td>
+                    )}
+                    {user != undefined &&
+                    user.userVM.id === hostTournamentId &&
+                    ((new Date(endDate).getTime() > new Date().getTime() &&
+                      itemSeeds.match.matchDate === null) ||
+                      (new Date(endDate).getTime() > new Date().getTime() &&
+                        new Date(itemSeeds.match.matchDate).getTime() -
+                          24 * 60 * 60 * 1000 >
+                          new Date().getTime())) ? (
+                      <td
+                        style={{
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                          fontWeight: 700,
+                          lineHeight: 1.6,
+                        }}
+                        onClick={() => {
+                          setHideShow(true);
+                          setMatchCurrent(itemSeeds.match);
+                          setStatusUpdateDate(false);
+                          setTeamInUpdate(
+                            itemSeeds.teams[0].name +
+                              " - " +
+                              itemSeeds.teams[1].name
+                          );
+                        }}
+                      >
+                        {itemSeeds.date != null ? "Chỉnh sửa " : "Cập nhật "}{" "}
+                        ngày
+                      </td>
+                    ) : (
+                      <td></td>
+                    )}
+                    {itemSeeds.teams[0].team !== null &&
+                    itemSeeds.teams[1].team !== null &&
+                    itemSeeds.date !== null ? (
+                      <td>
+                        {" "}
+                        {itemSeeds === item.seeds.length - 1 ? (
+                          <Link
+                            to={`/match/${itemSeeds.match.id}/matchDetail`}
+                            state={{
+                              hostTournamentId,
+                              tourDetail,
+                              index: itemSeeds,
+                              title: item.title.includes("tie-break")
+                                ? item.title
+                                : null,
+                            }}
+                          >
+                            Chi tiết
+                          </Link>
+                        ) : (
+                          <Link
+                            to={`/match/${itemSeeds.match.id}/matchDetail`}
+                            state={{
+                              hostTournamentId,
+                              tourDetail,
+                              index: 0,
+                              title: item.title.includes("tie-break")
+                                ? item.title
+                                : null,
+                            }}
+                          >
+                            Chi tiết
+                          </Link>
+                        )}
+                      </td>
+                    ) : (
+                      <td></td>
+                    )}
+                  </tr>
+                );
+              })}
+            </table>
           );
         })
       ) : (
