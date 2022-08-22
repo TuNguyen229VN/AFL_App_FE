@@ -355,7 +355,7 @@ export default function CricleStageSchedule(props) {
     );
   };
   return type === null ? (
-    <table className="schedule__table">
+    <table className="schedule__table1">
       {loading ? (
         <LoadingAction />
       ) : circleTeam != null ? (
@@ -435,8 +435,8 @@ export default function CricleStageSchedule(props) {
                           : 0}
                       </span>
                       {itemSeeds.teams[0].penalty !== null &&
-                      itemSeeds.teams[1].penalty !== null ? (
-                        <span>
+                        itemSeeds.teams[1].penalty !== null ? (
+                        <span className="pen">
                           {" "}
                           ( Luân lưu:{" "}
                           {itemSeeds.teams[0].penalty +
@@ -488,11 +488,11 @@ export default function CricleStageSchedule(props) {
                       </td>
                     )}
                     {user != undefined &&
-                    user.userVM.id === hostTournamentId &&
-                    ((new Date(endDate).getTime() > new Date().getTime() &&
-                      itemSeeds.match.matchDate === null) ||
-                      (new Date(endDate).getTime() > new Date().getTime() &&
-                        new Date(itemSeeds.match.matchDate).getTime() -
+                      user.userVM.id === hostTournamentId &&
+                      ((new Date(endDate).getTime() > new Date().getTime() &&
+                        itemSeeds.match.matchDate === null) ||
+                        (new Date(endDate).getTime() > new Date().getTime() &&
+                          new Date(itemSeeds.match.matchDate).getTime() -
                           24 * 60 * 60 * 1000 >
                           new Date().getTime())) ? (
                       <td
@@ -508,8 +508,8 @@ export default function CricleStageSchedule(props) {
                           setStatusUpdateDate(false);
                           setTeamInUpdate(
                             itemSeeds.teams[0].name +
-                              " - " +
-                              itemSeeds.teams[1].name
+                            " - " +
+                            itemSeeds.teams[1].name
                           );
                         }}
                       >
@@ -520,8 +520,8 @@ export default function CricleStageSchedule(props) {
                       <td></td>
                     )}
                     {itemSeeds.teams[0].team !== null &&
-                    itemSeeds.teams[1].team !== null &&
-                    itemSeeds.date !== null ? (
+                      itemSeeds.teams[1].team !== null &&
+                      itemSeeds.date !== null ? (
                       <td>
                         {" "}
                         {itemSeeds === item.seeds.length - 1 ? (
@@ -603,24 +603,24 @@ export default function CricleStageSchedule(props) {
         teamDescription.map((item, index) => {
           return (
             <tr key={index}>
-              <td>{index + 1}</td>
+              <td style={{
+                width:"60%"
+              }}>{index + 1}</td>
               {item.team != null ? (
                 <td>
                   <Link
                     to={`/teamDetail/${item.team.id}/inforTeamDetail`}
                     style={{
                       display: "flex",
-                      justifyContent: "center",
                       alignItems: "center",
                     }}
                   >
                     {item.team != null ? (
-                      <img src={item.team.teamAvatar} alt="gallery_item" />
+                      <img src={item.team.teamAvatar} alt="gallery_item" style={{
+                        marginRight: 10,
+                      }} />
                     ) : null}
                     <p
-                      style={{
-                        marginRight: 10,
-                      }}
                     >
                       {item.teamName}
                     </p>
@@ -629,7 +629,9 @@ export default function CricleStageSchedule(props) {
               ) : (
                 <td>
                   {item.team != null ? (
-                    <img src={item.team.teamAvatar} alt="gallery_item" />
+                    <img src={item.team.teamAvatar} alt="gallery_item" style={{
+                        marginRight: 10,
+                      }} />
                   ) : null}
                   <p>{item.teamName}</p>
                 </td>
