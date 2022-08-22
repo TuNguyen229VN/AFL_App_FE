@@ -507,6 +507,13 @@ export default function KnockOutStageSchedule(props) {
                                 alignItems: "center",
                               }}
                             >
+                              
+                              {item.team != null ? (
+                                <img
+                                  src={item.team.teamAvatar}
+                                  alt="gallery_item"
+                                />
+                              ) : null}
                               <p
                                 style={{
                                   marginRight: 10,
@@ -514,23 +521,18 @@ export default function KnockOutStageSchedule(props) {
                               >
                                 {item.teamName}
                               </p>
-                              {item.team != null ? (
-                                <img
-                                  src={item.team.teamAvatar}
-                                  alt="gallery_item"
-                                />
-                              ) : null}
                             </Link>
                           </td>
                         ) : (
                           <td>
-                            <p>{item.teamName}</p>
+                            
                             {item.team != null ? (
                               <img
                                 src={item.team.teamAvatar}
                                 alt="gallery_item"
                               />
                             ) : null}
+                            <p>{item.teamName}</p>
                           </td>
                         )}
                       </tr>
