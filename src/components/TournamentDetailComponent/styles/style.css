@@ -186,7 +186,7 @@
   color: var(--white-text);
   background-color: var(--blue-black);
   text-transform: uppercase;
-  text-align: c;
+  text-align: center;
 }
 
 .teamdetail .schedule__tour .schedule__table:first-child {
@@ -1038,4 +1038,16 @@
 .khongin {
   font-family: "Mulish-Regular" !important;
   font-size: 16px !important;
+}
+
+.-agile{
+  width: 100px;
+  text-align: center;
+}
+.-agile:focus{
+  border: 1px solid var(--black-text);
+}
+
+.pen{
+  display: block;
 }
