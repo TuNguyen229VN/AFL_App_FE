@@ -40,7 +40,7 @@ export default function KnockOutStageSchedule(props) {
     const data = [];
     let roundCurrent = null;
     let indexCurrent = 0;
-
+    console.log(allTeam);
     allTeam.map((item, index) => {
       if (index % 2 === 0) {
         if (roundCurrent === null) {
@@ -69,6 +69,7 @@ export default function KnockOutStageSchedule(props) {
                     teamResult: item.result,
                     teamInTournamentId: item.teamInTournamentId,
                     penalty: item.scorePenalty,
+                    scoreTieBreak: item.scoreTieBreak,
                   },
                   {
                     name: allTeam[index + 1].teamName,
@@ -80,6 +81,7 @@ export default function KnockOutStageSchedule(props) {
                     teamResult: allTeam[index + 1].result,
                     teamInTournamentId: allTeam[index + 1].teamInTournamentId,
                     penalty: allTeam[index + 1].scorePenalty,
+                    scoreTieBreak: allTeam[index + 1].scoreTieBreak,
                   },
                 ],
               },
@@ -106,6 +108,7 @@ export default function KnockOutStageSchedule(props) {
                 teamResult: item.result,
                 teamInTournamentId: item.teamInTournamentId,
                 penalty: item.scorePenalty,
+                scoreTieBreak: item.scoreTieBreak,
               },
               {
                 name:
@@ -120,6 +123,7 @@ export default function KnockOutStageSchedule(props) {
                 teamResult: allTeam[index + 1].result,
                 teamInTournamentId: allTeam[index + 1].teamInTournamentId,
                 penalty: allTeam[index + 1].scorePenalty,
+                scoreTieBreak: allTeam[index + 1].scoreTieBreak,
               },
             ],
           });
@@ -150,6 +154,7 @@ export default function KnockOutStageSchedule(props) {
                     teamResult: item.result,
                     teamInTournamentId: item.teamInTournamentId,
                     penalty: item.scorePenalty,
+                    scoreTieBreak: item.scoreTieBreak,
                   },
                   {
                     name: allTeam[index + 1].teamName,
@@ -161,6 +166,7 @@ export default function KnockOutStageSchedule(props) {
                     teamResult: allTeam[index + 1].result,
                     teamInTournamentId: allTeam[index + 1].teamInTournamentId,
                     penalty: allTeam[index + 1].scorePenalty,
+                    scoreTieBreak: allTeam[index + 1].scoreTieBreak,
                   },
                 ],
               },
@@ -235,7 +241,7 @@ export default function KnockOutStageSchedule(props) {
       //console.log(findDate);
       setFindMaxDate(findDate);
     }
-    
+
     if (typeView === "result") {
       const newData = [...data];
       const newKnockOut = newData.splice(
@@ -247,7 +253,7 @@ export default function KnockOutStageSchedule(props) {
         return objA.title.localeCompare(objB.title);
       });
       setKnoukoutTeam([...newData, ...newKnockOut]);
-    }else{
+    } else {
       setKnoukoutTeam(data);
     }
   };
@@ -599,13 +605,17 @@ export default function KnockOutStageSchedule(props) {
                     <td>
                       <span className="score">
                         {itemSeeds.teams[0].score !== null
-                          ? itemSeeds.teams[0].score
+                          ? itemSeeds.teams[0].scoreTieBreak !== null
+                            ? itemSeeds.teams[0].scoreTieBreak
+                            : itemSeeds.teams[0].score
                           : 0}
                       </span>
                       <span className="score"> - </span>
                       <span className="score">
                         {itemSeeds.teams[1].score !== null
-                          ? itemSeeds.teams[1].score
+                          ? itemSeeds.teams[1].scoreTieBreak !== null
+                            ? itemSeeds.teams[1].scoreTieBreak
+                            : itemSeeds.teams[1].score
                           : 0}
                       </span>
                       {itemSeeds.teams[0].penalty !== null &&

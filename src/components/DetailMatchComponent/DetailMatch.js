@@ -97,40 +97,68 @@ export default function DetailMatch(props) {
       console.error(err);
     }
   };
-  const updateScoreInMatch = async (data, type, teamWinPenalty) => {
+  const updateScoreInMatch = async (data, type, teamWinPenalty, title) => {
     const newTeamA = teamA;
     const newTeamB = teamB;
 
     if (type === 1) {
-      newTeamA.teamScore = +scoreA;
-      newTeamA.teamScoreLose = +scoreB;
-      newTeamB.teamScore = +scoreB;
-      newTeamB.teamScoreLose = +scoreA;
-      if (teamWinPenalty === null) {
-        newTeamA.result =
-          +scoreA > +scoreB ? "3" : +scoreA === +scoreB ? "1" : "0";
-        newTeamB.result =
-          +scoreB > +scoreA ? "3" : +scoreA === +scoreB ? "1" : "0";
-        newTeamA.scorePenalty = null;
-        newTeamB.scorePenalty = null;
+      if (title.includes("tie-break") === false) {
+        newTeamA.teamScore = +scoreA;
+        newTeamA.teamScoreLose = +scoreB;
+        newTeamB.teamScore = +scoreB;
+        newTeamB.teamScoreLose = +scoreA;
+        if (teamWinPenalty === null) {
+          newTeamA.result =
+            +scoreA > +scoreB ? "3" : +scoreA === +scoreB ? "1" : "0";
+          newTeamB.result =
+            +scoreB > +scoreA ? "3" : +scoreA === +scoreB ? "1" : "0";
+          newTeamA.scorePenalty = null;
+          newTeamB.scorePenalty = null;
+        } else {
+          const splitResultPenalty = teamWinPenalty.split("-");
+          newTeamA.result =
+            newTeamA.teamInTournament.team.id == splitResultPenalty[1]
+              ? "3"
+              : "0";
+          newTeamB.result =
+            newTeamB.teamInTournament.team.id == splitResultPenalty[1]
+              ? "3"
+              : "0";
+          newTeamA.scorePenalty =
+            newTeamA.teamInTournament.team.id == splitResultPenalty[1]
+              ? +splitResultPenalty[0]
+              : +splitResultPenalty[2];
+          newTeamB.scorePenalty =
+            newTeamB.teamInTournament.team.id == splitResultPenalty[1]
+              ? +splitResultPenalty[0]
+              : +splitResultPenalty[2];
+        }
       } else {
-        const splitResultPenalty = teamWinPenalty.split("-");
-        newTeamA.result =
-          newTeamA.teamInTournament.team.id == splitResultPenalty[1]
-            ? "3"
-            : "0";
-        newTeamB.result =
-          newTeamB.teamInTournament.team.id == splitResultPenalty[1]
-            ? "3"
-            : "0";
-        newTeamA.scorePenalty =
-          newTeamA.teamInTournament.team.id == splitResultPenalty[1]
-            ? +splitResultPenalty[0]
-            : +splitResultPenalty[2];
-        newTeamB.scorePenalty =
-          newTeamB.teamInTournament.team.id == splitResultPenalty[1]
-            ? +splitResultPenalty[0]
-            : +splitResultPenalty[2];
+        newTeamA.scoreTieBreak = +scoreA;
+        newTeamB.scoreTieBreak = +scoreB;
+
+        if (teamWinPenalty !== null) {
+          const splitResultPenalty = teamWinPenalty.split("-");
+          newTeamA.winTieBreak =
+            newTeamA.teamInTournament.team.id == splitResultPenalty[1]
+              ? "1"
+              : "0";
+          newTeamB.winTieBreak =
+            newTeamB.teamInTournament.team.id == splitResultPenalty[1]
+              ? "1"
+              : "0";
+          newTeamA.scorePenalty =
+            newTeamA.teamInTournament.team.id == splitResultPenalty[1]
+              ? +splitResultPenalty[0]
+              : +splitResultPenalty[2];
+          newTeamB.scorePenalty =
+            newTeamB.teamInTournament.team.id == splitResultPenalty[1]
+              ? +splitResultPenalty[0]
+              : +splitResultPenalty[2];
+        } else {
+          newTeamA.winTieBreak = +scoreA > +scoreB ? "1" : "0";
+          newTeamB.winTieBreak = +scoreB > +scoreA ? "1" : "0";
+        }
       }
     } else if (type === 2) {
       newTeamA.yellowCardNumber = +yellowA;

@@ -11,7 +11,8 @@ import { addTeamInTournamentAPI } from "../../api/TeamInTournamentAPI";
 import { toast } from "react-toastify";
 import ModalDeleteTeamOutTournament from "./ModalDeleteTeamOutTournament";
 import axios from "axios";
-
+import ReportTeamInTournament from "./ReportTeamInTournament";
+import { createReport } from "../../api/Report";
 function TeamInTournament(props) {
   const {
     tourDetail,
@@ -49,6 +50,8 @@ function TeamInTournament(props) {
     index: "0",
     check: false,
   });
+  const [hideShowReportTeamInTournament, setHideShowReportTeamInTournament] =
+    useState(false);
   const [idTeamDelete, setIdTeamDelete] = useState(null);
 
   const handlePageClick = (data) => {
@@ -76,7 +79,27 @@ function TeamInTournament(props) {
       setLoading(false);
     }
   };
-
+  const sendReportTeamOutTournament = async (data) => {
+    setLoading(true);
+    try {
+      const response = await createReport(data);
+      if (response.status === 201) {
+        setLoading(false);
+        toast.success("Gửi báo cáo về đội bóng thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setHideShowReportTeamInTournament(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const getTeamInTourByDelte = (item) => {
     let a = [];
     if (teamInTourPrivate.length > 0) {
@@ -249,7 +272,8 @@ function TeamInTournament(props) {
               {user &&
               user.userVM.id === tourDetail.userId &&
               tourDetail.mode === "PRIVATE" &&
-              tourDetail.numberTeamInTournament<tourDetail.footballTeamNumber ? (
+              tourDetail.numberTeamInTournament <
+                tourDetail.footballTeamNumber ? (
                 <p
                   className={active === 4 ? "active" : ""}
                   onClick={() => {
@@ -270,8 +294,7 @@ function TeamInTournament(props) {
                     <div key={index} className="listPlayer__item">
                       {user !== undefined &&
                       tourDetail != null &&
-                      user.userVM.id === tourDetail.userId &&
-                      tourDetail.statusTnm === "Chuẩn bị" ? (
+                      user.userVM.id === tourDetail.userId ? (
                         <div>
                           <div
                             className="view__more"
@@ -299,25 +322,66 @@ function TeamInTournament(props) {
                                   : "overlay"
                               }
                             ></div>
-                            <p
-                              onClick={() => {
-                                //deletePlayerInTeam(item.idPlayerInTeam);
-                                // setHideShowDelete(true);
-                                // setIdDelete(item.idPlayerInTeam);
-                                // setDeleteSuccessFul(false);
-                                setHideShowDeleteTeamOut(true);
-                                setIdTeamDelete(
-                                  item.teamInTournament.id + "-" + item.id
-                                );
-                              }}
-                            >
-                              <i class="fa-solid fa-trash"></i>Xóa đội bóng khỏi
-                              giải
-                            </p>
+                            {tourDetail.statusTnm === "Chuẩn bị" ? (
+                              <p
+                                onClick={() => {
+                                  //deletePlayerInTeam(item.idPlayerInTeam);
+                                  // setHideShowDelete(true);
+                                  // setIdDelete(item.idPlayerInTeam);
+                                  // setDeleteSuccessFul(false);
+
+                                  setHideShowDeleteTeamOut(true);
+                                  setIdTeamDelete(
+                                    item.teamInTournament.id + "-" + item.id
+                                  );
+                                }}
+                              >
+                                <i class="fa-solid fa-trash"></i>Xóa đội bóng
+                                khỏi giải
+                              </p>
+                            ) : null}
+                            <div
+                              className={
+                                hideShowDeleteTeamOut
+                                  ? "overlay active"
+                                  : "overlay"
+                              }
+                            ></div>
+                            {tourDetail.statusTnm === "Đang diễn ra" &&
+                            item.teamInTournament.statusInTournament !==
+                              "Bị loại" ? (
+                              <p
+                                onClick={() => {
+                                  setHideShowReportTeamInTournament(true);
+                                  setIdTeamDelete(
+                                    item.teamInTournament.id + "-" + item.id
+                                  );
+                                }}
+                              >
+                                <i class="fa-solid fa-flag"></i>Báo cáo đội bóng
+                                bỏ giải
+                              </p>
+                            ) : null}
                           </div>
                         </div>
                       ) : null}
-
+                      <div
+                        className={
+                          hideShowReportTeamInTournament
+                            ? "overlay active"
+                            : "overlay"
+                        }
+                      ></div>
+                      <ReportTeamInTournament
+                        sendReportTeamOutTournament={
+                          sendReportTeamOutTournament
+                        }
+                        setIdTeamDelete={setIdTeamDelete}
+                        tourDetail={tourDetail}
+                        idTeamDelete={idTeamDelete}
+                        hideShow={hideShowReportTeamInTournament}
+                        setHideShow={setHideShowReportTeamInTournament}
+                      />
                       <Link
                         to={`/teamDetail/${item.teamInTournament.teamId}/inforTeamDetail`}
                       >
@@ -372,6 +436,7 @@ function TeamInTournament(props) {
                   Chưa có đội bóng tham gia
                 </h1>
               )}
+
               <ModalDeleteTeamOutTournament
                 deleteTeamInTour={deleteTeamInTour}
                 tourDetail={tourDetail !== null ? tourDetail : null}

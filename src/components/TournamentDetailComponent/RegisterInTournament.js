@@ -280,22 +280,22 @@ export default function RegisterInTournament(props) {
     if (inTour) {
       setLoading(true);
       const getPlayerChoice = getPlayerChoiceRegister();
-      if (
-        getPlayerChoice.length >
-        tourDetail.footballPlayerMaxNumber - numPlayer
-      ) {
-        setLoading(false);
-        toast.error(`Vượt quá cầu thủ giải cho phép`, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        return;
-      }
+      // if (
+      //   getPlayerChoice.length >
+      //   tourDetail.footballPlayerMaxNumber - numPlayer
+      // ) {
+      //   setLoading(false);
+      //   toast.error(`Vượt quá cầu thủ giải cho phép`, {
+      //     position: "top-right",
+      //     autoClose: 3000,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     pauseOnHover: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //   });
+      //   return;
+      // }
 
       const flagValidateNumber = validateNumberClothes(getPlayerChoice);
       if (flagValidateNumber === false) {

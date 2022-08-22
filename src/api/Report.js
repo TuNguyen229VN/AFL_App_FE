@@ -3,7 +3,11 @@ import { url, headers } from "./index";
 
 export function getReportByReasonAPI(reason) {
   const afterDefaultURL = `reports?reason=${reason}&page-offset=1&limit=5`;
-  console.log(afterDefaultURL);
+  return axios.get(url + afterDefaultURL);
+}
+
+export function getReportByReasonAndTeamAPI(reason, useId, teamId) {
+  const afterDefaultURL = `reports?reason=${reason}&user-id=1${useId}&team-id=${teamId}&page-offset=1&limit=5`;
   return axios.get(url + afterDefaultURL);
 }
 

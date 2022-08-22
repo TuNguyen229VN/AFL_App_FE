@@ -3,6 +3,7 @@ import ModalDenyMatchDetail from "./ModalDenyMatchDetail";
 import { updateNextTeamInRoundAPI } from "../../api/TeamInMatchAPI";
 import PenaltyMatch from "./penalty/PenaltyMatch";
 import { deleteMatchDetailByTypeAPI } from "../../api/MatchDetailAPI";
+import { toast } from "react-toastify";
 export default function DetailInMatch(props) {
   const {
     hideShow,
@@ -25,7 +26,7 @@ export default function DetailInMatch(props) {
     lastMatch,
     createTieBreak,
   } = props;
-  
+
   const [detail, setDetail] = useState([]);
   const [detailPenalty, setDetailPenalty] = useState([]);
   const [statusCall, setStatusCall] = useState(false);
@@ -34,6 +35,7 @@ export default function DetailInMatch(props) {
   const [scoreAPenalty, setScoreAPenalty] = useState(0);
   const [scoreBPenalty, setScoreBPenalty] = useState(0);
   let matchMinutes = null;
+  console.log(title);
   useEffect(() => {
     matchMinutes = tourDetail !== null ? tourDetail.matchMinutes : null;
     if (typeDetail === "score" && matchDetail !== null) {
@@ -63,7 +65,6 @@ export default function DetailInMatch(props) {
   }, [typeDetail, statusUpdate === false, matchDetail]);
   useEffect(() => {
     if (matchDetail !== null) {
-      
       const detailA = [];
       for (const item of matchDetail) {
         if (
@@ -211,7 +212,7 @@ export default function DetailInMatch(props) {
             matchId: data[index].matchId,
             playerInTournamentId: data[index].playerInTournamentId,
             footballPlayerId: data[index].footballPlayerId,
-            statusPen: data[index].statusPen
+            statusPen: data[index].statusPen,
           });
         }
       }
@@ -230,7 +231,7 @@ export default function DetailInMatch(props) {
             matchId: data[index].matchId,
             playerInTournamentId: data[index].playerInTournamentId,
             footballPlayerId: data[index].footballPlayerId,
-            statusPen: data[index].statusPen
+            statusPen: data[index].statusPen,
           });
       }
 
@@ -270,12 +271,39 @@ export default function DetailInMatch(props) {
 
     switch (name) {
       case "A":
-        setDetailPenalty([]);
-        setScoreAPenalty(+value);
+        {
+          setScoreAPenalty(+value);
+          setDetailPenalty([]);
+        }
+
         break;
       default:
-        setDetailPenalty([]);
-        setScoreBPenalty(+value);
+        {
+          if (
+            ((+value === 0 || scoreAPenalty === 0) &&  Math.abs(+value - scoreAPenalty) > 3) ||
+            (+value < 6 &&
+              scoreAPenalty < 6 &&
+              Math.abs(+value - scoreAPenalty) > 2) ||
+            ((+value > 5 || scoreAPenalty > 5) &&
+              Math.abs(+value - scoreAPenalty) > 1)
+          ) {
+            toast.error("Tỉ số sai với loạt penalty", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setScoreBPenalty(0);
+            setScoreAPenalty(0);
+          } else {
+            setScoreBPenalty(+value);
+          }
+          setDetailPenalty([]);
+        }
+
         break;
     }
   };
@@ -442,7 +470,7 @@ export default function DetailInMatch(props) {
           matchId: +idMatch,
           playerInTournamentId: valueObj.playerInTournamentId,
           footballPlayerId: valueObj.id,
-          statusPen: true
+          statusPen: true,
         });
       } else {
         newDetail[findIndex].playerInTournamentId =
@@ -459,7 +487,7 @@ export default function DetailInMatch(props) {
           matchId: +idMatch,
           playerInTournamentId: valueObj.playerInTournamentId,
           footballPlayerId: valueObj.id,
-          statusPen: true
+          statusPen: true,
         },
       ]);
     }
@@ -516,7 +544,8 @@ export default function DetailInMatch(props) {
     await updateScoreInMatch(
       [...detail, ...detailPenalty],
       typeDetail === "score" ? 1 : typeDetail === "yellow" ? 2 : 3,
-      teamWinPenalty
+      teamWinPenalty,
+      title
     );
     if (
       tourDetail.tournamentTypeId !== 2 &&
@@ -524,7 +553,7 @@ export default function DetailInMatch(props) {
         (tourDetail.tournamentTypeId === 3 &&
           (!title.includes("Bảng") || lastMatch === true)))
     ) {
-      if (lastMatch && title.includes("Bảng")) {
+      if (lastMatch && title.includes("Bảng") && title.includes("tie-break") === false) {
         const flagTieBreak = await createTieBreak();
         if (flagTieBreak === false) updateNextTeamInNextRound();
       } else {
@@ -627,8 +656,10 @@ export default function DetailInMatch(props) {
                   </div>
                 </div>
                 {tourDetail.tournamentTypeId !== 2 &&
-                title.includes("Bảng") === false && 
-                +numTeamA === +numTeamB && typeDetail === "score" ? (
+                (title.includes("Bảng") === false ||
+                  title.includes("tie-break") === true) &&
+                +numTeamA === +numTeamB &&
+                typeDetail === "score" ? (
                   <div>
                     <h1
                       style={{

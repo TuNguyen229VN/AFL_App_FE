@@ -1,5 +1,5 @@
 export function excuteDate(data, tournamentType, tourDetail) {
-  console.log(data);
+  
   for (const index in data) {
     let flag = true;
     const arrayDate = [];

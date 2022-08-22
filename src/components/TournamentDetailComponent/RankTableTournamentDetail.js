@@ -107,7 +107,8 @@ function RankTableTournamentDetail(props) {
             teamB.differentPoint - teamA.differentPoint ||
             teamB.winScoreNumber - teamA.winScoreNumber ||
             teamA.totalRedCard - teamB.totalRedCard ||
-            teamA.totalYellowCard - teamB.totalYellowCard
+            teamA.totalYellowCard - teamB.totalYellowCard ||
+            teamB.winTieBreak - teamA.winTieBreak
           );
         });
         for (let j = 0; j < tableName[i].numberTeam; j++) {
@@ -122,6 +123,7 @@ function RankTableTournamentDetail(props) {
         });
       }
     }
+    console.log(ranking);
     setLoading(false);
     setRaking(ranking);
   };
