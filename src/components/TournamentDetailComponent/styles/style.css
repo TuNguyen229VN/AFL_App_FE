@@ -215,6 +215,7 @@
 
 .teamdetail .schedule__tour .schedule__table td:nth-child(2) {
   width: max-content;
+  text-align: left;
 }
 
 .teamdetail .schedule__tour .schedule__table td:nth-child(3) {

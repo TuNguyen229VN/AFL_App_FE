@@ -266,15 +266,14 @@ export default function CricleStageSchedule(props) {
     const splitDateTime = updateDate.toJSON().split("T");
     const numberHour = +splitDateTime[1].split(":")[0];
     return (
+      numberHour +
+      ":" +
+      splitDateTime[1].split(":")[1] + " " +
       splitDateTime[0].split("-")[1] +
       "-" +
       splitDateTime[0].split("-")[2] +
       "-" +
-      splitDateTime[0].split("-")[0] +
-      " " +
-      numberHour +
-      ":" +
-      splitDateTime[1].split(":")[1]
+      splitDateTime[0].split("-")[0]
     );
   };
   const updateDateInMatch = (dataMatch) => {
@@ -343,15 +342,14 @@ export default function CricleStageSchedule(props) {
     //     : +splitDateTime[1].split(":")[0] + 7;
 
     return (
+      splitDateTime[1].split(":")[0] +
+      ":" +
+      splitDateTime[1].split(":")[1] + " " +
       splitDateTime[0].split("-")[2] +
       "-" +
       splitDateTime[0].split("-")[1] +
       "-" +
-      splitDateTime[0].split("-")[0] +
-      " " +
-      splitDateTime[1].split(":")[0] +
-      ":" +
-      splitDateTime[1].split(":")[1]
+      splitDateTime[0].split("-")[0]
     );
   };
   return type === null ? (
@@ -604,7 +602,7 @@ export default function CricleStageSchedule(props) {
           return (
             <tr key={index}>
               <td style={{
-                width:"60%"
+                width: "60%"
               }}>{index + 1}</td>
               {item.team != null ? (
                 <td>
@@ -630,8 +628,8 @@ export default function CricleStageSchedule(props) {
                 <td>
                   {item.team != null ? (
                     <img src={item.team.teamAvatar} alt="gallery_item" style={{
-                        marginRight: 10,
-                      }} />
+                      marginRight: 10,
+                    }} />
                   ) : null}
                   <p>{item.teamName}</p>
                 </td>

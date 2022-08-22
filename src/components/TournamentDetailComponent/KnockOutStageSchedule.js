@@ -30,6 +30,16 @@ export default function KnockOutStageSchedule(props) {
   const [indexSchedule, setIndexSchedule] = useState(null);
   const [findMaxDate, setFindMaxDate] = useState(null);
 
+    const formatDate = (date) => {
+    const day = new Date(date);
+    return (
+      String(day.getDate()).padStart(2, "0") +
+      "/" +
+      String(day.getMonth() + 1).padStart(2, "0") +
+      "/" +
+      day.getFullYear()
+    );
+  };
   useEffect(() => {
     if (allTeam != null) {
       devideRound();
@@ -438,15 +448,14 @@ export default function KnockOutStageSchedule(props) {
     const splitDateTime = data.split("T");
     const numberHour = +splitDateTime[1].split(":")[0] + 0;
     return (
+      numberHour +
+      ":" +
+      splitDateTime[1].split(":")[1] + " " +
       splitDateTime[0].split("-")[2] +
       "-" +
       splitDateTime[0].split("-")[1] +
       "-" +
-      splitDateTime[0].split("-")[0] +
-      " " +
-      numberHour +
-      ":" +
-      splitDateTime[1].split(":")[1]
+      splitDateTime[0].split("-")[0]
     );
   };
 
@@ -457,15 +466,14 @@ export default function KnockOutStageSchedule(props) {
     const splitDateTime = updateDate.toJSON().split("T");
     const numberHour = +splitDateTime[1].split(":")[0];
     return (
+      numberHour +
+      ":" +
+      splitDateTime[1].split(":")[1] + " " +
       splitDateTime[0].split("-")[1] +
       "-" +
       splitDateTime[0].split("-")[2] +
       "-" +
-      splitDateTime[0].split("-")[0] +
-      " " +
-      numberHour +
-      ":" +
-      splitDateTime[1].split(":")[1]
+      splitDateTime[0].split("-")[0]
     );
   };
 
