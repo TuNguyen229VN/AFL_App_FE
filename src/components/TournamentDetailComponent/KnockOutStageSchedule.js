@@ -30,7 +30,7 @@ export default function KnockOutStageSchedule(props) {
   const [indexSchedule, setIndexSchedule] = useState(null);
   const [findMaxDate, setFindMaxDate] = useState(null);
 
-    const formatDate = (date) => {
+  const formatDate = (date) => {
     const day = new Date(date);
     return (
       String(day.getDate()).padStart(2, "0") +
@@ -450,7 +450,8 @@ export default function KnockOutStageSchedule(props) {
     return (
       numberHour +
       ":" +
-      splitDateTime[1].split(":")[1] + " " +
+      splitDateTime[1].split(":")[1] +
+      " " +
       splitDateTime[0].split("-")[2] +
       "-" +
       splitDateTime[0].split("-")[1] +
@@ -468,7 +469,8 @@ export default function KnockOutStageSchedule(props) {
     return (
       numberHour +
       ":" +
-      splitDateTime[1].split(":")[1] + " " +
+      splitDateTime[1].split(":")[1] +
+      " " +
       splitDateTime[0].split("-")[1] +
       "-" +
       splitDateTime[0].split("-")[2] +
@@ -476,7 +478,15 @@ export default function KnockOutStageSchedule(props) {
       splitDateTime[0].split("-")[0]
     );
   };
-
+  const checkLastTeamUpdate = (index) => {
+    const data = knockoutTeam[index].seeds;
+    for (let i = knockoutTeam[index].seeds.length - 1; i >= 0; i--) {
+      if (data[i].teams[0].teamResult === null) {
+        return true;
+      }
+    }
+    return false;
+  };
   return knockoutTeam !== null ? (
     typeView === "diagram" ? (
       <div
@@ -490,33 +500,50 @@ export default function KnockOutStageSchedule(props) {
       <div>
         {teamDescription !== null
           ? teamDescription.map((itemIn, indexIn) => {
-            return (
-              <table
-                key={indexIn}
-                style={{
-                  marginBottom: 50,
-                }}
-                className="schedule__table"
-              >
-                <tr>
-                  <th colSpan={2}>Bảng đấu - {itemIn.title}</th>
-                </tr>
-                {itemIn.seeds.map((item, index) => {
-                  return (
-                    <tr key={index}>
-                      <td style={{
-                        width: "60%"
-                      }}>{index + 1}</td>
-                      {item.team != null ? (
-                        <td>
-                          <Link
-                            to={`/teamDetail/${item.team.id}/inforTeamDetail`}
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                          >
-
+              return (
+                <table
+                  key={indexIn}
+                  style={{
+                    marginBottom: 50,
+                  }}
+                  className="schedule__table"
+                >
+                  <tr>
+                    <th colSpan={2}>Bảng đấu - {itemIn.title}</th>
+                  </tr>
+                  {itemIn.seeds.map((item, index) => {
+                    return (
+                      <tr key={index}>
+                        <td
+                          style={{
+                            width: "60%",
+                          }}
+                        >
+                          {index + 1}
+                        </td>
+                        {item.team != null ? (
+                          <td>
+                            <Link
+                              to={`/teamDetail/${item.team.id}/inforTeamDetail`}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                            >
+                              {item.team != null ? (
+                                <img
+                                  src={item.team.teamAvatar}
+                                  alt="gallery_item"
+                                  style={{
+                                    marginRight: 10,
+                                  }}
+                                />
+                              ) : null}
+                              <p>{item.teamName}</p>
+                            </Link>
+                          </td>
+                        ) : (
+                          <td>
                             {item.team != null ? (
                               <img
                                 src={item.team.teamAvatar}
@@ -526,34 +553,15 @@ export default function KnockOutStageSchedule(props) {
                                 }}
                               />
                             ) : null}
-                            <p
-
-                            >
-                              {item.teamName}
-                            </p>
-                          </Link>
-                        </td>
-                      ) : (
-                        <td>
-
-                          {item.team != null ? (
-                            <img
-                              src={item.team.teamAvatar}
-                              alt="gallery_item"
-                              style={{
-                                marginRight: 10,
-                              }}
-                            />
-                          ) : null}
-                          <p>{item.teamName}</p>
-                        </td>
-                      )}
-                    </tr>
-                  );
-                })}
-              </table>
-            );
-          })
+                            <p>{item.teamName}</p>
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  })}
+                </table>
+              );
+            })
           : null}
       </div>
     ) : (
@@ -634,7 +642,7 @@ export default function KnockOutStageSchedule(props) {
                           : 0}
                       </span>
                       {itemSeeds.teams[0].penalty !== null &&
-                        itemSeeds.teams[1].penalty !== null ? (
+                      itemSeeds.teams[1].penalty !== null ? (
                         <span className="pen">
                           {" "}
                           ( Luân lưu:{" "}
@@ -687,11 +695,11 @@ export default function KnockOutStageSchedule(props) {
                       </td>
                     )}
                     {user != undefined &&
-                      user.userVM.id === hostTournamentId &&
-                      ((new Date(endDate).getTime() > new Date().getTime() &&
-                        itemSeeds.match.matchDate === null) ||
-                        (new Date(endDate).getTime() > new Date().getTime() &&
-                          new Date(itemSeeds.match.matchDate).getTime() -
+                    user.userVM.id === hostTournamentId &&
+                    ((new Date(endDate).getTime() > new Date().getTime() &&
+                      itemSeeds.match.matchDate === null) ||
+                      (new Date(endDate).getTime() > new Date().getTime() &&
+                        new Date(itemSeeds.match.matchDate).getTime() -
                           24 * 60 * 60 * 1000 >
                           new Date().getTime())) ? (
                       <td
@@ -708,8 +716,8 @@ export default function KnockOutStageSchedule(props) {
                           setStatusUpdateDate(false);
                           setTeamInUpdate(
                             itemSeeds.teams[0].name +
-                            " - " +
-                            itemSeeds.teams[1].name
+                              " - " +
+                              itemSeeds.teams[1].name
                           );
                         }}
                       >
@@ -720,8 +728,8 @@ export default function KnockOutStageSchedule(props) {
                       <td></td>
                     )}
                     {itemSeeds.teams[0].team !== null &&
-                      itemSeeds.teams[1].team !== null &&
-                      itemSeeds.date !== null ? (
+                    itemSeeds.teams[1].team !== null &&
+                    itemSeeds.date !== null ? (
                       <td>
                         {" "}
                         <Link
@@ -731,20 +739,20 @@ export default function KnockOutStageSchedule(props) {
                             tourDetail,
                             index,
                             title: item.title,
-                            lastMatch:
-                              indexSeeds === item.seeds.length - 1
-                                ? true
-                                : false,
+                            lastMatch: checkLastTeamUpdate(index),
+                            // indexSeeds === item.seeds.length - 1
+                            //   ? true
+                            //   : false,
                             dateValidate:
                               findMaxDate !== null &&
-                                index + 1 < knockoutTeam.length
+                              index + 1 < knockoutTeam.length
                                 ? findMaxDate[index + 1]
                                 : index + 1 == knockoutTeam.length
-                                  ? {
+                                ? {
                                     ...findMaxDate[index],
                                     minDate: undefined,
                                   }
-                                  : null,
+                                : null,
                           }}
                         >
                           Chi tiết

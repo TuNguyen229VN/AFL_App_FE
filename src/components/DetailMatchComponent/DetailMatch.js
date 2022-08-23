@@ -206,8 +206,8 @@ export default function DetailMatch(props) {
     try {
       const data = {
         tournamentId: tourDetail.id,
-        matchId: null,
-        groupName: null,
+        matchId: 0,
+        groupName: "",
       };
 
       const response = await updateNextTeamInRoundAPI(data);
@@ -236,8 +236,7 @@ export default function DetailMatch(props) {
 
   const matchResult = async () => {
     try {
-      const response = postTournamentResult(idMatch);
-      console.log(response);
+      const response = await postTournamentResult(idMatch);
     } catch (err) {
       console.error(err);
     }
@@ -377,10 +376,10 @@ export default function DetailMatch(props) {
   };
   const setAllInfor = () => {
     setScoreA(
-      teamA.scoreTieBreak === null ? teamA.teamScore : +teamA.scoreTieBreak
+      teamA.scoreTieBreak === null ? teamA.teamScore : teamA.scoreTieBreak
     );
     setScoreB(
-      teamB.scoreTieBreak === null ? teamB.teamScore : +teamB.scoreTieBreak
+      teamB.scoreTieBreak === null ? teamB.teamScore : teamB.scoreTieBreak
     );
     setYellowA(teamA.yellowCardNumber);
     setYellowB(teamB.yellowCardNumber);
@@ -697,6 +696,8 @@ export default function DetailMatch(props) {
             ? teamA.scoreTieBreak === null && teamA.scoreTieBreak === null
               ? teamA.teamScore + "-" + teamB.teamScore ===
                 scoreA + "-" + scoreB
+                ? matchDetail
+                : null
               : teamA.scoreTieBreak + "-" + teamB.scoreTieBreak ===
                 scoreA + "-" + scoreB
               ? matchDetail

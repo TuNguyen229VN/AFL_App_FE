@@ -9,6 +9,7 @@ function ReportTeamInTournament(props) {
     tourDetail,
     sendReportTeamOutTournament,
     setIdTeamDelete,
+    setLoading,
   } = props;
   const [report, setReport] = useState(false);
 
@@ -17,6 +18,7 @@ function ReportTeamInTournament(props) {
   }, [idTeamDelete !== null]);
 
   const getReport = async () => {
+    setLoading(true);
     try {
       const response = await getReportByReasonAndTeamAPI(
         "Đội bóng đã không tham gia giải đấu",
@@ -24,13 +26,14 @@ function ReportTeamInTournament(props) {
         idTeamDelete.split("-")[1]
       );
       if (response.status === 200) {
-        console.log(response);
-        if (response.data.reports > 0) {
+        if (response.data.reports.length > 0) {
           setReport(true);
         }
+        setLoading(false);
       }
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
   };
 

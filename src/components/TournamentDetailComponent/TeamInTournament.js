@@ -98,6 +98,7 @@ function TeamInTournament(props) {
       }
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
   };
   const getTeamInTourByDelte = (item) => {
@@ -347,7 +348,7 @@ function TeamInTournament(props) {
                                   : "overlay"
                               }
                             ></div>
-                            {tourDetail.statusTnm === "Đang diễn ra" &&
+                            {tourDetail.statusTnm === "Chuẩn bị" &&
                             item.teamInTournament.statusInTournament !==
                               "Bị loại" ? (
                               <p
@@ -373,6 +374,7 @@ function TeamInTournament(props) {
                         }
                       ></div>
                       <ReportTeamInTournament
+                        setLoading={setLoading}
                         sendReportTeamOutTournament={
                           sendReportTeamOutTournament
                         }
