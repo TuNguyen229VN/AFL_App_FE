@@ -78,6 +78,7 @@ console.log(dataMatch);
   const [detailTeamA, setDetailTeamA] = useState(null);
   const [detailTeamB, setDetailTeamB] = useState(null);
   const [predict, setPredict] = useState({});
+  const [isTie, setIsTie] = useState(false);
   console.log("aa");
   const getPredict = async () => {
     try {
@@ -110,10 +111,17 @@ console.log(dataMatch);
           }
           return accumulator;
         }, []);
+        if(teamA[0].match.round.includes('tie-break')){
+          setIsTie(true);
+          setScoreA(teamA[0].scoreTieBreak);
+          setScoreB(teamB[0].scoreTieBreak);
+        }
+        else{
+          setScoreA(teamA[0].teamScore);
+          setScoreB(teamB[0].teamScore);
+        }
         setAllTeamA(teamA);
-        setScoreA(teamA[0].teamScore);
         setAllTeamB(teamB);
-        setScoreB(teamB[0].teamScore);
         setScoreTeamA({ value: res.data.teamsInMatch[0].teamScore });
         setScoreTeamB({ value: res.data.teamsInMatch[1].teamScore });
         setRedTeamA({ value: res.data.teamsInMatch[0].redCardNumber });
@@ -1020,13 +1028,23 @@ console.log(dataMatch);
         if (tim && allTeamA != null && tim.id === allTeamA[0].id) {
           setRedA(tim.redCardNumber);
           setYellowA(tim.yellowCardNumber);
-          setScoreA(tim.teamScore);
+          if(isTie){
+            setScoreA(tim.scoreTieBreak);
+          }
+          else{
+            setScoreA(tim.teamScore);
+          }
           setPenA(tim.scorePenalty);
         }
         if (tim && allTeamB && tim.id === allTeamB[0].id) {
           setRedB(tim.redCardNumber);
           setYellowB(tim.yellowCardNumber);
-          setScoreB(tim.teamScore);
+          if(isTie){
+            setScoreB(tim.scoreTieBreak);
+          }
+          else{
+            setScoreB(tim.teamScore);
+          }
           setPenB(tim.scorePenalty);
         }
       });
@@ -1059,13 +1077,22 @@ console.log(dataMatch);
     ) {
       setRedA(team.redCardNumber);
       setYellowA(team.yellowCardNumber);
-      setScoreA(team.teamScore);
+      if(isTie){
+        setScoreA(team.scoreTieBreak);
+      }else{
+        setScoreA(team.teamScore);
+       }
       setPenA(team.scorePenalty);
     }
     if (team && mDetail && allTeamB != null && team.id === allTeamB[0].id) {
       setRedB(team.redCardNumber);
       setYellowB(team.yellowCardNumber);
-      setScoreB(team.teamScore);
+      if(isTie){
+        setScoreB(team.scoreTieBreak);  
+      }
+      else{
+        setScoreB(team.teamScore);
+      }
       setPenB(team.scorePenalty);
     }
 
@@ -1177,6 +1204,21 @@ console.log(dataMatch);
     if (isPen) {
       actionId = 4;
     }
+    if(isTie && isPen  == false){
+      actionId = 5;
+    }
+    if (card == "yellow") {
+      if (cardIndex != minuteIndex) {
+        return;
+      }
+      actionId = 2;
+    }
+    if (card == "red") {
+      if (cardIndex != minuteIndex) {
+        return;
+      }
+      actionId = 3;
+    }
     let data = {
       actionMatchId: actionId,
       actionMinute: `${minutes}`,
@@ -1226,6 +1268,8 @@ console.log(dataMatch);
             setCheckPen(true);
           }
           // setMinutes("");
+          setMinutesError("");
+
         })
         .catch((e) => {
           console.log(e);
@@ -1242,7 +1286,7 @@ console.log(dataMatch);
       let scorePenalty = 0;
       if (playerPopup || playerCardPopup) {
         tim = allTeamA[0];
-        teamScore = tim.teamScore;
+        teamScore =isTie?tim.scoreTieBreak:tim.teamScore;
         if (scoreA > 0) {
           teamScore = scoreA;
         }
@@ -1262,7 +1306,7 @@ console.log(dataMatch);
       }
       if (playerPopupB || playerCardPopupB) {
         tim = allTeamB[0];
-        teamScore = tim.teamScore;
+        teamScore =isTie?tim.scoreTieBreak:tim.teamScore;
         if (scoreB > 0) {
           teamScore = scoreB;
         }
@@ -1281,7 +1325,7 @@ console.log(dataMatch);
         }
       }
 
-      if (actionId == 1) {
+      if (actionId == 1 || actionId == 5) {
         teamScore = teamScore + 1;
       }
       if (card == "yellow") {
@@ -1293,7 +1337,7 @@ console.log(dataMatch);
       if (actionId == 4) {
         scorePenalty = scorePenalty + 1;
       }
-      const data = {
+      let data = {
         id: tim.id,
         teamScore: teamScore,
         teamScoreLose: tim.teamScoreLose,
@@ -1306,11 +1350,27 @@ console.log(dataMatch);
         nextTeam: tim.nextTeam,
         teamName: tim.teamName,
       };
+      if(isTie){
+        data = {
+        id: tim.id,
+        scoreTieBreak: teamScore,
+        yellowCardNumber: yellowCardNumber,
+        redCardNumber: redCardNumber,
+        scorePenalty: scorePenalty,
+        teamInTournamentId: tim.teamInTournamentId,
+        matchId: tim.matchId,
+        result: tim.result,
+        nextTeam: tim.nextTeam,
+        teamName: tim.teamName,
+        }
+      }
       const response = await axios.put(
         `https://afootballleague.ddns.net/api/v1/TeamInMatch?room=${idMatch}`,
         data
       );
-      await calculateScore();
+      if(isTie == false){
+        await calculateScore();
+      }
     } catch (err) {
       console.log(err);
     }
@@ -1380,7 +1440,7 @@ console.log(dataMatch);
                       />
                       <p className="error">{minutesError}</p>
                     </div>
-                    {dataMatch&&location.state.tourDetail.tournamentTypeId !== 2 &&
+                    {dataMatch&&isTie== false&&location.state.tourDetail.tournamentTypeId !== 2 &&
                 dataMatch[0].includes("Bảng") === false && 
                 scoreA === scoreB&&
                     <div>
@@ -1395,6 +1455,21 @@ console.log(dataMatch);
                       />
                     </div>
                     }
+                {isTie && 
+                scoreA === scoreB&&
+                    <div>
+                      <p className={styles.pText}>Sút luân lưu</p>
+                      <input
+                        className={styles.pCheck}
+                        type="checkbox"
+                        checked={isPen}
+                        onChange={(e) => {
+                          setIsPen(e.target.checked);
+                        }}
+                      />
+                    </div>
+                    }
+
                     {isPen && (
                       <div>
                         <p className={styles.pText}>Sút hỏng</p>
@@ -1819,11 +1894,11 @@ console.log(dataMatch);
                   <div className={styles.score__wrap}>
                     <div className={styles.score__main}>
                       <div className={styles.score__A}>
-                        {scoreA == 0 ? item.teamScore : scoreA}
+                        {scoreA}
                       </div>
                       <div className={styles.line}>-</div>
                       <div className={styles.score__B}>
-                        {scoreB == 0 ? allTeamB[index].teamScore : scoreB}
+                        {scoreB}
                       </div>
                     </div>
                     {checkPen && (
@@ -1906,6 +1981,8 @@ console.log(dataMatch);
                                       src={
                                         item.actionMatchId === 1
                                           ? "/assets/icons/soccer-ball-retina.png"
+                                          : item.actionMatchId === 5
+                                          ? "/assets/icons/soccer-ball-retina.png"
                                           : item.actionMatchId === 2
                                           ? "/assets/icons/yellow-card.png"
                                           : "/assets/icons/red-card.png"
@@ -1949,6 +2026,8 @@ console.log(dataMatch);
                                       }}
                                       src={
                                         item.actionMatchId === 1
+                                          ? "/assets/icons/soccer-ball-retina.png"
+                                          : item.actionMatchId === 5
                                           ? "/assets/icons/soccer-ball-retina.png"
                                           : item.actionMatchId === 2
                                           ? "/assets/icons/yellow-card.png"
@@ -2050,8 +2129,8 @@ console.log(dataMatch);
                                         <p
                                           className={`${
                                             item.statusPen === false
-                                              ? ""
-                                              : styles.fail
+                                              ? styles.fail
+                                              : ""
                                           }`}
                                         >
                                           {item.namePlayer}
