@@ -348,7 +348,7 @@ function TeamInTournament(props) {
                                   : "overlay"
                               }
                             ></div>
-                            {tourDetail.statusTnm === "Chuẩn bị" &&
+                            {tourDetail.statusTnm === "Đang diễn ra" &&
                             item.teamInTournament.statusInTournament !==
                               "Bị loại" ? (
                               <p
@@ -357,6 +357,7 @@ function TeamInTournament(props) {
                                   setIdTeamDelete(
                                     item.teamInTournament.id + "-" + item.id
                                   );
+                                  
                                 }}
                               >
                                 <i class="fa-solid fa-flag"></i>Báo cáo đội bóng
