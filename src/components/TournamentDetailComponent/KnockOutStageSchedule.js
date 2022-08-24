@@ -481,29 +481,30 @@ export default function KnockOutStageSchedule(props) {
   const checkLastTeamUpdate = (index, dataMatch) => {
     const matchId = dataMatch.match.id;
     const data = knockoutTeam[index].seeds;
-    let flagLastMatch = true;
-    for (let i = knockoutTeam[index].seeds.length - 1; i >= 0; i--) {
-      if (
-        data[i].teams[0].teamResult === null &&
-        data[i].match.id === matchId
-      ) {
-        return flagLastMatch;
-      } else if (
-        data[i].teams[0].teamResult === null &&
-        data[i].id !== matchId
-      ) {
-        flagLastMatch = false;
-      } else if (
-        data[i].teams[0].teamResult !== null &&
-        data[i].match.id === matchId
-      ) {
-        return false;
-      } else {
-        flagLastMatch = true;
-      }
-    }
 
-    return flagLastMatch;
+    const teamActive = data.filter((team) => team.match.status !== "Bị Hủy");
+
+    if (teamActive.length > 0) {
+      const matchNotStart = teamActive.filter(
+        (team) => team.teams[0].teamResult === null
+      );
+      if (matchNotStart.length > 0) {
+        if (matchId === matchNotStart[matchNotStart.length - 1].match.id)
+          return true;
+        else return false;
+      } else {
+        const matchStart = teamActive.filter(
+          (team) => team.teams[0].teamResult !== null
+        );
+        if (matchStart.length > 0) {
+          if (matchId === matchStart[matchStart.length - 1].match.id)
+            return true;
+          else return false;
+        }
+      }
+    } else {
+      return false;
+    }
   };
   return knockoutTeam !== null ? (
     typeView === "diagram" ? (
@@ -714,6 +715,7 @@ export default function KnockOutStageSchedule(props) {
                     )}
                     {user != undefined &&
                     user.userVM.id === hostTournamentId &&
+                    itemSeeds.match.status !== "Bị Hủy" &&
                     ((new Date(endDate).getTime() > new Date().getTime() &&
                       itemSeeds.match.matchDate === null) ||
                       (new Date(endDate).getTime() > new Date().getTime() &&
@@ -749,32 +751,41 @@ export default function KnockOutStageSchedule(props) {
                     itemSeeds.teams[1].team !== null &&
                     itemSeeds.date !== null ? (
                       <td>
-                        {" "}
-                        <Link
-                          to={`/match/${itemSeeds.match.id}/matchDetail`}
-                          state={{
-                            hostTournamentId,
-                            tourDetail,
-                            index,
-                            title: item.title,
-                            lastMatch: checkLastTeamUpdate(index, itemSeeds),
-                            // indexSeeds === item.seeds.length - 1
-                            //   ? true
-                            //   : false,
-                            dateValidate:
-                              findMaxDate !== null &&
-                              index + 1 < knockoutTeam.length
-                                ? findMaxDate[index + 1]
-                                : index + 1 == knockoutTeam.length
-                                ? {
-                                    ...findMaxDate[index],
-                                    minDate: undefined,
-                                  }
-                                : null,
-                          }}
-                        >
-                          Chi tiết
-                        </Link>
+                        {itemSeeds.match.status === "Bị Hủy" ? (
+                          <p
+                            style={{
+                              color: "red",
+                            }}
+                          >
+                            Bị hủy
+                          </p>
+                        ) : (
+                          <Link
+                            to={`/match/${itemSeeds.match.id}/matchDetail`}
+                            state={{
+                              hostTournamentId,
+                              tourDetail,
+                              index,
+                              title: item.title,
+                              lastMatch: checkLastTeamUpdate(index, itemSeeds),
+                              // indexSeeds === item.seeds.length - 1
+                              //   ? true
+                              //   : false,
+                              dateValidate:
+                                findMaxDate !== null &&
+                                index + 1 < knockoutTeam.length
+                                  ? findMaxDate[index + 1]
+                                  : index + 1 == knockoutTeam.length
+                                  ? {
+                                      ...findMaxDate[index],
+                                      minDate: undefined,
+                                    }
+                                  : null,
+                            }}
+                          >
+                            Chi tiết
+                          </Link>
+                        )}{" "}
                       </td>
                     ) : (
                       <td></td>
