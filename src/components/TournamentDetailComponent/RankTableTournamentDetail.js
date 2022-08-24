@@ -101,8 +101,10 @@ function RankTableTournamentDetail(props) {
             allTeam.push(item);
           }
         }
+
         allTeam.sort((teamA, teamB) => {
           return (
+            teamB.statusInTournament.localeCompare(teamA.statusInTournament) ||
             teamB.point - teamA.point ||
             teamB.differentPoint - teamA.differentPoint ||
             teamB.winScoreNumber - teamA.winScoreNumber ||
@@ -123,7 +125,7 @@ function RankTableTournamentDetail(props) {
         });
       }
     }
-    console.log(ranking);
+
     setLoading(false);
     setRaking(ranking);
   };
@@ -212,28 +214,37 @@ function RankTableTournamentDetail(props) {
                         <th>Điểm</th>
                       </tr>
                       {itemIn.team.map((item, index) => {
+                        const hasItem = item !== null;
+                        console.log(item);
                         return (
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td>
-                              {item !== null
-                                ? item.team.teamName
-                                : "Chưa tham gia"}
+                              {hasItem ? item.team.teamName : "Chưa tham gia"}
+                              {item.statusInTournament === "Bị loại" && (
+                                <p
+                                  style={{
+                                    color: "red",
+                                    display: "inline",
+                                    marginLeft:10
+                                  }}
+                                >
+                                  (Bị loại)
+                                </p>
+                              )}
                             </td>
-                            <td>{item !== null ? item.numberOfMatch : 0}</td>
-                            <td>{item !== null ? item.numberOfWin : 0}</td>
-                            <td>{item !== null ? item.numberOfDraw : 0}</td>
-                            <td>{item !== null ? item.numberOfLose : 0}</td>
-                            <td>{item !== null ? item.differentPoint : 0}</td>
+                            <td>{hasItem ? item.numberOfMatch : 0}</td>
+                            <td>{hasItem ? item.numberOfWin : 0}</td>
+                            <td>{hasItem ? item.numberOfDraw : 0}</td>
+                            <td>{hasItem ? item.numberOfLose : 0}</td>
+                            <td>{hasItem ? item.differentPoint : 0}</td>
+                            <td>{hasItem ? `${item.winScoreNumber}` : 0}</td>
                             <td>
-                              {item !== null ? `${item.winScoreNumber}` : 0}
-                            </td>
-                            <td>
-                              {item !== null
+                              {hasItem
                                 ? `${item.totalYellowCard}/${item.totalRedCard}`
                                 : 0}
                             </td>
-                            <td>{item !== null ? item.point : 0}</td>
+                            <td>{hasItem ? item.point : 0}</td>
                           </tr>
                         );
                       })}
