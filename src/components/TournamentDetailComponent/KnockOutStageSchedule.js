@@ -478,14 +478,32 @@ export default function KnockOutStageSchedule(props) {
       splitDateTime[0].split("-")[0]
     );
   };
-  const checkLastTeamUpdate = (index) => {
+  const checkLastTeamUpdate = (index, dataMatch) => {
+    const matchId = dataMatch.match.id;
     const data = knockoutTeam[index].seeds;
+    let flagLastMatch = true;
     for (let i = knockoutTeam[index].seeds.length - 1; i >= 0; i--) {
-      if (data[i].teams[0].teamResult === null) {
-        return true;
+      if (
+        data[i].teams[0].teamResult === null &&
+        data[i].match.id === matchId
+      ) {
+        return flagLastMatch;
+      } else if (
+        data[i].teams[0].teamResult === null &&
+        data[i].id !== matchId
+      ) {
+        flagLastMatch = false;
+      } else if (
+        data[i].teams[0].teamResult !== null &&
+        data[i].match.id === matchId
+      ) {
+        return false;
+      } else {
+        flagLastMatch = true;
       }
     }
-    return false;
+
+    return flagLastMatch;
   };
   return knockoutTeam !== null ? (
     typeView === "diagram" ? (
@@ -739,7 +757,7 @@ export default function KnockOutStageSchedule(props) {
                             tourDetail,
                             index,
                             title: item.title,
-                            lastMatch: checkLastTeamUpdate(index),
+                            lastMatch: checkLastTeamUpdate(index, itemSeeds),
                             // indexSeeds === item.seeds.length - 1
                             //   ? true
                             //   : false,

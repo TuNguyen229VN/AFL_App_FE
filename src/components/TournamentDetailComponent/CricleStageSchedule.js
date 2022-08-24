@@ -522,13 +522,13 @@ export default function CricleStageSchedule(props) {
                       itemSeeds.date !== null ? (
                       <td>
                         {" "}
-                        {itemSeeds === item.seeds.length - 1 ? (
+                        {indexSeeds === item.seeds.length - 1 ? (
                           <Link
                             to={`/match/${itemSeeds.match.id}/matchDetail`}
                             state={{
                               hostTournamentId,
                               tourDetail,
-                              index: itemSeeds,
+                              index: indexSeeds,
                               title: item.title.includes("tie-break")
                                 ? item.title
                                 : null,
