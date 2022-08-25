@@ -124,11 +124,11 @@ function VideoRoom(props) {
           props.tourDetail.tournamentTypeId === 1
             ? props.props.idMatch
             : props.indexMatch < props.tourDetail.groupNumber
-            ? 0
-            : props.props.idMatch,
+              ? 0
+              : props.props.idMatch,
         groupName:
           props.tourDetail.tournamentTypeId === 3 &&
-          props.title.includes("Bảng")
+            props.title.includes("Bảng")
             ? props.title.split(" ")[1]
             : null,
       };
@@ -191,10 +191,24 @@ function VideoRoom(props) {
     try {
       const response = await axios.put(
         `https://afootballleague.ddns.net/api/v1/TeamInMatch/update-result?matchId=${matchId}`
-        );
-        console.log("as")
+      );
+      console.log("as")
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const updateNextTeamInMatch = async () => {
+    try {
+      const data = {
+        tournamentId: props.tourDetail.id,
+        matchId: 0,
+        groupName: "",
+      };
+
+      const response = await updateNextTeamInRoundAPI(data);
+    } catch (err) {
+      console.error(err);
     }
   };
   const changeScreenForUser = async (matchId) => {
@@ -226,7 +240,7 @@ function VideoRoom(props) {
             (props.tourDetail.tournamentTypeId === 3 &&
               (!props.title.includes("Bảng") || props.lastMatch === true)))
         ) {
-          if (props.lastMatch && props.title.includes("Bảng")) {
+          if (props.lastMatch && props.title.includes("Bảng") && props.title.includes("tie-break") === false) {
             const flagTieBreak = await createTieBreak();
             if (flagTieBreak === false) updateNextTeamInNextRound();
           } else {
@@ -238,11 +252,16 @@ function VideoRoom(props) {
             matchResult(matchId);
           }
         } else {
-          if (props.index > 0) {
+          if (props.index > 0 && props.title !== null) {
             const flagTieBreak = await createTieBreak();
             if (flagTieBreak === false) {
+              await updateNextTeamInMatch();
               matchResult(matchId);
             }
+          }
+          else {
+            await updateNextTeamInMatch();
+            matchResult(matchId);
           }
         }
       }
@@ -309,17 +328,17 @@ function VideoRoom(props) {
         <div
           className={
             idUser !== null &&
-            idHostTournament !== null &&
-            idUser.userVM.id === idHostTournament
+              idHostTournament !== null &&
+              idUser.userVM.id === idHostTournament
               ? styles.listLivestream
               : props.fullScreen
-              ? styles.listLivestreamUserFull
-              : styles.listLivestreamUser
+                ? styles.listLivestreamUserFull
+                : styles.listLivestreamUser
           }
         >
           {idUser !== null &&
-          idHostTournament !== null &&
-          idUser.userVM.id === idHostTournament ? (
+            idHostTournament !== null &&
+            idUser.userVM.id === idHostTournament ? (
             users.map((user, index) => (
               <>
                 {/* <p>{user.uid}</p> */}
