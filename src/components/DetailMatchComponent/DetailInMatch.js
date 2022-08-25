@@ -500,7 +500,7 @@ export default function DetailInMatch(props) {
         matchId:
           tourDetail.tournamentTypeId === 1
             ? +idMatch
-            : indexMatch < tourDetail.groupNumber
+            : indexMatch < tourDetail.groupNumber || (tourDetail.tournamentTypeId === 3 && title.includes("tie-break"))
             ? 0
             : +idMatch,
         groupName:
