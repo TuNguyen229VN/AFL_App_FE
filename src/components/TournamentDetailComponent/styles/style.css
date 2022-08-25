@@ -176,7 +176,11 @@
   text-align: center;
   padding: 15px;
 }
-
+.teamdetail .rank__tour .table__team th:nth-child(2),
+.teamdetail .rank__tour .table__team td:nth-child(2) {
+  text-align: left;
+  padding: 15px;
+}
 /* Schedule Tournament Detail */
 
 .teamdetail .schedule__tour .schedule__table tr:nth-child(odd) {
@@ -1041,18 +1045,36 @@
   font-size: 16px !important;
 }
 
-.-agile{
+.-agile {
   width: 100px;
   text-align: center;
 }
-.-agile:focus{
+.-agile:focus {
   border: 1px solid var(--black-text);
 }
 
-.pen{
+.pen {
   display: block;
 }
 
-.schedule__table1{
+.schedule__table1 {
   width: 100%;
+}
+
+.azz1 {
+  animation: dotShuttle 3s infinite ease-out;
+}
+
+@keyframes dotShuttle {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+  25% {
+   opacity: 0.5;
+  }
+  75% {
+   opacity: 0.5;
+  }
 }

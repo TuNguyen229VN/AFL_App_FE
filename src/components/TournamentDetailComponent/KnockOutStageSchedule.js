@@ -614,9 +614,31 @@ export default function KnockOutStageSchedule(props) {
                         color: itemSeeds.date != null ? "black" : "black",
                       }}
                     >
-                      {itemSeeds.date != null
-                        ? changeDate(itemSeeds.date)
-                        : "Chưa có lịch thi đấu"}
+                      {itemSeeds.date != null ? (
+                        <div style={{ position: "relative" }}>
+                          {itemSeeds.match !== null &&
+                          itemSeeds.match.tokenLivestream !== "" &&
+                          itemSeeds.match.idScreen != 0 &&
+                          itemSeeds.match.idScreen != null ? (
+                            <img
+                              style={{
+                                position: "absolute",
+                                right: "-30px",
+                                borderRadius: "initial",
+                                width: "60px",
+                                height: "initial",
+                              }}
+                              className="azz1"
+                              src="/assets/img/live.png"
+                              alt="live"
+                            />
+                          ) : null}
+
+                          {changeDate(itemSeeds.date)}
+                        </div>
+                      ) : (
+                        "Chưa có lịch thi đấu"
+                      )}
                     </td>
                     {itemSeeds.teams[0].team !== null ? (
                       <td>
