@@ -268,7 +268,8 @@ export default function CricleStageSchedule(props) {
     return (
       numberHour +
       ":" +
-      splitDateTime[1].split(":")[1] + " " +
+      splitDateTime[1].split(":")[1] +
+      " " +
       splitDateTime[0].split("-")[1] +
       "-" +
       splitDateTime[0].split("-")[2] +
@@ -344,13 +345,28 @@ export default function CricleStageSchedule(props) {
     return (
       splitDateTime[1].split(":")[0] +
       ":" +
-      splitDateTime[1].split(":")[1] + " " +
+      splitDateTime[1].split(":")[1] +
+      " " +
       splitDateTime[0].split("-")[2] +
       "-" +
       splitDateTime[0].split("-")[1] +
       "-" +
       splitDateTime[0].split("-")[0]
     );
+  };
+  const [maxDate, setMaxDate] = useState(null);
+  const findMaxDate = (data) => {
+    const seeds = data.seeds;
+    const newDate = [];
+    for (const item of seeds) {
+      if (item.date !== null) newDate.push(item.date);
+    }
+    if (newDate.length > 0) {
+      const maxDate = Math.max.apply(null, newDate);
+      setMaxDate(maxDate);
+    } else {
+      setMaxDate(null);
+    }
   };
   return type === null ? (
     <table className="schedule__table1">
@@ -433,7 +449,7 @@ export default function CricleStageSchedule(props) {
                           : 0}
                       </span>
                       {itemSeeds.teams[0].penalty !== null &&
-                        itemSeeds.teams[1].penalty !== null ? (
+                      itemSeeds.teams[1].penalty !== null ? (
                         <span className="pen">
                           {" "}
                           ( Luân lưu:{" "}
@@ -486,11 +502,11 @@ export default function CricleStageSchedule(props) {
                       </td>
                     )}
                     {user != undefined &&
-                      user.userVM.id === hostTournamentId &&
-                      ((new Date(endDate).getTime() > new Date().getTime() &&
-                        itemSeeds.match.matchDate === null) ||
-                        (new Date(endDate).getTime() > new Date().getTime() &&
-                          new Date(itemSeeds.match.matchDate).getTime() -
+                    user.userVM.id === hostTournamentId &&
+                    ((new Date(endDate).getTime() > new Date().getTime() &&
+                      itemSeeds.match.matchDate === null) ||
+                      (new Date(endDate).getTime() > new Date().getTime() &&
+                        new Date(itemSeeds.match.matchDate).getTime() -
                           24 * 60 * 60 * 1000 >
                           new Date().getTime())) ? (
                       <td
@@ -501,13 +517,18 @@ export default function CricleStageSchedule(props) {
                           lineHeight: 1.6,
                         }}
                         onClick={() => {
+                          if (item.title.includes("tie-break")) {
+                            findMaxDate(circleTeam[0]);
+                          } else {
+                            setMaxDate(null);
+                          }
                           setHideShow(true);
                           setMatchCurrent(itemSeeds.match);
                           setStatusUpdateDate(false);
                           setTeamInUpdate(
                             itemSeeds.teams[0].name +
-                            " - " +
-                            itemSeeds.teams[1].name
+                              " - " +
+                              itemSeeds.teams[1].name
                           );
                         }}
                       >
@@ -518,8 +539,8 @@ export default function CricleStageSchedule(props) {
                       <td></td>
                     )}
                     {itemSeeds.teams[0].team !== null &&
-                      itemSeeds.teams[1].team !== null &&
-                      itemSeeds.date !== null ? (
+                    itemSeeds.teams[1].team !== null &&
+                    itemSeeds.date !== null ? (
                       <td>
                         {" "}
                         {indexSeeds === item.seeds.length - 1 ? (
@@ -580,7 +601,7 @@ export default function CricleStageSchedule(props) {
           setHideShow={setHideShow}
           matchCurrent={matchCurrent}
           setMatchCurrent={setMatchCurrent}
-          startDate={startDate}
+          startDate={maxDate !== null ? maxDate : startDate}
           endDate={endDate}
           dateUpdate={dateUpdate}
           onChangHandle={onChangHandle}
@@ -601,9 +622,13 @@ export default function CricleStageSchedule(props) {
         teamDescription.map((item, index) => {
           return (
             <tr key={index}>
-              <td style={{
-                width: "60%"
-              }}>{index + 1}</td>
+              <td
+                style={{
+                  width: "60%",
+                }}
+              >
+                {index + 1}
+              </td>
               {item.team != null ? (
                 <td>
                   <Link
@@ -614,22 +639,27 @@ export default function CricleStageSchedule(props) {
                     }}
                   >
                     {item.team != null ? (
-                      <img src={item.team.teamAvatar} alt="gallery_item" style={{
-                        marginRight: 10,
-                      }} />
+                      <img
+                        src={item.team.teamAvatar}
+                        alt="gallery_item"
+                        style={{
+                          marginRight: 10,
+                        }}
+                      />
                     ) : null}
-                    <p
-                    >
-                      {item.teamName}
-                    </p>
+                    <p>{item.teamName}</p>
                   </Link>
                 </td>
               ) : (
                 <td>
                   {item.team != null ? (
-                    <img src={item.team.teamAvatar} alt="gallery_item" style={{
-                      marginRight: 10,
-                    }} />
+                    <img
+                      src={item.team.teamAvatar}
+                      alt="gallery_item"
+                      style={{
+                        marginRight: 10,
+                      }}
+                    />
                   ) : null}
                   <p>{item.teamName}</p>
                 </td>

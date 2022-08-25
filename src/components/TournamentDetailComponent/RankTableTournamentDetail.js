@@ -221,17 +221,18 @@ function RankTableTournamentDetail(props) {
                             <td>{index + 1}</td>
                             <td>
                               {hasItem ? item.team.teamName : "Chưa tham gia"}
-                              {item.statusInTournament === "Bị loại" && (
+                              {hasItem && item.statusInTournament !== null &&
+                              item.statusInTournament === "Bị loại" ? (
                                 <p
                                   style={{
                                     color: "red",
                                     display: "inline",
-                                    marginLeft:10
+                                    marginLeft: 10,
                                   }}
                                 >
                                   (Bị loại)
                                 </p>
-                              )}
+                              ) : null}
                             </td>
                             <td>{hasItem ? item.numberOfMatch : 0}</td>
                             <td>{hasItem ? item.numberOfWin : 0}</td>
