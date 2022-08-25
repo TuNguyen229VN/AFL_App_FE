@@ -319,43 +319,49 @@ export default function DetailInMatch(props) {
             display: "flex",
           }}
         >
-          <select
-            name={type === "B" ? i + +numTeamA + "-object" : i + "-object"}
-            onChange={onChangeHandler}
-            style={{
-              marginRight: 20,
-              padding: "10px 20px",
-              marginBottom: 20,
-              width: 200,
-            }}
-          >
-            {renderSelectByNumber(
-              data,
-              detail !== null && detail.length === +numTeamA + +numTeamB
-                ? type === "B"
-                  ? detail[calc].playerInTournamentId
-                  : detail[i].playerInTournamentId
-                : null
-              // ,
-              // player.length > 0 ? player[i].idPlayer : null
-            )}
-          </select>
-          <select
-            onChange={onChangeHandler}
-            name={type === "B" ? i + +numTeamA + "-minutes" : `${i}-minutes`}
-            style={{
-              width: 50,
-              marginBottom: 20,
-            }}
-          >
-            {renderSelectByMinutes(
-              detail !== null && detail.length === +numTeamA + +numTeamB
-                ? type === "B"
-                  ? detail[calc].actionMinute
-                  : detail[i].actionMinute
-                : null
-            )}
-          </select>
+          <div>
+            <p>Tên cầu thủ</p>
+            <select
+              name={type === "B" ? i + +numTeamA + "-object" : i + "-object"}
+              onChange={onChangeHandler}
+              style={{
+                marginRight: 20,
+                padding: "10px 20px",
+                marginBottom: 20,
+                width: 200,
+              }}
+            >
+              {renderSelectByNumber(
+                data,
+                detail !== null && detail.length === +numTeamA + +numTeamB
+                  ? type === "B"
+                    ? detail[calc].playerInTournamentId
+                    : detail[i].playerInTournamentId
+                  : null
+                // ,
+                // player.length > 0 ? player[i].idPlayer : null
+              )}
+            </select>
+          </div>
+          <div>
+            <p>Thời gian</p>
+            <select
+              onChange={onChangeHandler}
+              name={type === "B" ? i + +numTeamA + "-minutes" : `${i}-minutes`}
+              style={{
+                marginBottom: 20,
+                padding: "10px 5px",
+              }}
+            >
+              {renderSelectByMinutes(
+                detail !== null && detail.length === +numTeamA + +numTeamB
+                  ? type === "B"
+                    ? detail[calc].actionMinute
+                    : detail[i].actionMinute
+                  : null
+              )}
+            </select>
+          </div>
           {/* <input
             value={
               detail !== null && detail.length === +numTeamA + +numTeamB
