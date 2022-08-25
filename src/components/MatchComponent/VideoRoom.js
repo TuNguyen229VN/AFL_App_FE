@@ -257,6 +257,7 @@ function VideoRoom(props) {
             if (flagTieBreak === false) {
               await updateNextTeamInMatch();
               matchResult(matchId);
+
             }
           }
           else {

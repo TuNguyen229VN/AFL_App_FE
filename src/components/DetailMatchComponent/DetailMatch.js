@@ -502,7 +502,7 @@ export default function DetailMatch(props) {
           </Link>
         </div>
         <h1 className={styles.titleDetail}>
-          Cập nhật tỉ số giải{" "}
+          Cập nhật tỉ số{" "}
           {tourDetail !== null ? tourDetail.tournamentName : null} -{" "}
           {teamA !== null ? teamA.match.fight : null}
         </h1>
