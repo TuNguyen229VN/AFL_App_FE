@@ -696,16 +696,30 @@ export default function DetailMatch(props) {
         updateScoreInMatch={updateScoreInMatch}
         matchDetail={
           teamA !== null && teamB !== null
-            ? (typeDetail === "score" &&
-                teamA.teamScore + "-" + teamB.teamScore ===
-                  scoreA + "-" + scoreB) ||
-              (typeDetail === "yellow" &&
-                teamA.yellowCardNumber + "-" + teamB.yellowCardNumber ===
-                  yellowA + "-" + yellowB) ||
-              (typeDetail === "red" &&
-                teamA.redCardNumber + "-" + teamB.redCardNumber ===
-                  redA + "-" + redB)
-              ? matchDetail
+            ? teamA !== null && teamB !== null
+              ? teamA.scoreTieBreak === null && teamA.scoreTieBreak === null
+                ? (typeDetail === "score" &&
+                    teamA.teamScore + "-" + teamB.teamScore ===
+                      scoreA + "-" + scoreB) ||
+                  (typeDetail === "yellow" &&
+                    teamA.yellowCardNumber + "-" + teamB.yellowCardNumber ===
+                      yellowA + "-" + yellowB) ||
+                  (typeDetail === "red" &&
+                    teamA.redCardNumber + "-" + teamB.redCardNumber ===
+                      redA + "-" + redB)
+                  ? matchDetail
+                  : null
+                : (typeDetail === "score" &&
+                    teamA.scoreTieBreak + "-" + teamB.scoreTieBreak ===
+                      scoreA + "-" + scoreB) ||
+                  (typeDetail === "yellow" &&
+                    teamA.yellowCardNumber + "-" + teamB.yellowCardNumber ===
+                      yellowA + "-" + yellowB) ||
+                  (typeDetail === "red" &&
+                    teamA.redCardNumber + "-" + teamB.redCardNumber ===
+                      redA + "-" + redB)
+                ? matchDetail
+                : null
               : null
             : null
         }
