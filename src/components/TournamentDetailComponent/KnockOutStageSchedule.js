@@ -506,6 +506,32 @@ export default function KnockOutStageSchedule(props) {
       return false;
     }
   };
+  const findLastRound = (type) => {
+    const fightRound = [
+      { id: 2, name: "Bảng B" },
+      { id: 4, name: "Bảng D" },
+    ];
+    const findFRound = fightRound.find(
+      (item) => item.id === tourDetail.groupNumber
+    );
+    for (const item of knockoutTeam) {
+      if (
+        type === "start" &&
+        item.title.includes(findFRound.name) &&
+        !item.title.includes("tie-break")
+      ) {
+        return item.maxDate;
+      } else {
+        if (findFRound.id === 2 && item.title.includes("Bán")) {
+          return item.minDate;
+        } else {
+          if (item.title.includes("Tứ")) {
+            return item.minDate;
+          }
+        }
+      }
+    }
+  };
   return knockoutTeam !== null ? (
     typeView === "diagram" ? (
       <div
@@ -754,6 +780,7 @@ export default function KnockOutStageSchedule(props) {
                         onClick={() => {
                           setIndexSchedule(index);
                           setHideShow(true);
+
                           setMatchCurrent(itemSeeds.match);
                           setStatusUpdateDate(false);
                           setTeamInUpdate(
@@ -824,8 +851,16 @@ export default function KnockOutStageSchedule(props) {
             hideShow={hideShow}
             setHideShow={setHideShow}
             matchCurrent={matchCurrent}
-            startDate={findStateDate()}
-            endDate={findEndate()}
+            startDate={
+              !matchCurrent.groupFight.includes("tie-break")
+                ? findStateDate()
+                : findLastRound("start")
+            }
+            endDate={
+              !matchCurrent.groupFight.includes("tie-break")
+                ? findEndate()
+                : findLastRound("end")
+            }
             dateUpdate={dateUpdate}
             setDateUpdate={setDateUpdate}
             onChangHandle={onChangHandle}
