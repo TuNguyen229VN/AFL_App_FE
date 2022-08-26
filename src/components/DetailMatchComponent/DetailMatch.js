@@ -101,7 +101,10 @@ export default function DetailMatch(props) {
   const updateScoreInMatch = async (data, type, teamWinPenalty, title) => {
     const newTeamA = teamA;
     const newTeamB = teamB;
-
+    console.log({
+      data,
+      type,
+    });
     if (type === 1) {
       if (title.includes("tie-break") === false) {
         newTeamA.teamScore = +scoreA;
@@ -693,17 +696,20 @@ export default function DetailMatch(props) {
         updateScoreInMatch={updateScoreInMatch}
         matchDetail={
           teamA !== null && teamB !== null
-            ? teamA.scoreTieBreak === null && teamA.scoreTieBreak === null
-              ? teamA.teamScore + "-" + teamB.teamScore ===
-                scoreA + "-" + scoreB
-                ? matchDetail
-                : null
-              : teamA.scoreTieBreak + "-" + teamB.scoreTieBreak ===
-                scoreA + "-" + scoreB
+            ? (typeDetail === "score" &&
+                teamA.teamScore + "-" + teamB.teamScore ===
+                  scoreA + "-" + scoreB) ||
+              (typeDetail === "yellow" &&
+                teamA.yellowCardNumber + "-" + teamB.yellowCardNumber ===
+                  yellowA + "-" + yellowB) ||
+              (typeDetail === "red" &&
+                teamA.redCardNumber + "-" + teamB.redCardNumber ===
+                  redA + "-" + redB)
               ? matchDetail
               : null
             : null
         }
+        setMatchDetail={setMatchDetail}
         setHideShow={setHideShow}
         setStatusUpdate={setStatusUpdate}
         statusUpdate={statusUpdate}

@@ -1,7 +1,15 @@
 import React from "react";
 
 export default function ModalDenyMatchDetail(props) {
-  const { hideShow, setHideShow,setNewMatchDetail,setStatusUpdate,setHideShowNormal } = props;
+  const {
+    hideShow,
+    setHideShow,
+    setNewMatchDetail,
+    setStatusUpdate,
+    setHideShowNormal,
+    setMatchDetail,
+    setDetail,
+  } = props;
   return (
     <div
       className={hideShow ? "popup__player active" : "popup__player"}
@@ -20,6 +28,7 @@ export default function ModalDenyMatchDetail(props) {
               aria-label="Close"
               onClick={() => {
                 setHideShow(false);
+                setMatchDetail(null);
               }}
             ></button>
           </div>
@@ -50,7 +59,9 @@ export default function ModalDenyMatchDetail(props) {
                 setHideShowNormal(false);
                 setNewMatchDetail([]);
                 setStatusUpdate(true);
-                setHideShow(false)
+                setHideShow(false);
+                setMatchDetail(null);
+                setDetail([]);
               }}
             >
               Xác nhận

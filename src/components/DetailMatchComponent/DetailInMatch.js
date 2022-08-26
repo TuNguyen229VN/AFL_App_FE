@@ -25,6 +25,7 @@ export default function DetailInMatch(props) {
     title,
     lastMatch,
     createTieBreak,
+    setMatchDetail,
   } = props;
 
   const [detail, setDetail] = useState([]);
@@ -116,9 +117,11 @@ export default function DetailInMatch(props) {
           }
         });
       }
-
       getDataDetail(newMatchDetail);
       setNewMatchDetail(newMatchDetail);
+    }else{
+      
+      setDetail([]);
     }
   };
 
@@ -195,7 +198,10 @@ export default function DetailInMatch(props) {
         return a.actionMinute - b.actionMinute;
       });
       player.push(...newPlayerB);
+      console.log(player);
       setDetail(player);
+    } else {
+      setDetail(null);
     }
   };
   const getDataPenaltyDetail = (data) => {
@@ -424,7 +430,7 @@ export default function DetailInMatch(props) {
     const id = name.split("-")[0];
     const type = name.split("-")[1];
     const valueObj = JSON.parse(value);
-
+    
     if (detail !== null && detail.length > 0) {
       const newDetail = detail;
       const findIndex = newDetail.findIndex((item, index) => item.id === id);
@@ -446,6 +452,7 @@ export default function DetailInMatch(props) {
           newDetail[findIndex].footballPlayerId = valueObj.id;
         } else newDetail[findIndex].actionMinute = valueObj + "";
       }
+      console.log(newDetail)
       setDetail(newDetail);
     } else {
       setDetail([
@@ -506,7 +513,8 @@ export default function DetailInMatch(props) {
         matchId:
           tourDetail.tournamentTypeId === 1
             ? +idMatch
-            : indexMatch < tourDetail.groupNumber || (tourDetail.tournamentTypeId === 3 && title.includes("tie-break"))
+            : indexMatch < tourDetail.groupNumber ||
+              (tourDetail.tournamentTypeId === 3 && title.includes("tie-break"))
             ? 0
             : +idMatch,
         groupName:
@@ -554,6 +562,8 @@ export default function DetailInMatch(props) {
       teamWinPenalty,
       title
     );
+    setMatchDetail(null);
+    setDetail([]);
     if (
       tourDetail.tournamentTypeId !== 2 &&
       (tourDetail.tournamentTypeId === 1 ||
@@ -768,11 +778,13 @@ export default function DetailInMatch(props) {
       </div>
 
       <ModalDenyMatchDetail
+        setMatchDetail={setMatchDetail}
         hideShow={hideShowDeny}
         setHideShow={setHideShowDeny}
         setNewMatchDetail={setNewMatchDetail}
         setStatusUpdate={setStatusUpdate}
         setHideShowNormal={setHideShow}
+        setDetail={setDetail}
       />
     </div>
   );
