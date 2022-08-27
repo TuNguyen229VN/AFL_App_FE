@@ -83,15 +83,17 @@ export default function DetailMatch(props) {
       if (response.status === 200) {
         setLoading(false);
         const data = response.data.matchDetails;
-        for (const item of data) {
-          const teamId = await checkPlayerInTeam(
-            idteamA,
-            item.footballPlayer.id,
-            idTeamB
-          );
-          item.teamId = teamId;
+        if (data.length > 0) {
+          for (const item of data) {
+            const teamId = await checkPlayerInTeam(
+              idteamA,
+              item.footballPlayer.id,
+              idTeamB
+            );
+            item.teamId = teamId;
+          }
+          setMatchDetail(data);
         }
-        setMatchDetail(data);
       }
     } catch (err) {
       setLoading(false);
@@ -101,10 +103,7 @@ export default function DetailMatch(props) {
   const updateScoreInMatch = async (data, type, teamWinPenalty, title) => {
     const newTeamA = teamA;
     const newTeamB = teamB;
-    console.log({
-      data,
-      type,
-    });
+
     if (type === 1) {
       if (title.includes("tie-break") === false) {
         newTeamA.teamScore = +scoreA;
@@ -490,7 +489,14 @@ export default function DetailMatch(props) {
           <span className={styles.sw}>{`>>`}</span>
           <Link
             to={`/match/${idMatch}/matchDetail`}
-            state={{ hostTournamentId, tourDetail }}
+            state={{
+              hostTournamentId,
+              tourDetail,
+              indexMatch,
+              title,
+              index,
+              lastMatch,
+            }}
             className={styles.linkBack}
           >
             Trận đấu
@@ -694,35 +700,7 @@ export default function DetailMatch(props) {
         nameTeamB={teamB !== null ? teamB : null}
         hideShow={hideShow}
         updateScoreInMatch={updateScoreInMatch}
-        matchDetail={
-          teamA !== null && teamB !== null
-            ? teamA !== null && teamB !== null
-              ? teamA.scoreTieBreak === null && teamA.scoreTieBreak === null
-                ? (typeDetail === "score" &&
-                    teamA.teamScore + "-" + teamB.teamScore ===
-                      scoreA + "-" + scoreB) ||
-                  (typeDetail === "yellow" &&
-                    teamA.yellowCardNumber + "-" + teamB.yellowCardNumber ===
-                      yellowA + "-" + yellowB) ||
-                  (typeDetail === "red" &&
-                    teamA.redCardNumber + "-" + teamB.redCardNumber ===
-                      redA + "-" + redB)
-                  ? matchDetail
-                  : null
-                : (typeDetail === "score" &&
-                    teamA.scoreTieBreak + "-" + teamB.scoreTieBreak ===
-                      scoreA + "-" + scoreB) ||
-                  (typeDetail === "yellow" &&
-                    teamA.yellowCardNumber + "-" + teamB.yellowCardNumber ===
-                      yellowA + "-" + yellowB) ||
-                  (typeDetail === "red" &&
-                    teamA.redCardNumber + "-" + teamB.redCardNumber ===
-                      redA + "-" + redB)
-                ? matchDetail
-                : null
-              : null
-            : null
-        }
+        matchDetail={matchDetail}
         setMatchDetail={setMatchDetail}
         setHideShow={setHideShow}
         setStatusUpdate={setStatusUpdate}

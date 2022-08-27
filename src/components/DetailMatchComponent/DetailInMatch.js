@@ -35,10 +35,12 @@ export default function DetailInMatch(props) {
   const [hideShowDeny, setHideShowDeny] = useState(null);
   const [scoreAPenalty, setScoreAPenalty] = useState(0);
   const [scoreBPenalty, setScoreBPenalty] = useState(0);
+  const [statusCreate, setStatusCreate] = useState(true);
   let matchMinutes = null;
 
   useEffect(() => {
     matchMinutes = tourDetail !== null ? tourDetail.matchMinutes : null;
+    const matchDetail = checkMatchDetail();
     if (typeDetail === "score" && matchDetail !== null) {
       const score = [];
       for (let i = 0; i < matchDetail.length; i++) {
@@ -65,6 +67,7 @@ export default function DetailInMatch(props) {
     coverMatchDetail();
   }, [typeDetail, statusUpdate === false, matchDetail]);
   useEffect(() => {
+    const matchDetail = checkMatchDetail();
     if (matchDetail !== null) {
       const detailA = [];
       for (const item of matchDetail) {
@@ -94,8 +97,35 @@ export default function DetailInMatch(props) {
       }
     }
   }, [scoreAPenalty === 0, scoreBPenalty === 0, matchDetail]);
-
+  const checkMatchDetail = () => {
+    return nameTeamA !== null && nameTeamB !== null
+      ? nameTeamA.scoreTieBreak === null && nameTeamB.scoreTieBreak === null
+        ? (typeDetail === "score" &&
+            nameTeamA.teamScore + "-" + nameTeamB.teamScore ===
+              numTeamA + "-" + numTeamB) ||
+          (typeDetail === "yellow" &&
+            nameTeamA.yellowCardNumber + "-" + nameTeamB.yellowCardNumber ===
+              numTeamA + "-" + numTeamB) ||
+          (typeDetail === "red" &&
+            nameTeamA.redCardNumber + "-" + nameTeamB.redCardNumber ===
+              numTeamA + "-" + numTeamB)
+          ? matchDetail
+          : null
+        : (typeDetail === "score" &&
+            nameTeamA.scoreTieBreak + "-" + nameTeamB.scoreTieBreak ===
+              numTeamA + "-" + numTeamB) ||
+          (typeDetail === "yellow" &&
+            nameTeamA.yellowCardNumber + "-" + nameTeamB.yellowCardNumber ===
+              numTeamA + "-" + numTeamB) ||
+          (typeDetail === "red" &&
+            nameTeamA.redCardNumber + "-" + nameTeamB.redCardNumber ===
+              numTeamA + "-" + numTeamB)
+        ? matchDetail
+        : null
+      : null;
+  };
   const coverMatchDetail = () => {
+    const matchDetail = checkMatchDetail();
     if (matchDetail !== null) {
       const newMatchDetail = [];
       if (typeDetail === "score") {
@@ -119,8 +149,7 @@ export default function DetailInMatch(props) {
       }
       getDataDetail(newMatchDetail);
       setNewMatchDetail(newMatchDetail);
-    }else{
-      
+    } else {
       setDetail([]);
     }
   };
@@ -198,10 +227,7 @@ export default function DetailInMatch(props) {
         return a.actionMinute - b.actionMinute;
       });
       player.push(...newPlayerB);
-      console.log(player);
       setDetail(player);
-    } else {
-      setDetail(null);
     }
   };
   const getDataPenaltyDetail = (data) => {
@@ -430,7 +456,115 @@ export default function DetailInMatch(props) {
     const id = name.split("-")[0];
     const type = name.split("-")[1];
     const valueObj = JSON.parse(value);
-    
+
+    if (
+      (typeDetail === "score" && matchDetail !== null) ||
+      (typeDetail !== "score" &&
+        detail !== null &&
+        detail.length > 0 &&
+        type === "object")
+    ) {
+      const dataDetail = typeDetail === "score" ? matchDetail : detail;
+
+      const findPlayerYelloCard = dataDetail.filter(
+        (item) => item.actionMatchId === 2
+      );
+      const findPlayerRedCard = dataDetail.filter(
+        (item) => item.actionMatchId === 3
+      );
+      console.log(findPlayerYelloCard);
+      if (findPlayerYelloCard.length > 0 || findPlayerRedCard.length > 0) {
+        const getPlayerHasTwoYellowCard = [];
+        for (const playerYellowCard of findPlayerYelloCard) {
+          if (getPlayerHasTwoYellowCard.length > 0) {
+            const itemYellowCardIndex = getPlayerHasTwoYellowCard.findIndex(
+              (item) =>
+                item.playerInTournamentId ===
+                playerYellowCard.playerInTournamentId
+            );
+            if (itemYellowCardIndex === -1) {
+              getPlayerHasTwoYellowCard.push({
+                ...playerYellowCard,
+                statusCard: false,
+              });
+            } else {
+              getPlayerHasTwoYellowCard[itemYellowCardIndex].statusCard = true;
+            }
+          } else {
+            getPlayerHasTwoYellowCard.push({
+              ...playerYellowCard,
+              statusCard: false,
+            });
+          }
+        }
+        for (const itemYellowCard of getPlayerHasTwoYellowCard) {
+          if (
+            valueObj.playerInTournamentId ===
+              itemYellowCard.playerInTournamentId &&
+            itemYellowCard.statusCard === true
+          ) {
+            setStatusCreate(false);
+            if (typeDetail === "score")
+              toast.error(
+                "Cầu thủ đã bị 2 thẻ vàng hoặc thẻ đỏ không thể ghi bàn",
+                {
+                  position: "top-right",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                }
+              );
+            else
+              toast.error("Cầu thủ đã bị 2 thẻ vàng trước đó", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+
+            return;
+          }
+        }
+        for (const itemRedCard of findPlayerRedCard) {
+          if (
+            valueObj.playerInTournamentId === itemRedCard.playerInTournamentId
+          ) {
+            setStatusCreate(false);
+            if (typeDetail === "score")
+              toast.error(
+                "Cầu thủ đã bị 2 thẻ vàng hoặc thẻ đỏ không thể ghi bàn",
+                {
+                  position: "top-right",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                }
+              );
+            else
+              toast.error("Cầu thủ đã bị thẻ đỏ trước đó", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            return;
+          }
+        }
+      }
+    }
+    setStatusCreate(true);
     if (detail !== null && detail.length > 0) {
       const newDetail = detail;
       const findIndex = newDetail.findIndex((item, index) => item.id === id);
@@ -452,7 +586,7 @@ export default function DetailInMatch(props) {
           newDetail[findIndex].footballPlayerId = valueObj.id;
         } else newDetail[findIndex].actionMinute = valueObj + "";
       }
-      console.log(newDetail)
+
       setDetail(newDetail);
     } else {
       setDetail([
@@ -762,15 +896,17 @@ export default function DetailInMatch(props) {
                 >
                   Đóng
                 </button>
-                <button
-                  style={{
-                    padding: "10px 15px",
-                  }}
-                  type="submit"
-                  class="btn btn-primary"
-                >
-                  Xác nhận
-                </button>
+                {statusCreate ? (
+                  <button
+                    style={{
+                      padding: "10px 15px",
+                    }}
+                    type="submit"
+                    class="btn btn-primary"
+                  >
+                    Xác nhận
+                  </button>
+                ) : null}
               </div>
             </form>
           </div>
