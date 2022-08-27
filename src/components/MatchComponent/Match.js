@@ -1908,9 +1908,9 @@ function Match() {
                   </div>
                   <div className={styles.score__wrap}>
                     <div className={styles.score__main}>
-                      <div className={styles.score__A}>{scoreA}</div>
+                      <div className={styles.score__A}>{scoreA == null? 0: scoreA}</div>
                       <div className={styles.line}>-</div>
-                      <div className={styles.score__B}>{scoreB}</div>
+                      <div className={styles.score__B}>{scoreB == null? 0: scoreB}</div>
                     </div>
                     {checkPen && (
                       <>
@@ -2288,9 +2288,9 @@ function Match() {
                   {allTeamA.length > 0 && allTeamA[0].teamName}
                 </p>
                 <p className={styles.scoreTeam}>
-                  {scoreA}{" "}
+                  {scoreA== null? 0:scoreA}{" "}
                   -{" "}
-                  {scoreB}
+                  {scoreB== null? 0:scoreB}
                 </p>
                 <p className={styles.teamRight}>
                   {allTeamB.length > 0 && allTeamB[0].teamName}
