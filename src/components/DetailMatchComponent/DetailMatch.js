@@ -103,9 +103,10 @@ export default function DetailMatch(props) {
   const updateScoreInMatch = async (data, type, teamWinPenalty, title) => {
     const newTeamA = teamA;
     const newTeamB = teamB;
-
+    
     if (type === 1) {
-      if (title.includes("tie-break") === false) {
+      if (title === null || title.includes("tie-break") === false) {
+        console.log(title);
         newTeamA.teamScore = +scoreA;
         newTeamA.teamScoreLose = +scoreB;
         newTeamB.teamScore = +scoreB;
