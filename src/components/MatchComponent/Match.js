@@ -2288,13 +2288,9 @@ function Match() {
                   {allTeamA.length > 0 && allTeamA[0].teamName}
                 </p>
                 <p className={styles.scoreTeam}>
-                  {allTeamA.length > 0 && scoreA == 0
-                    ? allTeamA[0].teamScore
-                    : scoreA}{" "}
+                  {scoreA}{" "}
                   -{" "}
-                  {allTeamB.length > 0 && scoreB == 0
-                    ? allTeamB[0].teamScore
-                    : scoreB}
+                  {scoreB}
                 </p>
                 <p className={styles.teamRight}>
                   {allTeamB.length > 0 && allTeamB[0].teamName}
