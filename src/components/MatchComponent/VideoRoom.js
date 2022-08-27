@@ -111,6 +111,7 @@ function VideoRoom(props) {
   const updateScorePrediction = async (matchId) => {
     try {
       const response = await putStatusScorePrediction(matchId);
+      props.setPrediction(props.prediction);
     } catch (err) {
       console.error(err);
     }
@@ -124,11 +125,11 @@ function VideoRoom(props) {
           props.tourDetail.tournamentTypeId === 1
             ? props.props.idMatch
             : props.indexMatch < props.tourDetail.groupNumber
-              ? 0
-              : props.props.idMatch,
+            ? 0
+            : props.props.idMatch,
         groupName:
           props.tourDetail.tournamentTypeId === 3 &&
-            props.title.includes("Bảng")
+          props.title.includes("Bảng")
             ? props.title.split(" ")[1]
             : null,
       };
@@ -172,11 +173,17 @@ function VideoRoom(props) {
   const createTieBreak = async () => {
     try {
       const groupName =
-        props.tourDetail.tournamentTypeId !== 2 ? props.title.includes("Bảng") : null;
+        props.tourDetail.tournamentTypeId !== 2
+          ? props.title.includes("Bảng")
+          : null;
 
       const response = await createTieBreakAPI(
         props.tourDetail.id,
-        groupName !== null ? (groupName ? props.title.split(" ")[1] : null) : null
+        groupName !== null
+          ? groupName
+            ? props.title.split(" ")[1]
+            : null
+          : null
       );
       if (response.status === 201) {
         return true;
@@ -192,7 +199,7 @@ function VideoRoom(props) {
       const response = await axios.put(
         `https://afootballleague.ddns.net/api/v1/TeamInMatch/update-result?matchId=${matchId}`
       );
-      console.log("as")
+      console.log("as");
     } catch (error) {
       console.log(error);
     }
@@ -240,7 +247,11 @@ function VideoRoom(props) {
             (props.tourDetail.tournamentTypeId === 3 &&
               (!props.title.includes("Bảng") || props.lastMatch === true)))
         ) {
-          if (props.lastMatch && props.title.includes("Bảng") && props.title.includes("tie-break") === false) {
+          if (
+            props.lastMatch &&
+            props.title.includes("Bảng") &&
+            props.title.includes("tie-break") === false
+          ) {
             const flagTieBreak = await createTieBreak();
             if (flagTieBreak === false) updateNextTeamInNextRound();
           } else {
@@ -257,10 +268,8 @@ function VideoRoom(props) {
             if (flagTieBreak === false) {
               await updateNextTeamInMatch();
               matchResult(matchId);
-
             }
-          }
-          else {
+          } else {
             await updateNextTeamInMatch();
             matchResult(matchId);
           }
@@ -329,17 +338,17 @@ function VideoRoom(props) {
         <div
           className={
             idUser !== null &&
-              idHostTournament !== null &&
-              idUser.userVM.id === idHostTournament
+            idHostTournament !== null &&
+            idUser.userVM.id === idHostTournament
               ? styles.listLivestream
               : props.fullScreen
-                ? styles.listLivestreamUserFull
-                : styles.listLivestreamUser
+              ? styles.listLivestreamUserFull
+              : styles.listLivestreamUser
           }
         >
           {idUser !== null &&
-            idHostTournament !== null &&
-            idUser.userVM.id === idHostTournament ? (
+          idHostTournament !== null &&
+          idUser.userVM.id === idHostTournament ? (
             users.map((user, index) => (
               <>
                 {/* <p>{user.uid}</p> */}
