@@ -42,6 +42,13 @@ function ScheduleInPlayer() {
             <tr>
               <th colSpan={5}>Các trận đấu hôm nay</th>
             </tr>
+            {match===undefined||match===null? (
+            <tr>
+              <td colSpan={7} style={{ textAlign: "center" }}>
+                Chưa có thông tin lịch thi đấu cụ thể
+              </td>
+            </tr>
+          ) : null}
             {match&&match.matchs.length>0&&match.matchs.map(match =>(<tr>
               <td>{formatDate(match.matchDate)} {formatTime(match.matchDate)}</td>
               <td>

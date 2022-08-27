@@ -219,6 +219,13 @@ function PredictionTournamentDetail() {
             <tr>
               <th colSpan={5}>Dự đoán</th>
             </tr>
+            {!match? (
+            <tr>
+              <td colSpan={7} style={{ textAlign: "center" }}>
+                Chưa có thông tin cụ thể
+              </td>
+            </tr>
+          ) : null}
             {match &&
               match.matchs.map(
                 (match) =>
