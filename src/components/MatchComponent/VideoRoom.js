@@ -111,12 +111,11 @@ function VideoRoom(props) {
   const updateScorePrediction = async (matchId) => {
     try {
       const response = await putStatusScorePrediction(matchId);
-      props.setPrediction(props.prediction);
+      props.setPrediction(!props.prediction);
     } catch (err) {
       console.error(err);
     }
   };
-
   const updateNextTeamInNextRound = () => {
     try {
       const data = {
@@ -154,16 +153,15 @@ function VideoRoom(props) {
   const matchResult = async (matchId) => {
     try {
       const response = postTournamentResult(matchId);
-      toast.success("Kết thúc livestream", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      console.log("Asa");
+      // toast.success("Kết thúc livestream", {
+      //   position: "top-right",
+      //   autoClose: 3000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
       console.log(response);
     } catch (err) {
       console.error(err);
@@ -180,12 +178,12 @@ function VideoRoom(props) {
       const response = await createTieBreakAPI(
         props.tourDetail.id,
         groupName !== null
-          ? groupName
+          ? (groupName
             ? props.title.split(" ")[1]
-            : null
+            : null)
           : null
       );
-      if (response.status === 201) {
+      if (response.status === 200) {
         return true;
       }
     } catch (err) {
@@ -238,42 +236,42 @@ function VideoRoom(props) {
           progress: undefined,
         });
         console.log(props.index);
-        await updateResult(matchId);
+        // await updateResult(matchId);
+        // await updateScoreTeamInTour();
+        // if (
+        //   props.tourDetail.tournamentTypeId !== 2 &&
+        //   (props.tourDetail.tournamentTypeId === 1 ||
+        //     (props.tourDetail.tournamentTypeId === 3 &&
+        //       (!props.title.includes("Bảng") || props.lastMatch === true)))
+        // ) {
+        //   if (
+        //     props.lastMatch &&
+        //     props.title.includes("Bảng") &&
+        //     props.title.includes("tie-break") === false
+        //   ) {
+        //     const flagTieBreak = await createTieBreak();
+        //     if (flagTieBreak === false) updateNextTeamInNextRound();
+        //   } else {
+        //     updateNextTeamInNextRound();
+        //   }
+        // }
+        // if (props.tourDetail.tournamentTypeId !== 2) {
+        //   if (props.title === "Chung kết") {
+        //     matchResult(matchId);
+        //   }
+        // } else {
+        //   if (props.index > 0 && props.title !== null) {
+        //     const flagTieBreak = await createTieBreak();
+        //     if (flagTieBreak === false) {
+        //       await updateNextTeamInMatch();
+        //       matchResult(matchId);
+        //     }
+        //   } else {
+        //     await updateNextTeamInMatch();
+        //     matchResult(matchId);
+        //   }
+        // }
         await updateScorePrediction(matchId);
-        await updateScoreTeamInTour();
-        if (
-          props.tourDetail.tournamentTypeId !== 2 &&
-          (props.tourDetail.tournamentTypeId === 1 ||
-            (props.tourDetail.tournamentTypeId === 3 &&
-              (!props.title.includes("Bảng") || props.lastMatch === true)))
-        ) {
-          if (
-            props.lastMatch &&
-            props.title.includes("Bảng") &&
-            props.title.includes("tie-break") === false
-          ) {
-            const flagTieBreak = await createTieBreak();
-            if (flagTieBreak === false) updateNextTeamInNextRound();
-          } else {
-            updateNextTeamInNextRound();
-          }
-        }
-        if (props.tourDetail.tournamentTypeId !== 2) {
-          if (props.title === "Chung kết") {
-            matchResult(matchId);
-          }
-        } else {
-          if (props.index > 0 && props.title !== null) {
-            const flagTieBreak = await createTieBreak();
-            if (flagTieBreak === false) {
-              await updateNextTeamInMatch();
-              matchResult(matchId);
-            }
-          } else {
-            await updateNextTeamInMatch();
-            matchResult(matchId);
-          }
-        }
       }
     } catch (error) {
       toast.error(error.response, {

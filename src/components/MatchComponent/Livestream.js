@@ -44,7 +44,6 @@ function Livestream(data) {
     }
   }, [data.message]);
   const [inCall, setInCall] = useState(true);
-
   return (
     <div className={styles.livestream}>
       <div className={styles.video}>
