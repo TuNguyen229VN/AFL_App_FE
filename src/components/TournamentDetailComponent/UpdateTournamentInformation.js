@@ -302,7 +302,9 @@ const UpdateTournamentInformation = () => {
     await updateTournamentDetail();
   };
   const updateTournamentDetail = async () => {
+    
     setLoadingAction(true);
+
     const flag = checkValidateAdd();
     if (flag !== null) {
       setLoading(false);
@@ -346,11 +348,11 @@ const UpdateTournamentInformation = () => {
             TournamentTypeEnum: competitionFormat.value,
             TournamentFootballFieldTypeEnum: typeFootballField.value,
           };
-
+          
           const response = await updateTournamentInfoAPI(data);
           if (response.status === 200) {
             if (typeNoti !== "hasTeam" && typeNoti !== "default") {
-              createGenerateTable(response.data.id);
+              await createGenerateTable(response.data.id);
             }
             navigate(-1);
             setLoading(false);
@@ -420,6 +422,7 @@ const UpdateTournamentInformation = () => {
       } else {
         // delete match detail and add again.
         setTypeNoti("Noteam");
+        setLoading(false);
         setHideShowNoti(true);
       }
     }
@@ -448,6 +451,7 @@ const UpdateTournamentInformation = () => {
         setTimeout(() => {
           navigate(`/tournamentDetail/${idTournament}/inforTournamentDetail`);
           setLoadingAction(false);
+          setLoading(false);
           toast.success("Thay đổi thông tin giải đấu thành công", {
             position: "top-right",
             autoClose: 3000,
@@ -461,6 +465,7 @@ const UpdateTournamentInformation = () => {
         for (const item of allTeam) {
           await postNotificationforTeamManager(item.id, tourDetail.id, item.id);
         }
+        setLoading(false);
       }
     } catch (err) {
       console.error(err);
@@ -485,6 +490,7 @@ const UpdateTournamentInformation = () => {
   };
 
   const createGenerateTable = (id) => {
+    setLoading(true)
     const response = createSchedule(id);
     response
       .then((res) => {
@@ -492,6 +498,7 @@ const UpdateTournamentInformation = () => {
           if (lengthTeamPaticipate > 0) {
             getTeamInTourByTourid();
           } else {
+            setLoading(false);
             navigate(`/tournamentDetail/${id}/inforTournamentDetail`);
             setLoadingAction(false);
             toast.success("Thay đổi thông tin giải đấu thành công", {
@@ -530,6 +537,7 @@ const UpdateTournamentInformation = () => {
       const response = await deleteTeamInMatchByTourIdAPI(idTournament);
 
       if (response.status === 200) {
+        
         await deleteMatch();
       }
     } catch (err) {
@@ -542,6 +550,7 @@ const UpdateTournamentInformation = () => {
       const response = await deleteMatchByTourIdAPI(idTournament);
 
       if (response.status === 200) {
+        
         updateTournamentDetail();
       }
     } catch (err) {
@@ -549,6 +558,7 @@ const UpdateTournamentInformation = () => {
     }
   };
   const accpetChangCompetitionFormat = () => {
+    
     setBeginCompetitionFormat(competitionFormat.value);
     setBeginGroupNumber(groupNumber.value);
     setBeginTeamPaticipate(teamPaticipate.value);
@@ -870,14 +880,15 @@ const UpdateTournamentInformation = () => {
     getAllCity();
   }, [resetProvice]);
 
-  const addDays = (data, numDay) => {
-    if (data !== undefined || data !== null) {
-      const addDay = data;
-      addDay.setTime(addDay.getTime() + numDay * 24 * 60 * 60 * 1000);
-      if (addDay.toJSON().split("T") !== null)
-        return addDay.toJSON().split("T")[0];
-    }
-  };
+  // const addDays = (data, numDay) => {
+  //   if (data !== undefined || data !== null) {
+  //     const addDay = data;
+  //     addDay.setTime(addDay.getTime() + numDay * 24 * 60 * 60 * 1000);
+  //     if (addDay.toJSON().split("T") !== null)
+  //       return addDay.toJSON().split("T")[0];
+  //   }
+  // };
+
   return (
     <>
       <ScrollToTop />
@@ -1130,7 +1141,7 @@ const UpdateTournamentInformation = () => {
                     value={
                       closeRegister.value === null ? "" : closeRegister.value
                     }
-                    min={addDays(new Date(), 3)}
+                    //min={addDays(new Date(), 3)}
                     onChange={onChangeHandler}
                     disabled={status === 0 ? "" : "disable"}
                     required
@@ -1167,11 +1178,11 @@ const UpdateTournamentInformation = () => {
                     className={styles.timeStart_input}
                     id="startTime"
                     type="date"
-                    min={
-                      status === 0
-                        ? addDays(new Date(closeRegister.value), 1)
-                        : addDays(new Date(), 3)
-                    }
+                    // min={
+                    //   status === 0
+                    //     ? addDays(new Date(closeRegister.value), 1)
+                    //     : addDays(new Date(), 3)
+                    // }
                     name="startTime"
                     value={startTime.value === null ? "" : startTime.value}
                     // disabled={
@@ -1220,16 +1231,16 @@ const UpdateTournamentInformation = () => {
                     type="date"
                     name="endTime"
                     value={endTime.value === null ? "" : endTime.value}
-                    min={
-                      startTime.value !== null
-                        ? addDays(new Date(startTime.value), 1)
-                        : null
-                    }
-                    max={
-                      startTime.value !== null
-                        ? addDays(new Date(startTime.value), 31)
-                        : null
-                    }
+                    // min={
+                    //   startTime.value !== null
+                    //     ? addDays(new Date(startTime.value), 1)
+                    //     : null
+                    // }
+                    // max={
+                    //   startTime.value !== null
+                    //     ? addDays(new Date(startTime.value), 31)
+                    //     : null
+                    // }
                     // disabled={(new Date(closeRegister.value).getTime() <=
                     //   new Date().getTime()) && startTime.value != null ? "" : "disable"}
                     onChange={onChangeHandler}

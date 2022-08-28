@@ -162,6 +162,7 @@ function RankTableTournamentDetail(props) {
                     <th>Điểm</th>
                   </tr>
                   {ranking.map((item, index) => {
+                    const hasItem = item !== null;
                     return (
                       <tr key={index}>
                         <td>{index + 1}</td>
@@ -169,6 +170,19 @@ function RankTableTournamentDetail(props) {
                           {item !== null
                             ? item.team.teamName
                             : `Đội ${index + 1}`}
+                          {hasItem &&
+                          item.statusInTournament !== null &&
+                          item.statusInTournament === "Bị loại" ? (
+                            <p
+                              style={{
+                                color: "red",
+                                display: "inline",
+                                marginLeft: 10,
+                              }}
+                            >
+                              (Bị loại)
+                            </p>
+                          ) : null}
                         </td>
                         <td>{item !== null ? item.numberOfMatch : 0}</td>
                         <td>{item !== null ? item.numberOfWin : 0}</td>
@@ -221,7 +235,8 @@ function RankTableTournamentDetail(props) {
                             <td>{index + 1}</td>
                             <td>
                               {hasItem ? item.team.teamName : "Chưa tham gia"}
-                              {hasItem && item.statusInTournament !== null &&
+                              {hasItem &&
+                              item.statusInTournament !== null &&
                               item.statusInTournament === "Bị loại" ? (
                                 <p
                                   style={{

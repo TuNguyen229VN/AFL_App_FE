@@ -631,7 +631,7 @@ function HeaderTournamentDetail() {
             ? contentReport.value
             : contentCheckbox.value,
         userId: user.userVM.id,
-        tournamentId: idTour,
+        tournamentId: +idTour,
         status: "Chưa duyệt",
       };
       try {

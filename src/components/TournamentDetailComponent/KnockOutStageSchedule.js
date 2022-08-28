@@ -252,7 +252,7 @@ export default function KnockOutStageSchedule(props) {
       setFindMaxDate(findDate);
     }
 
-    if (typeView === "result") {
+    if (typeView === "result" && tourDetail.tournamentTypeId !== 1) {
       const newData = [...data];
       const newKnockOut = newData.splice(
         tourDetail.groupNumber,
@@ -694,7 +694,8 @@ export default function KnockOutStageSchedule(props) {
 
                     <td>
                       <span className="score">
-                        {itemSeeds.teams[0].score !== null
+                        {itemSeeds.teams[0].score !== null ||
+                        itemSeeds.teams[0].score !== 0
                           ? itemSeeds.teams[0].scoreTieBreak !== null
                             ? itemSeeds.teams[0].scoreTieBreak
                             : itemSeeds.teams[0].score
@@ -702,7 +703,8 @@ export default function KnockOutStageSchedule(props) {
                       </span>
                       <span className="score"> - </span>
                       <span className="score">
-                        {itemSeeds.teams[1].score !== null
+                        {itemSeeds.teams[1].score !== null ||
+                        itemSeeds.teams[1].score !== 0
                           ? itemSeeds.teams[1].scoreTieBreak !== null
                             ? itemSeeds.teams[1].scoreTieBreak
                             : itemSeeds.teams[1].score
