@@ -44,11 +44,12 @@ function Livestream(data) {
     }
   }, [data.message]);
   const [inCall, setInCall] = useState(true);
-
   return (
     <div className={styles.livestream}>
       <div className={styles.video}>
         <VideoRoom
+          prediction={data.prediction}
+          setPrediction={data.setPrediction}
           allTeamA={data.allTeamA}
           allTeamB={data.allTeamB}
           scoreA={data.scoreA}

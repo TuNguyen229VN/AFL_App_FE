@@ -233,6 +233,20 @@
   }
 }
 
+.select1 {
+  width: max-content;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.select1 select{
+  padding: 10px 20px;
+  font-size: "Mulish-Regular";
+  border-radius: 5px;
+}
+.select1 select:focus{
+  border: 2px solid var(--black-text);
+}
 .col_2 {
   position: absolute;
   left: 50%;
