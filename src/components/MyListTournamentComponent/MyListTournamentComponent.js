@@ -13,15 +13,18 @@ function MyListTournamentComponent() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [sort, setSort] = useState("");
+  const [orderBy, setOrderBy] = useState("DateCreate");
+  const [orderType, setOrderType] = useState("DESC");
   const [pageNumber, setPageNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [count, setCount] = useState(0);
   const [check, setCheck] = useState(false);
   const [loading, setLoading] = useState(false);
   const [tournament, setTournament] = useState([]);
-  const getTournament = (currentPage) => {
+  const getTournament = (currentPage, orderby, ordertype) => {
     setLoading(true);
-    const afterURL = `tournaments?userId=${user.userVM.id}&order-by=DateCreate&order-type=DESC&page-offset=${currentPage}&limit=5`;
+    const afterURL = `tournaments?userId=${user.userVM.id}&order-by=${orderby}&order-type=${ordertype}&page-offset=${currentPage}&limit=5`;
     const response = getAPI(afterURL);
     response
       .then((res) => {
@@ -38,11 +41,11 @@ function MyListTournamentComponent() {
     setPageNumber(data.selected);
     setCurrentPage(data.selected + 1);
     setCheck(!check);
-    getTournament(data.selected + 1);
+    getTournament(data.selected + 1, orderBy, orderType);
   };
 
   useEffect(() => {
-    getTournament(currentPage);
+    getTournament(currentPage, orderBy, orderType);
   }, [check, currentPage]);
 
   // Get Type
@@ -87,12 +90,50 @@ function MyListTournamentComponent() {
     );
   };
 
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+
+    switch (name) {
+      case "SORT":
+        let ordertype = null;
+        let orderby = null;
+        if (value === "nameDesc") {
+          orderby = "TournamentName";
+          ordertype = "ASC";
+        } else if (value === "nameIns") {
+          orderby = "TournamentName";
+          ordertype = "DESC";
+        } else if (value === "timeDesc") {
+          orderby = "DateCreate";
+          ordertype = "ASC";
+        } else if (value === "timeIns") {
+          orderby = "DateCreate";
+          ordertype = "DESC";
+        }
+        setOrderBy(orderby);
+        setOrderType(ordertype);
+
+        getTournament(currentPage, orderby, ordertype);
+        setSort(value === "default" ? "" : value);
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <>
       <ScrollToTop />
       <Header />
       <div className={styles.my__tournament}>
         <h2 className={styles.title}>Danh sách giải đấu của bạn</h2>
+        <div className={styles.select1}>
+          <select onChange={onChangeHandler} value={sort} name="SORT">
+            <option value="timeIns">Mới nhất</option>
+            <option value="timeDesc">Cũ nhất</option>
+            <option value="nameDesc">A-Z</option>
+            <option value="nameIns">Z-A</option>
+          </select>
+        </div>
         <div className={styles.list__tournament}>
           {loading ? (
             <Loading />
