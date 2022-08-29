@@ -640,7 +640,7 @@ function HeaderTournamentDetail() {
           data
         );
         if (response.status === 201) {
-         pushNotiForAdmin()
+          pushNotiForAdmin();
         }
       } catch (error) {
         setLoadingAc(false);
@@ -782,6 +782,17 @@ function HeaderTournamentDetail() {
                   user.userVM.roleId !== 1 ? (
                     <>
                       {user.userVM.id === tourDetail.userId &&
+                      tourDetail.status === true &&
+                      tourDetail.statusTnm !== "Kết thúc" ? (
+                        <SendCancelTournament
+                          data={{
+                            username: user.userVM.username,
+                            userId: user.userVM.id,
+                            tournamentId: idTour,
+                          }}
+                        />
+                      ) : null}
+                      {user.userVM.id === tourDetail.userId &&
                       tourDetail.status == true &&
                       tourDetail.statusTnm === "Chuẩn bị" ? (
                         <>
@@ -816,16 +827,6 @@ function HeaderTournamentDetail() {
                             <i class="fa-solid fa-pen-to-square" /> Chỉnh sửa
                             giải đấu
                           </Link>
-                          {tourDetail.status === true &&
-                          tourDetail.statusTnm !== "Kết thúc" ? (
-                            <SendCancelTournament
-                              data={{
-                                username: user.userVM.username,
-                                userId: user.userVM.id,
-                                tournamentId: idTour,
-                              }}
-                            />
-                          ) : null}
                         </>
                       ) : tourDetail.mode !== "PRIVATE" &&
                         tourDetail.status == true &&
@@ -924,8 +925,7 @@ function HeaderTournamentDetail() {
                         >
                           Đang chờ xét duyệt
                         </button>
-                      ) : 
-                        checkPaticipate === "Chờ duyệt private" ? (
+                      ) : checkPaticipate === "Chờ duyệt private" ? (
                         <button
                           style={{
                             padding: "20px 50px",
@@ -987,7 +987,8 @@ function HeaderTournamentDetail() {
                     <span className="title">Đội tham gia: </span>
                     <span>
                       {tourDetail.numberTeamInTournament} /{" "}
-                      {tourDetail.footballTeamNumber} đội ( tối thiểu {tourDetail.footballPlayerMaxNumber} cầu thủ )
+                      {tourDetail.footballTeamNumber} đội ( tối thiểu{" "}
+                      {tourDetail.footballPlayerMaxNumber} cầu thủ )
                     </span>
                   </div>
                   <div className="man gender__manager">
