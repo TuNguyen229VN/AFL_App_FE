@@ -6,8 +6,8 @@ export function getReportByReasonAPI(reason) {
   return axios.get(url + afterDefaultURL);
 }
 
-export function getReportByReasonAndTeamAPI(reason, useId, teamId) {
-  const afterDefaultURL = `reports?reason=${reason}&user-id=${useId}&team-id=${teamId}&page-offset=1&limit=5`;
+export function getReportByReasonAndTeamAPI(idTour,reason, useId, teamId) {
+  const afterDefaultURL = `reports?tournament-id=${idTour}&reason=${reason}&user-id=${useId}&team-id=${teamId}&page-offset=1&limit=5`;
   return axios.get(url + afterDefaultURL);
 }
 

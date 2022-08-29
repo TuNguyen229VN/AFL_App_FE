@@ -10,6 +10,7 @@ function ReportTeamInTournament(props) {
     sendReportTeamOutTournament,
     setIdTeamDelete,
     setLoading,
+    tourDetailId,
   } = props;
   const [report, setReport] = useState(false);
 
@@ -21,6 +22,7 @@ function ReportTeamInTournament(props) {
     setLoading(true);
     try {
       const response = await getReportByReasonAndTeamAPI(
+        tourDetailId,
         "Đội bóng đã không tham gia giải đấu",
         tourDetail.userId,
         idTeamDelete.split("-")[1]

@@ -4,7 +4,7 @@ import "./App.css";
 import App from "./App";
 import { registerLicense } from '@syncfusion/ej2-base';
 
-registerLicense('ORg4AjUWIQA/Gnt2VVhiQlFadVlJVHxIYVF2R2FJflx6dFJMZVVBNQtUQF1hS35bdkdjWX9XcnZTRGJU');
+registerLicense('ORg4AjUWIQA/Gnt2VVhiQlFaclxJVHxLeUx0RWFbb19xflFGal5RVBYiSV9jS3xTfkdrW3xacnRUQWdYUg==');
 
 ReactDOM.render(
   <React.StrictMode>  

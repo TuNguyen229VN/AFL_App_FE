@@ -375,6 +375,7 @@ function TeamInTournament(props) {
                         }
                       ></div>
                       <ReportTeamInTournament
+                      tourDetailId={tourDetail.id}
                         setLoading={setLoading}
                         sendReportTeamOutTournament={
                           sendReportTeamOutTournament
