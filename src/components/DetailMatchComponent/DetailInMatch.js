@@ -472,7 +472,7 @@ export default function DetailInMatch(props) {
       const findPlayerRedCard = dataDetail.filter(
         (item) => item.actionMatchId === 3
       );
-      console.log(findPlayerYelloCard);
+      
       if (findPlayerYelloCard.length > 0 || findPlayerRedCard.length > 0) {
         const getPlayerHasTwoYellowCard = [];
         for (const playerYellowCard of findPlayerYelloCard) {
