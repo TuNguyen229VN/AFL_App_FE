@@ -12,6 +12,7 @@ export default function CricleStageSchedule(props) {
   const [teamInUpdate, setTeamInUpdate] = useState(null);
   const [teamDescription, setTeamDescription] = useState(null);
   const [circleTeam, setCircleTeam] = useState(null);
+  const [statusAddDate, setStatusAddDate] = useState(true);
   const {
     allTeam,
     loading,
@@ -258,6 +259,48 @@ export default function CricleStageSchedule(props) {
   }, [allTeam]);
 
   const onChangHandle = (e) => {
+    const dataSplit = teamInUpdate.split("-");
+    if (tourDetail.tournamentTypeId === 2) {
+      const newData = [];
+      for (const seed of circleTeam[0].seeds) {
+        if (seed.match.status !== "Bị Hủy") {
+          const infoTeam = seed.teams;
+          for (let i = 0; i < seed.teams.length; i++) {
+            if (
+              infoTeam[0].name === dataSplit[0].trim() &&
+              infoTeam[1].name === dataSplit[1].trim()
+            ) {
+              break;
+            } else if (
+              infoTeam[i].name === dataSplit[0].trim() ||
+              infoTeam[i].name === dataSplit[1].trim()
+            ) {
+              if (seed.date !== null) newData.push(seed.date);
+            }
+          }
+        }
+      }
+
+      const dateSetvalue = new Date(e.target.value);
+
+      for (const date of newData) {
+        if (new Date(date).getTime() === dateSetvalue.getTime()) {
+          toast.error("Trùng lịch trận đấu khác của 1 trong 2 đội", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          setStatusAddDate(false);
+          return;
+        }
+      }
+      setStatusAddDate(true);
+    }
+
     setDateUpdate(e.target.value);
   };
   const changeDateUp = (data) => {
@@ -404,7 +447,7 @@ export default function CricleStageSchedule(props) {
                     >
                       {itemSeeds.date != null ? (
                         <div style={{ position: "relative" }}>
-                        {itemSeeds.match !== null &&
+                          {itemSeeds.match !== null &&
                           itemSeeds.match.tokenLivestream !== "" &&
                           itemSeeds.match.idScreen != 0 &&
                           itemSeeds.match.idScreen != null ? (
@@ -524,6 +567,7 @@ export default function CricleStageSchedule(props) {
                     )}
                     {user != undefined &&
                     user.userVM.id === hostTournamentId &&
+                    itemSeeds.match.status !== "Bị Hủy" &&
                     ((new Date(endDate).getTime() > new Date().getTime() &&
                       itemSeeds.match.matchDate === null) ||
                       (new Date(endDate).getTime() > new Date().getTime() &&
@@ -564,7 +608,15 @@ export default function CricleStageSchedule(props) {
                     itemSeeds.date !== null ? (
                       <td>
                         {" "}
-                        {indexSeeds === item.seeds.length - 1 ? (
+                        {itemSeeds.match.status === "Bị Hủy" ? (
+                          <p
+                            style={{
+                              color: "red",
+                            }}
+                          >
+                            Bị hủy
+                          </p>
+                        ) : indexSeeds === item.seeds.length - 1 ? (
                           <Link
                             to={`/match/${itemSeeds.match.id}/matchDetail`}
                             state={{
@@ -629,6 +681,7 @@ export default function CricleStageSchedule(props) {
           setDateUpdate={setDateUpdate}
           updateDateInMatch={updateDateInMatch}
           teamInUpdate={teamInUpdate}
+          statusAddDate={statusAddDate}
         />
       ) : null}
     </table>

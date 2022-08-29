@@ -13,6 +13,7 @@ export default function ModalChangeDateInSchedule(props) {
     setDateUpdate,
     updateDateInMatch,
     teamInUpdate,
+    statusAddDate,
   } = props;
 
   const [newStart, setNewStart] = useState(null);
@@ -87,7 +88,6 @@ export default function ModalChangeDateInSchedule(props) {
     // }
   }, [matchCurrent.id]);
   const changeMinDate = (data) => {
-    console.log(data);
     if (data !== null) {
       const splitDateTime = data.split("T");
       const newDate =
@@ -102,7 +102,7 @@ export default function ModalChangeDateInSchedule(props) {
           : +splitDateTime[1].split(":")[1] > 0
           ? "00"
           : "30";
-      console.log(splitDateTime[0] + " " + newDate + ":" + newMinutes);
+
       return splitDateTime[0] + " " + newDate + ":" + newMinutes;
     }
   };
@@ -122,16 +122,10 @@ export default function ModalChangeDateInSchedule(props) {
       const newMinutes =
         +splitDateTime[1].split(":")[0] < 7
           ? "00"
-          : +splitDateTime[1].split(":")[1] > 0 ? "00" : "30";
-      console.log(splitDateTime[0].split("-")[1] +
-      "-" +
-      splitDateTime[0].split("-")[2] +
-      "-" +
-      splitDateTime[0].split("-")[0] +
-      " " +
-      newDate +
-      ":" +
-      newMinutes)
+          : +splitDateTime[1].split(":")[1] > 0
+          ? "00"
+          : "30";
+
       return (
         splitDateTime[0].split("-")[1] +
         "-" +
@@ -287,18 +281,20 @@ export default function ModalChangeDateInSchedule(props) {
             >
               Hủy
             </button>
-            <button
-              style={{
-                padding: 10,
-              }}
-              type="button"
-              class="btn btn-primary"
-              onClick={() => {
-                updateDateInMatch(matchCurrent);
-              }}
-            >
-              Thay đổi
-            </button>
+            {statusAddDate ? (
+              <button
+                style={{
+                  padding: 10,
+                }}
+                type="button"
+                class="btn btn-primary"
+                onClick={() => {
+                  updateDateInMatch(matchCurrent);
+                }}
+              >
+                Thay đổi
+              </button>
+            ) : null}
           </div>
         </div>
       </div>

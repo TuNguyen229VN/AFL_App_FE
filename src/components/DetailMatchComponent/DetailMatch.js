@@ -54,7 +54,7 @@ export default function DetailMatch(props) {
   const [playerA, setPlayerA] = useState(null);
   const [playerB, setPlayerB] = useState(null);
   const [statusUpdate, setStatusUpdate] = useState(false);
-
+  
   useEffect(() => {
     getTeamInMatchByMatchID();
   }, [statusUpdate === true]);
@@ -103,7 +103,7 @@ export default function DetailMatch(props) {
   const updateScoreInMatch = async (data, type, teamWinPenalty, title) => {
     const newTeamA = teamA;
     const newTeamB = teamB;
-    
+
     if (type === 1) {
       if (title === null || title.includes("tie-break") === false) {
         console.log(title);
@@ -192,15 +192,17 @@ export default function DetailMatch(props) {
         matchResult();
       }
     } else {
-      if (index > 0 && title !== null) {
-        const flagTieBreak = await createTieBreak();
-        if (flagTieBreak === false) {
+      if (index > 0) {
+        if (title !== null) {
+          const flagTieBreak = await createTieBreak();
+          if (flagTieBreak === false) {
+            await updateNextTeamInMatch();
+            matchResult();
+          }
+        } else {
           await updateNextTeamInMatch();
           matchResult();
         }
-      } else {
-        await updateNextTeamInMatch();
-        matchResult();
       }
     }
   };
