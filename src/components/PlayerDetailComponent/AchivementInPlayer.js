@@ -24,7 +24,7 @@ function AchivementInPlayer() {
       let two = 0;
       let three = 0;
       const response = await axios.get(
-        `https://afootballleague.ddns.net/api/v1/tournament-results?footballPlayerId=${idPlayer}&page-offset=1&limit=5`
+        `https://afootballleague.ddns.net/api/v1/tournament-results?footballPlayerId=${idPlayer}&page-offset=1&limit=100`
       );
       for (let i = 0; i < response.data.tournamentResults.length; i++) {
         if (response.data.tournamentResults[i].prize == "Champion") {

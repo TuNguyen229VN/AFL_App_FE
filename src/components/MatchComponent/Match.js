@@ -83,7 +83,8 @@ function Match() {
   const [detailTeamB, setDetailTeamB] = useState(null);
   const [predict, setPredict] = useState({});
   const [isTie, setIsTie] = useState(false);
-  console.log("aa");
+  const [minuteMatch , setMinuteMatch] = useState(0);
+
   const getPredict = async () => {
     try {
       const response = await axios.get(
@@ -443,6 +444,7 @@ function Match() {
     response
       .then((res) => {
         setFootballFeild(res.data.footballFieldAddress);
+        setMinuteMatch(res.data.matchMinutes + 30);
       })
       .catch((err) => {
         console.error(err);
@@ -1249,6 +1251,10 @@ function Match() {
       if (actionId != 4) {
         if (minutes == "" || minutes == undefined || minutes == null) {
           setMinutesError("Vui lòng nhập số phút ...");
+          return;
+        }
+        else if(minutes > minuteMatch){
+          setMinutesError("Số phút vượt quá thời gian trận đấu");
           return;
         }
       }
