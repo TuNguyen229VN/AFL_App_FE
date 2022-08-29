@@ -19,7 +19,7 @@ function Livestream(data) {
   const [cLive, setCLive] = useState("");
   // Options for joining a channel
   const rtcProps = {
-    appId: "ab5ddade1a8c4bfaa6f7018e03f73463",
+    appId: "70217642f3314dc0803bb253e501cf2d",
     token: data.tokenLivestream,
     channel: "MATCH_" + data.idMatch,
     role: "audience",
