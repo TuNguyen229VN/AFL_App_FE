@@ -868,6 +868,7 @@ export default function KnockOutStageSchedule(props) {
             onChangHandle={onChangHandle}
             updateDateInMatch={updateDateInMatch}
             teamInUpdate={teamInUpdate}
+            statusAddDate={true}
           />
         ) : null}
       </div>
