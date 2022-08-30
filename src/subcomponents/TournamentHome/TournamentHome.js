@@ -92,9 +92,22 @@ const TournamentHome = () => {
                 <div className="torunament__another">
                   <div className="join">
                     <img src="/assets/icons/join.png" alt="join" />
-                    <div className="join__text">{tour.numberTeamInTournament}</div>
+                    <div className="join__text">
+                      {tour.numberTeamInTournament}
+                    </div>
                   </div>
                   {/* <div className="heart__shape active"></div> */}
+                  <div
+                    className={
+                      tour.statusTnm === "Đang diễn ra"
+                        ? "xanhx"
+                        : tour.statusTnm === "Kết thúc"
+                        ? `doo`
+                        : `xams`
+                    }
+                  >
+                    {tour.statusTnm}
+                  </div>
                 </div>
               </div>
             </Link>

@@ -1019,6 +1019,11 @@ function HeaderTournamentDetail() {
                       {formatDate(tourDetail.tournamentEndDate)}{" "}
                     </span>
                   </div>
+                  <div className="man gender__manager">
+                    <i class="fa-solid fa-signal"></i>
+                    <span className="title">Trạng thái: </span>
+                    <span>{tourDetail.statusTnm}</span>
+                  </div>
                 </div>
 
                 {checkTeam === true ? (

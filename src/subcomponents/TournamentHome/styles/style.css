@@ -156,6 +156,17 @@
   margin-left: 5px;
   margin-top: 5px;
 }
+
+.tournament__list .xanhx {
+  color: green;
+}
+.tournament__list .doo {
+  color: red;
+}
+.tournament__list .xams {
+  color: var(--blue-black);
+}
+
 @media only screen and (max-width: 1279px) {
 }
 @media only screen and (max-width: 1190px) {

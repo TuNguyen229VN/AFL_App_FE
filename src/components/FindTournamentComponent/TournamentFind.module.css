@@ -227,7 +227,15 @@ input:focus {
 .tournamentInfor {
   padding: 15px 25px;
 }
-
+.tournamentFooter .status {
+  color: green;
+}
+.tournamentFooter .red {
+  color: red;
+}
+.tournamentFooter .grey {
+  color: var(--black-text);
+}
 .tournamentName {
   margin-bottom: 8px;
   font-family: "Mulish-Bold";
@@ -559,7 +567,8 @@ input:focus {
     margin-left: 10px;
     font-size: 14px;
   }
-  .pageItem:first-child,.pageItem:last-child {
-   display: none;
+  .pageItem:first-child,
+  .pageItem:last-child {
+    display: none;
   }
 }

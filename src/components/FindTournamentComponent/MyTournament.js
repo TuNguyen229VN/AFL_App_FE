@@ -539,6 +539,17 @@ const MyTournamemts = () => {
                               />
                               <p>{tour.numberTeamInTournament}</p>
                             </div>
+                            <div
+                              className={
+                                tour.statusTnm === "Đang diễn ra"
+                                  ? styles.status
+                                  : tour.statusTnm === "Kết thúc"
+                                  ? `${styles.status} ${styles.red}`
+                                  : `${styles.status} ${styles.grey}`
+                              }
+                            >
+                              {tour.statusTnm}
+                            </div>
                             {/* <div className="heart__shape"></div> */}
                           </div>
                         </div>
@@ -548,9 +559,7 @@ const MyTournamemts = () => {
                 }
               })
             ) : (
-              <h1 className={styles.titleNoContent}>
-                Không tìm thấy giải đấu
-              </h1>
+              <h1 className={styles.titleNoContent}>Không tìm thấy giải đấu</h1>
             )}
           </div>
         </div>
