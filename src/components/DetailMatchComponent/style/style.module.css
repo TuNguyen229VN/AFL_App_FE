@@ -186,3 +186,14 @@
   width: 10px;
   height: 3px;
 }
+
+.wrapUpdateScore input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.wrapUpdateScore input[type=number] {
+  -moz-appearance: textfield;
+}

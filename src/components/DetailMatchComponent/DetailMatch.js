@@ -540,6 +540,7 @@ export default function DetailMatch(props) {
               name="scoreA"
               value={scoreA === null ? "" : scoreA}
               id="scoreA"
+              type="number"
               className={styles.btnInput}
               onChange={onChangeHandler}
             />
@@ -547,6 +548,7 @@ export default function DetailMatch(props) {
             <input
               id="scoreB"
               name="scoreB"
+              type="number"
               value={scoreB === null ? "" : scoreB}
               className={styles.btnInput}
               onChange={onChangeHandler}
@@ -594,6 +596,7 @@ export default function DetailMatch(props) {
             <input
               id="yellowA"
               name="yellowA"
+              type="number"
               value={yellowA === null ? "" : yellowA}
               onChange={onChangeHandler}
               className={styles.btnInput}
@@ -602,6 +605,7 @@ export default function DetailMatch(props) {
             <input
               id="yellowB"
               name="yellowB"
+              type="number"
               value={yellowB === null ? "" : yellowB}
               onChange={onChangeHandler}
               className={styles.btnInput}
@@ -652,6 +656,7 @@ export default function DetailMatch(props) {
               id="redA"
               className={styles.btnInput}
               name="redA"
+              type="number"
               value={redA === null ? "" : redA}
               onChange={onChangeHandler}
             />
@@ -660,6 +665,7 @@ export default function DetailMatch(props) {
               id="redB"
               className={styles.btnInput}
               name="redB"
+              type="number"
               value={redB === null ? "" : redB}
               onChange={onChangeHandler}
             />
