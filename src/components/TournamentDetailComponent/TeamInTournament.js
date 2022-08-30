@@ -216,6 +216,7 @@ function TeamInTournament(props) {
     switch (name) {
       case "contentSearch":
         setContentSearch(value);
+        setCurrentPage(1);
         getTeam(contentSearch, currentPage, "NAME", value);
         break;
       default:
@@ -295,7 +296,9 @@ function TeamInTournament(props) {
                     <div key={index} className="listPlayer__item">
                       {user !== undefined &&
                       tourDetail != null &&
-                      user.userVM.id === tourDetail.userId ? (
+                      user.userVM.id === tourDetail.userId &&
+                      tourDetail.status === true &&
+                      tourDetail.statusTnm !== "Kết thúc" ? (
                         <div>
                           <div
                             className="view__more"
@@ -357,7 +360,6 @@ function TeamInTournament(props) {
                                   setIdTeamDelete(
                                     item.teamInTournament.id + "-" + item.id
                                   );
-                                  
                                 }}
                               >
                                 <i class="fa-solid fa-flag"></i>Báo cáo đội bóng
@@ -375,7 +377,7 @@ function TeamInTournament(props) {
                         }
                       ></div>
                       <ReportTeamInTournament
-                      tourDetailId={tourDetail.id}
+                        tourDetailId={tourDetail.id}
                         setLoading={setLoading}
                         sendReportTeamOutTournament={
                           sendReportTeamOutTournament

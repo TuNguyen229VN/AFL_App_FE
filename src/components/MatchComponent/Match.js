@@ -83,7 +83,7 @@ function Match() {
   const [detailTeamB, setDetailTeamB] = useState(null);
   const [predict, setPredict] = useState({});
   const [isTie, setIsTie] = useState(false);
-  const [minuteMatch , setMinuteMatch] = useState(0);
+  const [minuteMatch, setMinuteMatch] = useState(0);
 
   const getPredict = async () => {
     try {
@@ -1252,8 +1252,7 @@ function Match() {
         if (minutes == "" || minutes == undefined || minutes == null) {
           setMinutesError("Vui lòng nhập số phút ...");
           return;
-        }
-        else if(minutes > minuteMatch){
+        } else if (minutes > minuteMatch) {
           setMinutesError("Số phút vượt quá thời gian trận đấu");
           return;
         }
@@ -1789,7 +1788,9 @@ function Match() {
               {checkLivestream.length === 0 &&
               (detail === null || detail.length === 0) &&
               user !== null &&
-              user.userVM.id === location.state.hostTournamentId ? (
+              user.userVM.id === location.state.hostTournamentId &&
+              location.state.tourDetail.status === true &&
+              location.state.tourDetail.statusTnm !== "Kết thúc" ? (
                 <p
                   className={styles.updateMatch1}
                   onClick={() => {
@@ -1820,7 +1821,9 @@ function Match() {
               user !== null &&
               location.state !== null &&
               user.userVM.id === location.state.hostTournamentId &&
-              (reportMatch === null || reportMatch.length === 0) ? (
+              (reportMatch === null || reportMatch.length === 0) &&
+              location.state.tourDetail.status === true &&
+              location.state.tourDetail.statusTnm !== "Kết thúc" ? (
                 <p
                   className={styles.updateMatch}
                   onClick={() =>
@@ -1914,9 +1917,13 @@ function Match() {
                   </div>
                   <div className={styles.score__wrap}>
                     <div className={styles.score__main}>
-                      <div className={styles.score__A}>{scoreA == null? 0: scoreA}</div>
+                      <div className={styles.score__A}>
+                        {scoreA == null ? 0 : scoreA}
+                      </div>
                       <div className={styles.line}>-</div>
-                      <div className={styles.score__B}>{scoreB == null? 0: scoreB}</div>
+                      <div className={styles.score__B}>
+                        {scoreB == null ? 0 : scoreB}
+                      </div>
                     </div>
                     {checkPen && (
                       <>
@@ -2294,9 +2301,7 @@ function Match() {
                   {allTeamA.length > 0 && allTeamA[0].teamName}
                 </p>
                 <p className={styles.scoreTeam}>
-                  {scoreA== null? 0:scoreA}{" "}
-                  -{" "}
-                  {scoreB== null? 0:scoreB}
+                  {scoreA == null ? 0 : scoreA} - {scoreB == null ? 0 : scoreB}
                 </p>
                 <p className={styles.teamRight}>
                   {allTeamB.length > 0 && allTeamB[0].teamName}

@@ -23,7 +23,7 @@ export function addTeamInTournamentAPI(data){
 }
 
 export function updateStatusTeamInTournament(data){
-    console.log(data)
+    
     const afterDefaultURL = `team-in-tournaments`;
     return axios.put(url+afterDefaultURL,data);
 }

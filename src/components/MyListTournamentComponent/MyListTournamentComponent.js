@@ -211,7 +211,17 @@ function MyListTournamentComponent() {
                       }
                     >
                       {/* {tour.status === true ? "Đang diễn ra" : "Đã kết thúc"} */}
-                      {tour.statusTnm}
+                      {tour.status === true ? (
+                        tour.statusTnm
+                      ) : (
+                        <p
+                          style={{
+                            color: "red",
+                          }}
+                        >
+                          Giải bị hủy
+                        </p>
+                      )}
                       {tour.statusTnm === "Đang diễn ra" ? (
                         <div className={styles.col_3}>
                           <div

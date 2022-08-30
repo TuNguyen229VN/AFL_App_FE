@@ -568,6 +568,8 @@ export default function CricleStageSchedule(props) {
                     {user != undefined &&
                     user.userVM.id === hostTournamentId &&
                     itemSeeds.match.status !== "Bị Hủy" &&
+                    tourDetail.status === true &&
+                    tourDetail.statusTnm !== "Kết thúc" &&
                     ((new Date(endDate).getTime() > new Date().getTime() &&
                       itemSeeds.match.matchDate === null) ||
                       (new Date(endDate).getTime() > new Date().getTime() &&

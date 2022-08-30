@@ -4,7 +4,8 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-function PredictionTournamentDetail() {
+function PredictionTournamentDetail(props) {
+  const { tourDetail } = props;
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
@@ -219,20 +220,26 @@ function PredictionTournamentDetail() {
             <tr>
               <th colSpan={5}>Dự đoán</th>
             </tr>
-            {!match? (
-            <tr>
-              <td colSpan={7} style={{ textAlign: "center" }}>
-                Chưa có thông tin cụ thể
-              </td>
-            </tr>
-          ) : null}
+            {!match ? (
+              <tr>
+                <td colSpan={7} style={{ textAlign: "center" }}>
+                  Chưa có thông tin cụ thể
+                </td>
+              </tr>
+            ) : null}
             {match &&
               match.matchs.map(
                 (match) =>
                   match.teamInMatches.length == 2 && (
                     <tr>
                       <td>{formatDate(match.matchDate)}</td>
-                      <td  style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+                      <td
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
                         <img
                           src={
                             match.teamInMatches[0].teamInTournament.team
@@ -251,7 +258,14 @@ function PredictionTournamentDetail() {
                           {match.predict && match.predict.teamBscore}
                         </span>
                       </td>
-                      <td className="khongin" style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+                      <td
+                        className="khongin"
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
                         <img
                           src={
                             match.teamInMatches[1].teamInTournament.team
@@ -262,25 +276,28 @@ function PredictionTournamentDetail() {
                         <p>{match.teamInMatches[1].teamName} </p>
                       </td>
                       <td>
-                        {match.predictStatus && (
-                          <button
-                            className="btnPrediction"
-                            onClick={() => {
-                              setActivePopup(true);
-                              setMatchPredict(match);
-                              setInputValues({
-                                ...inputValues,
-                                teamA: match.predict.teamAscore,
-                                teamB: match.predict.teamBscore,
-                              });
-                            }}
-                          >
-                            {match.predict == false ||
-                            match.predict == undefined
-                              ? "Dự đoán"
-                              : "Thay đổi"}
-                          </button>
-                        )}
+                        {tourDetail.status === true &&
+                        tourDetail.statusTnm !== "Kết thúc"
+                          ? match.predictStatus && (
+                              <button
+                                className="btnPrediction"
+                                onClick={() => {
+                                  setActivePopup(true);
+                                  setMatchPredict(match);
+                                  setInputValues({
+                                    ...inputValues,
+                                    teamA: match.predict.teamAscore,
+                                    teamB: match.predict.teamBscore,
+                                  });
+                                }}
+                              >
+                                {match.predict == false ||
+                                match.predict == undefined
+                                  ? "Dự đoán"
+                                  : "Thay đổi"}
+                              </button>
+                            )
+                          : null}
                       </td>
                     </tr>
                   )

@@ -206,7 +206,7 @@ function HeaderTournamentDetail() {
       activeTeamDetail ===
       `/tournamentDetail/${idTour}/predictionTournamentDetail`
     ) {
-      return <PredictionTournamentDetail />;
+      return <PredictionTournamentDetail tourDetail={tourDetail} />;
     }
     if (
       activeTeamDetail === `/tournamentDetail/${idTour}/commentTournamentDetail`
@@ -1262,7 +1262,9 @@ function HeaderTournamentDetail() {
                   )}
                 </form>
               </div>
-              {tourDetail.registerEndDate !== null ? (
+              {tourDetail.registerEndDate !== null &&
+              tourDetail.status === true &&
+              tourDetail.statusTnm !== "Kết thúc" ? (
                 <CountDown registerEndDate={tourDetail.registerEndDate} />
               ) : null}
               <div className="headerteamdetail__tag headertour__tag">

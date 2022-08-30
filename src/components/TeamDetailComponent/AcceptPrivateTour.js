@@ -177,7 +177,7 @@ export default function AcceptPrivateTour(props) {
           .catch((err) => {
             setLoading(false);
             console.error(err);
-            toast.error(err.response.data.message, {
+            toast.error(err.response.data, {
               position: "top-right",
               autoClose: 3000,
               hideProgressBar: false,
@@ -290,7 +290,6 @@ export default function AcceptPrivateTour(props) {
     response
       .then((res) => {
         if (res.status === 200) {
-          console.log(res.data);
           addPlayerInTournament(idTeamInTour, getPlayerChoice);
         }
       })
