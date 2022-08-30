@@ -301,7 +301,7 @@ function ListPlayer(props) {
                           className="listPlayer__item"
                         >
                           <form onSubmit={onSubmitHandler}>
-                            {active === "Cầu thủ" && idHost === idTeam  ? (
+                            {active === "Cầu thủ" && idHost == idTeam  ? (
                               <div>
                                 
                                 <div

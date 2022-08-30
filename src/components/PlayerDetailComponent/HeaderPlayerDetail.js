@@ -291,18 +291,18 @@ function HeaderPlayerDetail() {
           }
         }
       })
-      .then((err) => {
+      .catch((err) => {
         console.error(err);
-        //setLoading(false);
-        // toast.error(err.response.data.message, {
-        //   position: "top-right",
-        //   autoClose: 3000,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        // });
+        setLoading(false);
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
   };
 

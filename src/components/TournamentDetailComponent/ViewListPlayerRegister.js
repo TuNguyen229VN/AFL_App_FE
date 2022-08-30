@@ -46,10 +46,12 @@ export default function ViewListPlayerRegister(props) {
    
     if (response.status === 200) {
       for (const item of response.data.playerInTournaments) {
+        console.log(item)
         const findNewPlayer = data.find(
           (itemData) => itemData.id === item.playerInTeamId          
         );
-        findNewPlayer.playerInTourId = item.id
+        // console.log(item)
+        findNewPlayer.playerInTourId = item.id;
         findNewPlayer.clothesNumber = item.clothesNumber;
         newPlayerRegister.push(findNewPlayer);
       }
