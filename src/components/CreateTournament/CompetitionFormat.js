@@ -133,7 +133,7 @@ const CompetitionFormat = (props) => {
               htmlFor="select_lengthTeam"
               className={styles.createTournament_img_title}
             >
-              Số đội tham gia
+              Số đội tham gia (*)
             </label>
             {teamPaticipate.error != null ? (
               <p

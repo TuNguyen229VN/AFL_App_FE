@@ -218,7 +218,7 @@ function RequestInPlayer(props) {
                 }}
               >
                 {active === "Chờ xét duyệt từ đội bóng"
-                  ? "Bạn không gửi lời mời tới đội bóng nào"
+                  ? "Không có lời mời tới đội bóng "
                   : "Không có đội bóng gửi lời mời"}
               </p>
             )

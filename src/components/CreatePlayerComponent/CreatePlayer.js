@@ -291,7 +291,7 @@ function CreatePlayer() {
                     justifyContent: "space-between",
                   }}
                 >
-                  <label for="nameteam">Tên thi đấu</label>
+                  <label for="nameteam">Tên thi đấu (*)</label>
 
                   {namePlayer.error != null ? (
                     <p className={styles.error}>{namePlayer.error}</p>
@@ -314,7 +314,7 @@ function CreatePlayer() {
             </div>
             <div className={styles.createteamwrap}>
               <div className={styles.text__field}>
-                <label for="genderteam">Vị trí yêu thích</label>
+                <label for="genderteam">Vị trí yêu thích (*)</label>
                 <select
                   name="position"
                   value={position.value}

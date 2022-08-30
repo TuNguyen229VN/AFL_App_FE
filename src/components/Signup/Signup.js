@@ -297,6 +297,7 @@ function Signup() {
                 id=""
                 name="gender"
                 onChange={handleOnChange}
+                placeholder="Giới tính *"
               >
                 <option value=""></option>
                 <option value="Male">Nam</option>

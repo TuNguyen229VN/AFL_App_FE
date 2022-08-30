@@ -498,7 +498,7 @@ function ListPlayer(props) {
                     style={{
                       color: "red",
                       fontWeight: 600,
-                      fontSize: 24,
+                      fontSize: 18,
                     }}
                   >
                     Không tìm thấy cầu thủ

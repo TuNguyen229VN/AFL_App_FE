@@ -694,7 +694,7 @@ const CreateTournament = () => {
                       htmlFor="createTour"
                       className={styles.createTournament_img_title}
                     >
-                      Tên giải đấu
+                      Tên giải đấu (*)
                     </label>
                     {nameTournament.error != null ? (
                       <p
@@ -729,7 +729,7 @@ const CreateTournament = () => {
                       htmlFor="phoneContact"
                       className={styles.createTournament_img_title}
                     >
-                      Số điện thoại liên lạc
+                      Số điện thoại liên lạc (*)
                     </label>
                     {phoneContact.error != null ? (
                       <p
@@ -759,7 +759,7 @@ const CreateTournament = () => {
                     className={styles.createTournament_img_title}
                     htmlFor="genderteam"
                   >
-                    Giới tính đội
+                    Giới tính đội (*)
                   </label>
                   <select
                     name="gender"
@@ -788,7 +788,7 @@ const CreateTournament = () => {
                       htmlFor="timeCloseRegister"
                       className={styles.createTournament_img_title}
                     >
-                      Ngày đóng đăng ký tham gia
+                      Ngày đóng đăng ký tham gia 
                     </label>
                     {closeRegister.error != null ? (
                       <p
@@ -828,7 +828,7 @@ const CreateTournament = () => {
                       className={styles.createTournament_img_title}
                       htmlFor="startTime"
                     >
-                      Ngày bắt đầu
+                      Ngày bắt đầu (*)
                     </label>
                     {startTime.error != null ? (
                       <p
@@ -878,7 +878,7 @@ const CreateTournament = () => {
                       htmlFor="endTime"
                       className={styles.createTournament_img_title}
                     >
-                      Ngày kết thúc
+                      Ngày kết thúc (*)
                     </label>
                     {endTime.error != null ? (
                       <p
@@ -937,7 +937,7 @@ const CreateTournament = () => {
                       htmlFor="mininum_member"
                       className={styles.createTournament_img_title}
                     >
-                      Số cầu thủ tối thiểu mỗi đội
+                      Số cầu thủ tối thiểu mỗi đội (*)
                     </label>
                     {minimunPlayerInTournament.error != null ? (
                       <p
@@ -965,7 +965,7 @@ const CreateTournament = () => {
                     htmlFor="description"
                     className={styles.createTournament_img_title}
                   >
-                    Mô tả
+                    Mô tả (*)
                   </label>
                   {/* <textarea
                   placeholder="Mô tả về giải đấu"
@@ -1020,7 +1020,7 @@ const CreateTournament = () => {
                       className={styles.createTournament_img_title}
                       htmlFor="provice"
                     >
-                      Thành phố/Tỉnh{" "}
+                      Thành phố/Tỉnh (*)
                     </label>
                     <select
                       style={{
@@ -1050,7 +1050,7 @@ const CreateTournament = () => {
                       className={styles.createTournament_img_title}
                       htmlFor="districts"
                     >
-                      Quận/Huyện
+                      Quận/Huyện (*)
                     </label>
                     <select
                       style={{
@@ -1080,7 +1080,7 @@ const CreateTournament = () => {
                       className={styles.createTournament_img_title}
                       htmlFor="wards"
                     >
-                      Phường/Xã
+                      Phường/Xã (*)
                     </label>
                     <select
                       style={{
@@ -1117,7 +1117,7 @@ const CreateTournament = () => {
                         className={styles.createTournament_img_title}
                         htmlFor="fieldSoccer"
                       >
-                        Địa điểm
+                        Địa điểm (*)
                       </label>
                       {footballField.error != null ? (
                         <p

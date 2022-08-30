@@ -439,7 +439,7 @@ const CreateTeam = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <label for="nameteam">Tên đội bóng</label>
+                  <label for="nameteam">Tên đội bóng (*)</label>
 
                   {nameClub.error != null ? (
                     <p
@@ -472,7 +472,7 @@ const CreateTeam = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <label for="phoneteam">Số điện thoại liên lạc</label>
+                  <label for="phoneteam">Số điện thoại liên lạc (*)</label>
                   {phoneContact.error != null ? (
                     <p
                       style={{
@@ -497,7 +497,7 @@ const CreateTeam = () => {
                 />
               </div>
               <div className={styles.text__field}>
-                <label for="genderteam">Giới tính đội</label>
+                <label for="genderteam">Giới tính đội (*)</label>
                 <select
                   name="gender"
                   value={gender.value}
@@ -651,7 +651,7 @@ const CreateTeam = () => {
                 className={styles.createTournament_img_title}
                 htmlFor="provice"
               >
-                Thành phố/Tỉnh{" "}
+                Thành phố/Tỉnh (*)
               </label>
               <select
                 className={styles.selectLocation}
@@ -680,7 +680,7 @@ const CreateTeam = () => {
                 className={styles.createTournament_img_title}
                 htmlFor="districts"
               >
-                Quận/Huyện
+                Quận/Huyện (*)
               </label>
               <select
                 required
@@ -709,7 +709,7 @@ const CreateTeam = () => {
                 className={styles.createTournament_img_title}
                 htmlFor="wards"
               >
-                Phường/Xã
+                Phường/Xã (*)
               </label>
               <select
                 className={styles.selectLocation}
@@ -733,7 +733,7 @@ const CreateTeam = () => {
               </select>
             </div>
           </div>
-          <p className={`${styles.avt} ${styles.line3}`}>Thông tin đội bóng</p>
+          <p className={`${styles.avt} ${styles.line3}`}>Thông tin đội bóng (*)</p>
           <div className={styles.descTeam}>
             <Editor
               editorState={editorState}
