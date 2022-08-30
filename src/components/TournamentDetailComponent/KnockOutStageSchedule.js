@@ -187,7 +187,6 @@ export default function KnockOutStageSchedule(props) {
     });
     if (typeView === "diagram" && tournamentType != "GroupStage") {
       const nullTeamRoundOne = calcAllTeamRoundOne() - data[0].seeds.length;
-      console.log(calcAllTeamRoundOne());
       if (nullTeamRoundOne > 0) {
         let countI = 1;
         for (let i = 0; i < nullTeamRoundOne; i++) {
@@ -247,7 +246,15 @@ export default function KnockOutStageSchedule(props) {
       setTeamDescription(desTeam);
     }
     if (typeView === "result") {
-      const findDate = excuteDate(data, tournamentType, tourDetail);
+      const getDataNotTieBreak = data.filter(
+        (item) => !item.title.includes("tie-break")
+      );
+
+      const findDate = excuteDate(
+        getDataNotTieBreak,
+        tournamentType,
+        tourDetail
+      );
       //console.log(findDate);
       setFindMaxDate(findDate);
     }
