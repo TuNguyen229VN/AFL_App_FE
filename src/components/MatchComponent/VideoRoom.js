@@ -178,9 +178,9 @@ function VideoRoom(props) {
       const response = await createTieBreakAPI(
         props.tourDetail.id,
         groupName !== null
-          ? (groupName
+          ? groupName
             ? props.title.split(" ")[1]
-            : null)
+            : null
           : null
       );
       if (response.status === 200) {
@@ -216,6 +216,8 @@ function VideoRoom(props) {
       console.error(err);
     }
   };
+
+  const [popupOpen, setPopupOpen] = useState(false);
   const changeScreenForUser = async (matchId) => {
     try {
       const response = await axios.put(
@@ -311,10 +313,7 @@ function VideoRoom(props) {
         );
       } else {
         return (
-          <p
-            className={styles.buttonOff}
-            onClick={() => changeScreenForUser(props.props.idMatch)}
-          >
+          <p className={styles.buttonOff} onClick={() => setPopupOpen(true)}>
             Kết thúc livestream
           </p>
         );
@@ -332,6 +331,27 @@ function VideoRoom(props) {
       }}
     >
       {checkLiveScreen()}
+      {popupOpen ? <div className={styles.overlay1}></div> : null}
+      {popupOpen ? (
+        <div className={styles.popupConfirm}>
+          <p>Kết thúc livestream</p>
+          <div className={styles.closeP} onClick={() => setPopupOpen(false)}>X</div>
+          <div className={styles.fl}>
+            <div
+              className={styles.yes}
+              onClick={() => {
+                changeScreenForUser(props.props.idMatch);
+                setPopupOpen(false);
+              }}
+            >
+              Xác nhận
+            </div>
+            <div className={styles.no} onClick={() => setPopupOpen(false)}>
+              Hủy
+            </div>
+          </div>
+        </div>
+      ) : null}
       {users.length > 0 ? (
         <div
           className={
