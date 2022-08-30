@@ -400,6 +400,14 @@ const CreateTournament = () => {
     ) {
       return "Số cầu thủ ít hơn quy định loại sân";
     }
+    if (
+      proviceSearch === null ||
+      districSearch === null ||
+      wardSearch === null || wardSearch.length <= 0 ||
+      footballField.value === null || footballField.value.length <= 0
+    ) {
+      return "Thông tin về địa điểm sân thi đấu không được để trống";
+    }
     return null;
   };
   const onChangeHandler = (e) => {
@@ -788,7 +796,7 @@ const CreateTournament = () => {
                       htmlFor="timeCloseRegister"
                       className={styles.createTournament_img_title}
                     >
-                      Ngày đóng đăng ký tham gia 
+                      Ngày đóng đăng ký tham gia {status === 0 && "(*)"}
                     </label>
                     {closeRegister.error != null ? (
                       <p

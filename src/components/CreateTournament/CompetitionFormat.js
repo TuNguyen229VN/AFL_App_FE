@@ -12,7 +12,7 @@ const CompetitionFormat = (props) => {
 
   return (
     <div className={styles.createTournament_row2}>
-      <h1 className={styles.createTournament_img_title}>Hình thức thi đấu</h1>
+      <h1 className={styles.createTournament_img_title}>Hình thức thi đấu(*)</h1>
       <div className={styles.img_type_footballField}>
         <div className={styles.wrapStage}>
           <label htmlFor="circle">
