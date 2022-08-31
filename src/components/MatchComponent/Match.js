@@ -1817,26 +1817,13 @@ function Match() {
                 reportMatch={reportMatch !== null ? reportMatch : null}
                 postReportMatch={postReportMatch}
               />
-              {(checkLivestream.length === 0 &&
-                user !== null &&
-                location.state !== null &&
-                user.userVM.id === location.state.hostTournamentId &&
-                (reportMatch === null || reportMatch.length === 0) &&
-                location.state.tourDetail.status === true &&
-                location.state.tourDetail.statusTnm !== "Kết thúc" &&
-                dateValidate !== undefined &&
-                new Date().getTime() >
-                  new Date(dateValidate.seeds[0].date).getTime() +
-                    1 * 60 * 60 * 1000 &&
-                ((dateValidate.minDate !== undefined &&
-                  new Date().getTime() <
-                    new Date(dateValidate.minDate).getTime() -
-                      24 * 60 * 60 * 1000) ||
-                  (dateValidate.minDate === undefined &&
-                    new Date().getTime() <
-                      new Date(dateValidate.seeds[0].date).getTime() +
-                        3 * 24 * 60 * 60 * 1000))) ||
-              dateValidate === undefined ? (
+              {checkLivestream.length === 0 &&
+              user !== null &&
+              location.state !== null &&
+              user.userVM.id === location.state.hostTournamentId &&
+              (reportMatch === null || reportMatch.length === 0) &&
+              location.state.tourDetail.status === true &&
+              location.state.tourDetail.statusTnm !== "Kết thúc"  ? (
                 <p
                   className={styles.updateMatch}
                   onClick={() =>
