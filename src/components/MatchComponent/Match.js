@@ -1817,13 +1817,26 @@ function Match() {
                 reportMatch={reportMatch !== null ? reportMatch : null}
                 postReportMatch={postReportMatch}
               />
-              {checkLivestream.length === 0 &&
-              user !== null &&
-              location.state !== null &&
-              user.userVM.id === location.state.hostTournamentId &&
-              (reportMatch === null || reportMatch.length === 0) &&
-              location.state.tourDetail.status === true &&
-              location.state.tourDetail.statusTnm !== "Kết thúc" ? (
+              {(checkLivestream.length === 0 &&
+                user !== null &&
+                location.state !== null &&
+                user.userVM.id === location.state.hostTournamentId &&
+                (reportMatch === null || reportMatch.length === 0) &&
+                location.state.tourDetail.status === true &&
+                location.state.tourDetail.statusTnm !== "Kết thúc" &&
+                dateValidate !== undefined &&
+                new Date().getTime() >
+                  new Date(dateValidate.seeds[0].date).getTime() +
+                    1 * 60 * 60 * 1000 &&
+                ((dateValidate.minDate !== undefined &&
+                  new Date().getTime() <
+                    new Date(dateValidate.minDate).getTime() -
+                      24 * 60 * 60 * 1000) ||
+                  (dateValidate.minDate === undefined &&
+                    new Date().getTime() <
+                      new Date(dateValidate.seeds[0].date).getTime() +
+                        3 * 24 * 60 * 60 * 1000))) ||
+              dateValidate === undefined ? (
                 <p
                   className={styles.updateMatch}
                   onClick={() =>
@@ -1851,10 +1864,11 @@ function Match() {
             user.userVM.id === location.state.hostTournamentId ? (
               <p
                 style={{
-                  color: "red",
+                  fontStyle: "italic",
+                  marginTop: 30
                 }}
               >
-                Lưu ý: Có thể chỉnh sửa chi tiết cả trận đấu sau thời gian diễn
+                *Lưu ý: Có thể chỉnh sửa chi tiết cả trận đấu sau thời gian diễn
                 ra 1h và phải cập nhật trước khi vòng đấu kế tiếp diễn ra
               </p>
             ) : null}
