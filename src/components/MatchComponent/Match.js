@@ -1847,6 +1847,18 @@ function Match() {
                 </p>
               ) : null}
             </div>
+            {user !== null &&
+            user.userVM.id === location.state.hostTournamentId ? (
+              <p
+                style={{
+                  color: "red",
+                }}
+              >
+                Lưu ý: Có thể chỉnh sửa chi tiết cả trận đấu sau thời gian diễn
+                ra 1h và phải cập nhật trước khi vòng đấu kế tiếp diễn ra
+              </p>
+            ) : null}
+
             <div className={styles.match__header}>
               {allTeamA.map((item, index) => (
                 <div className={styles.sub__header}>
